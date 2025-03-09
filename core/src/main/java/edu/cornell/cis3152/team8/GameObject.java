@@ -1,3 +1,7 @@
+/**
+ * Heavily inspired by the Optimization lab
+ */
+
 package edu.cornell.cis3152.team8;
 
 import com.badlogic.gdx.graphics.Color;
