@@ -1,0 +1,10 @@
+{
+  "coin": {
+    "velocity": [0,0],
+    "origin": [0,0] ,
+    "size": 1
+  },
+  "minion": {
+    "size": 1
+  }
+}
