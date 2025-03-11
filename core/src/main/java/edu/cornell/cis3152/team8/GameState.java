@@ -23,6 +23,10 @@ public class GameState {
     private Level level;
     /** The party of companions controlled by the player */
     private Player player;
+    /** The minions */
+    private Minion[] minions;
+    /** The boss */
+    private Boss boss;
     /** Collection of projectiles on the screen */
     private ProjectilePool projectiles;
 
@@ -40,6 +44,27 @@ public class GameState {
      * Generates the level and everything in it.
      */
     public void reset() {
+        // are we using json?
+        level = new Level();
+        // tile information
+
+        // Player
+        player = new Player(this);
+        // player texture
+
+        // Minions - requires information of number of minions
+        for (int i = 0; i < num_enemies; i++ ) {
+            minions[i] = new Minion(assets);
+            // minion texture
+        }
+
+        // Boss
+        boss = new Boss(assets);
+        // boss texture
+
+        // Projectives
+        projectiles = new ProjectilePool(assets);
+        // projectile texture
     }
 
     /**
@@ -54,6 +79,20 @@ public class GameState {
      */
     public Player getPlayer() {
         return player;
+    }
+
+    /**
+     * @return the list of minions in the game
+     */
+    public Minion[] getMinions() {
+        return minions;
+    }
+
+    /**
+     * @return the boss in the game
+     */
+    public Boss getBoss() {
+        return boss;
     }
 
     /**
