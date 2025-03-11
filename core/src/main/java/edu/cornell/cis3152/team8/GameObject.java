@@ -11,6 +11,7 @@ import edu.cornell.gdiac.graphics.*;
 
 public abstract class GameObject {
     public enum ObjectType {
+        PLAYER,
         COMPANION,
         MINION,
         COIN,
