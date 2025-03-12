@@ -1,11 +1,17 @@
 package edu.cornell.cis3152.team8;
 
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.*;
 import com.badlogic.gdx.utils.JsonValue;
 import edu.cornell.gdiac.graphics.*;
 
 public class Coin extends GameObject{
+
+    /** Current animation frame for this coin */
+    private float animationFrame;
+    /** How fast we change frames */
+    private static float animationSpeed;
 
     /**
      * Constructs a Coin at the given position
@@ -26,6 +32,7 @@ public class Coin extends GameObject{
     private void setConstants(JsonValue constants){
         this.constants = constants;
         radius = constants.getFloat("size");
+        animationSpeed = constants.getFloat("animation speed");
     }
 
     /**
@@ -46,17 +53,29 @@ public class Coin extends GameObject{
      *
      * @param delta Number of seconds since last animation frame
      */
-    public void update(float delta){
-        //TODO
-    }
+    public void update(float delta) {
+        // Call superclass's run
+        super.update(delta);
 
+        // Increase animation frame
+        if (animator != null) {
+            animationFrame += animationSpeed;
+            if (animationFrame >= animator.getSize()) {
+                animationFrame -= animator.getSize();
+            }
+        }
+    }
     /**
      * Draws this Coin to the sprite batch
      *
      * @param batch The sprite batch
      */
     public void draw(SpriteBatch batch){
-        //TODO
+        animator.setFrame((int)animationFrame);
+        SpriteBatch.computeTransform(transform, origin.x, origin.y,
+            position.x, position.y, 0.0f, 1, 1);
+        batch.setColor( Color.WHITE );
+        batch.draw( animator, transform );
     }
 
 }
