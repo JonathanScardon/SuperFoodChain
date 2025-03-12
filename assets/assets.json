@@ -1,0 +1,11 @@
+{"coin" : {
+  "file" : "images/coin.png",
+  "sprites" : {
+    "animation" : {
+      "rows" : 1,
+      "cols" : 4,
+      "size" : 4
+    }
+  }
+}
+}
