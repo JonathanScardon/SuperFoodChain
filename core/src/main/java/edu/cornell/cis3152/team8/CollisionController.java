@@ -45,6 +45,7 @@ import edu.cornell.gdiac.audio.SoundEffectManager;
             Boss[] bosses = new Boss[1];
             bosses[0] = boss;
             Coin[] coins = session.getCoins;
+            Companion[] companions = session.getCompanions;
 
             //Move player.
             for (Companion c : player){
@@ -84,6 +85,11 @@ import edu.cornell.gdiac.audio.SoundEffectManager;
 
             //Test coin-player collisions.
             for (Coin c : coins){
+                checkForCollision(c,player);
+            }
+
+            //Test companion-player collisions.
+            for (Companion c : companions){
                 checkForCollision(c,player);
             }
         }
@@ -254,6 +260,34 @@ import edu.cornell.gdiac.audio.SoundEffectManager;
             if (cx == px && cy == py){
                 player.setCoins(player.getCoins()+1);
                 coin.setDestroyed(true);
+            }
+        }
+        /**
+         * Processes companion-player collisions.
+         * The player collects companions with its head.
+         *
+         * @param companion   The companion
+         * @param player The player
+         */
+        private void checkForCollision(Companion companion, Player player){
+            //Do nothing if companion or player are dead
+            if (companion.isDestroyed() || player.isDestroyed()) {
+                return;
+            }
+
+            Board board = session.getBoard();
+
+            //Get tiles for coin and player
+            int cx = board.screenToBoard(companion.getX());
+            int cy = board.screenToBoard(companion.getY());
+            int px = board.screenToBoard(player.getX());
+            int py = board.screenToBoard(player.getY());
+
+            // Player buys companion if enough coins and they collided
+            int cost = companion.getCost;
+            if (cx == px && cy == py && (player.getCoins()>= cost){
+                player.setCoins(player.getCoins()-cost);
+                player.addCompanion(companion);
             }
         }
     }
