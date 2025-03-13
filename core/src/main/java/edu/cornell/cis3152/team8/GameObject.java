@@ -16,6 +16,7 @@ public abstract class GameObject {
         MINION,
         COIN,
         BOSS,
+        PROJECTILE,
     }
 
     // Attributes for all game objects
