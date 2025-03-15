@@ -1,61 +1,109 @@
 package edu.cornell.cis3152.team8;
 
-
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.*;
 import com.badlogic.gdx.utils.JsonValue;
 import edu.cornell.gdiac.graphics.*;
 
+import java.util.LinkedList;
+
 public class Player extends GameObject{
+
+    /** All companions in the player's current chain */
+    protected LinkedList<Companion> companions;
+
+    /** The players coin count, used to purchase companions */
+    protected int coins;
+
+    /** Indicates whether the player is attacking */
+    protected boolean attacking;
 
     public Player(int x, int y){
         super(x, y);
+        this.companions = new LinkedList<>();
+        this.coins = 0;
+        this.attacking = false;
     }
 
     public void update(float delta){
         //TODO
+
+        //update each companion in the list given the control code
     }
 
     public void draw(SpriteBatch batch){
         //TODO
+
+        //draw each companion (SpriteBatch, Affine2, SpriteSheet)
     }
 
+    /**
+     * Sets the player's attacking status
+     * @param x the player's new attacking status
+     */
     public void setAttacking(boolean x){
-        //TODO
+        this.attacking = x;
     }
 
+    /**
+     * Retrieves the player's attacking status
+     * @return true if the player is attacking, false otherwise
+     */
     public boolean isAttacking(){
-        //TODO
-        return false;
+        return this.attacking;
     }
 
     public int getHealth(){
         //TODO
+
+        //is this necessary?
         return 0;
     }
 
+    /**
+     * Checks it the player is alive.
+     * @return true when the player has at least one companion,
+     * false otherwise
+     */
     public boolean isAlive(){
-        //TODO
-        return true;
+        return companions.isEmpty();
     }
 
+    /**
+     * Retrieves the current number of coins the player has
+     * @return the number of coins the player has
+     */
     public int getCoins(){
-        //TODO
-        return 0;
+        return this.coins;
     }
 
+    /**
+     * Sets the player's coin count to a specified value
+     * @param coins the new number of coins the player has
+     */
     public void setCoins(int coins){
-        //TODO
+        this.coins = coins;
     }
 
+    /**
+     * Appends a companion to the player's chain
+     * @param companion the companion to add
+     */
     public void addCompanion(Companion companion){
-        //TODO
+        companions.add(companion);
     }
-
+    /**
+     * Removes the companion from the player's chain
+     * @param companion the companion to remove
+     */
     public void deleteCompanion(Companion companion){
-        //TODO
+        int index = companions.indexOf(companion);
+        //companion out of range
+        if (index < 0 || index > companions.size()-1){
+            return;
+        }
+        companions.remove(index);
     }
-
 
     /**
      * Returns GameObject type Player
