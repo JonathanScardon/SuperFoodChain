@@ -4,8 +4,6 @@ package edu.cornell.cis3152.team8;
  * Heavily inspired by the Optimization lab
  */
 
-package edu.cornell.cis3152.team8;
-
 import java.util.Random;
 
 public class GameplayController {
@@ -81,7 +79,7 @@ public class GameplayController {
      */
     private void initMinionPosition() {
         Random rand = new Random();
-        for (int i = 0; i < minions.size(); i++) {
+        for (int i = 0; i < minions.length; i++) {
             minions[i].setX(rand.nextInt(level.getWidth()));
             minions[i].setY(rand.nextInt(level.getHeight()));
         }
@@ -135,7 +133,7 @@ public class GameplayController {
         player.update(playerControls.getAction());
 
         // if board isn't updating then no point
-        state.getLevel().update();
+//        state.getLevel().update();
 
         // projectiles update
         state.getProjectiles().update();
@@ -148,7 +146,7 @@ public class GameplayController {
      * this behavior out of the Ship into the GameplayController.
      */
     private void useAbility(Companion c) {
-        c.useAbility();
+        c.useAbility(state);
         // reset ability cooldown
         c.coolDown(false);
     }
