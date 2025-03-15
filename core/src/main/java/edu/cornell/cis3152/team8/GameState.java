@@ -48,8 +48,8 @@ public class GameState {
         level = new Level();
         // tile information
 
-        // Player
-        player = new Player(this);
+        // Player --> first companion (not a list yet?)
+        player = new Player();
         // player texture
 
         // Minions - requires information of number of minions

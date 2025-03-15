@@ -52,7 +52,7 @@ public abstract class Companion extends GameObject {
     public boolean canUse() { return abilityCool <= 0; }
 
     /** Companion uses ability */
-    public void useAbility() {
+    public void useAbility(GameState state) {
         // individual abilities depending on type --> overrided by different types
     };
 

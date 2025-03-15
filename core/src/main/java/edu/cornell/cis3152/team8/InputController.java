@@ -16,4 +16,6 @@ public interface InputController {
     int CONTROL_USE_ABILITY = 0x10;
 
     int getAction();
+
+
 }
