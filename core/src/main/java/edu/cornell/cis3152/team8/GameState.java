@@ -32,7 +32,7 @@ public class GameState {
     /** The companions on the map */
     private Companion[] companions;
     /** Collection of projectiles on the screen */
-    private ProjectilePool projectiles;
+    private ProjectilePools projectiles;
 
     /**
      * Creates a new game session. This method will call reset() to set up the board.
@@ -74,9 +74,9 @@ public class GameState {
             // companion texture
         }
 
-        // Projectives
-        projectiles = new ProjectilePool(assets);
-        // projectile texture
+//        // Projectives
+//        projectiles = new ProjectilePool(assets);
+//        // projectile texture
     }
 
     /**
@@ -124,7 +124,7 @@ public class GameState {
     /**
      * @return the set of active projectiles
      */
-    public ProjectilePool getProjectiles() {
+    public ProjectilePools getProjectiles() {
         return projectiles;
     }
 }
