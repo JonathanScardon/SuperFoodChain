@@ -39,7 +39,7 @@ import edu.cornell.gdiac.audio.SoundEffectManager;
         public void update() {
             //Get level information
             Minion[] minions = session.getMinions();
-            ProjectilePool projectiles = session.getProjectiles();
+            ProjectilePools projectiles = session.getProjectiles();
             Boss boss = session.getBoss();
             Player player = session.getPlayer();
             Boss[] bosses = new Boss[1];

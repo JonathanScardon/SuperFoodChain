@@ -27,6 +27,9 @@ public class GameplayController {
     /** Level Boss */
     private Boss boss;
 
+    /** Companiona in the level */
+    private Companion[] companions;
+
     /** List of all the input controllers */
     protected PlayerController playerControls;
     protected MinionController[] minionControls;
@@ -40,10 +43,6 @@ public class GameplayController {
     public GameplayController(GameState state) {
         this.state = state;
 
-        initPlayerPosition();
-        initMinionPosition();
-        initCompanionPositions();
-
         // assuming player is a list of Companions btw
         player = state.getPlayer();
         playerControls = new PlayerController();
@@ -52,13 +51,19 @@ public class GameplayController {
 
         // assuming each level has number of enemies assigned?
         minions = state.getMinions();
-        minionControls = new MinionController[][minions.length];
+        minionControls = new MinionController[minions.length];
         for(int i = 0; i < minions.length; i++) {
             minionControls[i] = new MinionController(i, state);
         }
 
         boss = state.getBoss();
         bossControls = new BossController(boss.getId(), state);
+
+        companions = state.getCompanions();
+
+        initPlayerPosition();
+        initMinionPosition();
+        initCompanionPositions();
     }
 
     /**
@@ -70,7 +75,8 @@ public class GameplayController {
         float px = (float) level.getWidth()/2;
         float py = (float) level.getHeight()/2;
 
-        player.setPosition(px,py);
+        player.setX(px);
+        player.setY(py);
     }
 
     /**
@@ -91,9 +97,9 @@ public class GameplayController {
      */
     private void initCompanionPositions() {
         Random rand = new Random();
-        for (int i = 0; i < player.size(); i++) {
-            player[i].setX(rand.nextInt(level.getWidth()));
-            player[i].setY(rand.nextInt(level.getHeight()));
+        for (int i = 0; i < companions.length; i++) {
+            companions[i].setX(rand.nextInt(level.getWidth()));
+            companions[i].setY(rand.nextInt(level.getHeight()));
         }
     }
 
@@ -106,7 +112,7 @@ public class GameplayController {
      */
     public void update() {
         // companion chain uses ability
-        for (Companion c : player) {
+        for (Companion c : player.companions) {
             if (c.canUse() && !c.isDestroyed()) {
                 useAbility(c);
             } else {
@@ -132,8 +138,8 @@ public class GameplayController {
         // if board isn't updating then no point
 //        state.getLevel().update();
 
-        // projectiles update
-        state.getProjectiles().update();
+//        // projectiles update
+//        state.getProjectiles().update();
     }
 
     /**

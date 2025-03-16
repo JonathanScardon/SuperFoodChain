@@ -2,6 +2,8 @@ package edu.cornell.cis3152.team8.companions;
 
 import edu.cornell.cis3152.team8.Companion;
 import edu.cornell.cis3152.team8.GameState;
+import edu.cornell.cis3152.team8.ProjectilePools;
+import edu.cornell.cis3152.team8.StrawberryProjectile;
 
 import java.util.Random;
 
@@ -26,7 +28,7 @@ public class Strawberry extends Companion {
      * A Strawberry shoots 5 small and quick projectiles in a radius around it
      */
     public void useAbility(GameState state) {
-        StrawberryProjectilePool projectiles = state.getProjectiles();
+        ProjectilePools projectiles = state.getProjectiles();
 
         // Determines direction of projections - 5 random directions
         float x = getX();
@@ -44,7 +46,7 @@ public class Strawberry extends Companion {
 
             // requires argument for size of projectile
             // quicker by x2
-            projectiles.add(x, y, vx  * 2, vy * 2, size);
+            projectiles.strawberryPool.free(new StrawberryProjectile(x, y, vy, vy));
         }
 
         coolDown(false);
