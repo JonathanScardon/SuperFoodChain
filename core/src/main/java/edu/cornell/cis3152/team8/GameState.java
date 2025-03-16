@@ -27,8 +27,11 @@ public class GameState {
     private Minion[] minions;
     /** The boss */
     private Boss boss;
+
+    private int num_enemies;
+
     /** Collection of projectiles on the screen */
-    private ProjectilePool projectiles;
+    //private ProjectilePool projectiles;
 
     /**
      * Creates a new game session. This method will call reset() to set up the board.
@@ -45,25 +48,26 @@ public class GameState {
      */
     public void reset() {
         // are we using json?
-        level = new Level();
+        level = new Level(25,25);
         // tile information
 
         // Player --> first companion (not a list yet?)
-        player = new Player();
+        player = new Player(13,13);
         // player texture
 
         // Minions - requires information of number of minions
+        num_enemies = 0;
         for (int i = 0; i < num_enemies; i++ ) {
-            minions[i] = new Minion(assets);
+            minions[i] = new Minion(0,0);
             // minion texture
         }
 
         // Boss
-        boss = new Boss(assets);
+       // boss = new Boss(assets);
         // boss texture
 
         // Projectives
-        projectiles = new ProjectilePool(assets);
+        //projectiles = new ProjectilePool(assets);
         // projectile texture
     }
 
@@ -98,7 +102,7 @@ public class GameState {
     /**
      * @return the set of active projectiles
      */
-    public ProjectilePool getProjectiles() {
-        return projectiles;
-    }
+//    public ProjectilePool getProjectiles() {
+//        return projectiles;
+//    }
 }
