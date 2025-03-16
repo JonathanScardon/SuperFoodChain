@@ -158,7 +158,6 @@ import edu.cornell.gdiac.audio.SoundEffectManager;
                 return;
             }
 
-
           // Get the tiles for minion and projectile
             float mx = minion.getX();
             float my = minion.getY();
@@ -168,7 +167,10 @@ import edu.cornell.gdiac.audio.SoundEffectManager;
             // kill projectile and minion if they collided
             if (mx == px && my == py) {
                 projectile.setDestroyed(true);
+                minion.removeHealth(1);
+                if (minion.getHealth() <= 0){
                 minion.setDestroyed(true);
+                }
             }
         }
 

@@ -6,7 +6,8 @@
     "animation speed": 0
   },
   "minion": {
-    "size": 1
+    "size": 1,
+    "health": 1
   },
   "board": {
     "size": [0,0],
