@@ -22,7 +22,7 @@ public class Strawberry extends Companion {
      * A Strawberry shoots 4 small and quick projectiles in a radius around it
      */
     public void useAbility(GameState state) {
-        ProjectilePool projectiles = state.getProjectiles();
+        //ProjectilePool projectiles = state.getProjectiles();
 
         // Determines direction of projections
         float x = getX();
@@ -33,7 +33,7 @@ public class Strawberry extends Companion {
 
             // requires argument for size of projectile
             // quicker by x2
-            projectiles.add(x, y, vx  * 2, vy * 2, size);
+            //projectiles.add(x, y, vx  * 2, vy * 2, size);
         }
 
         coolDown(false);
