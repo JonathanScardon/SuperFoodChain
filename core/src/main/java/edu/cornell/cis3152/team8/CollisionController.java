@@ -284,7 +284,7 @@ import edu.cornell.gdiac.audio.SoundEffectManager;
             int py = board.screenToBoard(player.getY());
 
             // Player buys companion if enough coins and they collided
-            int cost = companion.getCost;
+            int cost = companion.getCost();
             if (cx == px && cy == py && (player.getCoins()>= cost){
                 player.setCoins(player.getCoins()-cost);
                 player.addCompanion(companion);

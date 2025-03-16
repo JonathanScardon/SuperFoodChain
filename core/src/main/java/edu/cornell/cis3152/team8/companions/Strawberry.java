@@ -17,6 +17,7 @@ public class Strawberry extends Companion {
         super(x, y);
         setCompanionType(CompanionType.STRAWBERRY);
         setCost(3);
+        setCooldown(3);
     }
 
 
@@ -25,7 +26,7 @@ public class Strawberry extends Companion {
      * A Strawberry shoots 5 small and quick projectiles in a radius around it
      */
     public void useAbility(GameState state) {
-        ProjectilePool projectiles = state.getProjectiles();
+        StrawberryProjectilePool projectiles = state.getProjectiles();
 
         // Determines direction of projections - 5 random directions
         float x = getX();
