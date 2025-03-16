@@ -4,9 +4,15 @@ package edu.cornell.cis3152.team8;
  * Heavily inspired by the Optimization lab
  */
 
+import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.utils.ScreenUtils;
+import edu.cornell.gdiac.graphics.SpriteBatch;
+import edu.cornell.gdiac.util.ScreenListener;
+import java.util.LinkedList;
 import java.util.Random;
 
-public class GameplayController {
+public class GameplayController implements Screen {
     /** How close to the center of the tile we need to be to stop drifting */
     private static final float DRIFT_TOLER = 1.0f;
     /** How fast we drift to the tile center when paused */
@@ -27,38 +33,42 @@ public class GameplayController {
     /** Level Boss */
     private Boss boss;
 
+    private SpriteBatch batch;
+
     /** List of all the input controllers */
     protected InputController playerControls;
     protected InputController[] minionControls;
     protected InputController bossControls;
+    private ScreenListener listener;
 
     /**
      * Creates a GameplayController for the given models.
      *
      * @param state   The game state
      */
-    public GameplayController(GameState state) {
-        this.state = state;
+    public GameplayController(SpriteBatch batch){
+        //this.state = state;
 
-        initPlayerPosition();
-        initMinionPosition();
-        initCompanionPositions();
+        this.batch = batch;
+        //initPlayerPosition();
+        //initMinionPosition();
+        //initCompanionPositions();
 
         // assuming player is a list of Companions btw
-        player = state.getPlayer();
-        playerControls = new PlayerController();
+//        player = state.getPlayer();
+//        playerControls = new PlayerController();
+//
+//        level = state.getLevel();
+//
+//        // assuming each level has number of enemies assigned?
+//        minions = state.getMinions();
+//        minionControls = new InputController[minions.length];
+//        for(int i = 0; i < minions.length; i++) {
+//            minionControls[i] = new MinionController(i, state);
+//        }
 
-        level = state.getLevel();
-
-        // assuming each level has number of enemies assigned?
-        minions = state.getMinions();
-        minionControls = new InputController[minions.length];
-        for(int i = 0; i < minions.length; i++) {
-            minionControls[i] = new MinionController(i, state);
-        }
-
-        boss = state.getBoss();
-        bossControls = new BossController(boss.getId(), state);
+//        boss = state.getBoss();
+       // bossControls = new BossController(boss.getId(), state);
     }
 
     /**
@@ -70,7 +80,7 @@ public class GameplayController {
         float px = level.getWidth()/2;
         float py = level.getHeight()/2;
 
-        player.setPosition(px,py);
+        //player.setPosition(px,py);
     }
 
     /**
@@ -91,15 +101,16 @@ public class GameplayController {
      */
     private void initCompanionPositions() {
         Random rand = new Random();
-        for (int i = 0; i < player.size(); i++) {
-            player[i].setX(rand.nextInt(level.getWidth()));
-            player[i].setY(rand.nextInt(level.getHeight()));
+        LinkedList<Companion> comps = player.companions;
+        for (int i = 0; i < comps.size(); i++) {
+            comps.get(i).setX(rand.nextInt(level.getWidth()));
+            comps.get(i).setY(rand.nextInt(level.getHeight()));
         }
     }
 
-    public int getPlayerSelection() {
-        return playerControls.getSelection();
-    }
+    //public int getPlayerSelection() {
+       // return playerControls.getSelection();
+
 
     /**
      * Invokes the controller for each Object.
@@ -110,7 +121,7 @@ public class GameplayController {
      */
     public void update() {
         // companion chain uses ability
-        for (Companion c : player) {
+        for (Companion c : player.companions) {
             if (c.canUse() && !c.isDestroyed()) {
                 useAbility(c);
             } else {
@@ -136,7 +147,7 @@ public class GameplayController {
 //        state.getLevel().update();
 
         // projectiles update
-        state.getProjectiles().update();
+        //state.getProjectiles().update();
     }
 
     /**
@@ -151,4 +162,60 @@ public class GameplayController {
         c.coolDown(false);
     }
 
+    private void drawTiles() {
+        int tileSize = 50;
+        Texture tileTexture = new Texture("images/Tile1.png");
+        for (int x = 0; x < 20; x++) {
+            for (int y = 0; y < 20; y++) {
+                batch.begin();
+                batch.draw(tileTexture,x,y,tileSize,tileSize);
+                batch.end();
+            }
+        }
+    }
+    /**
+     * Sets the ScreenListener for this mode
+     *
+     * The ScreenListener will respond to requests to quit.
+     */
+    public void setScreenListener(ScreenListener listener) {
+        this.listener = listener;
+    }
+
+    @Override
+    public void show() {
+
+    }
+
+    @Override
+    public void render(float delta) {
+        //update();
+        ScreenUtils.clear( 1f, 1f, 1f,1.0f );
+        drawTiles();
+    }
+
+    @Override
+    public void resize(int width, int height) {
+
+    }
+
+    @Override
+    public void pause() {
+
+    }
+
+    @Override
+    public void resume() {
+
+    }
+
+    @Override
+    public void hide() {
+
+    }
+
+    @Override
+    public void dispose() {
+
+    }
 }

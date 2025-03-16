@@ -15,9 +15,7 @@ import edu.cornell.gdiac.util.ScreenListener;
 /** {@link com.badlogic.gdx.ApplicationListener} implementation shared by all platforms. */
 public class GDXRoot extends Game implements ScreenListener {
 
-    public MainMenuScene viewport;
     private SpriteBatch batch;
-    private Texture image;
 
     private LoadingScene loading;
     private GameplayController gameScene;
@@ -27,27 +25,40 @@ public class GDXRoot extends Game implements ScreenListener {
     @Override
     public void create() {
         batch = new SpriteBatch();
-        //image = new Texture("libgdx.png");
         loading = new LoadingScene("assets.json", batch,1);
         loading.setScreenListener(this);
         setScreen(loading);
-
     }
-
-    @Override
-    public void render() {
-        ScreenUtils.clear(0.15f, 0.15f, 0.2f, 1f);
-        batch.begin();
-        batch.draw(image, 140, 210);
-        batch.end();
-    }
-
-
 
     @Override
     public void dispose() {
+        // Call dispose on our children
+        setScreen(null);
+        if (loading != null) {
+            loading.dispose();
+            loading = null;
+        }
+
+        if (menuScene != null) {
+                menuScene.dispose();
+                menuScene = null;
+            }
+
+        if (gameScene != null){
+            gameScene.dispose();
+            gameScene = null;
+        }
+
         batch.dispose();
-        image.dispose();
+        batch = null;
+
+        // Unload all of the resources
+        if (directory != null) {
+            directory.unloadAssets();
+            directory.dispose();
+            directory = null;
+        }
+        super.dispose();
     }
 
     @Override
@@ -57,11 +68,12 @@ public class GDXRoot extends Game implements ScreenListener {
             loading.dispose();
             loading = null;
 
-            // Initialize the three game worlds
-            //controllers = new PhysicsScene[3];
-            menuScene = new MainMenuScene(batch);
-            menuScene.setScreenListener(this);
-            setScreen(menuScene);
+            gameScene = new GameplayController(batch);
+            gameScene.setScreenListener(this);
+            setScreen(gameScene);
+//            menuScene = new MainMenuScene(batch);
+//            menuScene.setScreenListener(this);
+//            setScreen(menuScene);
         } else if (screen == menuScene) {
             gameScene = new GameplayController(batch);
             gameScene.setScreenListener(this);
