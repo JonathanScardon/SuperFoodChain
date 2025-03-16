@@ -1,5 +1,8 @@
 package edu.cornell.cis3152.team8;
 
+import static edu.cornell.cis3152.team8.InputController.CONTROL_MOVE_LEFT;
+import static edu.cornell.cis3152.team8.InputController.CONTROL_NO_ACTION;
+
 public abstract class Companion extends GameObject {
 
     public enum CompanionType {
@@ -24,12 +27,20 @@ public abstract class Companion extends GameObject {
     /** The number of frames until use ability again */
     private int abilityCool;
 
+    /** How far the player moves in a single turn */
+    private static float MOVE_SPEED;
+
+    /** The direction the companion is currently moving in */
+    private int direction;
+
     public Companion(float x, float y) {
         super(x, y);
         isAlive = true;
         abilityCool = 0;
 
         COOLDOWN = 5;
+
+        direction = InputController.CONTROL_NO_ACTION;
     }
 
     // accessors
@@ -72,4 +83,51 @@ public abstract class Companion extends GameObject {
     }
 
 
+    /**
+     * Updates the movement of a companion in the chain
+     * @param controlCode
+     */
+    public void update(int controlCode){
+        if (!isAlive){
+            return;
+        }
+
+        // Determine how we are moving.
+        boolean movingLeft  = (controlCode & InputController.CONTROL_MOVE_LEFT) != 0;
+        boolean movingRight = (controlCode & InputController.CONTROL_MOVE_RIGHT) != 0;
+        boolean movingUp    = (controlCode & InputController.CONTROL_MOVE_UP) != 0;
+        boolean movingDown  = (controlCode & InputController.CONTROL_MOVE_DOWN) != 0;
+
+        // Process movement command.
+        if (movingLeft) {
+            this.direction = InputController.CONTROL_MOVE_LEFT;
+            velocity.x = -MOVE_SPEED;
+            velocity.y = 0;
+        } else if (movingRight) {
+            this.direction = InputController.CONTROL_MOVE_RIGHT;
+            velocity.x = MOVE_SPEED;
+            velocity.y = 0;
+        } else if (movingUp) {
+            this.direction = InputController.CONTROL_MOVE_UP;
+            velocity.y = -MOVE_SPEED;
+            velocity.x = 0;
+        } else if (movingDown) {
+            this.direction = InputController.CONTROL_MOVE_DOWN;
+            velocity.y = MOVE_SPEED;
+            velocity.x = 0;
+    }
+
+    }
+
+    /**
+     *
+     * @return control code of companion's current movement
+     */
+    public int getDirection(){
+        return this.direction;
+    }
+
+    public void setDirection(int direction){
+        this.direction = direction;
+    }
 }
