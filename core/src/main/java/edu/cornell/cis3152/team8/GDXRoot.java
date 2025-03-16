@@ -1,34 +1,93 @@
 package edu.cornell.cis3152.team8;
 
-import com.badlogic.gdx.ApplicationAdapter;
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.utils.ScreenUtils;
+import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.utils.viewport.FitViewport;
+import edu.cornell.gdiac.assets.AssetDirectory;
+import edu.cornell.gdiac.graphics.SpriteBatch;
+import edu.cornell.gdiac.util.ScreenListener;
 
-/** {@link com.badlogic.gdx.ApplicationListener} implementation shared by all platforms. */
-public class GDXRoot extends ApplicationAdapter {
-    private SpriteBatch batch;
-    private Texture image;
+
+public class GDXRoot extends Game implements ScreenListener {
+
+    public FitViewport viewport;
+    public SpriteBatch batch;
+    public BitmapFont font;
+
+    private LoadingScene loadingScene;
+    private GameScene gameScene;
+    private MainMenuScene menuScene;
+
+    AssetDirectory directory;
 
     @Override
     public void create() {
         batch = new SpriteBatch();
-        image = new Texture("libgdx.png");
+        font = new BitmapFont();
+        viewport = new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+
+        font.setUseIntegerPositions(false);
+        font.getData().setScale(viewport.getWorldHeight() / Gdx.graphics.getHeight());
+
+        loadingScene = new LoadingScene("assets.json", batch, 1);
+        loadingScene.setScreenListener(this);
+        this.setScreen(loadingScene);
     }
 
     @Override
     public void render() {
-        ScreenUtils.clear(0.15f, 0.15f, 0.2f, 1f);
-        batch.begin();
-        batch.draw(image, 140, 210);
-        batch.end();
+        super.render();
     }
 
     @Override
     public void dispose() {
+        // Call dispose on our children
+        setScreen(null);
+        if (loadingScene != null) {
+            loadingScene.dispose();
+            loadingScene = null;
+        }
+
+        if (menuScene != null) {
+                menuScene.dispose();
+                menuScene = null;
+            }
+
+        if (gameScene != null){
+            gameScene.dispose();
+            gameScene = null;
+        }
+
         batch.dispose();
-        image.dispose();
+        font.dispose();
+        batch = null;
+
+        // Unload all of the resources
+        if (directory != null) {
+            directory.unloadAssets();
+            directory.dispose();
+            directory = null;
+        }
+        super.dispose();
+    }
+
+    @Override
+    public void exitScreen(Screen screen, int exitCode) {
+        if (screen == loadingScene) {
+            directory = loadingScene.getAssets();
+            loadingScene.dispose();
+            loadingScene = null;
+
+            menuScene = new MainMenuScene(this);
+            setScreen(menuScene);
+        } else if (screen == menuScene) {
+            gameScene = new GameScene(this);
+            setScreen(gameScene);
+        } else {
+            Gdx.app.exit();
+        }
     }
 }
+
