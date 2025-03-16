@@ -33,13 +33,13 @@ public class GameplayController implements Screen {
     /** Level Boss */
     private Boss boss;
 
-    private SpriteBatch batch;
+    /** Companiona in the level */
+    private Companion[] companions;
 
     /** List of all the input controllers */
-    protected InputController playerControls;
-    protected InputController[] minionControls;
-    protected InputController bossControls;
-    private ScreenListener listener;
+    protected PlayerController playerControls;
+    protected MinionController[] minionControls;
+    protected BossController bossControls;
 
     /**
      * Creates a GameplayController for the given models.
@@ -49,26 +49,27 @@ public class GameplayController implements Screen {
     public GameplayController(SpriteBatch batch){
         //this.state = state;
 
-        this.batch = batch;
-        //initPlayerPosition();
-        //initMinionPosition();
-        //initCompanionPositions();
-
         // assuming player is a list of Companions btw
-//        player = state.getPlayer();
-//        playerControls = new PlayerController();
-//
-//        level = state.getLevel();
-//
-//        // assuming each level has number of enemies assigned?
-//        minions = state.getMinions();
-//        minionControls = new InputController[minions.length];
-//        for(int i = 0; i < minions.length; i++) {
-//            minionControls[i] = new MinionController(i, state);
-//        }
+        player = state.getPlayer();
+        playerControls = new PlayerController();
 
-//        boss = state.getBoss();
-       // bossControls = new BossController(boss.getId(), state);
+        level = state.getLevel();
+
+        // assuming each level has number of enemies assigned?
+        minions = state.getMinions();
+        minionControls = new MinionController[minions.length];
+        for(int i = 0; i < minions.length; i++) {
+            minionControls[i] = new MinionController(i, state);
+        }
+
+        boss = state.getBoss();
+        bossControls = new BossController(boss.getId(), state);
+
+        companions = state.getCompanions();
+
+        initPlayerPosition();
+        initMinionPosition();
+        initCompanionPositions();
     }
 
     /**
@@ -77,10 +78,11 @@ public class GameplayController implements Screen {
      * UNLESS the player is also at random position.
      */
     private void initPlayerPosition() {
-        float px = level.getWidth()/2;
-        float py = level.getHeight()/2;
+        float px = (float) level.getWidth()/2;
+        float py = (float) level.getHeight()/2;
 
-        //player.setPosition(px,py);
+        player.setX(px);
+        player.setY(py);
     }
 
     /**
@@ -101,16 +103,11 @@ public class GameplayController implements Screen {
      */
     private void initCompanionPositions() {
         Random rand = new Random();
-        LinkedList<Companion> comps = player.companions;
-        for (int i = 0; i < comps.size(); i++) {
-            comps.get(i).setX(rand.nextInt(level.getWidth()));
-            comps.get(i).setY(rand.nextInt(level.getHeight()));
+        for (int i = 0; i < companions.length; i++) {
+            companions[i].setX(rand.nextInt(level.getWidth()));
+            companions[i].setY(rand.nextInt(level.getHeight()));
         }
     }
-
-    //public int getPlayerSelection() {
-       // return playerControls.getSelection();
-
 
     /**
      * Invokes the controller for each Object.
@@ -142,12 +139,13 @@ public class GameplayController implements Screen {
 
         // player chain moves
         player.update(playerControls.getAction());
+        player.setForwardDirection(playerControls.getForwardDirection());
 
         // if board isn't updating then no point
 //        state.getLevel().update();
-
-        // projectiles update
-        //state.getProjectiles().update();
+      
+//        // projectiles update
+//        state.getProjectiles().update();
     }
 
     /**

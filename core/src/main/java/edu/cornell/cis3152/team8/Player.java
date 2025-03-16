@@ -18,11 +18,18 @@ public class Player extends GameObject{
     /** Indicates whether the player is attacking */
     protected boolean attacking;
 
+    /** Indicates whether the player has a shield */
+    protected boolean shield;
+
+    /** The direction the player is facing */
+    protected int forwardDirection;
+
     public Player(int x, int y){
         super(x, y);
         this.companions = new LinkedList<>();
         this.coins = 0;
         this.attacking = false;
+        this.shield = false;
     }
 
     public void update(float delta){
@@ -83,6 +90,39 @@ public class Player extends GameObject{
      */
     public void setCoins(int coins){
         this.coins = coins;
+    }
+
+
+    /**
+     * Returns whether the player has a shield
+     * @return whether the player has a shield
+     */
+    public boolean hasShield(){
+        return this.shield;
+    }
+
+    /**
+     * Sets whether the player has a shield
+     * @param shield true if the player has a shield, false otherwise
+     */
+    public void setShield(boolean shield){
+        this.shield = shield;
+    }
+
+    /**
+     * Returning the direction the player is facing
+     * @return the direction the player is facing
+     */
+    public int getForwardDirection(){
+        return this.forwardDirection;
+    }
+
+    /**
+     * Sets the direction the player is facing
+     * @param forwardDirection the new number of coins the player has
+     */
+    public void setForwardDirection(int forwardDirection){
+        this.forwardDirection = forwardDirection;
     }
 
     /**

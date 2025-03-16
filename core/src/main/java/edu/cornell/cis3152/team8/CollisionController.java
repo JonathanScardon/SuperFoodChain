@@ -39,13 +39,13 @@ import edu.cornell.gdiac.audio.SoundEffectManager;
         public void update() {
             //Get level information
             Minion[] minions = session.getMinions();
-            ProjectilePool projectiles = session.getProjectiles();
+            ProjectilePools projectiles = session.getProjectiles();
             Boss boss = session.getBoss();
             Player player = session.getPlayer();
             Boss[] bosses = new Boss[1];
             bosses[0] = boss;
-            Coin[] coins = session.getCoins;
-            Companion[] companions = session.getCompanions;
+            Coin[] coins = session.getCoins();
+            Companion[] companions = session.getCompanions();
 
             //Move player.
             for (Companion c : player){
@@ -284,7 +284,7 @@ import edu.cornell.gdiac.audio.SoundEffectManager;
             int py = board.screenToBoard(player.getY());
 
             // Player buys companion if enough coins and they collided
-            int cost = companion.getCost;
+            int cost = companion.getCost();
             if (cx == px && cy == py && (player.getCoins()>= cost){
                 player.setCoins(player.getCoins()-cost);
                 player.addCompanion(companion);

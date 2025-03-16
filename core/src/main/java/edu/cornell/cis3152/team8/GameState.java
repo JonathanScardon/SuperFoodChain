@@ -14,19 +14,20 @@ public class GameState {
     /** A reference to the asset directory (for on demand assets) */
     private AssetDirectory assets;
 
-//    /** The grid of tiles */
-//    private Level level;
-//    /** The party of companions controlled by the player */
-//    private Player player;
-//    /** The minions */
-//    private Minion[] minions;
-//    /** The boss */
-//    private Boss boss;
-
-    private int num_enemies;
-
+    /** The grid of tiles */
+    private Level level;
+    /** The party of companions controlled by the player */
+    private Player player;
+    /** The minions */
+    private Minion[] minions;
+    /** The boss */
+    private Boss boss;
+    /** The coins on the map */
+    private Coin[] coins;
+    /** The companions on the map */
+    private Companion[] companions;
     /** Collection of projectiles on the screen */
-    //private ProjectilePool projectiles;
+    private ProjectilePools projectiles;
 
     /**
      * Creates a new game session. This method will call reset() to set up the board.
@@ -61,43 +62,65 @@ public class GameState {
        // boss = new Boss(assets);
         // boss texture
 
-        // Projectives
-        //projectiles = new ProjectilePool(assets);
-        // projectile texture
+        // Coins - none at the beginning
+
+        // Companions - requires information of number of companions
+        for (int i = 0; i < num_companions; i++) {
+            companions[i] = new Companion(assets);
+            // companion texture
+        }
+
+//        // Projectives
+//        projectiles = new ProjectilePool(assets);
+//        // projectile texture
     }
 
-//    /**
-//     * @return the current level
-//     */
-//    public Level getLevel() {
-//        return level;
-//    }
-//
-//    /**
-//     * @return the list of ships in the game
-//     */
-//    public Player getPlayer() {
-//        return player;
-//    }
-//
-//    /**
-//     * @return the list of minions in the game
-//     */
-//    public Minion[] getMinions() {
-//        return minions;
-//    }
-//
-//    /**
-//     * @return the boss in the game
-//     */
-//    public Boss getBoss() {
-//        return boss;
-//    }
-//
-//    /**
-//     * @return the set of active projectiles
-//     */
-//    public ProjectilePool getProjectiles() {
-//        return projectiles;
-//    }
+    /**
+     * @return the current level
+     */
+    public Level getLevel() {
+        return level;
+    }
+
+    /**
+     * @return the list of ships in the game
+     */
+    public Player getPlayer() {
+        return player;
+    }
+
+    /**
+     * @return the list of minions in the game
+     */
+    public Minion[] getMinions() {
+        return minions;
+    }
+
+    /**
+     * @return the boss in the game
+     */
+    public Boss getBoss() {
+        return boss;
+    }
+
+    /**
+     * @return the list of coins in the game
+     */
+    public Coin[] getCoins() {
+        return coins;
+    }
+
+    /**
+     * @return the list of companions in the game
+     */
+    public Companion[] getCompanions() {
+        return companions;
+    }
+
+    /**
+     * @return the set of active projectiles
+     */
+    public ProjectilePools getProjectiles() {
+        return projectiles;
+    }
 }

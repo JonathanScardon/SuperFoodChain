@@ -2,6 +2,10 @@ package edu.cornell.cis3152.team8.companions;
 
 import edu.cornell.cis3152.team8.Companion;
 import edu.cornell.cis3152.team8.GameState;
+import edu.cornell.cis3152.team8.ProjectilePools;
+import edu.cornell.cis3152.team8.StrawberryProjectile;
+
+import java.util.Random;
 
 public class Strawberry extends Companion {
 
@@ -14,26 +18,35 @@ public class Strawberry extends Companion {
     public Strawberry(float x, float y) {
         super(x, y);
         setCompanionType(CompanionType.STRAWBERRY);
+        setCost(3);
+        setCooldown(3);
     }
 
 
     @Override
     /**
-     * A Strawberry shoots 4 small and quick projectiles in a radius around it
+     * A Strawberry shoots 5 small and quick projectiles in a radius around it
      */
     public void useAbility(GameState state) {
-        //ProjectilePool projectiles = state.getProjectiles();
+        ProjectilePools projectiles = state.getProjectiles();
 
-        // Determines direction of projections
+        // Determines direction of projections - 5 random directions
         float x = getX();
         float y = getY();
-        for (float fireAngle = 0.0f; fireAngle < 360.0f; fireAngle += 90.0f) {
-            float vx = (float) Math.cos(fireAngle * Math.PI / 180.0f);
-            float vy = (float) Math.sin(fireAngle * Math.PI / 180.0f);
+        float vx = 0.0f;
+        float vy = 0.0f;
+        float fireAngle = 0.0f;
+
+        Random rand = new Random();
+
+        for (int i = 0; i < 5; i++) {
+            fireAngle = (float) rand.nextInt(360);
+            vx = (float) Math.cos(Math.toRadians(fireAngle));
+            vy = (float) Math.sin(Math.toRadians(fireAngle));
 
             // requires argument for size of projectile
             // quicker by x2
-            //projectiles.add(x, y, vx  * 2, vy * 2, size);
+            projectiles.strawberryPool.free(new StrawberryProjectile(x, y, vy, vy));
         }
 
         coolDown(false);
