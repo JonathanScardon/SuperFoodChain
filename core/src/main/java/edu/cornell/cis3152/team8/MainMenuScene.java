@@ -4,35 +4,35 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.utils.ScreenUtils;
-import edu.cornell.gdiac.graphics.SpriteBatch;
-import edu.cornell.gdiac.util.ScreenListener;
 
 public class MainMenuScene implements Screen {
-    //final GDXRoot game;
-    private ScreenListener listener;
+    /**
+     * Reference to the GDX root
+     */
+    private final GDXRoot game;
 
-    public MainMenuScene(SpriteBatch batch) {
-
+    public MainMenuScene(final GDXRoot game) {
+        this.game = game;
     }
 
     public void update(float delta) {
         if (Gdx.input.isTouched()) {
-            //game.setScreen(new GameScene(game));
+            game.exitScreen(this, 0);
             dispose();
         }
     }
 
     public void draw(float delta) {
-//        ScreenUtils.clear(Color.BLACK);
-//
-//        game.viewport.apply();
-//        game.batch.setProjectionMatrix(game.viewport.getCamera().combined);
-//
-//        game.batch.begin();
-//        //draw text. Remember that x and y are in meters
-//        game.font.draw(game.batch, "Finding Friends", 1, 1.5f);
-//        game.font.draw(game.batch, "Tap anywhere to begin!", 1, 1);
-//        game.batch.end();
+        ScreenUtils.clear(Color.BLACK);
+
+        game.viewport.apply();
+        game.batch.setProjectionMatrix(game.viewport.getCamera().combined);
+
+        game.batch.begin();
+        //draw text. Remember that x and y are in meters
+        game.font.setColor(Color.WHITE);
+        game.font.draw(game.batch, "Main Menu", 100f, 100f);
+        game.batch.end();
     }
 
     @Override
@@ -48,7 +48,7 @@ public class MainMenuScene implements Screen {
 
     @Override
     public void resize(int width, int height) {
-        //game.viewport.update(width, height, true);
+        game.viewport.update(width, height, true);
     }
 
     @Override
@@ -70,13 +70,4 @@ public class MainMenuScene implements Screen {
     public void dispose() {
 
     }
-    /**
-     * Sets the ScreenListener for this mode
-     *
-     * The ScreenListener will respond to requests to quit.
-     */
-    public void setScreenListener(ScreenListener listener) {
-        this.listener = listener;
-    }
-
 }
