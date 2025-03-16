@@ -18,6 +18,9 @@ public class Player extends GameObject{
     /** Indicates whether the player is attacking */
     protected boolean attacking;
 
+    /** The direction the player is facing */
+    protected int forwardDirection;
+
     public Player(int x, int y){
         super(x, y);
         this.companions = new LinkedList<>();
@@ -83,6 +86,22 @@ public class Player extends GameObject{
      */
     public void setCoins(int coins){
         this.coins = coins;
+    }
+
+    /**
+     * Returning the direction the player is facing
+     * @return the direction the player is facing
+     */
+    public int getForwardDirection(){
+        return this.forwardDirection;
+    }
+
+    /**
+     * Sets the direction the player is facing
+     * @param forwardDirection the new number of coins the player has
+     */
+    public void setForwardDirection(int forwardDirection){
+        this.forwardDirection = forwardDirection;
     }
 
     /**

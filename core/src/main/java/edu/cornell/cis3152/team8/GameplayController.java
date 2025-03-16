@@ -28,9 +28,9 @@ public class GameplayController {
     private Boss boss;
 
     /** List of all the input controllers */
-    protected InputController playerControls;
-    protected InputController[] minionControls;
-    protected InputController bossControls;
+    protected PlayerController playerControls;
+    protected MinionController[] minionControls;
+    protected BossController bossControls;
 
     /**
      * Creates a GameplayController for the given models.
@@ -67,8 +67,8 @@ public class GameplayController {
      * UNLESS the player is also at random position.
      */
     private void initPlayerPosition() {
-        float px = level.getWidth()/2;
-        float py = level.getHeight()/2;
+        float px = (float) level.getWidth()/2;
+        float py = (float) level.getHeight()/2;
 
         player.setPosition(px,py);
     }
@@ -131,6 +131,7 @@ public class GameplayController {
 
         // player chain moves
         player.update(playerControls.getAction());
+        player.setForwardDirection(playerControls.getForwardDirection());
 
         // if board isn't updating then no point
 //        state.getLevel().update();
