@@ -44,8 +44,8 @@ import edu.cornell.gdiac.audio.SoundEffectManager;
             Player player = session.getPlayer();
             Boss[] bosses = new Boss[1];
             bosses[0] = boss;
-            Coin[] coins = session.getCoins;
-            Companion[] companions = session.getCompanions;
+            Coin[] coins = session.getCoins();
+            Companion[] companions = session.getCompanions();
 
             //Move player.
             for (Companion c : player){

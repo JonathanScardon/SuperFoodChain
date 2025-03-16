@@ -52,7 +52,7 @@ public class GameplayController {
 
         // assuming each level has number of enemies assigned?
         minions = state.getMinions();
-        minionControls = new InputController[minions.length];
+        minionControls = new MinionController[][minions.length];
         for(int i = 0; i < minions.length; i++) {
             minionControls[i] = new MinionController(i, state);
         }
@@ -95,10 +95,6 @@ public class GameplayController {
             player[i].setX(rand.nextInt(level.getWidth()));
             player[i].setY(rand.nextInt(level.getHeight()));
         }
-    }
-
-    public int getPlayerSelection() {
-        return playerControls.getSelection();
     }
 
     /**
