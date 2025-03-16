@@ -6,8 +6,8 @@ package edu.cornell.cis3152.team8;
  * The projectile should be shooting a set amount of projectiles in random directions
  */
 public class StrawberryProjectile extends Projectile {
-    public StrawberryProjectile(float x, float y) {
+    public StrawberryProjectile(float x, float y, float vx, float vy) {
         // Call the parent constructor (in Projectile)
-        super(x,y);
+        super(x,y,vx,vy);
     }
 }

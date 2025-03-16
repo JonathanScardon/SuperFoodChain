@@ -30,8 +30,6 @@ public abstract class Projectile extends GameObject {
     public static void setConstants (JsonValue constants) {
         imageScale = constants.getFloat("imageScale");
         animationSpeed = constants.getFloat("animationSpeed");
-        vx = constants.getFloat("projectile-velocity", 0);
-        vy = constants.getFloat("projectile-velocity", 1);
         maxLife = constants.getInt("projectile-maxLife");
     }
 
@@ -41,7 +39,7 @@ public abstract class Projectile extends GameObject {
      * @param x The x-coordinate of the object
      * @param y The y-coordinate of the object
      */
-    public Projectile(float x, float y) {
+    public Projectile(float x, float y, float vx, float vy) {
         // Parent constructor
         super(x, y);
 
