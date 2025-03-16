@@ -25,14 +25,31 @@ public class Player extends GameObject{
         this.attacking = false;
     }
 
-    public void update(float delta){
-        //TODO
+    /**
+     * Updates movement of the chain
+     * @param controlCode direction of player input
+     */
+    public void update(int controlCode){
+        Companion head = companions.getFirst();
+        int prevDirection = head.getDirection();
+        head.update(controlCode);
 
-        //update each companion in the list given the control code
+        //each companion moves in the previous direction of the companion in front of it
+        for (int i = 1; i < companions.size() ; i++ ){
+            Companion c = companions.get(i);
+            int temp = c.getDirection();
+            c.update(prevDirection);
+            prevDirection = temp;
+        }
+
     }
 
     public void draw(SpriteBatch batch){
         //TODO
+
+        //how to draw each companion if given one SpriteBatch...?
+        //modify draw to give me all the companion batches I need to draw?
+
 
         //draw each companion (SpriteBatch, Affine2, SpriteSheet)
     }
@@ -51,13 +68,6 @@ public class Player extends GameObject{
      */
     public boolean isAttacking(){
         return this.attacking;
-    }
-
-    public int getHealth(){
-        //TODO
-
-        //is this necessary?
-        return 0;
     }
 
     /**
@@ -91,6 +101,14 @@ public class Player extends GameObject{
      */
     public void addCompanion(Companion companion){
         companions.add(companion);
+
+        //place companion at the tail (?), initialize movement direction for companion now that it is in chain
+        Companion tail = companions.getLast();
+        if (tail != null){
+            companion.setX(tail.getX());
+            companion.setY(tail.getY());
+            companion.setDirection(tail.getDirection());
+        }
     }
     /**
      * Removes the companion from the player's chain
@@ -102,7 +120,24 @@ public class Player extends GameObject{
         if (index < 0 || index > companions.size()-1){
             return;
         }
+
+        float prevX = companion.getX();
+        float prevY = companion.getY();
         companions.remove(index);
+
+        //catch up the positions of the rest of the snake
+        for (int i = index+1; i < companions.size(); i++){
+            Companion c = companions.get(i);
+
+            float tempX = c.getX();
+            float tempY = c.getY();
+
+            c.setX(prevX);
+            c.setY(prevY);
+
+            prevX = tempX;
+            prevY = tempY;
+        }
     }
 
     /**
