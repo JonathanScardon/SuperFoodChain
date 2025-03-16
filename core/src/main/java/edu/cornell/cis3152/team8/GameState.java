@@ -27,8 +27,12 @@ public class GameState {
     private Minion[] minions;
     /** The boss */
     private Boss boss;
+    /** The coins on the map */
+    private Coin[] coins;
+    /** The companions on the map */
+    private Companion[] companions;
     /** Collection of projectiles on the screen */
-    private ProjectilePool projectiles;
+    private ProjectilePools projectiles;
 
     /**
      * Creates a new game session. This method will call reset() to set up the board.
@@ -62,9 +66,17 @@ public class GameState {
         boss = new Boss(assets);
         // boss texture
 
-        // Projectives
-        projectiles = new ProjectilePool(assets);
-        // projectile texture
+        // Coins - none at the beginning
+
+        // Companions - requires information of number of companions
+        for (int i = 0; i < num_companions; i++) {
+            companions[i] = new Companion(assets);
+            // companion texture
+        }
+
+//        // Projectives
+//        projectiles = new ProjectilePool(assets);
+//        // projectile texture
     }
 
     /**
@@ -96,9 +108,23 @@ public class GameState {
     }
 
     /**
+     * @return the list of coins in the game
+     */
+    public Coin[] getCoins() {
+        return coins;
+    }
+
+    /**
+     * @return the list of companions in the game
+     */
+    public Companion[] getCompanions() {
+        return companions;
+    }
+
+    /**
      * @return the set of active projectiles
      */
-    public ProjectilePool getProjectiles() {
+    public ProjectilePools getProjectiles() {
         return projectiles;
     }
 }

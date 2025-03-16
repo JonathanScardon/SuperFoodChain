@@ -15,14 +15,17 @@ public abstract class Companion extends GameObject {
         BLUE_RASPBERRY
     }
 
-    /** How long companion must wait until use ability again */
-    private static int COOLDOWN;
-
     /** The type of Companion */
     private CompanionType type;
 
     /** Is companion alive */
     private boolean isAlive;
+
+    /** Cost of companion */
+    private int cost;
+
+    /** How long companion must wait until use ability again */
+    private int cooldown;
 
     /** The number of frames until use ability again */
     private int abilityCool;
@@ -36,10 +39,9 @@ public abstract class Companion extends GameObject {
     public Companion(float x, float y) {
         super(x, y);
         isAlive = true;
+        cost = 0;
+        cooldown = 5;
         abilityCool = 0;
-
-        COOLDOWN = 5;
-
         direction = InputController.CONTROL_NO_ACTION;
     }
 
@@ -57,6 +59,22 @@ public abstract class Companion extends GameObject {
     /** Set type of Companion */
     public void setCompanionType(CompanionType type) {
         this.type = type;
+    }
+
+    /** Get cost of Companion */
+    public int getCost() {return cost;};
+
+    /** Set cost of Companion */
+    public void setCost(int cost) {
+        this.cost = cost;
+    }
+
+    /** Get cooldown of ability */
+    public int getCooldown() {return cooldown;};
+
+    /** Set cooldown of ability */
+    public void setCooldown(int cooldown) {
+        this.cooldown = cooldown;
     }
 
     /** Returns whether companion can use ability */
