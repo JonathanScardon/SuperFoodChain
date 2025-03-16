@@ -6,6 +6,7 @@ import com.badlogic.gdx.utils.JsonValue;
 import edu.cornell.gdiac.graphics.*;
 public class Minion extends GameObject{
 
+    private int health;
 
     /**
      * Constructs a Minion at the given position
@@ -26,11 +27,20 @@ public class Minion extends GameObject{
     private void setConstants(JsonValue constants){
         this.constants = constants;
         radius = constants.getFloat("size");
+        health = constants.getInt("health");
     }
 
     @Override
     public ObjectType getType() {
         return ObjectType.MINION;
+    }
+
+    public int getHealth(){
+        return health;
+    }
+
+    public void removeHealth(int shot){
+        health -= shot;
     }
 
     /**
