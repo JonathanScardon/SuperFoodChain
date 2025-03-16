@@ -21,12 +21,16 @@ public abstract class Companion extends GameObject {
     /** Is companion alive */
     private boolean isAlive;
 
+    /** Cost of companion */
+    private int cost;
+
     /** The number of frames until use ability again */
     private int abilityCool;
 
     public Companion(float x, float y) {
         super(x, y);
         isAlive = true;
+        cost = 0;
         abilityCool = 0;
 
         COOLDOWN = 5;
@@ -46,6 +50,14 @@ public abstract class Companion extends GameObject {
     /** Set type of Companion */
     public void setCompanionType(CompanionType type) {
         this.type = type;
+    }
+
+    /** Get cost of Companion */
+    public int getCost() {return cost;};
+
+    /** Set cost of Companion */
+    public void setCost(int cost) {
+        this.cost = cost;
     }
 
     /** Returns whether companion can use ability */

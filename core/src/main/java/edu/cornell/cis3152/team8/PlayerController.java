@@ -79,4 +79,8 @@ public class PlayerController implements InputController{
 
         return code;
     }
+
+    public int getForwardDirection() {
+        return forwardDirection;
+    }
 }
