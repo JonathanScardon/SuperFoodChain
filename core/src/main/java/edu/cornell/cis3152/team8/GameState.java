@@ -5,6 +5,7 @@
 package edu.cornell.cis3152.team8;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.JsonValue;
 import edu.cornell.gdiac.assets.AssetDirectory;
 import edu.cornell.gdiac.graphics.obj.Material;
@@ -32,7 +33,7 @@ public class GameState {
     /** The companions on the map */
     private Companion[] companions;
     /** Collection of projectiles on the screen */
-    private ProjectilePools projectiles;
+    private Array<Projectile> projectiles;
 
     /**
      * Creates a new game session. This method will call reset() to set up the board.
@@ -124,7 +125,7 @@ public class GameState {
     /**
      * @return the set of active projectiles
      */
-    public ProjectilePools getProjectiles() {
+    public Array<Projectile> getProjectiles() {
         return projectiles;
     }
 }

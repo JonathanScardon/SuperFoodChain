@@ -1,6 +1,7 @@
 package edu.cornell.cis3152.team8;
 //Heavily inspired by AILab Collision Controller
 
+import com.badlogic.gdx.utils.Array;
 import edu.cornell.cis3152.team8.GameObject.ObjectType;
 import java.util.List;
 import java.util.Random;
@@ -39,7 +40,7 @@ import edu.cornell.gdiac.audio.SoundEffectManager;
         public void update() {
             //Get level information
             Minion[] minions = session.getMinions();
-            ProjectilePools projectiles = session.getProjectiles();
+            Array<Projectile> projectiles = session.getProjectiles();
             Boss boss = session.getBoss();
             Player player = session.getPlayer();
             Boss[] bosses = new Boss[1];
