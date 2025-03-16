@@ -163,12 +163,14 @@ public class GameplayController implements Screen {
     }
 
     private void drawTiles() {
-        int tileSize = 50;
+        int tileSize = 40;
         Texture tileTexture = new Texture("images/Tile1.png");
-        for (int x = 0; x < 20; x++) {
+        for (int x = 0; x < 32; x++) {
             for (int y = 0; y < 20; y++) {
+                float xx = (float) (x) * tileSize;
+                float yy = (float) (y) * tileSize;
                 batch.begin();
-                batch.draw(tileTexture,x,y,tileSize,tileSize);
+                batch.draw(tileTexture,xx,yy,tileSize,tileSize);
                 batch.end();
             }
         }
@@ -190,7 +192,7 @@ public class GameplayController implements Screen {
     @Override
     public void render(float delta) {
         //update();
-        ScreenUtils.clear( 1f, 1f, 1f,1.0f );
+        ScreenUtils.clear( 0f, 0f, 0f,1.0f );
         drawTiles();
     }
 
