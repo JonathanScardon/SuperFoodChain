@@ -18,6 +18,7 @@ import edu.cornell.cis3152.team8.companions.Strawberry;
 public class GameState {
     // Graphics assets
     private SpriteSheet mouseSprite;
+    private SpriteSheet warningSprite;
 
     /** The grid of tiles */
     private Level level;
@@ -41,6 +42,7 @@ public class GameState {
      */
     public GameState(AssetDirectory assets) {
         mouseSprite = assets.getEntry("mouse.animation", SpriteSheet.class);
+        warningSprite = assets.getEntry("mouseWarn.animation", SpriteSheet.class);
 
         reset();
     }
@@ -68,7 +70,7 @@ public class GameState {
         bosses = new Boss[1];
         bosses[0] = new Mouse(100f, 100f);
         bosses[0].setSpriteSheet(mouseSprite);
-        // boss texture
+        bosses[0].warnSprites.add(warningSprite);
 
         // Coins - none at the beginning
 

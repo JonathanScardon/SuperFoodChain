@@ -17,6 +17,7 @@ public abstract class GameObject {
         COIN,
         BOSS,
         PROJECTILE,
+        WARNING
     }
 
     // Attributes for all game objects
