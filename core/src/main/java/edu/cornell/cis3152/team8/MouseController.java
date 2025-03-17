@@ -22,10 +22,10 @@ public class MouseController extends BossController {
             boss.setY(startY);
             boss.setVX(0);
             if (controlCode == CONTROL_MOVE_UP) {
-                boss.setVY(10f);
+                boss.setVY(15f);
                 boss.angle = 90f;
             } else if (controlCode == CONTROL_MOVE_DOWN) {
-                boss.setVY(-10f);
+                boss.setVY(-15f);
                 boss.angle = 270f;
             }
             action = CONTROL_NO_ACTION;
