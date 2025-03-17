@@ -25,23 +25,25 @@ public class GameScene implements Screen {
      */
     private GameState state;
 
-//    /** The grid of tiles */
-//    private Level level;
-//
-//    /** Companions in the chain */
-//    private Player player;
-//
-//    /** Minions in the level */
-//    private Minion[] minions;
-//
-//    /** Level Boss */
-//    private Boss boss;
-//
-//    /** List of all the input controllers */
-//    protected InputController playerControls;
-//    protected InputController[] minionControls;
-//    protected InputController bossControls;
-//    private ScreenListener listener;
+    /** The grid of tiles */
+    private Level level;
+
+    /** Companions in the chain */
+    private Player player;
+
+    /** Minions in the level */
+    private Minion[] minions;
+
+    /** Level Boss */
+    private Boss boss;
+
+    /** List of all the input controllers */
+    protected InputController playerControls;
+    protected InputController[] minionControls;
+    protected InputController bossControls;
+    private ScreenListener listener;
+
+    private Texture cornTexture;
 
     /**
      * Creates a GameScene
@@ -51,64 +53,68 @@ public class GameScene implements Screen {
     public GameScene(final GDXRoot game) {
         this.game = game;
         this.state = new GameState();
-
-        //initPlayerPosition();
-        //initMinionPosition();
+        cornTexture = new Texture("images/Coin.png");
+        player = new Player(500,350);
+        initMinions(5);
         //initCompanionPositions();
 
         // assuming player is a list of Companions btw
-//        player = state.getPlayer();
-//        playerControls = new PlayerController();
-//
-//        level = state.getLevel();
-//
-//        // assuming each level has number of enemies assigned?
-//        minions = state.getMinions();
-//        minionControls = new InputController[minions.length];
-//        for(int i = 0; i < minions.length; i++) {
-//            minionControls[i] = new MinionController(i, state);
-//        }
+        //player = state.getPlayer();
+        playerControls = new PlayerController();
+
+        //level = state.getLevel();
+
+        // assuming each level has number of enemies assigned?
+        minionControls = new InputController[minions.length];
+        for(int i = 0; i < minions.length; i++) {
+            minionControls[i] = new MinionController(i, minions,player);
+        }
 
 //        boss = state.getBoss();
-        // bossControls = new BossController(boss.getId(), state);
+//         bossControls = new BossController(boss.getId(), state);
     }
 
-//    /**
-//     * Initializes the player to center of the board.
-//     *
-//     * UNLESS the player is also at random position.
-//     */
-//    private void initPlayerPosition() {
-//        float px = level.getWidth()/2;
-//        float py = level.getHeight()/2;
-//
-//        //player.setPosition(px,py);
-//    }
+    /**
+     * Initializes the player to center of the board.
+     *
+     * UNLESS the player is also at random position.
+     */
+    private void initPlayerPosition() {
+        float px = 15;
+        float py = 10;
+        Companion head = player.companions.get(0);
+        head.setX(px);
+        head.setY(py);
+    }
 //
 //    /**
 //     * Initializes the minions to new random location.
 //     *
 //     */
-//    private void initMinionPosition() {
-//        Random rand = new Random();
-//        for (int i = 0; i < minions.length; i++) {
-//            minions[i].setX(rand.nextInt(level.getWidth()));
-//            minions[i].setY(rand.nextInt(level.getHeight()));
-//        }
-//    }
+    private void initMinions(int num_minions) {
+        Random rand = new Random();
+        minions = new Minion[num_minions];
+        for (int i = 0; i < num_minions; i++) {
+            int x = rand.nextInt(1280);
+            int y = rand.nextInt(720);
+            Minion m = new Minion(x,y,i);
+            System.out.println("Id: " + i + " (" + x + ", " + y +")");
+            minions[i] = m;
+        }
+    }
 //
 //    /**
 //     * Initializes the companions to new random location.
 //     *
 //     */
-//    private void initCompanionPositions() {
-//        Random rand = new Random();
-//        LinkedList<Companion> comps = player.companions;
-//        for (int i = 0; i < comps.size(); i++) {
-//            comps.get(i).setX(rand.nextInt(level.getWidth()));
-//            comps.get(i).setY(rand.nextInt(level.getHeight()));
-//        }
-//    }
+    private void initCompanionPositions() {
+        Random rand = new Random();
+        LinkedList<Companion> comps = player.companions;
+        for (int i = 0; i < comps.size(); i++) {
+            comps.get(i).setX(rand.nextInt(32));
+            comps.get(i).setY(rand.nextInt(20));
+        }
+    }
 
     //public int getPlayerSelection() {
     // return playerControls.getSelection();
@@ -131,13 +137,14 @@ public class GameScene implements Screen {
 //            }
 //        }
 //
-//        // moves enemies - assume always moving (no CONTROL_NO_ACTION)
-//        for (int i = 0; i < minions.length; i++) {
-//            if (!minions[i].isDestroyed()) {
-//                int action = minionControls[i].getAction();
-//                minions[i].update(action);
-//            }
-//        }
+        // moves enemies - assume always moving (no CONTROL_NO_ACTION)
+        for (int i = 0; i < minions.length; i++) {
+            if (!minions[i].isDestroyed()) {
+                int action = minionControls[i].getAction();
+                System.out.println("Id: " + i + " (" + action + ")");
+                minions[i].update(action);
+            }
+        }
 //
 //        // boss moves and acts
 //        boss.update(bossControls.getAction());
@@ -154,7 +161,17 @@ public class GameScene implements Screen {
 
     public void draw(float delta) {
         ScreenUtils.clear(Color.WHITE);
+        game.batch.begin();
         drawTiles();
+
+        game.batch.draw(cornTexture,player.companions.get(0).getX(),player.companions.get(0).getY());
+        for (Minion m : minions){
+            m.draw(game.batch);
+        }
+        game.batch.end();
+
+
+
     }
 
 //    /**
@@ -176,9 +193,7 @@ public class GameScene implements Screen {
             for (int y = 0; y < 20; y++) {
                 float xx = (float) (x) * tileSize;
                 float yy = (float) (y) * tileSize;
-                game.batch.begin();
                 game.batch.draw(tileTexture, xx, yy, tileSize, tileSize);
-                game.batch.end();
             }
         }
     }

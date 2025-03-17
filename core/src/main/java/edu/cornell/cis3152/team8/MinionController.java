@@ -32,19 +32,21 @@ public class MinionController implements InputController {
     private int move; // A ControlCode
 
     private Board board;
+    private Player player;
     /**
      * The number of ticks since we started this controller
      */
     private long ticks;
 
-    public MinionController(int id, GameState session) {
+    public MinionController(int id, Minion[] minions, Player player) {
         this.id = id;
         move = CONTROL_NO_ACTION;
         ticks = 0;
         target = null;
         this.session = session;
-        minion = session.getMinions()[id];
+        minion = minions[id];
         board = new Board(32,20,40);
+        this.player = player;
     }
 
     /**
@@ -79,7 +81,7 @@ public class MinionController implements InputController {
         ticks++;
 
         // Do not need to rework ourselves every frame. Just every 10 ticks.
-        if ((minion.getId() + ticks) % 10 == 0) {
+        if ((minion.getId() + ticks) % 10000 == 0) {
             // Pathfinding
             markGoalTiles();
             move = getMoveAlongPathToGoalTile();
@@ -102,7 +104,7 @@ public class MinionController implements InputController {
     private void markGoalTiles() {
         // Clear out previous pathfinding data.
         board.clearMarks();
-        Player player = session.getPlayer();
+        //player = session.getPlayer();
 
         if (player.isAlive()) {
             for (Companion c: player.companions) {
