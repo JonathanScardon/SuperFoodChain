@@ -1,5 +1,9 @@
 package edu.cornell.cis3152.team8;
 
+import com.badlogic.gdx.math.Vector2;
+import static edu.cornell.cis3152.team8.InputController.CONTROL_MOVE_LEFT;
+import static edu.cornell.cis3152.team8.InputController.CONTROL_NO_ACTION;
+
 public abstract class Companion extends GameObject {
 
     public enum CompanionType {
@@ -26,6 +30,14 @@ public abstract class Companion extends GameObject {
 
     /** The number of frames until use ability again */
     private int abilityCool;
+    private boolean collected;
+    private Vector2 prevVelocity;
+
+    /** How far the player moves in a single turn */
+    private static float MOVE_SPEED;
+
+    /** The direction the companion is currently moving in */
+    private int direction;
 
     public Companion(float x, float y) {
         super(x, y);
@@ -33,6 +45,9 @@ public abstract class Companion extends GameObject {
         cost = 0;
         cooldown = 5;
         abilityCool = 0;
+        collected = false;
+        prevVelocity = new Vector2();
+        direction = InputController.CONTROL_NO_ACTION;
     }
 
     // accessors
@@ -83,12 +98,83 @@ public abstract class Companion extends GameObject {
      * @param flag whether to cooldown or reset
      */
     public void coolDown(boolean flag) {
-        if (flag && abilityCool > 0) {
-            abilityCool--;
-        } else if (!flag) {
-            abilityCool = cooldown;
+//        if (flag && abilityCool > 0) {
+//            abilityCool--;
+//        } else if (!flag) {
+//            abilityCool = COOLDOWN;
+//        }
+    }
+
+    public void follow(long delta){
+        if (delta % 120 == 0){
+            prevVelocity = velocity;
         }
     }
 
+
+    public boolean isCollected(){
+        return collected;
+    }
+
+    public void setCollected(Boolean b){
+        collected = b;
+    }
+
+    public Vector2 getPrevVelocity() {
+        return prevVelocity;
+    }
+
+    /**
+     * Updates the movement of a companion in the chain
+     * @param controlCode
+     */
+    public void update (int controlCode){
+        if (!isAlive) {
+            return;
+        }
+
+        // Determine how we are moving.
+        boolean movingLeft = controlCode == 1;
+        boolean movingRight = controlCode == 2;
+        boolean movingUp = controlCode == 4;
+        boolean movingDown = controlCode == 8;
+
+        // Process movement command.
+        int s = 2;
+        if (movingLeft) {
+            this.direction = InputController.CONTROL_MOVE_LEFT;
+            velocity.x = -s;
+            velocity.y = 0;
+        } else if (movingRight) {
+            this.direction = InputController.CONTROL_MOVE_RIGHT;
+            velocity.x = s;
+            velocity.y = 0;
+        } else if (movingUp) {
+            this.direction = InputController.CONTROL_MOVE_UP;
+            velocity.y = s;
+            velocity.x = 0;
+        } else if (movingDown) {
+            this.direction = InputController.CONTROL_MOVE_DOWN;
+            velocity.y = -s;
+            velocity.x = 0;
+        }else{
+            velocity.x = 0;
+            velocity.y = 0;
+        }
+        position.add(velocity);
+
+    }
+
+    /**
+     *
+     * @return control code of companion's current movement
+     */
+    public int getDirection () {
+        return this.direction;
+    }
+
+    public void setDirection ( int direction){
+        this.direction = direction;
+    }
 
 }

@@ -20,25 +20,35 @@ public class GameState {
     private SpriteSheet mouseSprite;
     private SpriteSheet warningSprite;
 
-    /** The grid of tiles */
+    /**
+     * The grid of tiles
+     */
     private Level level;
-    /** The party of companions controlled by the player */
+    /**
+     * The party of companions controlled by the player
+     */
     private Player player;
-    /** The minions */
+    /**
+     * The minions
+     */
     private Minion[] minions;
     /** The bosses */
     private Boss[] bosses;
     /** The coins on the map */
     private Coin[] coins;
-    /** The companions on the map */
+    /**
+     * The companions on the map
+     */
     private Companion[] companions;
-    /** Collection of projectiles on the screen */
+    /**
+     * Collection of projectiles on the screen
+     */
     private Array<Projectile> projectiles;
 
     /**
      * Creates a new game session. This method will call reset() to set up the board.
      *
-     * @param assets   The associated asset directory
+     * @param assets The associated asset directory
      */
     public GameState(AssetDirectory assets) {
         mouseSprite = assets.getEntry("mouse.animation", SpriteSheet.class);
@@ -75,16 +85,15 @@ public class GameState {
         // Coins - none at the beginning
 
         // Companions - requires information of number of companions
-        companions = new Companion[4];
-        for (int i = 0; i < companions.length; i++) {
-            companions[i] = new Strawberry(10, 10);
-            // companion texture
-        }
-
+//        for (int i = 0; i < num_companions; i++) {
+//            companions[i] = new Companion(assets);
+//            // companion texture
+    }
+  
 //        // Projectives
 //        projectiles = new ProjectilePool(assets);
 //        // projectile texture
-    }
+//}
 
     /**
      * @return the current level
