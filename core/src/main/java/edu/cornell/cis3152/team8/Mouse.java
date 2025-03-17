@@ -19,7 +19,7 @@ public class Mouse extends Boss {
      * @param batch The sprite batch
      */
     public void draw(SpriteBatch batch) {
-        SpriteBatch.computeTransform(transform, origin.x, origin.y, position.x, position.y, 0, 500f, 500f);
+        SpriteBatch.computeTransform(transform, origin.x, origin.y, position.x, position.y, 0, 1, 1);
 
         batch.setColor(Color.WHITE);
         batch.draw(animator, transform);
