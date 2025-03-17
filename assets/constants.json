@@ -8,10 +8,8 @@
   "minion": {
     "size": 1,
     "health": 1,
-    "move speed": 2;
+    "move speed": 2
   },
   "board": {
     "size": [0,0],
-    "tile size": 0
-  }
-}
+    

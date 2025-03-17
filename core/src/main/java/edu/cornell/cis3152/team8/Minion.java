@@ -22,9 +22,11 @@ public class Minion extends GameObject{
      */
     public Minion(float x, float y, int id) {
         super(x, y);
+        constants = new JsonValue("assets/constants.json");
         this.id = id;
-        texture = new Texture("Minion.png");
-        setConstants(constants);
+        texture = new Texture("images/Minion.png");
+
+        //setConstants(constants);
     }
 
     /**
@@ -91,6 +93,7 @@ public class Minion extends GameObject{
             velocity.y = MOVE_SPEED;
             velocity.x = 0;
         }
+        System.out.println(velocity);
         position.set(velocity);
     }
 

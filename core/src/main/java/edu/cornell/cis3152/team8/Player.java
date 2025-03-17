@@ -30,6 +30,8 @@ public class Player extends GameObject{
         this.coins = 0;
         this.attacking = false;
         this.shield = false;
+        Companion head = new Strawberry(x,y);
+        companions.add(head);
     }
 
     public void update(float delta){
@@ -39,7 +41,10 @@ public class Player extends GameObject{
     }
 
     public void draw(SpriteBatch batch){
-        //TODO
+        for (Companion c : companions){
+            c.draw(batch);
+        }
+
 
         //draw each companion (SpriteBatch, Affine2, SpriteSheet)
     }

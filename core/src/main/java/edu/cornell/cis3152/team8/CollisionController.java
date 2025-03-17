@@ -36,7 +36,7 @@ import edu.cornell.gdiac.audio.SoundEffectManager;
         public void update() {
             //Get level information
             Minion[] minions = session.getMinions();
-            Array<Projectile> projectiles = session.getProjectiles();
+            //Array<Projectile> projectiles = session.getProjectiles();
             Boss boss = session.getBoss();
             Player player = session.getPlayer();
             Boss[] bosses = new Boss[1];
@@ -66,19 +66,19 @@ import edu.cornell.gdiac.audio.SoundEffectManager;
 //            }
 
             // Test minion collisions (player and projectiles).
-            for (Minion m : minions) {
-                checkForCollision(m, player);
-                for (Projectile p : projectiles) {
-                    checkForCollision(m, p);
-                }
-            }
-            //Test boss collisions (player and projectiles).
-            for (Boss b : bosses){
-                checkForCollision(b, player);
-                for (Projectile p : projectiles){
-                    checkForCollision(b, p);
-                }
-            }
+//            for (Minion m : minions) {
+//                checkForCollision(m, player);
+//                for (Projectile p : projectiles) {
+//                    checkForCollision(m, p);
+//                }
+//            }
+//            //Test boss collisions (player and projectiles).
+//            for (Boss b : bosses){
+//                checkForCollision(b, player);
+//                for (Projectile p : projectiles){
+//                    checkForCollision(b, p);
+//                }
+//            }
 
             //Test coin-player collisions.
             for (Coin c : coins){
