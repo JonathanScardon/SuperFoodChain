@@ -8,6 +8,7 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.ScreenUtils;
+import edu.cornell.gdiac.assets.AssetDirectory;
 import edu.cornell.gdiac.graphics.SpriteBatch;
 import edu.cornell.gdiac.util.ScreenListener;
 
@@ -25,7 +26,7 @@ public class GameScene implements Screen {
      */
     private GameState state;
 
-//    /** The grid of tiles */
+    /** The grid of tiles */
 //    private Level level;
 //
 //    /** Companions in the chain */
@@ -34,13 +35,13 @@ public class GameScene implements Screen {
 //    /** Minions in the level */
 //    private Minion[] minions;
 //
-//    /** Level Boss */
-//    private Boss boss;
+    /** Bosses in the level */
+    private Boss[] bosses;
 //
 //    /** List of all the input controllers */
 //    protected InputController playerControls;
 //    protected InputController[] minionControls;
-//    protected InputController bossControls;
+    protected InputController[] bossControls;
 //    private ScreenListener listener;
 
     /**
@@ -48,9 +49,9 @@ public class GameScene implements Screen {
      *
      * @param game the GDX root
      */
-    public GameScene(final GDXRoot game) {
+    public GameScene(final GDXRoot game, AssetDirectory assets) {
         this.game = game;
-        this.state = new GameState();
+        this.state = new GameState(assets);
 
         //initPlayerPosition();
         //initMinionPosition();
@@ -69,8 +70,13 @@ public class GameScene implements Screen {
 //            minionControls[i] = new MinionController(i, state);
 //        }
 
-//        boss = state.getBoss();
-        // bossControls = new BossController(boss.getId(), state);
+        bosses = state.getBosses();
+        bossControls = new InputController[bosses.length];
+        for (int i = 0; i < bosses.length; i++) {
+            // this is where boss ids are chosen because the Boss model class does not have its own id right now,
+            // but it might need to be changed later
+            bossControls[i] = new BossController(i, state);
+        }
     }
 
 //    /**
@@ -139,8 +145,10 @@ public class GameScene implements Screen {
 //            }
 //        }
 //
-//        // boss moves and acts
-//        boss.update(bossControls.getAction());
+        // boss moves and acts
+        for (int i = 0; i < bosses.length; i++) {
+            bosses[i].update(bossControls[i].getAction());
+        }
 //
 //        // player chain moves
 //        player.update(playerControls.getAction());
@@ -155,6 +163,10 @@ public class GameScene implements Screen {
     public void draw(float delta) {
         ScreenUtils.clear(Color.WHITE);
         drawTiles();
+
+        for (int i = 0; i < bosses.length; i++) {
+            bosses[i].draw(game.batch);
+        }
     }
 
 //    /**
@@ -169,7 +181,9 @@ public class GameScene implements Screen {
 //        c.coolDown(false);
 //    }
 
+
     private void drawTiles() {
+        // technically this should be a call to the draw function inside of level
         int tileSize = 40;
         Texture tileTexture = new Texture("images/Tile1.png");
         for (int x = 0; x < 32; x++) {

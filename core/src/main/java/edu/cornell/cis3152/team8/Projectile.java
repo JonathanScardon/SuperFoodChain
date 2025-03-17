@@ -61,7 +61,7 @@ public abstract class Projectile extends GameObject {
     @Override
     public void setSpriteSheet(SpriteSheet sheet) {
         super.setSpriteSheet( sheet );
-        radius *= imageScale; // this will take care of updating the Projectile's radius
+//        radius *= imageScale; // this will take care of updating the Projectile's radius
     }
 
     /**

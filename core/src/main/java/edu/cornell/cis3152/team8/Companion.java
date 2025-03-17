@@ -86,7 +86,7 @@ public abstract class Companion extends GameObject {
         if (flag && abilityCool > 0) {
             abilityCool--;
         } else if (!flag) {
-            abilityCool = COOLDOWN;
+            abilityCool = cooldown;
         }
     }
 

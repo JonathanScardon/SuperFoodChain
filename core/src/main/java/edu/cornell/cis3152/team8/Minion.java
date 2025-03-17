@@ -26,7 +26,6 @@ public class Minion extends GameObject{
      * */
     private void setConstants(JsonValue constants){
         this.constants = constants;
-        radius = constants.getFloat("size");
         health = constants.getInt("health");
     }
 
