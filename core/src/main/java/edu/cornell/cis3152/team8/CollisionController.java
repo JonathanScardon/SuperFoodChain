@@ -1,6 +1,7 @@
 package edu.cornell.cis3152.team8;
 //Heavily inspired by AILab Collision Controller
 
+import com.badlogic.gdx.utils.Array;
 import edu.cornell.cis3152.team8.GameObject.ObjectType;
 import java.util.List;
 import java.util.Random;
@@ -22,10 +23,6 @@ import edu.cornell.gdiac.audio.SoundEffectManager;
         /**
          * Creates a CollisionController for the given models.
          *
-         *  @param b The list of bosses
-         *  @param m The list of minions
-         *  @param p The player
-         *  @param ap The active projectiles
          */
         public CollisionController(GameState session) {
             this.session = session;
@@ -39,7 +36,7 @@ import edu.cornell.gdiac.audio.SoundEffectManager;
         public void update() {
             //Get level information
             Minion[] minions = session.getMinions();
-            ProjectilePools projectiles = session.getProjectiles();
+            Array<Projectile> projectiles = session.getProjectiles();
             Boss boss = session.getBoss();
             Player player = session.getPlayer();
             Boss[] bosses = new Boss[1];
@@ -48,25 +45,25 @@ import edu.cornell.gdiac.audio.SoundEffectManager;
             Companion[] companions = session.getCompanions();
 
             //Move player.
-            for (Companion c : player){
-                if (!c.isDestroyed()){
-                    move(c);
-                }
-            }
-
-           // Move live minions.
-            for (Minion m : minions) {
-                if (!m.isDestroyed()) {
-                    move(m);
-                }
-            }
-
-            //Move boss.
-            for (Boss b : bosses){
-                if (!b.isDestroyed()){
-                    move(b);
-                }
-            }
+//            for (Companion c : player.companions){
+//                if (!c.isDestroyed()){
+//                    move(c);
+//                }
+//            }
+//
+//           // Move live minions.
+//            for (Minion m : minions) {
+//                if (!m.isDestroyed()) {
+//                    move(m);
+//                }
+//            }
+//
+//            //Move boss.
+//            for (Boss b : bosses){
+//                if (!b.isDestroyed()){
+//                    move(b);
+//                }
+//            }
 
             // Test minion collisions (player and projectiles).
             for (Minion m : minions) {
@@ -103,21 +100,21 @@ import edu.cornell.gdiac.audio.SoundEffectManager;
          * @param creature The creature to move.
          */
         private void move(GameObject creature) {
-            //creature must be boss, minion, or companion
-            assert creature.getType().equals(ObjectType.MINION) || creature.getType().equals(ObjectType.BOSS)
-                || creature.getType().equals(ObjectType.COMPANION);
-
-            Board board = session.getBoard();
-            tmp.set(creature.getX(), creature.getY());
-            boolean safeBefore = board.isSafeAtScreen(tmp.x, tmp.y);
-
-            // Test add velocity
-            tmp.add(creature.getVX(), creature.getVY());
-            boolean safeAfter  = board.isSafeAtScreen(tmp.x, tmp.y);
-
-            if (!(safeBefore && !safeAfter)) {
-                creature.getPosition().set(tmp);
-            }
+//            //creature must be boss, minion, or companion
+//            assert creature.getType().equals(ObjectType.MINION) || creature.getType().equals(ObjectType.BOSS)
+//                || creature.getType().equals(ObjectType.COMPANION);
+//
+//
+//            tmp.set(creature.getX(), creature.getY());
+//            boolean safeBefore = board.isSafeAtScreen(tmp.x, tmp.y);
+//
+//            // Test add velocity
+//            tmp.add(creature.getVX(), creature.getVY());
+//            boolean safeAfter  = board.isSafeAtScreen(tmp.x, tmp.y);
+//
+//            if (!(safeBefore && !safeAfter)) {
+//                creature.getPosition().set(tmp);
+//            }
         }
 
 
@@ -133,16 +130,14 @@ import edu.cornell.gdiac.audio.SoundEffectManager;
                 return;
             }
 
-            Board board = session.getBoard();
-
             // Get the tiles for each creature
-            int mx = board.screenToBoard(minion.getX());
-            int my = board.screenToBoard(minion.getY());
-            int px = board.screenToBoard(player.getX());
-            int py = board.screenToBoard(player.getY());
+            float mx = minion.getX();
+            float my = minion.getY();
+            float px = player.getX();
+            float py = player.getY();
 
 
-            for (Companion c : player){
+            for (Companion c : player.companions){
                 //kill companion and minion if they collided
                 if (mx == px && my == py) {
                     minion.setDestroyed(true);
@@ -163,18 +158,19 @@ import edu.cornell.gdiac.audio.SoundEffectManager;
                 return;
             }
 
-            Board board = session.getBoard();
-
           // Get the tiles for minion and projectile
-            int mx = board.screenToBoard(minion.getX());
-            int my = board.screenToBoard(minion.getY());
-            int px = board.screenToBoard(projectile.getX());
-            int py = board.screenToBoard(projectile.getY());
+            float mx = minion.getX();
+            float my = minion.getY();
+            float px = projectile.getX();
+            float py = projectile.getY();
 
             // kill projectile and minion if they collided
             if (mx == px && my == py) {
-                projectile.destroy();
+                projectile.setDestroyed(true);
+                minion.removeHealth(1);
+                if (minion.getHealth() <= 0){
                 minion.setDestroyed(true);
+                }
             }
         }
 
@@ -190,17 +186,15 @@ import edu.cornell.gdiac.audio.SoundEffectManager;
                 return;
             }
 
-            Board board = session.getBoard();
-
                 //Get the tiles for boss
-                int bx = board.screenToBoard(boss.getX());
-                int by = board.screenToBoard(boss.getY());
+                float bx = boss.getX();
+                float by = boss.getY();
 
 
-                for (Companion c : player){
+                for (Companion c : player.companions){
                     // Get the tiles for companion
-                    int cx = board.screenToBoard(c.getX());
-                    int cy = board.screenToBoard(c.getY());
+                    float cx = c.getX();
+                    float cy = c.getY();
                     // kill companion if it collided with boss
                     if (cx == bx && cy == by){
                         player.deleteCompanion(c);
@@ -220,18 +214,16 @@ import edu.cornell.gdiac.audio.SoundEffectManager;
                 return;
             }
 
-            Board board = session.getBoard();
-
             //Get the tiles for boss and projectile
-            int bx = board.screenToBoard(boss.getX());
-            int by = board.screenToBoard(boss.getY());
-            int px = board.screenToBoard(projectile.getX());
-            int py = board.screenToBoard(projectile.getY());
+            float bx = boss.getX();
+            float by = boss.getY();
+            float px = projectile.getX();
+            float py = projectile.getY();
 
             // decrease boss health if hit by projectile
             if (bx == px && by == py){
-                boss.setHealth(boss.getHealth()-projectile.getPower());
-                projectile.destroy();
+                boss.setHealth(boss.getHealth()-1);
+                projectile.setDestroyed(true);
             }
         }
 
@@ -248,13 +240,13 @@ import edu.cornell.gdiac.audio.SoundEffectManager;
                 return;
             }
 
-            Board board = session.getBoard();
+
 
             //Get tiles for coin and player
-            int cx = board.screenToBoard(coin.getX());
-            int cy = board.screenToBoard(coin.getY());
-            int px = board.screenToBoard(player.getX());
-            int py = board.screenToBoard(player.getY());
+            float cx = coin.getX();
+            float cy = coin.getY();
+            float px = player.getX();
+            float py = player.getY();
 
             // Add one coin to player and remove coin from screen if they collided
             if (cx == px && cy == py){
@@ -275,17 +267,15 @@ import edu.cornell.gdiac.audio.SoundEffectManager;
                 return;
             }
 
-            Board board = session.getBoard();
-
             //Get tiles for coin and player
-            int cx = board.screenToBoard(companion.getX());
-            int cy = board.screenToBoard(companion.getY());
-            int px = board.screenToBoard(player.getX());
-            int py = board.screenToBoard(player.getY());
+            float cx = companion.getX();
+            float cy = companion.getY();
+            float px = player.getX();
+            float py = player.getY();
 
             // Player buys companion if enough coins and they collided
             int cost = companion.getCost();
-            if (cx == px && cy == py && (player.getCoins()>= cost){
+            if (cx == px && cy == py && (player.getCoins()>= cost)){
                 player.setCoins(player.getCoins()-cost);
                 player.addCompanion(companion);
             }

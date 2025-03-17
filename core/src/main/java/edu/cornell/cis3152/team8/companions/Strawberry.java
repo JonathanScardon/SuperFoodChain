@@ -28,25 +28,22 @@ public class Strawberry extends Companion {
      * A Strawberry shoots 5 small and quick projectiles in a radius around it
      */
     public void useAbility(GameState state) {
-        ProjectilePools projectiles = state.getProjectiles();
-
         // Determines direction of projections - 5 random directions
-        float x = getX();
-        float y = getY();
-        float vx = 0.0f;
-        float vy = 0.0f;
         float fireAngle = 0.0f;
 
         Random rand = new Random();
 
         for (int i = 0; i < 5; i++) {
-            fireAngle = (float) rand.nextInt(360);
-            vx = (float) Math.cos(Math.toRadians(fireAngle));
-            vy = (float) Math.sin(Math.toRadians(fireAngle));
+            StrawberryProjectile projectile = ProjectilePools.strawberryPool.obtain();
 
-            // requires argument for size of projectile
-            // quicker by x2
-            projectiles.strawberryPool.free(new StrawberryProjectile(x, y, vy, vy));
+            projectile.setX(getX());
+            projectile.setY(getY());
+
+            fireAngle = (float) rand.nextInt(360);
+            projectile.setVX((float) Math.cos(Math.toRadians(fireAngle)));
+            projectile.setVY((float) Math.sin(Math.toRadians(fireAngle)));
+
+            state.getProjectiles().add(projectile);
         }
 
         coolDown(false);
