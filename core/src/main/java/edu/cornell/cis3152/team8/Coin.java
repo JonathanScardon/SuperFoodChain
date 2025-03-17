@@ -31,7 +31,6 @@ public class Coin extends GameObject{
      * */
     private void setConstants(JsonValue constants){
         this.constants = constants;
-        radius = constants.getFloat("size");
         animationSpeed = constants.getFloat("animation speed");
     }
 

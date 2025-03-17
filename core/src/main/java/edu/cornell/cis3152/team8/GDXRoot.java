@@ -12,15 +12,17 @@ import edu.cornell.gdiac.util.ScreenListener;
 
 public class GDXRoot extends Game implements ScreenListener {
 
+    /** AssetManager to load game assets */
+    AssetDirectory directory;
+
     public FitViewport viewport;
     public SpriteBatch batch;
     public BitmapFont font;
 
+    // The screens in the game
     private LoadingScene loadingScene;
     private GameScene gameScene;
     private MainMenuScene menuScene;
-
-    AssetDirectory directory;
 
     @Override
     public void create() {
@@ -83,7 +85,7 @@ public class GDXRoot extends Game implements ScreenListener {
             menuScene = new MainMenuScene(this);
             setScreen(menuScene);
         } else if (screen == menuScene) {
-            gameScene = new GameScene(this);
+            gameScene = new GameScene(this, directory);
             setScreen(gameScene);
         } else {
             Gdx.app.exit();
