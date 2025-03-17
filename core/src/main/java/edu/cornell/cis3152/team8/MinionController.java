@@ -359,4 +359,10 @@ public class MinionController implements InputController {
         public PositionAndDirection(int x, int y, int direction) {
             this.x = x;
             this.y = y;
-            this.direc
+            this.direction = direction;
+        }
+    }
+    //#endregion
+
+
+}
