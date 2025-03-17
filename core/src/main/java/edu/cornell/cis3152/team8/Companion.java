@@ -83,11 +83,11 @@ public abstract class Companion extends GameObject {
      * @param flag whether to cooldown or reset
      */
     public void coolDown(boolean flag) {
-        if (flag && abilityCool > 0) {
-            abilityCool--;
-        } else if (!flag) {
-            abilityCool = COOLDOWN;
-        }
+//        if (flag && abilityCool > 0) {
+//            abilityCool--;
+//        } else if (!flag) {
+//            abilityCool = COOLDOWN;
+//        }
     }
 
 
