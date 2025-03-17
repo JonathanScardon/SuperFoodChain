@@ -34,10 +34,15 @@ public abstract class Companion extends GameObject {
     private Vector2 prevVelocity;
 
     /** How far the player moves in a single turn */
-    private static float MOVE_SPEED;
+    private static float MOVE_SPEED = 5;
 
     /** The direction the companion is currently moving in */
     private int direction;
+
+
+    private float prevX;
+
+    private float prevY;
 
     public Companion(float x, float y) {
         super(x, y);
@@ -140,22 +145,22 @@ public abstract class Companion extends GameObject {
         boolean movingDown = controlCode == 8;
 
         // Process movement command.
-        int s = 2;
+        //int s = 2;
         if (movingLeft) {
             this.direction = InputController.CONTROL_MOVE_LEFT;
-            velocity.x = -s;
+            velocity.x = -MOVE_SPEED;
             velocity.y = 0;
         } else if (movingRight) {
             this.direction = InputController.CONTROL_MOVE_RIGHT;
-            velocity.x = s;
+            velocity.x = MOVE_SPEED;
             velocity.y = 0;
         } else if (movingUp) {
             this.direction = InputController.CONTROL_MOVE_UP;
-            velocity.y = s;
+            velocity.y = MOVE_SPEED;
             velocity.x = 0;
         } else if (movingDown) {
             this.direction = InputController.CONTROL_MOVE_DOWN;
-            velocity.y = -s;
+            velocity.y = -MOVE_SPEED;
             velocity.x = 0;
         }else{
             velocity.x = 0;
@@ -175,6 +180,14 @@ public abstract class Companion extends GameObject {
 
     public void setDirection ( int direction){
         this.direction = direction;
+    }
+
+    public float getPrevX(){
+        return this.prevX;
+    }
+
+    public float getPrevY(){
+        return this.prevY;
     }
 
 }

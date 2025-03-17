@@ -10,6 +10,68 @@ import java.util.LinkedList;
 
 public class Player extends GameObject{
 
+    private class CircularBuffer {
+        private class PositionAndDirection {
+            protected float x;
+            protected float y;
+            protected int dir;
+
+            public PositionAndDirection(float x, float y, int dir) {
+                this.x = x;
+                this.y = y;
+                this.dir = dir;
+            }
+        }
+
+        private final PositionAndDirection[] buffer;
+        private final int capacity;
+        private int head;
+        private int size;
+
+        public CircularBuffer(int capacity) {
+            this.capacity = capacity;
+            this.buffer = new PositionAndDirection[capacity];
+            this.head = -1;
+            this.size = 0;
+        }
+
+        public void add(float x, float y, int direction) {
+            head = (head + 1) % capacity;
+            buffer[head] = new PositionAndDirection(x, y, direction);
+            if (size < capacity) {
+                size++;
+            }
+        }
+
+        public PositionAndDirection get(int index) {
+            if (index < 0) {
+                throw new IndexOutOfBoundsException("Invalid index: " + index);
+            }
+            int actualIndex = (head - index + capacity) % capacity;
+            return buffer[actualIndex];
+        }
+
+        public PositionAndDirection getCompanion(int index) {
+            return get(index * DELAY);
+        }
+
+        public int size() {
+            return size;
+        }
+
+        public int capacity() {
+            return capacity;
+        }
+    }
+
+    /** Number of instructions to wait before following
+     * Also the number of instructions stored per companion
+     * */
+    private final static int DELAY = 10;
+    private final static int MAX_COMPANIONS = 10;
+
+    private CircularBuffer controlBuffer;
+
     /** All companions in the player's current chain */
     protected LinkedList<Companion> companions;
 
@@ -37,6 +99,18 @@ public class Player extends GameObject{
         companions.add(head);
         radius = 1;
         ticks = 0;
+
+
+        this.controlBuffer = new CircularBuffer(MAX_COMPANIONS * DELAY);
+
+    }
+
+    /**
+     *
+     * @return head of player chain
+     */
+    public Companion getPlayerHead() {
+        return companions.get(0);
     }
 
     /**
@@ -44,20 +118,22 @@ public class Player extends GameObject{
      * @param controlCode direction of player input
      */
     public void update(int controlCode){
-        Companion head = companions.getFirst();
-        int prevDirection = head.getDirection();
-        head.update(controlCode);
-
-        //each companion moves in the previous direction of the companion in front of it
-        for (int i = 1; i < companions.size() ; i++ ){
-            Companion c = companions.get(i);
-            int temp = c.getDirection();
-            c.update(prevDirection);
-            prevDirection = temp;
+        if (this.isAlive()) {
+            Companion head = this.getPlayerHead();
+            controlBuffer.add(head.getX(), head.getY(), controlCode);
         }
 
+        for (int i = 0; i < companions.size(); i++) {
+            Companion c = companions.get(i);
+            CircularBuffer.PositionAndDirection prev = controlBuffer.getCompanion(i);
+            c.update(prev.dir);
+        }
     }
 
+    /**
+     *
+     * @param batch The sprite batch
+     */
     public void draw(SpriteBatch batch){
         for (Companion c: companions){
             c.draw(batch);
@@ -143,19 +219,12 @@ public class Player extends GameObject{
      * @param companion the companion to add
      */
     public void addCompanion(Companion companion){
-        float x;
-        float y;
-        float px = companions.getLast().getX();
-        float py = companions.getLast().getY();
-        int dist = 55;
         companions.add(companion);
 
-        //place companion at the tail (?), initialize movement direction for companion now that it is in chain
-        Companion tail = companions.getLast();
-        if (tail != null){
-            companion.setX(tail.getX());
-            companion.setY(tail.getY());
-            companion.setDirection(tail.getDirection());
+        CircularBuffer.PositionAndDirection tail = controlBuffer.getCompanion(companions.size() - 1);
+        if (tail != null) {
+            companion.setX(tail.x);
+            companion.setY(tail.y);
         }
 
     }
