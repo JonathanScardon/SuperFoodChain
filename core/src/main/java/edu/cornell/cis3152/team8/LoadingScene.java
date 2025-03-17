@@ -87,6 +87,8 @@ public class LoadingScene implements Screen, InputProcessor {
     /** Whether or not this player mode is still active */
     private boolean active;
 
+    private long ticks;
+
     /**
      * Returns the budget for the asset loader.
      *
@@ -123,7 +125,9 @@ public class LoadingScene implements Screen, InputProcessor {
      * @return true if the player is ready to go
      */
     public boolean isReady() {
-        return pressState == 2;
+        return ticks >= 200;
+
+        //return pressState == 2;
     }
 
     /**
@@ -206,11 +210,14 @@ public class LoadingScene implements Screen, InputProcessor {
     private void update(float delta) {
         if (progress < 1.0f) {
             assets.update(budget);
-            this.progress = assets.getProgress();
+            this.progress+= 0.005;
+            System.out.println(progress);
+            //this.progress = assets.getProgress();
             if (progress >= 1.0f) {
                 this.progress = 1.0f;
             }
         }
+        ticks++;
     }
 
     /**
