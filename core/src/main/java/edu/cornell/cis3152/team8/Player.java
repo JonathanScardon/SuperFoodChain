@@ -3,6 +3,7 @@ package edu.cornell.cis3152.team8;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.*;
 import com.badlogic.gdx.utils.JsonValue;
+import edu.cornell.cis3152.team8.companions.Strawberry;
 import edu.cornell.gdiac.graphics.*;
 
 import java.util.LinkedList;
@@ -24,24 +25,43 @@ public class Player extends GameObject{
     /** The direction the player is facing */
     protected int forwardDirection;
 
+    private long ticks;
+
     public Player(int x, int y){
         super(x, y);
         this.companions = new LinkedList<>();
         this.coins = 0;
         this.attacking = false;
         this.shield = false;
+        Companion head = new Strawberry(x,y);
+        companions.add(head);
+        radius = 1;
+        ticks = 0;
     }
 
-    public void update(float delta){
-        //TODO
+    /**
+     * Updates movement of the chain
+     * @param controlCode direction of player input
+     */
+    public void update(int controlCode){
+        Companion head = companions.getFirst();
+        int prevDirection = head.getDirection();
+        head.update(controlCode);
 
-        //update each companion in the list given the control code
+        //each companion moves in the previous direction of the companion in front of it
+        for (int i = 1; i < companions.size() ; i++ ){
+            Companion c = companions.get(i);
+            int temp = c.getDirection();
+            c.update(prevDirection);
+            prevDirection = temp;
+        }
+
     }
 
     public void draw(SpriteBatch batch){
-        //TODO
-
-        //draw each companion (SpriteBatch, Affine2, SpriteSheet)
+        for (Companion c: companions){
+            c.draw(batch);
+        }
     }
 
     /**
@@ -60,20 +80,13 @@ public class Player extends GameObject{
         return this.attacking;
     }
 
-    public int getHealth(){
-        //TODO
-
-        //is this necessary?
-        return 0;
-    }
-
     /**
      * Checks it the player is alive.
      * @return true when the player has at least one companion,
      * false otherwise
      */
     public boolean isAlive(){
-        return companions.isEmpty();
+        return !companions.isEmpty();
     }
 
     /**
@@ -130,7 +143,21 @@ public class Player extends GameObject{
      * @param companion the companion to add
      */
     public void addCompanion(Companion companion){
+        float x;
+        float y;
+        float px = companions.getLast().getX();
+        float py = companions.getLast().getY();
+        int dist = 55;
         companions.add(companion);
+
+        //place companion at the tail (?), initialize movement direction for companion now that it is in chain
+        Companion tail = companions.getLast();
+        if (tail != null){
+            companion.setX(tail.getX());
+            companion.setY(tail.getY());
+            companion.setDirection(tail.getDirection());
+        }
+
     }
     /**
      * Removes the companion from the player's chain
@@ -142,7 +169,24 @@ public class Player extends GameObject{
         if (index < 0 || index > companions.size()-1){
             return;
         }
+
+        float prevX = companion.getX();
+        float prevY = companion.getY();
         companions.remove(index);
+
+        //catch up the positions of the rest of the snake
+        for (int i = index+1; i < companions.size(); i++){
+            Companion c = companions.get(i);
+
+            float tempX = c.getX();
+            float tempY = c.getY();
+
+            c.setX(prevX);
+            c.setY(prevY);
+
+            prevX = tempX;
+            prevY = tempY;
+        }
     }
 
     /**

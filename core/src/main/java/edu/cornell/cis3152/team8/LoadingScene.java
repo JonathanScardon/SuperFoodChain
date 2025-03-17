@@ -33,10 +33,12 @@ import edu.cornell.gdiac.graphics.*;
 import edu.cornell.gdiac.assets.*;
 import edu.cornell.gdiac.graphics.SpriteBatch;
 import edu.cornell.gdiac.math.PathExtruder;
+import edu.cornell.gdiac.math.Poly2;
 import edu.cornell.gdiac.util.*;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.*;
+import javax.swing.Box;
 
 /**
  * Class that provides a loading screen for the state of the game.
@@ -85,6 +87,8 @@ public class LoadingScene implements Screen, InputProcessor {
     /** Whether or not this player mode is still active */
     private boolean active;
 
+    private long ticks;
+
     /**
      * Returns the budget for the asset loader.
      *
@@ -121,7 +125,9 @@ public class LoadingScene implements Screen, InputProcessor {
      * @return true if the player is ready to go
      */
     public boolean isReady() {
-        return pressState == 2;
+        return ticks >= 100;
+
+        //return pressState == 2;
     }
 
     /**
@@ -204,11 +210,14 @@ public class LoadingScene implements Screen, InputProcessor {
     private void update(float delta) {
         if (progress < 1.0f) {
             assets.update(budget);
-            this.progress = assets.getProgress();
+            this.progress+= 0.01;
+            //System.out.println(progress);
+            //this.progress = assets.getProgress();
             if (progress >= 1.0f) {
                 this.progress = 1.0f;
             }
         }
+        ticks++;
     }
 
     /**
@@ -220,14 +229,15 @@ public class LoadingScene implements Screen, InputProcessor {
      */
     private void draw() {
         // Cornell colors
-        ScreenUtils.clear( 0.702f, 0.1255f, 0.145f,1.0f );
+        ScreenUtils.clear( 173, 153, 191,1.0f );
 
         batch.begin(camera);
-        batch.setColor( Color.WHITE );
+        batch.setColor(173, 153, 191,1.0f);
 
         // Height lock the logo
         Texture texture = internal.getEntry( "splash", Texture.class );
-        batch.draw(texture,(width-height)/2, 0, height, height);
+
+        batch.draw(texture,0, 0, width, height);
 
         if (progress < 1.0f) {
             drawProgress();

@@ -13,6 +13,7 @@ public class Coin extends GameObject{
     /** How fast we change frames */
     private static float animationSpeed;
 
+    private Texture texture;
     /**
      * Constructs a Coin at the given position
      *
@@ -21,7 +22,8 @@ public class Coin extends GameObject{
      */
     public Coin(float x, float y) {
         super(x,y);
-        setConstants(constants);
+        texture = new Texture("images/Coin.png");
+        //setConstants(constants);
     }
 
     /**
@@ -70,11 +72,14 @@ public class Coin extends GameObject{
      * @param batch The sprite batch
      */
     public void draw(SpriteBatch batch){
-        animator.setFrame((int)animationFrame);
-        SpriteBatch.computeTransform(transform, origin.x, origin.y,
-            position.x, position.y, 0.0f, 1, 1);
-        batch.setColor( Color.WHITE );
-        batch.draw( animator, transform );
+        //animator.setFrame((int)animationFrame);
+//        SpriteBatch.computeTransform(transform, origin.x, origin.y,
+//            position.x, position.y, 0.0f, 1, 1);
+//        batch.setColor( Color.WHITE );
+//        batch.draw( animator, transform );
+        if (!isDestroyed()) {
+            batch.draw(texture, position.x, position.y, 64, 64);
+        }
     }
 
 }
