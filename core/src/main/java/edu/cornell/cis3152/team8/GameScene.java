@@ -72,11 +72,7 @@ public class GameScene implements Screen {
 
         bosses = state.getBosses();
         bossControls = new InputController[bosses.length];
-        for (int i = 0; i < bosses.length; i++) {
-            // this is where boss ids are chosen because the Boss model class does not have its own id right now,
-            // but it might need to be changed later
-            bossControls[i] = new BossController(i, state);
-        }
+        bossControls[0] = new MouseController(bosses[0], state);
     }
 
 //    /**

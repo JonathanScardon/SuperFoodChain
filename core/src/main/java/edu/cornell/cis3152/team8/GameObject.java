@@ -33,6 +33,10 @@ public abstract class GameObject {
      */
     protected Vector2 origin;
     /**
+     * Radius of the object (used for collisions)
+     */
+    protected float radius;
+    /**
      * Whether the object should be removed at next time step.
      */
     protected boolean destroyed;
@@ -60,6 +64,7 @@ public abstract class GameObject {
      */
     public void setSpriteSheet(SpriteSheet sheet) {
         animator = sheet;
+        radius = animator.getRegionHeight() / 2.0f;
         origin = new Vector2(animator.getRegionWidth() / 2.0f, animator.getRegionHeight() / 2.0f);
     }
 
@@ -195,6 +200,17 @@ public abstract class GameObject {
     }
 
     /**
+     * Returns the radius of this object.
+     * <p>
+     * All of our objects are circles, to make collision detection easy.
+     *
+     * @return the radius of this object.
+     */
+    public float getRadius() {
+        return radius;
+    }
+
+    /**
      * Returns the type of this object.
      * <p>
      * We use this instead of runtime-typing for performance reasons.
@@ -216,6 +232,7 @@ public abstract class GameObject {
     public GameObject(float x, float y) {
         position = new Vector2(x, y);
         velocity = new Vector2(0.0f, 0.0f);
+        radius = 0.0f;
         destroyed = false;
         transform = new Affine2();
     }
