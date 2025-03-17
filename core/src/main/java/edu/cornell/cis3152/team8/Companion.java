@@ -1,5 +1,7 @@
 package edu.cornell.cis3152.team8;
 
+import com.badlogic.gdx.math.Vector2;
+
 public abstract class Companion extends GameObject {
 
     public enum CompanionType {
@@ -26,6 +28,8 @@ public abstract class Companion extends GameObject {
 
     /** The number of frames until use ability again */
     private int abilityCool;
+    private boolean collected;
+    private Vector2 prevVelocity;
 
     public Companion(float x, float y) {
         super(x, y);
@@ -33,6 +37,8 @@ public abstract class Companion extends GameObject {
         cost = 0;
         cooldown = 5;
         abilityCool = 0;
+        collected = false;
+        prevVelocity = new Vector2();
     }
 
     // accessors
@@ -90,11 +96,11 @@ public abstract class Companion extends GameObject {
 //        }
     }
 
-    public void update(int controlCode){
+    public void update(int controlCode, long delta){
         if (isDestroyed()) {
             return;
         }
-
+//
         // Determine how we are moving.
         boolean movingLeft  = controlCode ==  1;
         boolean movingRight = controlCode == 2;
@@ -121,8 +127,32 @@ public abstract class Companion extends GameObject {
             velocity.x = 0;
             velocity.y = 0;
         }
-        System.out.println(velocity);
+
+        if (delta % 10 == 0){
+            prevVelocity = velocity;
+        }
+
+        //System.out.println(velocity);
         position.add(velocity);
-        System.out.println(position);
+        //System.out.println(position);
+    }
+
+    public void follow(long delta){
+        if (delta % 120 == 0){
+            prevVelocity = velocity;
+        }
+    }
+
+
+    public boolean isCollected(){
+        return collected;
+    }
+
+    public void setCollected(Boolean b){
+        collected = b;
+    }
+
+    public Vector2 getPrevVelocity(){
+        return prevVelocity;
     }
 }

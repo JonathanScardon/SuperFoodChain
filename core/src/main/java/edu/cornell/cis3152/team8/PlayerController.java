@@ -10,9 +10,11 @@ import edu.cornell.gdiac.graphics.*;
 public class PlayerController implements InputController{
 
     private int forwardDirection;
+    Player player;
 
-    public PlayerController(){
+    public PlayerController(Player p){
         forwardDirection = 1;
+        player = p;
     }
     public int getAction(){
         //TODO
@@ -70,10 +72,12 @@ public class PlayerController implements InputController{
         // Forced movement (if no action)
         if (code == CONTROL_NO_ACTION) {
             code = forwardDirection;
+            player.setForwardDirection(code);
         }
 
         // Update forwardDirection
         else {
+            player.setForwardDirection(code);
             forwardDirection = code;
         }
 

@@ -20,13 +20,20 @@ import edu.cornell.gdiac.audio.SoundEffectManager;
         /** Cache attribute for calculations */
         private Vector2 tmp;
 
+        private Minion[] minions;
+        private Player player;
+        private Companion[] companions;
+
         /**
          * Creates a CollisionController for the given models.
          *
          */
-        public CollisionController(GameState session) {
+        public CollisionController(Minion[] minions, Player player, Companion[] companions) {
             this.session = session;
             tmp = new Vector2();
+            this.minions = minions;
+            this.player = player;
+            this.companions = companions;
         }
 
         /**
@@ -35,14 +42,14 @@ import edu.cornell.gdiac.audio.SoundEffectManager;
          */
         public void update() {
             //Get level information
-            Minion[] minions = session.getMinions();
-            //Array<Projectile> projectiles = session.getProjectiles();
-            Boss boss = session.getBoss();
-            Player player = session.getPlayer();
-            Boss[] bosses = new Boss[1];
-            bosses[0] = boss;
-            Coin[] coins = session.getCoins();
-            Companion[] companions = session.getCompanions();
+//            Minion[] minions = session.getMinions();
+//            //Array<Projectile> projectiles = session.getProjectiles();
+//            //Boss boss = session.getBoss();
+//            Player player = session.getPlayer();
+//            //Boss[] bosses = new Boss[1];
+//            //bosses[0] = boss;
+//            Coin[] coins = session.getCoins();
+//            Companion[] companions = session.getCompanions();
 
             //Move player.
 //            for (Companion c : player.companions){
@@ -65,7 +72,7 @@ import edu.cornell.gdiac.audio.SoundEffectManager;
 //                }
 //            }
 
-            // Test minion collisions (player and projectiles).
+//            // Test minion collisions (player and projectiles).
 //            for (Minion m : minions) {
 //                checkForCollision(m, player);
 //                for (Projectile p : projectiles) {
@@ -80,14 +87,15 @@ import edu.cornell.gdiac.audio.SoundEffectManager;
 //                }
 //            }
 
-            //Test coin-player collisions.
-            for (Coin c : coins){
-                checkForCollision(c,player);
-            }
+//            //Test coin-player collisions.
+//            for (Coin c : coins){
+//                checkForCollision(c,player);
+//            }
 
             //Test companion-player collisions.
             for (Companion c : companions){
-                checkForCollision(c,player);
+                if (!c.isCollected()){
+                checkForCollision(c,player);}
             }
         }
 
@@ -270,14 +278,22 @@ import edu.cornell.gdiac.audio.SoundEffectManager;
             //Get tiles for coin and player
             float cx = companion.getX();
             float cy = companion.getY();
-            float px = player.getX();
-            float py = player.getY();
+            Companion head = player.companions.get(0);
+            float px = head.getX();
+            float py = head.getY();
 
+            //System.out.println(cx+", "+cy+"  "+px+", "+py);
             // Player buys companion if enough coins and they collided
             int cost = companion.getCost();
-            if (cx == px && cy == py && (player.getCoins()>= cost)){
+            boolean collide = px >= cx - 5 && px <= cx + 5 && py >= cy - 5 && py <= cy + 5;
+            //System.out.println(collide);
+            boolean afford = player.getCoins()>= cost;
+            //System.out.println(afford);
+            if (collide && afford){
+                //System.out.println("collected");
                 player.setCoins(player.getCoins()-cost);
                 player.addCompanion(companion);
+                companion.setCollected(true);
             }
         }
     }
