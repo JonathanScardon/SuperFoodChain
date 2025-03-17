@@ -101,6 +101,7 @@ import edu.cornell.gdiac.audio.SoundEffectManager;
                 if (!c.isCollected()){
                 checkForCollision(c,player);}
             }
+
         }
 
         /**
@@ -253,7 +254,7 @@ import edu.cornell.gdiac.audio.SoundEffectManager;
          */
         private void checkForCollision(Coin coin, Player player){
             //Do nothing if coin or player are dead
-            if (coin.isDestroyed() || player.isDestroyed()) {
+            if (coin.isDestroyed() || !player.isAlive()) {
                 return;
             }
 
@@ -284,7 +285,7 @@ import edu.cornell.gdiac.audio.SoundEffectManager;
          */
         private void checkForCollision(Companion companion, Player player){
             //Do nothing if companion or player are dead
-            if (companion.isDestroyed() || player.isDestroyed()) {
+            if (companion.isDestroyed() || !player.isAlive()) {
                 return;
             }
 

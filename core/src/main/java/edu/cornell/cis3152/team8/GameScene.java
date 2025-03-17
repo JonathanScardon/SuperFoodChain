@@ -4,6 +4,7 @@ package edu.cornell.cis3152.team8;
  * Heavily inspired by the Optimization lab
  */
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
@@ -55,6 +56,7 @@ public class GameScene implements Screen {
     private Texture coinTexture;
 
     private CollisionController collision;
+    private boolean start;
 
     /**
      * Creates a GameScene
@@ -63,6 +65,7 @@ public class GameScene implements Screen {
      */
     public GameScene(final GDXRoot game) {
         this.game = game;
+        start = false;
         this.state = new GameState();
         coinTexture = new Texture("images/Coin.png");
         player = new Player(500,350);
@@ -155,6 +158,10 @@ public class GameScene implements Screen {
      * but photon collisions are not.
      */
     public void update(float delta) {
+        if (Gdx.input.isTouched()) {
+            start = true;
+        }
+        if (start && player.isAlive()) {
 //        // companion chain uses ability
 //        for (Companion c : player.companions) {
 //            if (c.canUse() && !c.isDestroyed()) {
@@ -164,16 +171,16 @@ public class GameScene implements Screen {
 //            }
 //        }
 //
-        //System.out.println(player.position);
-        // moves enemies - assume always moving (no CONTROL_NO_ACTION)
-        for (int i = 0; i < minions.length; i++) {
-            if (!minions[i].isDestroyed()) {
-                //System.out.println("CONTROL " + i);
-                int action = minionControls[i].getAction();
-                //System.out.println("Id: " + i + " (" + action + ")");
-                minions[i].update(action);
+            //System.out.println(player.position);
+            // moves enemies - assume always moving (no CONTROL_NO_ACTION)
+            for (int i = 0; i < minions.length; i++) {
+                if (!minions[i].isDestroyed()) {
+                    //System.out.println("CONTROL " + i);
+                    int action = minionControls[i].getAction();
+                    //System.out.println("Id: " + i + " (" + action + ")");
+                    minions[i].update(action);
+                }
             }
-        }
 //
 //        // boss moves and acts
 //        boss.update(bossControls.getAction());
@@ -188,7 +195,10 @@ public class GameScene implements Screen {
 //
 //        // projectiles update
 //        //state.getProjectiles().update();
-            collision.update();
+                if (player.isAlive()) {
+                    collision.update();
+                }
+        }
     }
 
     public void draw(float delta) {
@@ -208,11 +218,17 @@ public class GameScene implements Screen {
             c.draw(game.batch);
 
         }
+
+
         String coins = "X" + player.getCoins();
         BitmapFont font = new BitmapFont();
         TextLayout coinCount = new TextLayout(coins, font, 128);
         game.batch.draw(coinTexture, 1150,65,50,50);
         game.batch.drawText(coinCount, 1200f,80f);
+
+        if (!player.isAlive()){
+            drawLose();
+        }
         game.batch.end();
 
 
@@ -243,6 +259,12 @@ public class GameScene implements Screen {
                 game.batch.draw(tileTexture, xx, yy, tileSize, tileSize);
             }
         }
+    }
+
+    private void drawLose(){
+        Texture texture = new Texture("images/Lose.png");
+        game.batch.draw(texture,250,150);
+
     }
 
     @Override
