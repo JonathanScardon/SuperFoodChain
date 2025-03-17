@@ -39,38 +39,33 @@ public class Player extends GameObject{
         ticks = 0;
     }
 
+    /**
+     * Updates movement of the chain
+     * @param controlCode direction of player input
+     */
     public void update(int controlCode){
+        Companion head = companions.getFirst();
+        int prevDirection = head.getDirection();
+        head.update(controlCode);
 
-        ticks++;
-        //float lastX = this.body[this.body.length-1].x;     // track the last X and Y
-        //this.lastY = this.body[this.body.length-1].y;     // so we can put the new body there
-
-        for (int i = companions.size()-1; i >= 1; i--) {
+        //each companion moves in the previous direction of the companion in front of it
+        for (int i = 1; i < companions.size() ; i++ ){
             Companion c = companions.get(i);
-            c.follow(ticks);
-            c.setVX(companions.get(i - 1).getPrevVelocity().x);
-            c.setVY(companions.get(i - 1).getPrevVelocity().y);
-            c.position.add(c.velocity);
-
-            //System.out.println(i + " " +companions.get(i).position);
-
+            int temp = c.getDirection();
+            c.update(prevDirection);
+            prevDirection = temp;
         }
 
-        //companions.get(0).follow(ticks);
-        companions.get(0).update(controlCode,ticks);
-
-        //System.out.println(0 + " " +companions.get(0).position);
-//        for (Companion c: companions){
-//            c.update(controlCode);
-//        }
-
-        //update each companion in the list given the control code
     }
 
     public void draw(SpriteBatch batch){
         for (Companion c: companions){
             c.draw(batch);
         }
+
+        //how to draw each companion if given one SpriteBatch...?
+        //modify draw to give me all the companion batches I need to draw?
+
 
         //draw each companion (SpriteBatch, Affine2, SpriteSheet)
     }
@@ -89,13 +84,6 @@ public class Player extends GameObject{
      */
     public boolean isAttacking(){
         return this.attacking;
-    }
-
-    public int getHealth(){
-        //TODO
-
-        //is this necessary?
-        return 0;
     }
 
     /**
@@ -167,22 +155,14 @@ public class Player extends GameObject{
         float py = companions.getLast().getY();
         int dist = 55;
         companions.add(companion);
-
-        if (forwardDirection == 1){
-            x = px + dist;
-            y = py;
-        } else if (forwardDirection == 2) {
-            x = px-dist;
-            y = py;
-        } else if (forwardDirection == 4) {
-            x = px;
-            y = py-dist;
-        }else{
-            x = px;
-            y = py + dist;
+      
+        //place companion at the tail (?), initialize movement direction for companion now that it is in chain
+        Companion tail = companions.getLast();
+        if (tail != null){
+            companion.setX(tail.getX());
+            companion.setY(tail.getY());
+            companion.setDirection(tail.getDirection());
         }
-        companion.setX(x);
-        companion.setY(y);
 
     }
     /**
@@ -195,7 +175,24 @@ public class Player extends GameObject{
         if (index < 0 || index > companions.size()-1){
             return;
         }
+
+        float prevX = companion.getX();
+        float prevY = companion.getY();
         companions.remove(index);
+
+        //catch up the positions of the rest of the snake
+        for (int i = index+1; i < companions.size(); i++){
+            Companion c = companions.get(i);
+
+            float tempX = c.getX();
+            float tempY = c.getY();
+
+            c.setX(prevX);
+            c.setY(prevY);
+
+            prevX = tempX;
+            prevY = tempY;
+        }
     }
 
     /**
