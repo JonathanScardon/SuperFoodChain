@@ -12,7 +12,7 @@ public class PlayerController implements InputController{
     private int forwardDirection;
 
     public PlayerController(){
-        //TODO
+        forwardDirection = 1;
     }
     public int getAction(){
         //TODO

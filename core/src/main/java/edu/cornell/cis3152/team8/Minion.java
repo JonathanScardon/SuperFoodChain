@@ -12,7 +12,7 @@ public class Minion extends GameObject{
 
     private int id;
 
-    private float MOVE_SPEED;
+    private float moveSpeed;
 
     /**
      * Constructs a Minion at the given position
@@ -38,7 +38,8 @@ public class Minion extends GameObject{
         this.constants = constants;
         radius = constants.getFloat("size");
         health = constants.getInt("health");
-        MOVE_SPEED = constants.getFloat("move speed");
+        //MOVE_SPEED = constants.getFloat("move speed");
+        moveSpeed = 2;
     }
 
     @Override
@@ -74,27 +75,34 @@ public class Minion extends GameObject{
         }
 
         // Determine how we are moving.
-        boolean movingLeft  = (controlCode & InputController.CONTROL_MOVE_LEFT) != 0;
-        boolean movingRight = (controlCode & InputController.CONTROL_MOVE_RIGHT) != 0;
-        boolean movingUp    = (controlCode & InputController.CONTROL_MOVE_UP) != 0;
-        boolean movingDown  = (controlCode & InputController.CONTROL_MOVE_DOWN) != 0;
+        boolean movingLeft  = controlCode ==  1;
+        boolean movingRight = controlCode == 2;
+        boolean movingUp    = controlCode == 4;
+        boolean movingDown  = controlCode == 8;
+        //System.out.println("" + movingLeft +movingRight+movingUp+movingDown);
 
+        //System.out.println(controlCode == InputController.CONTROL_MOVE_LEFT);
+        int s = 1;
         // Process movement command.
         if (movingLeft) {
-            velocity.x = -MOVE_SPEED;
+            velocity.x = -s;
             velocity.y = 0;
         } else if (movingRight) {
-            velocity.x = MOVE_SPEED;
+            velocity.x = s;
             velocity.y = 0;
         } else if (movingUp) {
-            velocity.y = -MOVE_SPEED;
+            velocity.y = -s;
             velocity.x = 0;
         } else if (movingDown) {
-            velocity.y = MOVE_SPEED;
+            velocity.y = s;
             velocity.x = 0;
+        } else{
+            velocity.x = 0;
+            velocity.y = 0;
         }
-        System.out.println(velocity);
-        position.set(velocity);
+        //System.out.println(velocity);
+        position.add(velocity);
+        //System.out.println(position);
     }
 
     /**
@@ -103,6 +111,6 @@ public class Minion extends GameObject{
      * @param batch The sprite batch
      */
     public void draw(SpriteBatch batch){
-        batch.draw(texture,position.x,position.y,30,30);
+        batch.draw(texture,position.x,position.y,64,64);
     }
 }

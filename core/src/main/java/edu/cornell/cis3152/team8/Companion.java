@@ -90,5 +90,39 @@ public abstract class Companion extends GameObject {
 //        }
     }
 
+    public void update(int controlCode){
+        if (isDestroyed()) {
+            return;
+        }
 
+        // Determine how we are moving.
+        boolean movingLeft  = controlCode ==  1;
+        boolean movingRight = controlCode == 2;
+        boolean movingUp    = controlCode == 4;
+        boolean movingDown  = controlCode == 8;
+        //System.out.println("" + movingLeft +movingRight+movingUp+movingDown);
+
+        //System.out.println(controlCode == InputController.CONTROL_MOVE_LEFT);
+        int s = 2;
+        // Process movement command.
+        if (movingLeft) {
+            velocity.x = -s;
+            velocity.y = 0;
+        } else if (movingRight) {
+            velocity.x = s;
+            velocity.y = 0;
+        } else if (movingUp) {
+            velocity.y = s;
+            velocity.x = 0;
+        } else if (movingDown) {
+            velocity.y = -s;
+            velocity.x = 0;
+        } else{
+            velocity.x = 0;
+            velocity.y = 0;
+        }
+        System.out.println(velocity);
+        position.add(velocity);
+        System.out.println(position);
+    }
 }

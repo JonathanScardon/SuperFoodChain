@@ -3,6 +3,7 @@ package edu.cornell.cis3152.team8;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.*;
 import com.badlogic.gdx.utils.JsonValue;
+import edu.cornell.cis3152.team8.companions.Strawberry;
 import edu.cornell.gdiac.graphics.*;
 
 import java.util.LinkedList;
@@ -32,19 +33,22 @@ public class Player extends GameObject{
         this.shield = false;
         Companion head = new Strawberry(x,y);
         companions.add(head);
+        radius = 1;
     }
 
-    public void update(float delta){
-        //TODO
+    public void update(int controlCode){
+
+        for (Companion c: companions){
+            c.update(controlCode);
+        }
 
         //update each companion in the list given the control code
     }
 
     public void draw(SpriteBatch batch){
-        for (Companion c : companions){
+        for (Companion c: companions){
             c.draw(batch);
         }
-
 
         //draw each companion (SpriteBatch, Affine2, SpriteSheet)
     }
@@ -78,7 +82,7 @@ public class Player extends GameObject{
      * false otherwise
      */
     public boolean isAlive(){
-        return companions.isEmpty();
+        return !companions.isEmpty();
     }
 
     /**
