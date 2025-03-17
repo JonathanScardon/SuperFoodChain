@@ -1,12 +1,18 @@
 package edu.cornell.cis3152.team8;
 
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.*;
 import com.badlogic.gdx.utils.JsonValue;
 import edu.cornell.gdiac.graphics.*;
 public class Minion extends GameObject{
 
     private int health;
+    private Texture texture;
+
+    private int id;
+
+    private float MOVE_SPEED;
 
     /**
      * Constructs a Minion at the given position
@@ -14,8 +20,10 @@ public class Minion extends GameObject{
      * @param x The x-coordinate of the object
      * @param y The y-coordinate of the object
      */
-    public Minion(float x, float y) {
+    public Minion(float x, float y, int id) {
         super(x, y);
+        this.id = id;
+        texture = new Texture("Minion.png");
         setConstants(constants);
     }
 
@@ -28,6 +36,7 @@ public class Minion extends GameObject{
         this.constants = constants;
         radius = constants.getFloat("size");
         health = constants.getInt("health");
+        MOVE_SPEED = constants.getFloat("move speed");
     }
 
     @Override
@@ -43,6 +52,9 @@ public class Minion extends GameObject{
         health -= shot;
     }
 
+    public int getId(){
+        return id;
+    }
     /**
      * Updates the state of this Minion.
      *
@@ -53,8 +65,33 @@ public class Minion extends GameObject{
      *
      * @param delta Number of seconds since last animation frame
      */
-    public void update(float delta){
-        //TODO
+    public void update(int controlCode){
+        // If we are dead do nothing.
+        if (isDestroyed()) {
+            return;
+        }
+
+        // Determine how we are moving.
+        boolean movingLeft  = (controlCode & InputController.CONTROL_MOVE_LEFT) != 0;
+        boolean movingRight = (controlCode & InputController.CONTROL_MOVE_RIGHT) != 0;
+        boolean movingUp    = (controlCode & InputController.CONTROL_MOVE_UP) != 0;
+        boolean movingDown  = (controlCode & InputController.CONTROL_MOVE_DOWN) != 0;
+
+        // Process movement command.
+        if (movingLeft) {
+            velocity.x = -MOVE_SPEED;
+            velocity.y = 0;
+        } else if (movingRight) {
+            velocity.x = MOVE_SPEED;
+            velocity.y = 0;
+        } else if (movingUp) {
+            velocity.y = -MOVE_SPEED;
+            velocity.x = 0;
+        } else if (movingDown) {
+            velocity.y = MOVE_SPEED;
+            velocity.x = 0;
+        }
+        position.set(velocity);
     }
 
     /**
@@ -63,6 +100,6 @@ public class Minion extends GameObject{
      * @param batch The sprite batch
      */
     public void draw(SpriteBatch batch){
-        //TODO
+        batch.draw(texture,position.x,position.y,30,30);
     }
 }
