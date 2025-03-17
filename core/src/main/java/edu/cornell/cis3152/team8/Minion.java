@@ -108,4 +108,9 @@ public class Minion extends GameObject{
     /**
      * Draws this Minion to the sprite batch
      *
-     * @param batch 
+     * @param batch The sprite batch
+     */
+    public void draw(SpriteBatch batch){
+        batch.draw(texture,position.x,position.y,64,64);
+    }
+}

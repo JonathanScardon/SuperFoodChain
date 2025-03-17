@@ -142,4 +142,67 @@ public class Player extends GameObject{
 
     /**
      * Returning the direction the player is facing
-     * @return the direction the playe
+     * @return the direction the player is facing
+     */
+    public int getForwardDirection(){
+        return this.forwardDirection;
+    }
+
+    /**
+     * Sets the direction the player is facing
+     * @param forwardDirection the new number of coins the player has
+     */
+    public void setForwardDirection(int forwardDirection){
+        this.forwardDirection = forwardDirection;
+    }
+
+    /**
+     * Appends a companion to the player's chain
+     * @param companion the companion to add
+     */
+    public void addCompanion(Companion companion){
+        float x;
+        float y;
+        float px = companions.getLast().getX();
+        float py = companions.getLast().getY();
+        int dist = 55;
+        companions.add(companion);
+
+        if (forwardDirection == 1){
+            x = px + dist;
+            y = py;
+        } else if (forwardDirection == 2) {
+            x = px-dist;
+            y = py;
+        } else if (forwardDirection == 4) {
+            x = px;
+            y = py-dist;
+        }else{
+            x = px;
+            y = py + dist;
+        }
+        companion.setX(x);
+        companion.setY(y);
+
+    }
+    /**
+     * Removes the companion from the player's chain
+     * @param companion the companion to remove
+     */
+    public void deleteCompanion(Companion companion){
+        int index = companions.indexOf(companion);
+        //companion out of range
+        if (index < 0 || index > companions.size()-1){
+            return;
+        }
+        companions.remove(index);
+    }
+
+    /**
+     * Returns GameObject type Player
+     * */
+    @Override
+    public ObjectType getType() {
+        return ObjectType.PLAYER;
+    }
+}
