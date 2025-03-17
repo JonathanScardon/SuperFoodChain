@@ -14,28 +14,45 @@ import edu.cornell.gdiac.assets.AssetDirectory;
  */
 
 public class GameState {
-    /** A reference to the asset directory (for on demand assets) */
+
+    /**
+     * A reference to the asset directory (for on demand assets)
+     */
     private AssetDirectory assets;
 
-    /** The grid of tiles */
+    /**
+     * The grid of tiles
+     */
     private Level level;
-    /** The party of companions controlled by the player */
+    /**
+     * The party of companions controlled by the player
+     */
     private Player player;
-    /** The minions */
+    /**
+     * The minions
+     */
     private Minion[] minions;
-    /** The boss */
+    /**
+     * The boss
+     */
     private Boss boss;
-    /** The coins on the map */
+    /**
+     * The coins on the map
+     */
     private Coin[] coins;
-    /** The companions on the map */
+    /**
+     * The companions on the map
+     */
     private Companion[] companions;
-    /** Collection of projectiles on the screen */
+    /**
+     * Collection of projectiles on the screen
+     */
     private Array<Projectile> projectiles;
 
     /**
      * Creates a new game session. This method will call reset() to set up the board.
      *
-     * @param assets   The associated asset directory
+     * @param assets The associated asset directory
      */
     public GameState() {
 //        this.assets = assets;
@@ -62,21 +79,21 @@ public class GameState {
 //        }
 
         // Boss
-       // boss = new Boss(assets);
+        // boss = new Boss(assets);
         // boss texture
 
         // Coins - none at the beginning
 
         // Companions - requires information of number of companions
-        for (int i = 0; i < num_companions; i++) {
-            companions[i] = new Companion(assets);
-            // companion texture
-        }
+//        for (int i = 0; i < num_companions; i++) {
+//            companions[i] = new Companion(assets);
+//            // companion texture
+    }
 
 //        // Projectives
 //        projectiles = new ProjectilePool(assets);
 //        // projectile texture
-    }
+//}
 
     /**
      * @return the current level
