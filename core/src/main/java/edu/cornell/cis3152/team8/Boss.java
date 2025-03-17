@@ -1,13 +1,10 @@
 package edu.cornell.cis3152.team8;
 
-import com.badlogic.gdx.graphics.Color;
-import edu.cornell.gdiac.graphics.SpriteBatch;
-
 public abstract class Boss extends GameObject {
     /**
      * How far forward this boss can move in a single turn
      */
-    private static float MOVE_SPEED = 3f;
+    private static float MOVE_SPEED = 4f;
     /**
      * The damping factor for deceleration
      */
@@ -15,16 +12,16 @@ public abstract class Boss extends GameObject {
     /**
      * How long the boss must wait until it can attack again
      */
-    private static float COOLDOWN = 60f;
+    private static float IDLE_DURATION = 30f;
     /**
      * An epsilon for float comparison
      */
     private static float EPSILON = 0.01f;
 
     /**
-     * Current amount of time until next attack
+     * Current amount of time until next set of attacks
      */
-    private float attackCool;
+    private float idleTime;
 
     protected float angle; // angle of the sprite TEMPORARY
 
@@ -103,15 +100,15 @@ public abstract class Boss extends GameObject {
      *
      * @param flag whether to cooldown or reset
      */
-    public void coolDown(boolean flag) {
-        if (flag && attackCool > 0) {
-            attackCool--;
+    public void attackCooldown(boolean flag) {
+        if (flag && idleTime > 0) {
+            idleTime--;
         } else if (!flag) {
-            attackCool = COOLDOWN;
+            idleTime = IDLE_DURATION;
         }
     }
 
     public boolean canAttack() {
-        return attackCool <= 0;
+        return idleTime <= 0;
     }
 }
