@@ -4,14 +4,20 @@ package edu.cornell.cis3152.team8;
  * Heavily inspired by the Optimization lab
  */
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.utils.ScreenUtils;
+import edu.cornell.cis3152.team8.companions.Durian;
+import edu.cornell.cis3152.team8.companions.Strawberry;
 import edu.cornell.gdiac.graphics.SpriteBatch;
+import edu.cornell.gdiac.graphics.TextLayout;
 import edu.cornell.gdiac.util.ScreenListener;
 
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Random;
 
 public class GameScene implements Screen {
@@ -25,23 +31,32 @@ public class GameScene implements Screen {
      */
     private GameState state;
 
-//    /** The grid of tiles */
-//    private Level level;
-//
-//    /** Companions in the chain */
-//    private Player player;
-//
-//    /** Minions in the level */
-//    private Minion[] minions;
-//
-//    /** Level Boss */
-//    private Boss boss;
-//
-//    /** List of all the input controllers */
-//    protected InputController playerControls;
-//    protected InputController[] minionControls;
-//    protected InputController bossControls;
-//    private ScreenListener listener;
+    /** The grid of tiles */
+    private Level level;
+
+    /** Companions in the chain */
+    private Player player;
+
+    /** Minions in the level */
+    private Minion[] minions;
+
+    /** Level Boss */
+    private Boss boss;
+
+    private Companion[] companions;
+
+    private LinkedList<Coin> coins;
+
+    /** List of all the input controllers */
+    protected InputController playerControls;
+    protected InputController[] minionControls;
+    protected InputController bossControls;
+    private ScreenListener listener;
+
+    private Texture coinTexture;
+
+    private CollisionController collision;
+    private boolean start;
 
     /**
      * Creates a GameScene
@@ -50,65 +65,86 @@ public class GameScene implements Screen {
      */
     public GameScene(final GDXRoot game) {
         this.game = game;
+        start = false;
         this.state = new GameState();
-
-        //initPlayerPosition();
-        //initMinionPosition();
-        //initCompanionPositions();
+        coinTexture = new Texture("images/Coin.png");
+        player = new Player(500,350);
+        initMinions(2);
+        initCompanionPositions(5);
+        //initCoins(5);
+        coins = new LinkedList<>();
+        collision = new CollisionController(minions,player,companions,coins);
 
         // assuming player is a list of Companions btw
-//        player = state.getPlayer();
-//        playerControls = new PlayerController();
-//
-//        level = state.getLevel();
-//
-//        // assuming each level has number of enemies assigned?
-//        minions = state.getMinions();
-//        minionControls = new InputController[minions.length];
-//        for(int i = 0; i < minions.length; i++) {
-//            minionControls[i] = new MinionController(i, state);
-//        }
+        //player = state.getPlayer();
+        playerControls = new PlayerController(player);
+
+        //level = state.getLevel();
+
+        // assuming each level has number of enemies assigned?
+        minionControls = new InputController[minions.length];
+        for(int i = 0; i < minions.length; i++) {
+            minionControls[i] = new MinionController(i, minions,player);
+        }
 
 //        boss = state.getBoss();
-        // bossControls = new BossController(boss.getId(), state);
+//         bossControls = new BossController(boss.getId(), state);
     }
 
-//    /**
-//     * Initializes the player to center of the board.
-//     *
-//     * UNLESS the player is also at random position.
-//     */
-//    private void initPlayerPosition() {
-//        float px = level.getWidth()/2;
-//        float py = level.getHeight()/2;
-//
-//        //player.setPosition(px,py);
-//    }
+    /**
+     * Initializes the player to center of the board.
+     *
+     * UNLESS the player is also at random position.
+     */
+    private void initPlayerPosition() {
+        float px = 15;
+        float py = 10;
+        Companion head = player.companions.get(0);
+        head.setX(px);
+        head.setY(py);
+    }
 //
 //    /**
 //     * Initializes the minions to new random location.
 //     *
 //     */
-//    private void initMinionPosition() {
-//        Random rand = new Random();
-//        for (int i = 0; i < minions.length; i++) {
-//            minions[i].setX(rand.nextInt(level.getWidth()));
-//            minions[i].setY(rand.nextInt(level.getHeight()));
-//        }
-//    }
+    private void initMinions(int num_minions) {
+        Random rand = new Random();
+        minions = new Minion[num_minions];
+        for (int i = 0; i < num_minions; i++) {
+            int x = rand.nextInt(1280);
+            int y = rand.nextInt(720);
+            Minion m = new Minion(x,y,i);
+            //System.out.println("Id: " + i + " (" + x + ", " + y +")");
+            minions[i] = m;
+        }
+    }
 //
 //    /**
 //     * Initializes the companions to new random location.
 //     *
 //     */
-//    private void initCompanionPositions() {
-//        Random rand = new Random();
-//        LinkedList<Companion> comps = player.companions;
-//        for (int i = 0; i < comps.size(); i++) {
-//            comps.get(i).setX(rand.nextInt(level.getWidth()));
-//            comps.get(i).setY(rand.nextInt(level.getHeight()));
-//        }
-//    }
+    private void initCompanionPositions(int numCompanions) {
+        Random rand = new Random();
+        companions = new Companion[numCompanions];
+        for (int i = 0; i < companions.length; i++) {
+            int x = rand.nextInt(1280);
+            int y = rand.nextInt(720);
+            Companion c = new Durian(x,y);
+            companions[i] = c;
+        }
+    }
+
+    private void initCoins(int numCoins) {
+        Random rand = new Random();
+        coins = new LinkedList<>();
+        for (int i = 0; i < companions.length; i++) {
+            int x = rand.nextInt(1280);
+            int y = rand.nextInt(720);
+            Coin c = new Coin(x,y);
+            coins.add(c);
+        }
+    }
 
     //public int getPlayerSelection() {
     // return playerControls.getSelection();
@@ -122,6 +158,10 @@ public class GameScene implements Screen {
      * but photon collisions are not.
      */
     public void update(float delta) {
+        if (Gdx.input.isTouched()) {
+            start = true;
+        }
+        if (start && player.isAlive()) {
 //        // companion chain uses ability
 //        for (Companion c : player.companions) {
 //            if (c.canUse() && !c.isDestroyed()) {
@@ -131,30 +171,70 @@ public class GameScene implements Screen {
 //            }
 //        }
 //
-//        // moves enemies - assume always moving (no CONTROL_NO_ACTION)
-//        for (int i = 0; i < minions.length; i++) {
-//            if (!minions[i].isDestroyed()) {
-//                int action = minionControls[i].getAction();
-//                minions[i].update(action);
-//            }
-//        }
+            //System.out.println(player.position);
+            // moves enemies - assume always moving (no CONTROL_NO_ACTION)
+            for (int i = 0; i < minions.length; i++) {
+                if (!minions[i].isDestroyed()) {
+                    //System.out.println("CONTROL " + i);
+                    int action = minionControls[i].getAction();
+                    //System.out.println("Id: " + i + " (" + action + ")");
+                    minions[i].update(action);
+                }
+            }
 //
 //        // boss moves and acts
 //        boss.update(bossControls.getAction());
 //
 //        // player chain moves
-//        player.update(playerControls.getAction());
+            int a = playerControls.getAction();
+            //System.out.println(a);
+            player.update(a);
 //
 //        // if board isn't updating then no point
 //        state.getLevel().update();
 //
 //        // projectiles update
 //        //state.getProjectiles().update();
+                if (player.isAlive()) {
+                    collision.update();
+                }
+        }
     }
 
     public void draw(float delta) {
         ScreenUtils.clear(Color.WHITE);
+        game.batch.begin();
         drawTiles();
+
+        for (Minion m : minions){
+            m.draw(game.batch);
+        }
+
+        player.draw(game.batch);
+        for (Companion c: companions){
+            c.draw(game.batch);
+        }
+        for (Coin c : coins){
+            c.draw(game.batch);
+
+        }
+
+
+        String coins = "X" + player.getCoins();
+        BitmapFont font = new BitmapFont();
+        TextLayout coinCount = new TextLayout(coins, font, 128);
+        game.batch.draw(coinTexture, 1150,65,50,50);
+        game.batch.drawText(coinCount, 1200f,80f);
+
+        if (!player.isAlive()){
+            drawLose();
+        }
+        game.batch.end();
+
+
+
+
+
     }
 
 //    /**
@@ -170,17 +250,21 @@ public class GameScene implements Screen {
 //    }
 
     private void drawTiles() {
-        int tileSize = 40;
+        int tileSize = 64;
         Texture tileTexture = new Texture("images/Tile1.png");
-        for (int x = 0; x < 32; x++) {
-            for (int y = 0; y < 20; y++) {
+        for (int x = 0; x < 20; x++) {
+            for (int y = 0; y < 12; y++) {
                 float xx = (float) (x) * tileSize;
                 float yy = (float) (y) * tileSize;
-                game.batch.begin();
                 game.batch.draw(tileTexture, xx, yy, tileSize, tileSize);
-                game.batch.end();
             }
         }
+    }
+
+    private void drawLose(){
+        Texture texture = new Texture("images/Lose.png");
+        game.batch.draw(texture,250,150);
+
     }
 
     @Override
