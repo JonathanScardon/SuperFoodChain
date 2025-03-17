@@ -3,6 +3,7 @@ package edu.cornell.cis3152.team8;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.*;
 import com.badlogic.gdx.utils.JsonValue;
+import edu.cornell.cis3152.team8.companions.Strawberry;
 import edu.cornell.gdiac.graphics.*;
 
 import java.util.LinkedList;
@@ -24,12 +25,18 @@ public class Player extends GameObject{
     /** The direction the player is facing */
     protected int forwardDirection;
 
+    private long ticks;
+
     public Player(int x, int y){
         super(x, y);
         this.companions = new LinkedList<>();
         this.coins = 0;
         this.attacking = false;
         this.shield = false;
+        Companion head = new Strawberry(x,y);
+        companions.add(head);
+        radius = 1;
+        ticks = 0;
     }
 
     /**
@@ -52,7 +59,9 @@ public class Player extends GameObject{
     }
 
     public void draw(SpriteBatch batch){
-        //TODO
+        for (Companion c: companions){
+            c.draw(batch);
+        }
 
         //how to draw each companion if given one SpriteBatch...?
         //modify draw to give me all the companion batches I need to draw?
@@ -83,7 +92,7 @@ public class Player extends GameObject{
      * false otherwise
      */
     public boolean isAlive(){
-        return companions.isEmpty();
+        return !companions.isEmpty();
     }
 
     /**
@@ -140,8 +149,13 @@ public class Player extends GameObject{
      * @param companion the companion to add
      */
     public void addCompanion(Companion companion){
+        float x;
+        float y;
+        float px = companions.getLast().getX();
+        float py = companions.getLast().getY();
+        int dist = 55;
         companions.add(companion);
-
+      
         //place companion at the tail (?), initialize movement direction for companion now that it is in chain
         Companion tail = companions.getLast();
         if (tail != null){
@@ -149,6 +163,7 @@ public class Player extends GameObject{
             companion.setY(tail.getY());
             companion.setDirection(tail.getDirection());
         }
+
     }
     /**
      * Removes the companion from the player's chain

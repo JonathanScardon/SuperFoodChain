@@ -22,8 +22,8 @@ public class Coin extends GameObject{
      */
     public Coin(float x, float y) {
         super(x,y);
-        texture = new Texture("Coin.png");
-        setConstants(constants);
+        texture = new Texture("images/Coin.png");
+        //setConstants(constants);
     }
 
     /**
@@ -78,7 +78,9 @@ public class Coin extends GameObject{
 //            position.x, position.y, 0.0f, 1, 1);
 //        batch.setColor( Color.WHITE );
 //        batch.draw( animator, transform );
-        batch.draw(texture,position.x,position.y);
+        if (!isDestroyed()) {
+            batch.draw(texture, position.x, position.y, 64, 64);
+        }
     }
 
 }

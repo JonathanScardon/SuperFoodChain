@@ -17,7 +17,7 @@ public class BossController implements InputController {
     /** The player */
     private Player player;
     /** The state of the game */
-    private GameSession session;
+    private GameState session;
     /** The Boss's current state in the FSM */
     private FSMState state;
     /** The Boss's next action as a control code */
@@ -25,7 +25,7 @@ public class BossController implements InputController {
     /** The number of ticks since we started this controller */
     private long ticks;
 
-    public BossController(int id, GameSession session) {
+    public BossController(int id, GameState session) {
         this.id = id;
         this.state = FSMState.IDLE;
         this.action  = CONTROL_NO_ACTION;

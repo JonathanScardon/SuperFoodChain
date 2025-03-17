@@ -32,19 +32,21 @@ public class MinionController implements InputController {
     private int move; // A ControlCode
 
     private Board board;
+    private Player player;
     /**
      * The number of ticks since we started this controller
      */
     private long ticks;
 
-    public MinionController(int id, GameState session) {
+    public MinionController(int id, Minion[] minions, Player player) {
         this.id = id;
         move = CONTROL_NO_ACTION;
         ticks = 0;
         target = null;
         this.session = session;
-        minion = session.getMinions()[id];
+        minion = minions[id];
         board = new Board(32,20,40);
+        this.player = player;
     }
 
     /**
@@ -100,15 +102,17 @@ public class MinionController implements InputController {
      * POSTCONDITION: There is guaranteed to be at least one goal tile when completed.
      */
     private void markGoalTiles() {
+        //System.out.println("MARK GOAL TILES");
         // Clear out previous pathfinding data.
         board.clearMarks();
-        Player player = session.getPlayer();
-
+        //player = session.getPlayer();
+//System.out.println(player.isAlive());
         if (player.isAlive()) {
             for (Companion c: player.companions) {
                 int targetX = board.screenToBoard(c.getX());
                 int targetY = board.screenToBoard(c.getY());
                     board.setGoal(targetX, targetY);
+                    //System.out.println("SET GOAL" + targetX + ", " + targetY);
             }
         }
     }
@@ -155,6 +159,7 @@ public class MinionController implements InputController {
 
         while (!queue.isEmpty()) {
             PositionAndDirection cur = queue.poll();
+            //System.out.println(cur.direction);
             if (board.isGoal(cur.x, cur.y)) {
                 // System.out.println("ship" + ship.getId() + ": (" + minionX + ", " + minionY + ") -> (" + cur.x + ", " + cur.y + ")");
                 return cur.direction;
@@ -358,8 +363,6 @@ public class MinionController implements InputController {
         }
     }
     //#endregion
-
-
 
 
 }

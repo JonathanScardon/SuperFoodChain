@@ -1,5 +1,6 @@
 package edu.cornell.cis3152.team8;
 
+import com.badlogic.gdx.math.Vector2;
 import static edu.cornell.cis3152.team8.InputController.CONTROL_MOVE_LEFT;
 import static edu.cornell.cis3152.team8.InputController.CONTROL_NO_ACTION;
 
@@ -29,6 +30,8 @@ public abstract class Companion extends GameObject {
 
     /** The number of frames until use ability again */
     private int abilityCool;
+    private boolean collected;
+    private Vector2 prevVelocity;
 
     /** How far the player moves in a single turn */
     private static float MOVE_SPEED;
@@ -42,6 +45,8 @@ public abstract class Companion extends GameObject {
         cost = 0;
         cooldown = 5;
         abilityCool = 0;
+        collected = false;
+        prevVelocity = new Vector2();
         direction = InputController.CONTROL_NO_ACTION;
     }
 
@@ -93,14 +98,71 @@ public abstract class Companion extends GameObject {
      * @param flag whether to cooldown or reset
      */
     public void coolDown(boolean flag) {
-        if (flag && abilityCool > 0) {
-            abilityCool--;
-        } else if (!flag) {
-            abilityCool = COOLDOWN;
+//        if (flag && abilityCool > 0) {
+//            abilityCool--;
+//        } else if (!flag) {
+//            abilityCool = COOLDOWN;
+//        }
+    }
+
+    public void update(int controlCode, long delta){
+        if (isDestroyed()) {
+            return;
+        }
+//
+        // Determine how we are moving.
+        boolean movingLeft  = controlCode ==  1;
+        boolean movingRight = controlCode == 2;
+        boolean movingUp    = controlCode == 4;
+        boolean movingDown  = controlCode == 8;
+        //System.out.println("" + movingLeft +movingRight+movingUp+movingDown);
+
+        //System.out.println(controlCode == InputController.CONTROL_MOVE_LEFT);
+        int s = 2;
+        // Process movement command.
+        if (movingLeft) {
+            velocity.x = -s;
+            velocity.y = 0;
+        } else if (movingRight) {
+            velocity.x = s;
+            velocity.y = 0;
+        } else if (movingUp) {
+            velocity.y = s;
+            velocity.x = 0;
+        } else if (movingDown) {
+            velocity.y = -s;
+            velocity.x = 0;
+        } else{
+            velocity.x = 0;
+            velocity.y = 0;
+        }
+
+        if (delta % 10 == 0){
+            prevVelocity = velocity;
+        }
+
+        //System.out.println(velocity);
+        position.add(velocity);
+        //System.out.println(position);
+    }
+
+    public void follow(long delta){
+        if (delta % 120 == 0){
+            prevVelocity = velocity;
         }
     }
 
 
+    public boolean isCollected(){
+        return collected;
+    }
+
+    public void setCollected(Boolean b){
+        collected = b;
+    }
+
+    public Vector2 getPrevVelocity(){
+        return prevVelocity;
     /**
      * Updates the movement of a companion in the chain
      * @param controlCode
