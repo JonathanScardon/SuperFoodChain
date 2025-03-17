@@ -25,6 +25,8 @@ public class Player extends GameObject{
     /** The direction the player is facing */
     protected int forwardDirection;
 
+    private long ticks;
+
     public Player(int x, int y){
         super(x, y);
         this.companions = new LinkedList<>();
@@ -34,13 +36,33 @@ public class Player extends GameObject{
         Companion head = new Strawberry(x,y);
         companions.add(head);
         radius = 1;
+        ticks = 0;
     }
 
     public void update(int controlCode){
 
-        for (Companion c: companions){
-            c.update(controlCode);
+        ticks++;
+        //float lastX = this.body[this.body.length-1].x;     // track the last X and Y
+        //this.lastY = this.body[this.body.length-1].y;     // so we can put the new body there
+
+        for (int i = companions.size()-1; i >= 1; i--) {
+            Companion c = companions.get(i);
+            c.follow(ticks);
+            c.setVX(companions.get(i - 1).getPrevVelocity().x);
+            c.setVY(companions.get(i - 1).getPrevVelocity().y);
+            c.position.add(c.velocity);
+
+            System.out.println(i + " " +companions.get(i).position);
+
         }
+
+        //companions.get(0).follow(ticks);
+        companions.get(0).update(controlCode,ticks);
+
+        System.out.println(0 + " " +companions.get(0).position);
+//        for (Companion c: companions){
+//            c.update(controlCode);
+//        }
 
         //update each companion in the list given the control code
     }
@@ -120,45 +142,4 @@ public class Player extends GameObject{
 
     /**
      * Returning the direction the player is facing
-     * @return the direction the player is facing
-     */
-    public int getForwardDirection(){
-        return this.forwardDirection;
-    }
-
-    /**
-     * Sets the direction the player is facing
-     * @param forwardDirection the new number of coins the player has
-     */
-    public void setForwardDirection(int forwardDirection){
-        this.forwardDirection = forwardDirection;
-    }
-
-    /**
-     * Appends a companion to the player's chain
-     * @param companion the companion to add
-     */
-    public void addCompanion(Companion companion){
-        companions.add(companion);
-    }
-    /**
-     * Removes the companion from the player's chain
-     * @param companion the companion to remove
-     */
-    public void deleteCompanion(Companion companion){
-        int index = companions.indexOf(companion);
-        //companion out of range
-        if (index < 0 || index > companions.size()-1){
-            return;
-        }
-        companions.remove(index);
-    }
-
-    /**
-     * Returns GameObject type Player
-     * */
-    @Override
-    public ObjectType getType() {
-        return ObjectType.PLAYER;
-    }
-}
+     * @return the direction the playe

@@ -8,6 +8,8 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.ScreenUtils;
+import edu.cornell.cis3152.team8.companions.Durian;
+import edu.cornell.cis3152.team8.companions.Strawberry;
 import edu.cornell.gdiac.graphics.SpriteBatch;
 import edu.cornell.gdiac.util.ScreenListener;
 
@@ -37,6 +39,8 @@ public class GameScene implements Screen {
     /** Level Boss */
     private Boss boss;
 
+    private Companion[] companions;
+
     /** List of all the input controllers */
     protected InputController playerControls;
     protected InputController[] minionControls;
@@ -44,6 +48,8 @@ public class GameScene implements Screen {
     private ScreenListener listener;
 
     private Texture cornTexture;
+
+    private CollisionController collision;
 
     /**
      * Creates a GameScene
@@ -56,11 +62,12 @@ public class GameScene implements Screen {
         cornTexture = new Texture("images/Coin.png");
         player = new Player(500,350);
         initMinions(5);
-        //initCompanionPositions();
+        initCompanionPositions(5);
+        collision = new CollisionController(minions,player,companions);
 
         // assuming player is a list of Companions btw
         //player = state.getPlayer();
-        playerControls = new PlayerController();
+        playerControls = new PlayerController(player);
 
         //level = state.getLevel();
 
@@ -107,12 +114,14 @@ public class GameScene implements Screen {
 //     * Initializes the companions to new random location.
 //     *
 //     */
-    private void initCompanionPositions() {
+    private void initCompanionPositions(int numCompanions) {
         Random rand = new Random();
-        LinkedList<Companion> comps = player.companions;
-        for (int i = 0; i < comps.size(); i++) {
-            comps.get(i).setX(rand.nextInt(32));
-            comps.get(i).setY(rand.nextInt(20));
+        companions = new Companion[numCompanions];
+        for (int i = 0; i < companions.length; i++) {
+            int x = rand.nextInt(1280);
+            int y = rand.nextInt(720);
+            Companion c = new Durian(x,y);
+            companions[i] = c;
         }
     }
 
@@ -137,7 +146,7 @@ public class GameScene implements Screen {
 //            }
 //        }
 //
-        System.out.println(player.position);
+        //System.out.println(player.position);
         // moves enemies - assume always moving (no CONTROL_NO_ACTION)
         for (int i = 0; i < minions.length; i++) {
             if (!minions[i].isDestroyed()) {
@@ -153,7 +162,7 @@ public class GameScene implements Screen {
 //
 //        // player chain moves
             int a = playerControls.getAction();
-            System.out.println(a);
+            //System.out.println(a);
             player.update(a);
 //
 //        // if board isn't updating then no point
@@ -161,6 +170,7 @@ public class GameScene implements Screen {
 //
 //        // projectiles update
 //        //state.getProjectiles().update();
+            collision.update();
     }
 
     public void draw(float delta) {
@@ -169,6 +179,10 @@ public class GameScene implements Screen {
         drawTiles();
 
         player.draw(game.batch);
+        for (Companion c: companions){
+            c.draw(game.batch);
+        }
+
         for (Minion m : minions){
             m.draw(game.batch);
         }
