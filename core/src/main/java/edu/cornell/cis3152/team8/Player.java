@@ -52,14 +52,14 @@ public class Player extends GameObject{
             c.setVY(companions.get(i - 1).getPrevVelocity().y);
             c.position.add(c.velocity);
 
-            System.out.println(i + " " +companions.get(i).position);
+            //System.out.println(i + " " +companions.get(i).position);
 
         }
 
         //companions.get(0).follow(ticks);
         companions.get(0).update(controlCode,ticks);
 
-        System.out.println(0 + " " +companions.get(0).position);
+        //System.out.println(0 + " " +companions.get(0).position);
 //        for (Companion c: companions){
 //            c.update(controlCode);
 //        }

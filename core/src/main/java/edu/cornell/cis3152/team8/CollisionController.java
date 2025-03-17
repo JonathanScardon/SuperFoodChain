@@ -3,6 +3,7 @@ package edu.cornell.cis3152.team8;
 
 import com.badlogic.gdx.utils.Array;
 import edu.cornell.cis3152.team8.GameObject.ObjectType;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 import com.badlogic.gdx.math.*;
@@ -23,17 +24,19 @@ import edu.cornell.gdiac.audio.SoundEffectManager;
         private Minion[] minions;
         private Player player;
         private Companion[] companions;
+        private LinkedList<Coin> coins;
 
         /**
          * Creates a CollisionController for the given models.
          *
          */
-        public CollisionController(Minion[] minions, Player player, Companion[] companions) {
+        public CollisionController(Minion[] minions, Player player, Companion[] companions, LinkedList<Coin> coins) {
             this.session = session;
             tmp = new Vector2();
             this.minions = minions;
             this.player = player;
             this.companions = companions;
+            this.coins = coins;
         }
 
         /**
@@ -73,12 +76,12 @@ import edu.cornell.gdiac.audio.SoundEffectManager;
 //            }
 
 //            // Test minion collisions (player and projectiles).
-//            for (Minion m : minions) {
-//                checkForCollision(m, player);
+            for (Minion m : minions) {
+                checkForCollision(m, player);
 //                for (Projectile p : projectiles) {
 //                    checkForCollision(m, p);
 //                }
-//            }
+            }
 //            //Test boss collisions (player and projectiles).
 //            for (Boss b : bosses){
 //                checkForCollision(b, player);
@@ -88,9 +91,10 @@ import edu.cornell.gdiac.audio.SoundEffectManager;
 //            }
 
 //            //Test coin-player collisions.
-//            for (Coin c : coins){
-//                checkForCollision(c,player);
-//            }
+
+            for (Coin c : coins){
+                checkForCollision(c,player);
+            }
 
             //Test companion-player collisions.
             for (Companion c : companions){
@@ -141,15 +145,20 @@ import edu.cornell.gdiac.audio.SoundEffectManager;
             // Get the tiles for each creature
             float mx = minion.getX();
             float my = minion.getY();
-            float px = player.getX();
-            float py = player.getY();
 
 
             for (Companion c : player.companions){
+                float px = c.getX();
+                float py = c.getY();
+                boolean collide = px >= mx - 17 && px <= mx + 7 && py >= my - 7 && py <= my + 7;
                 //kill companion and minion if they collided
-                if (mx == px && my == py) {
+                if (collide) {
                     minion.setDestroyed(true);
+                    c.setDestroyed(true);
                     player.deleteCompanion(c);
+
+                    //MOVE TO PROJECTILE DEATH
+                    coins.add(new Coin(mx,my));
                 }
             }
         }
@@ -253,13 +262,17 @@ import edu.cornell.gdiac.audio.SoundEffectManager;
             //Get tiles for coin and player
             float cx = coin.getX();
             float cy = coin.getY();
-            float px = player.getX();
-            float py = player.getY();
+            Companion head = player.companions.get(0);
+            float px = head.getX();
+            float py = head.getY();
+            boolean collide = px >= cx - 7 && px <= cx + 7 && py >= cy - 7 && py <= cy + 7;
+            //System.out.println(collide);
 
             // Add one coin to player and remove coin from screen if they collided
-            if (cx == px && cy == py){
+            if (collide){
                 player.setCoins(player.getCoins()+1);
                 coin.setDestroyed(true);
+                coins.remove(coin);
             }
         }
         /**
