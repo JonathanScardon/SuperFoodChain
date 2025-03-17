@@ -5,11 +5,9 @@
 package edu.cornell.cis3152.team8;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.JsonValue;
 import edu.cornell.gdiac.assets.AssetDirectory;
-import edu.cornell.gdiac.graphics.obj.Material;
-import edu.cornell.gdiac.graphics.obj.Model;
-import edu.cornell.gdiac.graphics.obj.ModelRef;
 
 /**
  * This is the base model class for the game which stores all the model objects in it.
@@ -32,15 +30,15 @@ public class GameState {
     /** The companions on the map */
     private Companion[] companions;
     /** Collection of projectiles on the screen */
-    private ProjectilePools projectiles;
+    private Array<Projectile> projectiles;
 
     /**
      * Creates a new game session. This method will call reset() to set up the board.
      *
      * @param assets   The associated asset directory
      */
-    public GameState(AssetDirectory assets) {
-        this.assets = assets;
+    public GameState() {
+//        this.assets = assets;
         reset();
     }
 
@@ -48,22 +46,23 @@ public class GameState {
      * Generates the level and everything in it.
      */
     public void reset() {
-        // are we using json?
-        level = new Level();
-        // tile information
-
-        // Player --> first companion (not a list yet?)
-        player = new Player();
-        // player texture
-
-        // Minions - requires information of number of minions
-        for (int i = 0; i < num_enemies; i++ ) {
-            minions[i] = new Minion(assets);
-            // minion texture
-        }
+//        // are we using json?
+//        level = new Level(25,25);
+//        // tile information
+//
+//        // Player --> first companion (not a list yet?)
+//        player = new Player(13,13);
+//        // player texture
+//
+//        // Minions - requires information of number of minions
+//        num_enemies = 0;
+//        for (int i = 0; i < num_enemies; i++ ) {
+//            minions[i] = new Minion(0,0);
+//            // minion texture
+//        }
 
         // Boss
-        boss = new Boss(assets);
+       // boss = new Boss(assets);
         // boss texture
 
         // Coins - none at the beginning
@@ -124,7 +123,7 @@ public class GameState {
     /**
      * @return the set of active projectiles
      */
-    public ProjectilePools getProjectiles() {
+    public Array<Projectile> getProjectiles() {
         return projectiles;
     }
 }
