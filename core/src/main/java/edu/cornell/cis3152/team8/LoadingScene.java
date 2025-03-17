@@ -125,7 +125,7 @@ public class LoadingScene implements Screen, InputProcessor {
      * @return true if the player is ready to go
      */
     public boolean isReady() {
-        return ticks >= 200;
+        return ticks >= 100;
 
         //return pressState == 2;
     }
@@ -210,8 +210,8 @@ public class LoadingScene implements Screen, InputProcessor {
     private void update(float delta) {
         if (progress < 1.0f) {
             assets.update(budget);
-            this.progress+= 0.005;
-            System.out.println(progress);
+            this.progress+= 0.01;
+            //System.out.println(progress);
             //this.progress = assets.getProgress();
             if (progress >= 1.0f) {
                 this.progress = 1.0f;
