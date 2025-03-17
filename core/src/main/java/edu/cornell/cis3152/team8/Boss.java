@@ -1,5 +1,9 @@
 package edu.cornell.cis3152.team8;
 
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.math.Vector2;
+import edu.cornell.gdiac.graphics.SpriteBatch;
+
 public abstract class Boss extends GameObject {
     /**
      * How far forward this boss can move in a single turn
@@ -22,8 +26,16 @@ public abstract class Boss extends GameObject {
      * Current amount of time until next set of attacks
      */
     private float idleTime;
-
     protected float angle; // angle of the sprite TEMPORARY
+
+    /**
+     * Current animation frame for this ship
+     */
+    private float animeframe;
+    /**
+     * How fast we change frames
+     */
+    private static float animationSpeed = 0.10f;
 
     public enum BossType {
         MOUSE,
@@ -79,6 +91,13 @@ public abstract class Boss extends GameObject {
             }
         }
 
+        if ((movingDown || movingLeft || movingRight || movingUp) && animator != null) {
+            animeframe += animationSpeed;
+            if (animeframe >= animator.getSize()) {
+                animeframe -= animator.getSize();
+            }
+        }
+
         position.add(velocity);
     }
 
@@ -94,7 +113,7 @@ public abstract class Boss extends GameObject {
 
     /**
      * Resets the cooldown of the boss attack
-     *
+     * <p>
      * If flag is true, the weapon will cool down by one animation frame.
      * Otherwise, it will reset to its maximum cooldown.
      *
@@ -110,5 +129,18 @@ public abstract class Boss extends GameObject {
 
     public boolean canAttack() {
         return idleTime <= 0;
+    }
+
+    /**
+     * Draws this object to the sprite batch
+     *
+     * @param batch The sprite batch
+     */
+    public void draw(SpriteBatch batch) {
+        SpriteBatch.computeTransform(transform, origin.x, origin.y, position.x, position.y, -(-90 + angle), 4f, 4f);
+
+        animator.setFrame((int)animeframe);
+        batch.setColor(Color.WHITE);
+        batch.draw(animator, transform);
     }
 }

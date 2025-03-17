@@ -12,16 +12,4 @@ public class Mouse extends Boss {
     public BossType getBossType() {
         return BossType.MOUSE;
     }
-
-    /**
-     * Draws this object to the sprite batch
-     *
-     * @param batch The sprite batch
-     */
-    public void draw(SpriteBatch batch) {
-        SpriteBatch.computeTransform(transform, origin.x, origin.y, position.x, position.y, -(-90 + angle), 4f, 4f);
-
-        batch.setColor(Color.WHITE);
-        batch.draw(animator, transform);
-    }
 }
