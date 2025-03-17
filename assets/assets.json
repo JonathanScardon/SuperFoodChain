@@ -10,8 +10,18 @@
         }
       }
     },
-    "mouse" : {
-      "file" : "images/beetle.png",
+    "mouse": {
+      "file": "images/beetle.png",
+      "sprites": {
+        "animation": {
+          "rows": 1,
+          "cols": 2,
+          "size": 2
+        }
+      }
+    },
+    "mouseWarn": {
+      "file": "images/mouseWarn.png",
       "sprites": {
         "animation": {
           "rows": 1,

@@ -1,11 +1,26 @@
 package edu.cornell.cis3152.team8;
 
+import com.badlogic.gdx.utils.Array;
+
 import java.util.Queue;
 
 public abstract class BossController implements InputController {
     public interface AttackPattern {
         void warn();
         void attack();
+    }
+
+    public class WarnPattern extends GameObject {
+        public boolean active;
+
+        public WarnPattern(float x, float y) {
+            super(x, y);
+        }
+
+        @Override
+        public ObjectType getType() {
+            return ObjectType.WARNING;
+        }
     }
 
     protected enum FSMState {
@@ -46,7 +61,7 @@ public abstract class BossController implements InputController {
     /**
      * The set of attack patterns that the boss can choose from
      */
-    protected AttackPattern[] attackPatterns;
+    protected Array<AttackPattern> attackPatterns;
     /**
      * A queue of attacks the boss plans to use before idling again
      */

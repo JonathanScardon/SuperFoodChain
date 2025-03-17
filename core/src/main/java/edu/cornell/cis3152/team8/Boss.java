@@ -1,8 +1,9 @@
 package edu.cornell.cis3152.team8;
 
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.Array;
 import edu.cornell.gdiac.graphics.SpriteBatch;
+import edu.cornell.gdiac.graphics.SpriteSheet;
 
 public abstract class Boss extends GameObject {
     /**
@@ -37,6 +38,15 @@ public abstract class Boss extends GameObject {
      */
     private static float animationSpeed = 0.10f;
 
+    /**
+     * The sprite sheets that correspond to each warning pattern
+     */
+    protected Array<SpriteSheet> warnSprites;
+    /**
+     * The warning patterns that correspond to the attack patterns
+     */
+    protected Array<BossController.WarnPattern> warnPatterns;
+
     public enum BossType {
         MOUSE,
         CHEF,
@@ -47,6 +57,8 @@ public abstract class Boss extends GameObject {
 
     public Boss(float x, float y) {
         super(x, y);
+        warnPatterns = new Array<>();
+        warnSprites = new Array<>();
     }
 
     // accessors
@@ -139,8 +151,14 @@ public abstract class Boss extends GameObject {
     public void draw(SpriteBatch batch) {
         SpriteBatch.computeTransform(transform, origin.x, origin.y, position.x, position.y, -(-90 + angle), 4f, 4f);
 
-        animator.setFrame((int)animeframe);
+        animator.setFrame((int) animeframe);
         batch.setColor(Color.WHITE);
         batch.draw(animator, transform);
+
+        for (BossController.WarnPattern wp : warnPatterns) {
+            if (wp.active) {
+                wp.draw(batch);
+            }
+        }
     }
 }
