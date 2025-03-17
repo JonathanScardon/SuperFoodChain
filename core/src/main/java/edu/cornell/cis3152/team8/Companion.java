@@ -105,47 +105,6 @@ public abstract class Companion extends GameObject {
 //        }
     }
 
-    public void update(int controlCode, long delta){
-        if (isDestroyed()) {
-            return;
-        }
-//
-        // Determine how we are moving.
-        boolean movingLeft  = controlCode ==  1;
-        boolean movingRight = controlCode == 2;
-        boolean movingUp    = controlCode == 4;
-        boolean movingDown  = controlCode == 8;
-        //System.out.println("" + movingLeft +movingRight+movingUp+movingDown);
-
-        //System.out.println(controlCode == InputController.CONTROL_MOVE_LEFT);
-        int s = 2;
-        // Process movement command.
-        if (movingLeft) {
-            velocity.x = -s;
-            velocity.y = 0;
-        } else if (movingRight) {
-            velocity.x = s;
-            velocity.y = 0;
-        } else if (movingUp) {
-            velocity.y = s;
-            velocity.x = 0;
-        } else if (movingDown) {
-            velocity.y = -s;
-            velocity.x = 0;
-        } else{
-            velocity.x = 0;
-            velocity.y = 0;
-        }
-
-        if (delta % 10 == 0){
-            prevVelocity = velocity;
-        }
-
-        //System.out.println(velocity);
-        position.add(velocity);
-        //System.out.println(position);
-    }
-
     public void follow(long delta){
         if (delta % 120 == 0){
             prevVelocity = velocity;
@@ -169,35 +128,40 @@ public abstract class Companion extends GameObject {
      * Updates the movement of a companion in the chain
      * @param controlCode
      */
-    public void update ( int controlCode){
+    public void update (int controlCode){
         if (!isAlive) {
             return;
         }
 
         // Determine how we are moving.
-        boolean movingLeft = (controlCode & InputController.CONTROL_MOVE_LEFT) != 0;
-        boolean movingRight = (controlCode & InputController.CONTROL_MOVE_RIGHT) != 0;
-        boolean movingUp = (controlCode & InputController.CONTROL_MOVE_UP) != 0;
-        boolean movingDown = (controlCode & InputController.CONTROL_MOVE_DOWN) != 0;
+        boolean movingLeft = controlCode == 1;
+        boolean movingRight = controlCode == 2;
+        boolean movingUp = controlCode == 4;
+        boolean movingDown = controlCode == 8;
 
         // Process movement command.
+        int s = 2;
         if (movingLeft) {
             this.direction = InputController.CONTROL_MOVE_LEFT;
-            velocity.x = -MOVE_SPEED;
+            velocity.x = -s;
             velocity.y = 0;
         } else if (movingRight) {
             this.direction = InputController.CONTROL_MOVE_RIGHT;
-            velocity.x = MOVE_SPEED;
+            velocity.x = s;
             velocity.y = 0;
         } else if (movingUp) {
             this.direction = InputController.CONTROL_MOVE_UP;
-            velocity.y = -MOVE_SPEED;
+            velocity.y = s;
             velocity.x = 0;
         } else if (movingDown) {
             this.direction = InputController.CONTROL_MOVE_DOWN;
-            velocity.y = MOVE_SPEED;
+            velocity.y = -s;
             velocity.x = 0;
+        }else{
+            velocity.x = 0;
+            velocity.y = 0;
         }
+        position.add(velocity);
 
     }
 
