@@ -161,22 +161,24 @@ public abstract class Companion extends GameObject {
         collected = b;
     }
 
-    public Vector2 getPrevVelocity(){
+    public Vector2 getPrevVelocity() {
         return prevVelocity;
+    }
+
     /**
      * Updates the movement of a companion in the chain
      * @param controlCode
      */
-    public void update(int controlCode){
-        if (!isAlive){
+    public void update ( int controlCode){
+        if (!isAlive) {
             return;
         }
 
         // Determine how we are moving.
-        boolean movingLeft  = (controlCode & InputController.CONTROL_MOVE_LEFT) != 0;
+        boolean movingLeft = (controlCode & InputController.CONTROL_MOVE_LEFT) != 0;
         boolean movingRight = (controlCode & InputController.CONTROL_MOVE_RIGHT) != 0;
-        boolean movingUp    = (controlCode & InputController.CONTROL_MOVE_UP) != 0;
-        boolean movingDown  = (controlCode & InputController.CONTROL_MOVE_DOWN) != 0;
+        boolean movingUp = (controlCode & InputController.CONTROL_MOVE_UP) != 0;
+        boolean movingDown = (controlCode & InputController.CONTROL_MOVE_DOWN) != 0;
 
         // Process movement command.
         if (movingLeft) {
@@ -195,7 +197,7 @@ public abstract class Companion extends GameObject {
             this.direction = InputController.CONTROL_MOVE_DOWN;
             velocity.y = MOVE_SPEED;
             velocity.x = 0;
-    }
+        }
 
     }
 
@@ -203,11 +205,12 @@ public abstract class Companion extends GameObject {
      *
      * @return control code of companion's current movement
      */
-    public int getDirection(){
+    public int getDirection () {
         return this.direction;
     }
 
-    public void setDirection(int direction){
+    public void setDirection ( int direction){
         this.direction = direction;
     }
+
 }

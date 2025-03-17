@@ -62,12 +62,6 @@ public class Player extends GameObject{
         for (Companion c: companions){
             c.draw(batch);
         }
-
-        //how to draw each companion if given one SpriteBatch...?
-        //modify draw to give me all the companion batches I need to draw?
-
-
-        //draw each companion (SpriteBatch, Affine2, SpriteSheet)
     }
 
     /**
@@ -155,7 +149,7 @@ public class Player extends GameObject{
         float py = companions.getLast().getY();
         int dist = 55;
         companions.add(companion);
-      
+
         //place companion at the tail (?), initialize movement direction for companion now that it is in chain
         Companion tail = companions.getLast();
         if (tail != null){
