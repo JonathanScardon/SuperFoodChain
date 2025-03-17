@@ -12,7 +12,9 @@ import edu.cornell.gdiac.util.ScreenListener;
 
 public class GDXRoot extends Game implements ScreenListener {
 
-    /** AssetManager to load game assets */
+    /**
+     * AssetManager to load game assets
+     */
     AssetDirectory directory;
 
     public FitViewport viewport;
@@ -56,11 +58,11 @@ public class GDXRoot extends Game implements ScreenListener {
         }
 
         if (menuScene != null) {
-                menuScene.dispose();
-                menuScene = null;
-            }
+            menuScene.dispose();
+            menuScene = null;
+        }
 
-        if (gameScene != null){
+        if (gameScene != null) {
             gameScene.dispose();
             gameScene = null;
         }
@@ -80,8 +82,6 @@ public class GDXRoot extends Game implements ScreenListener {
 
     @Override
     public void exitScreen(Screen screen, int exitCode) {
-
-
         if (screen == menuScene) {
             loadingScene = new LoadingScene("assets.json", batch, 1);
             loadingScene.setScreenListener(this);
@@ -91,9 +91,6 @@ public class GDXRoot extends Game implements ScreenListener {
             loadingScene.dispose();
             loadingScene = null;
 
-            menuScene = new MainMenuScene(this);
-            setScreen(menuScene);
-        } else if (screen == menuScene) {
             gameScene = new GameScene(this, directory);
             setScreen(gameScene);
         } else {
