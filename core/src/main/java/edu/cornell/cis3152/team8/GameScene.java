@@ -40,7 +40,7 @@ public class GameScene implements Screen {
 
     /** Minions in the level */
     private Minion[] minions;
-  
+
     /** Bosses in the level */
     private Boss[] bosses;
 
@@ -74,7 +74,11 @@ public class GameScene implements Screen {
         initCompanionPositions(5);
         //initCoins(5);
         coins = new LinkedList<>();
-        collision = new CollisionController(minions,player,companions,coins);
+        bosses = state.getBosses();
+        bossControls = new InputController[bosses.length];
+        bossControls[0] = new MouseController(bosses[0], state);
+
+        collision = new CollisionController(minions,player,companions,coins,bosses);
 
         // assuming player is a list of Companions btw
         //player = state.getPlayer();
@@ -88,9 +92,7 @@ public class GameScene implements Screen {
             minionControls[i] = new MinionController(i, minions,player);
         }
 
-        bosses = state.getBosses();
-        bossControls = new InputController[bosses.length];
-        bossControls[0] = new MouseController(bosses[0], state);
+
     }
 
     /**
@@ -207,10 +209,10 @@ public class GameScene implements Screen {
 
     public void draw(float delta) {
         ScreenUtils.clear(Color.WHITE);
-      
+
         game.batch.begin();
         drawTiles();
-      
+
         for (Boss boss : bosses) {
             boss.draw(game.batch);
         }

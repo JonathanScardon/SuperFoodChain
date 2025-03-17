@@ -25,18 +25,20 @@ import edu.cornell.gdiac.audio.SoundEffectManager;
         private Player player;
         private Companion[] companions;
         private LinkedList<Coin> coins;
+        private Boss[] bosses;
 
         /**
          * Creates a CollisionController for the given models.
          *
          */
-        public CollisionController(Minion[] minions, Player player, Companion[] companions, LinkedList<Coin> coins) {
+        public CollisionController(Minion[] minions, Player player, Companion[] companions, LinkedList<Coin> coins, Boss[] bosses) {
             this.session = session;
             tmp = new Vector2();
             this.minions = minions;
             this.player = player;
             this.companions = companions;
             this.coins = coins;
+            this.bosses = bosses;
         }
 
         /**
@@ -83,12 +85,12 @@ import edu.cornell.gdiac.audio.SoundEffectManager;
 //                }
             }
 //            //Test boss collisions (player and projectiles).
-//            for (Boss b : bosses){
-//                checkForCollision(b, player);
+            for (Boss b : bosses){
+                checkForCollision(b, player);
 //                for (Projectile p : projectiles){
 //                    checkForCollision(b, p);
 //                }
-//            }
+            }
 
 //            //Test coin-player collisions.
 
@@ -213,9 +215,11 @@ import edu.cornell.gdiac.audio.SoundEffectManager;
                     // Get the tiles for companion
                     float cx = c.getX();
                     float cy = c.getY();
+                    boolean collide = bx >= cx - 50 && bx <= cx + 50 && by >= cy - 50 && by <= cy + 50;
                     // kill companion if it collided with boss
-                    if (cx == bx && cy == by){
+                    if (collide){
                         player.deleteCompanion(c);
+                        c.setDestroyed(true);
                     }
                 }
         }
