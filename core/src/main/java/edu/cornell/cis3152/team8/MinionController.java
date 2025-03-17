@@ -81,7 +81,7 @@ public class MinionController implements InputController {
         ticks++;
 
         // Do not need to rework ourselves every frame. Just every 10 ticks.
-        if ((minion.getId() + ticks) % 10000 == 0) {
+        if ((minion.getId() + ticks) % 10 == 0) {
             // Pathfinding
             markGoalTiles();
             move = getMoveAlongPathToGoalTile();
@@ -102,15 +102,17 @@ public class MinionController implements InputController {
      * POSTCONDITION: There is guaranteed to be at least one goal tile when completed.
      */
     private void markGoalTiles() {
+        //System.out.println("MARK GOAL TILES");
         // Clear out previous pathfinding data.
         board.clearMarks();
         //player = session.getPlayer();
-
+//System.out.println(player.isAlive());
         if (player.isAlive()) {
             for (Companion c: player.companions) {
                 int targetX = board.screenToBoard(c.getX());
                 int targetY = board.screenToBoard(c.getY());
                     board.setGoal(targetX, targetY);
+                    //System.out.println("SET GOAL" + targetX + ", " + targetY);
             }
         }
     }
@@ -157,6 +159,7 @@ public class MinionController implements InputController {
 
         while (!queue.isEmpty()) {
             PositionAndDirection cur = queue.poll();
+            //System.out.println(cur.direction);
             if (board.isGoal(cur.x, cur.y)) {
                 // System.out.println("ship" + ship.getId() + ": (" + minionX + ", " + minionY + ") -> (" + cur.x + ", " + cur.y + ")");
                 return cur.direction;
@@ -360,8 +363,6 @@ public class MinionController implements InputController {
         }
     }
     //#endregion
-
-
 
 
 }

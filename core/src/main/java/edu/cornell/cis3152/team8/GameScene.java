@@ -98,7 +98,7 @@ public class GameScene implements Screen {
             int x = rand.nextInt(1280);
             int y = rand.nextInt(720);
             Minion m = new Minion(x,y,i);
-            System.out.println("Id: " + i + " (" + x + ", " + y +")");
+            //System.out.println("Id: " + i + " (" + x + ", " + y +")");
             minions[i] = m;
         }
     }
@@ -137,11 +137,13 @@ public class GameScene implements Screen {
 //            }
 //        }
 //
+        System.out.println(player.position);
         // moves enemies - assume always moving (no CONTROL_NO_ACTION)
         for (int i = 0; i < minions.length; i++) {
             if (!minions[i].isDestroyed()) {
+                //System.out.println("CONTROL " + i);
                 int action = minionControls[i].getAction();
-                System.out.println("Id: " + i + " (" + action + ")");
+                //System.out.println("Id: " + i + " (" + action + ")");
                 minions[i].update(action);
             }
         }
@@ -150,7 +152,9 @@ public class GameScene implements Screen {
 //        boss.update(bossControls.getAction());
 //
 //        // player chain moves
-//        player.update(playerControls.getAction());
+            int a = playerControls.getAction();
+            System.out.println(a);
+            player.update(a);
 //
 //        // if board isn't updating then no point
 //        state.getLevel().update();
@@ -164,7 +168,7 @@ public class GameScene implements Screen {
         game.batch.begin();
         drawTiles();
 
-        game.batch.draw(cornTexture,player.companions.get(0).getX(),player.companions.get(0).getY());
+        player.draw(game.batch);
         for (Minion m : minions){
             m.draw(game.batch);
         }
@@ -187,10 +191,10 @@ public class GameScene implements Screen {
 //    }
 
     private void drawTiles() {
-        int tileSize = 40;
+        int tileSize = 64;
         Texture tileTexture = new Texture("images/Tile1.png");
-        for (int x = 0; x < 32; x++) {
-            for (int y = 0; y < 20; y++) {
+        for (int x = 0; x < 20; x++) {
+            for (int y = 0; y < 12; y++) {
                 float xx = (float) (x) * tileSize;
                 float yy = (float) (y) * tileSize;
                 game.batch.draw(tileTexture, xx, yy, tileSize, tileSize);
