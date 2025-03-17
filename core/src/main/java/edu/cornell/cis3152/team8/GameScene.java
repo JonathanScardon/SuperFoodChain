@@ -162,11 +162,14 @@ public class GameScene implements Screen {
 
     public void draw(float delta) {
         ScreenUtils.clear(Color.WHITE);
+
+        game.batch.begin();
         drawTiles();
 
-        for (int i = 0; i < bosses.length; i++) {
-            bosses[i].draw(game.batch);
+        for (Boss boss : bosses) {
+            boss.draw(game.batch);
         }
+        game.batch.end();
     }
 
 //    /**
@@ -190,9 +193,7 @@ public class GameScene implements Screen {
             for (int y = 0; y < 20; y++) {
                 float xx = (float) (x) * tileSize;
                 float yy = (float) (y) * tileSize;
-                game.batch.begin();
                 game.batch.draw(tileTexture, xx, yy, tileSize, tileSize);
-                game.batch.end();
             }
         }
     }
