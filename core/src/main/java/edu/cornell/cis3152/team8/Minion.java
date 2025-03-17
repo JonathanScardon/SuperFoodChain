@@ -111,6 +111,10 @@ public class Minion extends GameObject{
      * @param batch The sprite batch
      */
     public void draw(SpriteBatch batch){
+        if (isDestroyed()){
+            batch.setColor(Color.BLACK);
+        }
         batch.draw(texture,position.x,position.y,64,64);
+        batch.setColor(Color.WHITE);
     }
 }

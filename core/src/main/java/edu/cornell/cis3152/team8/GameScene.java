@@ -7,13 +7,16 @@ package edu.cornell.cis3152.team8;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.utils.ScreenUtils;
 import edu.cornell.cis3152.team8.companions.Durian;
 import edu.cornell.cis3152.team8.companions.Strawberry;
 import edu.cornell.gdiac.graphics.SpriteBatch;
+import edu.cornell.gdiac.graphics.TextLayout;
 import edu.cornell.gdiac.util.ScreenListener;
 
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Random;
 
 public class GameScene implements Screen {
@@ -41,13 +44,15 @@ public class GameScene implements Screen {
 
     private Companion[] companions;
 
+    private LinkedList<Coin> coins;
+
     /** List of all the input controllers */
     protected InputController playerControls;
     protected InputController[] minionControls;
     protected InputController bossControls;
     private ScreenListener listener;
 
-    private Texture cornTexture;
+    private Texture coinTexture;
 
     private CollisionController collision;
 
@@ -59,11 +64,13 @@ public class GameScene implements Screen {
     public GameScene(final GDXRoot game) {
         this.game = game;
         this.state = new GameState();
-        cornTexture = new Texture("images/Coin.png");
+        coinTexture = new Texture("images/Coin.png");
         player = new Player(500,350);
-        initMinions(5);
+        initMinions(2);
         initCompanionPositions(5);
-        collision = new CollisionController(minions,player,companions);
+        //initCoins(5);
+        coins = new LinkedList<>();
+        collision = new CollisionController(minions,player,companions,coins);
 
         // assuming player is a list of Companions btw
         //player = state.getPlayer();
@@ -125,6 +132,17 @@ public class GameScene implements Screen {
         }
     }
 
+    private void initCoins(int numCoins) {
+        Random rand = new Random();
+        coins = new LinkedList<>();
+        for (int i = 0; i < companions.length; i++) {
+            int x = rand.nextInt(1280);
+            int y = rand.nextInt(720);
+            Coin c = new Coin(x,y);
+            coins.add(c);
+        }
+    }
+
     //public int getPlayerSelection() {
     // return playerControls.getSelection();
 
@@ -178,15 +196,26 @@ public class GameScene implements Screen {
         game.batch.begin();
         drawTiles();
 
+        for (Minion m : minions){
+            m.draw(game.batch);
+        }
+
         player.draw(game.batch);
         for (Companion c: companions){
             c.draw(game.batch);
         }
+        for (Coin c : coins){
+            c.draw(game.batch);
 
-        for (Minion m : minions){
-            m.draw(game.batch);
         }
+        String coins = "X" + player.getCoins();
+        BitmapFont font = new BitmapFont();
+        TextLayout coinCount = new TextLayout(coins, font, 128);
+        game.batch.draw(coinTexture, 1150,65,50,50);
+        game.batch.drawText(coinCount, 1200f,80f);
         game.batch.end();
+
+
 
 
 

@@ -1,5 +1,6 @@
 package edu.cornell.cis3152.team8.companions;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import edu.cornell.cis3152.team8.Companion;
 import edu.cornell.cis3152.team8.GameState;
@@ -24,7 +25,11 @@ public class Durian extends Companion {
     }
 
     public void draw(SpriteBatch batch){
+        if (isDestroyed()){
+            batch.setColor(Color.BLACK);
+        }
         batch.draw(texture,position.x,position.y,64,64);
+        batch.setColor(Color.WHITE);
     }
     @Override
     /**
