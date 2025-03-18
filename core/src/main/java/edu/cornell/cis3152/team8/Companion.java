@@ -167,7 +167,6 @@ public abstract class Companion extends GameObject {
             velocity.y = 0;
         }
         position.add(velocity);
-
     }
 
     /**
