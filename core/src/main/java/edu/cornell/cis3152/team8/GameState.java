@@ -7,18 +7,18 @@ package edu.cornell.cis3152.team8;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.JsonValue;
-import edu.cornell.gdiac.assets.AssetDirectory;
+import edu.cornell.gdiac.assets.*;
+import edu.cornell.gdiac.graphics.*;
+import edu.cornell.cis3152.team8.companions.Strawberry;
 
 /**
  * This is the base model class for the game which stores all the model objects in it.
  */
 
 public class GameState {
-
-    /**
-     * A reference to the asset directory (for on demand assets)
-     */
-    private AssetDirectory assets;
+    // Graphics assets
+    private SpriteSheet mouseSprite;
+    private SpriteSheet warningSprite;
 
     /**
      * The grid of tiles
@@ -32,13 +32,9 @@ public class GameState {
      * The minions
      */
     private Minion[] minions;
-    /**
-     * The boss
-     */
-    private Boss boss;
-    /**
-     * The coins on the map
-     */
+    /** The bosses */
+    private Boss[] bosses;
+    /** The coins on the map */
     private Coin[] coins;
     /**
      * The companions on the map
@@ -54,8 +50,10 @@ public class GameState {
      *
      * @param assets The associated asset directory
      */
-    public GameState() {
-//        this.assets = assets;
+    public GameState(AssetDirectory assets) {
+        mouseSprite = assets.getEntry("mouse.animation", SpriteSheet.class);
+        warningSprite = assets.getEntry("mouseWarn.animation", SpriteSheet.class);
+
         reset();
     }
 
@@ -79,8 +77,10 @@ public class GameState {
 //        }
 
         // Boss
-        // boss = new Boss(assets);
-        // boss texture
+        bosses = new Boss[1];
+        bosses[0] = new Mouse(100f, 100f);
+        bosses[0].setSpriteSheet(mouseSprite);
+        bosses[0].warnSprites.add(warningSprite);
 
         // Coins - none at the beginning
 
@@ -89,7 +89,7 @@ public class GameState {
 //            companions[i] = new Companion(assets);
 //            // companion texture
     }
-
+  
 //        // Projectives
 //        projectiles = new ProjectilePool(assets);
 //        // projectile texture
@@ -103,42 +103,42 @@ public class GameState {
     }
 
     /**
-     * @return the list of ships in the game
+     * @return the player in the level
      */
     public Player getPlayer() {
         return player;
     }
 
     /**
-     * @return the list of minions in the game
+     * @return the array of minions in the level
      */
     public Minion[] getMinions() {
         return minions;
     }
 
     /**
-     * @return the boss in the game
+     * @return the array of bosses in the level
      */
-    public Boss getBoss() {
-        return boss;
+    public Boss[] getBosses() {
+        return bosses;
     }
 
     /**
-     * @return the list of coins in the game
+     * @return the array of coins in the level
      */
     public Coin[] getCoins() {
         return coins;
     }
 
     /**
-     * @return the list of companions in the game
+     * @return the array of companions in the level
      */
     public Companion[] getCompanions() {
         return companions;
     }
 
     /**
-     * @return the set of active projectiles
+     * @return the array of active projectiles
      */
     public Array<Projectile> getProjectiles() {
         return projectiles;
