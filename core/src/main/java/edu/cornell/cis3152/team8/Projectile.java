@@ -16,6 +16,8 @@ public abstract class Projectile extends GameObject {
     private static float vy;
     // How long the projectile should persist for
     private static int maxLife;
+    // Speed of the projectile
+    private float speed;
 
     /// Attributes (per object)
     // Current animation frame of the projectile
@@ -27,11 +29,12 @@ public abstract class Projectile extends GameObject {
         return ObjectType.PROJECTILE;
     }
 
-    public static void setConstants (JsonValue constants) {
-        imageScale = constants.getFloat("imageScale");
-        animationSpeed = constants.getFloat("animationSpeed");
-        maxLife = constants.getInt("projectile-maxLife");
-    }
+    // public static void setConstants (JsonValue constants) {
+    // imageScale = constants.getFloat("imageScale");
+    // animationSpeed = constants.getFloat("animationSpeed");
+    // maxLife = constants.getInt("projectile-maxLife");
+    // speed = constants.getInt("projectile-speed");
+    // }
 
     /**
      * Creates a projectile with the given starting position.
@@ -43,9 +46,16 @@ public abstract class Projectile extends GameObject {
         // Parent constructor
         super(x, y);
 
+        // Attributes below are placeholder values since setConstants isn't implemented
+        // yet
+        speed = 8;
+        maxLife = 150;
+        imageScale = 1;
+        animationSpeed = 4;
+
         // Update the velocities to be the associated x-velocity and y-velocity
-        velocity.x = vx;
-        velocity.y = vy;
+        velocity.x = vx * speed;
+        velocity.y = vy * speed;
 
         // Set initial animation frame to 0
         animeFrame = 0.0f;
@@ -60,8 +70,24 @@ public abstract class Projectile extends GameObject {
      */
     @Override
     public void setSpriteSheet(SpriteSheet sheet) {
-        super.setSpriteSheet( sheet );
+        super.setSpriteSheet(sheet);
         radius *= imageScale; // this will take care of updating the Projectile's radius
+    }
+
+    /**
+     * Returns the current life value of the projectile
+     *
+     * @return life value
+     */
+    public int getLife() {
+        return life;
+    }
+
+    /**
+     * Resets the projectile's life count to its max life
+     */
+    public void resetLife() {
+        life = maxLife;
     }
 
     /**
@@ -70,8 +96,7 @@ public abstract class Projectile extends GameObject {
      * @param delta Number of seconds since last animation frame
      */
     public void update(float delta) {
-        // call the super update function since we still want to update position values in terms of projectile velocity
-        super.update(delta);
+        position.add(velocity.x * speed, velocity.y * speed);
 
         // Increase animation frame
         if (animator != null) {
@@ -82,7 +107,8 @@ public abstract class Projectile extends GameObject {
                 animeFrame -= animator.getSize();
             }
         }
-        // Decrement projectile life to make progress towards it being on screen/not destroyed
+        // Decrement projectile life to make progress towards it being on screen/not
+        // destroyed
         life--;
     }
 
@@ -92,13 +118,12 @@ public abstract class Projectile extends GameObject {
      * @param batch The sprite batch
      */
     public void draw(SpriteBatch batch) {
-        animator.setFrame((int)animeFrame);
-        // need to override because we pass in imageScale instead of 1.0f in computeTransform
+        animator.setFrame((int) animeFrame);
+        // need to override because we pass in imageScale instead of 1.0f in
+        // computeTransform
         SpriteBatch.computeTransform(transform, origin.x, origin.y,
-            position.x, position.y, 0.0f, imageScale, imageScale);
-        batch.setColor( Color.WHITE );
-        batch.draw( animator, transform );
+                position.x, position.y, 0.0f, imageScale, imageScale);
+        batch.setColor(Color.WHITE);
+        batch.draw(animator, transform);
     }
 }
-
-

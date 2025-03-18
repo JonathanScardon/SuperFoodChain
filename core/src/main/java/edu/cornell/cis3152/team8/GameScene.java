@@ -69,29 +69,29 @@ public class GameScene implements Screen {
         this.state = new GameState(assets);
         start = false;
         coinTexture = new Texture("images/Coin.png");
-        player = new Player(500,350);
+        player = new Player(500, 350);
+        state.setPlayer(player);
         initMinions(2);
         initCompanionPositions(5);
-        //initCoins(5);
+        // initCoins(5);
         coins = new LinkedList<>();
         bosses = state.getBosses();
         bossControls = new InputController[bosses.length];
         bossControls[0] = new MouseController(bosses[0], state);
 
-        collision = new CollisionController(minions,player,companions,coins,bosses);
+        collision = new CollisionController(minions, player, companions, coins, bosses);
 
         // assuming player is a list of Companions btw
-        //player = state.getPlayer();
+        // player = state.getPlayer();
         playerControls = new PlayerController(player);
 
-        //level = state.getLevel();
+        // level = state.getLevel();
 
         // assuming each level has number of enemies assigned?
         minionControls = new InputController[minions.length];
-        for(int i = 0; i < minions.length; i++) {
-            minionControls[i] = new MinionController(i, minions,player);
+        for (int i = 0; i < minions.length; i++) {
+            minionControls[i] = new MinionController(i, minions, player);
         }
-
 
     }
 
@@ -107,34 +107,36 @@ public class GameScene implements Screen {
         head.setX(px);
         head.setY(py);
     }
-//
-//    /**
-//     * Initializes the minions to new random location.
-//     *
-//     */
+
+    //
+    // /**
+    // * Initializes the minions to new random location.
+    // *
+    // */
     private void initMinions(int num_minions) {
         Random rand = new Random();
         minions = new Minion[num_minions];
         for (int i = 0; i < num_minions; i++) {
             int x = rand.nextInt(1280);
             int y = rand.nextInt(720);
-            Minion m = new Minion(x,y,i);
-            //System.out.println("Id: " + i + " (" + x + ", " + y +")");
+            Minion m = new Minion(x, y, i);
+            // System.out.println("Id: " + i + " (" + x + ", " + y +")");
             minions[i] = m;
         }
     }
-//
-//    /**
-//     * Initializes the companions to new random location.
-//     *
-//     */
+
+    //
+    // /**
+    // * Initializes the companions to new random location.
+    // *
+    // */
     private void initCompanionPositions(int numCompanions) {
         Random rand = new Random();
         companions = new Companion[numCompanions];
         for (int i = 0; i < companions.length; i++) {
             int x = rand.nextInt(1280);
             int y = rand.nextInt(720);
-            Companion c = new Durian(x,y);
+            Companion c = new Durian(x, y);
             companions[i] = c;
         }
     }
@@ -145,14 +147,13 @@ public class GameScene implements Screen {
         for (int i = 0; i < companions.length; i++) {
             int x = rand.nextInt(1280);
             int y = rand.nextInt(720);
-            Coin c = new Coin(x,y);
+            Coin c = new Coin(x, y);
             coins.add(c);
         }
     }
 
-    //public int getPlayerSelection() {
+    // public int getPlayerSelection() {
     // return playerControls.getSelection();
-
 
     /**
      * Invokes the controller for each Object.
@@ -166,44 +167,59 @@ public class GameScene implements Screen {
             start = true;
         }
         if (start && player.isAlive()) {
-//        // companion chain uses ability
-//        for (Companion c : player.companions) {
-//            if (c.canUse() && !c.isDestroyed()) {
-//                useAbility(c);
-//            } else {
-//                c.coolDown(true);
-//            }
-//        }
-//
-            //System.out.println(player.position);
+            // iterate through all companions in the chain
+            for (Companion c : player.companions) {
+                if (c.canUse()) {
+                    c.useAbility(state);
+                } else {
+                    c.coolDown(true, delta);
+                }
+            }
+
+            for (Projectile p : state.getActiveProjectiles()) {
+                p.update(delta);
+            }
+
+            // Remove dead projectiles and return them to their pools
+            for (int i = state.getActiveProjectiles().size - 1; i >= 0; i--) {
+                Projectile p = state.getActiveProjectiles().get(i);
+                if (p.isDestroyed() || p.getLife() <= 0) {
+                    state.getActiveProjectiles().removeIndex(i);
+                    if (p instanceof StrawberryProjectile) {
+                        ProjectilePools.strawberryPool.free((StrawberryProjectile) p);
+                    }
+                }
+            }
+
+            // System.out.println(player.position);
             // moves enemies - assume always moving (no CONTROL_NO_ACTION)
             for (int i = 0; i < minions.length; i++) {
                 if (!minions[i].isDestroyed()) {
-                    //System.out.println("CONTROL " + i);
+                    // System.out.println("CONTROL " + i);
                     int action = minionControls[i].getAction();
-                    //System.out.println("Id: " + i + " (" + action + ")");
+                    // System.out.println("Id: " + i + " (" + action + ")");
                     minions[i].update(action);
                 }
             }
-//
-        // boss moves and acts
-        for (int i = 0; i < bosses.length; i++) {
-            bosses[i].update(bossControls[i].getAction());
-        }
-//
-//        // player chain moves
+            //
+            // boss moves and acts
+            for (int i = 0; i < bosses.length; i++) {
+                bosses[i].update(bossControls[i].getAction());
+            }
+            //
+            // // player chain moves
             int a = playerControls.getAction();
-            //System.out.println(a);
+            // System.out.println(a);
             player.update(a);
-//
-//        // if board isn't updating then no point
-//        state.getLevel().update();
-//
-//        // projectiles update
-//        //state.getProjectiles().update();
-                if (player.isAlive()) {
-                    collision.update();
-                }
+            //
+            // // if board isn't updating then no point
+            // state.getLevel().update();
+            //
+            // // projectiles update
+            // //state.getProjectiles().update();
+            if (player.isAlive()) {
+                collision.update();
+            }
         }
     }
 
@@ -217,44 +233,46 @@ public class GameScene implements Screen {
             boss.draw(game.batch);
         }
 
-        for (Minion m : minions){
+        for (Minion m : minions) {
             m.draw(game.batch);
         }
 
         player.draw(game.batch);
-        for (Companion c: companions){
+        for (Companion c : companions) {
             c.draw(game.batch);
         }
-        for (Coin c : coins){
-            c.draw(game.batch);
 
+        for (Projectile p : state.getActiveProjectiles()) {
+            p.draw(game.batch);
         }
 
+        for (Coin c : coins) {
+            c.draw(game.batch);
+        }
 
         String coins = "X" + player.getCoins();
         BitmapFont font = new BitmapFont();
         TextLayout coinCount = new TextLayout(coins, font, 128);
-        game.batch.draw(coinTexture, 1150,65,50,50);
-        game.batch.drawText(coinCount, 1200f,80f);
+        game.batch.draw(coinTexture, 1150, 65, 50, 50);
+        game.batch.drawText(coinCount, 1200f, 80f);
 
-        if (!player.isAlive()){
+        if (!player.isAlive()) {
             drawLose();
         }
         game.batch.end();
     }
 
-//    /**
-//     * Creates photons and updates the object's cooldown.
-//     *
-//     * Using an ability requires access to all other models? so we have factored
-//     * this behavior out of the Ship into the GameplayController.
-//     */
-//    private void useAbility(Companion c) {
-//        c.useAbility(state);
-//        // reset ability cooldown
-//        c.coolDown(false);
-//    }
-
+    // /**
+    // * Creates photons and updates the object's cooldown.
+    // *
+    // * Using an ability requires access to all other models? so we have factored
+    // * this behavior out of the Ship into the GameplayController.
+    // */
+    // private void useAbility(Companion c) {
+    // c.useAbility(state);
+    // // reset ability cooldown
+    // c.coolDown(false);
+    // }
 
     private void drawTiles() {
         // technically this should be a call to the draw function inside of level
@@ -269,9 +287,9 @@ public class GameScene implements Screen {
         }
     }
 
-    private void drawLose(){
+    private void drawLose() {
         Texture texture = new Texture("images/Lose.png");
-        game.batch.draw(texture,250,150);
+        game.batch.draw(texture, 250, 150);
 
     }
 
