@@ -59,6 +59,8 @@ public abstract class Boss extends GameObject {
         super(x, y);
         warnPatterns = new Array<>();
         warnSprites = new Array<>();
+        radius = 3;
+        health = 5;
     }
 
     // accessors

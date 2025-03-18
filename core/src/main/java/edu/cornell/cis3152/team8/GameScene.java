@@ -9,6 +9,7 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ScreenUtils;
 import edu.cornell.gdiac.assets.AssetDirectory;
 import edu.cornell.cis3152.team8.companions.Durian;
@@ -47,6 +48,7 @@ public class GameScene implements Screen {
     private Companion[] companions;
 
     private LinkedList<Coin> coins;
+    private Array<Projectile> projectiles;
 
     /** List of all the input controllers */
     protected InputController playerControls;
@@ -78,8 +80,9 @@ public class GameScene implements Screen {
         bosses = state.getBosses();
         bossControls = new InputController[bosses.length];
         bossControls[0] = new MouseController(bosses[0], state);
+        projectiles = state.getActiveProjectiles();
 
-        collision = new CollisionController(minions, player, companions, coins, bosses);
+        collision = new CollisionController(minions, player, companions, coins, bosses, projectiles);
 
         // assuming player is a list of Companions btw
         // player = state.getPlayer();
@@ -259,6 +262,10 @@ public class GameScene implements Screen {
         if (!player.isAlive()) {
             drawLose();
         }
+
+        if (bosses[0].isDestroyed()) {
+            drawWin();
+        }
         game.batch.end();
     }
 
@@ -290,6 +297,12 @@ public class GameScene implements Screen {
     private void drawLose() {
         Texture texture = new Texture("images/Lose.png");
         game.batch.draw(texture, 250, 150);
+
+    }
+
+    private void drawWin() {
+        Texture texture = new Texture("images/Win.png");
+        game.batch.draw(texture, 400, 150);
 
     }
 

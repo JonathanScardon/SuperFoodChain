@@ -97,7 +97,7 @@ public class Player extends GameObject{
         this.shield = false;
         Companion head = new Strawberry(x,y);
         companions.add(head);
-        radius = 1;
+        radius = 2;
         ticks = 0;
 
 

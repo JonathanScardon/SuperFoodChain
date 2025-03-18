@@ -25,6 +25,7 @@ public class Minion extends GameObject{
         constants = new JsonValue("assets/constants.json");
         this.id = id;
         texture = new Texture("images/Minion.png");
+        radius = 2;
 
         //setConstants(constants);
     }

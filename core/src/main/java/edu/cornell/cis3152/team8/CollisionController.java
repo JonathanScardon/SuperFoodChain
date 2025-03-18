@@ -26,19 +26,20 @@ import edu.cornell.gdiac.audio.SoundEffectManager;
         private Companion[] companions;
         private LinkedList<Coin> coins;
         private Boss[] bosses;
+        private Array<Projectile> projectiles;
 
         /**
          * Creates a CollisionController for the given models.
          *
          */
-        public CollisionController(Minion[] minions, Player player, Companion[] companions, LinkedList<Coin> coins, Boss[] bosses) {
-            this.session = session;
+        public CollisionController(Minion[] minions, Player player, Companion[] companions, LinkedList<Coin> coins, Boss[] bosses, Array<Projectile> projectiles) {
             tmp = new Vector2();
             this.minions = minions;
             this.player = player;
             this.companions = companions;
             this.coins = coins;
             this.bosses = bosses;
+            this.projectiles = projectiles;
         }
 
         /**
@@ -46,50 +47,20 @@ import edu.cornell.gdiac.audio.SoundEffectManager;
          * Handles all collisions.
          */
         public void update() {
-            //Get level information
-//            Minion[] minions = session.getMinions();
-//            //Array<Projectile> projectiles = session.getProjectiles();
-//            //Boss boss = session.getBoss();
-//            Player player = session.getPlayer();
-//            //Boss[] bosses = new Boss[1];
-//            //bosses[0] = boss;
-//            Coin[] coins = session.getCoins();
-//            Companion[] companions = session.getCompanions();
-
-            //Move player.
-//            for (Companion c : player.companions){
-//                if (!c.isDestroyed()){
-//                    move(c);
-//                }
-//            }
-//
-//           // Move live minions.
-//            for (Minion m : minions) {
-//                if (!m.isDestroyed()) {
-//                    move(m);
-//                }
-//            }
-//
-//            //Move boss.
-//            for (Boss b : bosses){
-//                if (!b.isDestroyed()){
-//                    move(b);
-//                }
-//            }
 
 //            // Test minion collisions (player and projectiles).
             for (Minion m : minions) {
                 checkForCollision(m, player);
-//                for (Projectile p : projectiles) {
-//                    checkForCollision(m, p);
-//                }
+                for (Projectile p : projectiles) {
+                    checkForCollision(m, p);
+                }
             }
 //            //Test boss collisions (player and projectiles).
             for (Boss b : bosses){
                 checkForCollision(b, player);
-//                for (Projectile p : projectiles){
-//                    checkForCollision(b, p);
-//                }
+                for (Projectile p : projectiles){
+                    checkForCollision(b, p);
+                }
             }
 
 //            //Test coin-player collisions.
@@ -153,14 +124,13 @@ import edu.cornell.gdiac.audio.SoundEffectManager;
             for (Companion c : player.companions){
                 float px = c.getX();
                 float py = c.getY();
-                boolean collide = px >= mx - 17 && px <= mx + 7 && py >= my - 7 && py <= my + 7;
+                boolean collide = px >= mx - 10 && px <= mx + 10 && py >= my - 10 && py <= my + 10;
                 //kill companion and minion if they collided
                 if (collide) {
+                    player.deleteCompanion(c);
                     minion.setDestroyed(true);
                     c.setDestroyed(true);
-                    player.deleteCompanion(c);
-
-                    //MOVE TO PROJECTILE DEATH
+                    //MOVE TO PROJECTILE DEATH - choose between spawn anyway
                     coins.add(new Coin(mx,my));
                 }
             }
@@ -185,11 +155,14 @@ import edu.cornell.gdiac.audio.SoundEffectManager;
             float py = projectile.getY();
 
             // kill projectile and minion if they collided
-            if (mx == px && my == py) {
+            boolean collide = mx >= px - 10 && mx <= px + 10 && my >= py - 10 && my <= py + 10;
+
+            if (collide) {
                 projectile.setDestroyed(true);
                 minion.removeHealth(1);
-                if (minion.getHealth() <= 0){
-                minion.setDestroyed(true);
+                if (minion.getHealth() <= 0) {
+                    minion.setDestroyed(true);
+                    coins.add(new Coin(mx, my));
                 }
             }
         }
@@ -242,10 +215,15 @@ import edu.cornell.gdiac.audio.SoundEffectManager;
             float px = projectile.getX();
             float py = projectile.getY();
 
+            boolean collide = bx >= px - 50 && bx <= px + 50 && by >= py - 50 && by <= py + 50;
             // decrease boss health if hit by projectile
-            if (bx == px && by == py){
+            if (collide){
                 boss.setHealth(boss.getHealth()-1);
+                if (boss.getHealth() <= 0){
+                    boss.setDestroyed(true);
+                }
                 projectile.setDestroyed(true);
+
             }
         }
 
@@ -262,15 +240,13 @@ import edu.cornell.gdiac.audio.SoundEffectManager;
                 return;
             }
 
-
-
             //Get tiles for coin and player
             float cx = coin.getX();
             float cy = coin.getY();
             Companion head = player.companions.get(0);
             float px = head.getX();
             float py = head.getY();
-            boolean collide = px >= cx - 7 && px <= cx + 7 && py >= cy - 7 && py <= cy + 7;
+            boolean collide = px >= cx - 10 && px <= cx + 10 && py >= cy - 10 && py <= cy + 10;
             //System.out.println(collide);
 
             // Add one coin to player and remove coin from screen if they collided
@@ -303,7 +279,7 @@ import edu.cornell.gdiac.audio.SoundEffectManager;
             //System.out.println(cx+", "+cy+"  "+px+", "+py);
             // Player buys companion if enough coins and they collided
             int cost = companion.getCost();
-            boolean collide = px >= cx - 5 && px <= cx + 5 && py >= cy - 5 && py <= cy + 5;
+            boolean collide = px >= cx - 7 && px <= cx + 7 && py >= cy - 7 && py <= cy + 7;
             //System.out.println(collide);
             boolean afford = player.getCoins()>= cost;
             //System.out.println(afford);
