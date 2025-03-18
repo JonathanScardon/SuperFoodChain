@@ -127,7 +127,8 @@ public class CollisionController {
         float my = minion.getY();
 
 
-        for (Companion c : player.companions) {
+        for (int i = 0; i < player.companions.size(); i++) {
+            Companion c = player.companions.get(i);
             float px = c.getX();
             float py = c.getY();
             boolean collide = px >= mx - 10 && px <= mx + 10 && py >= my - 10 && py <= my + 10;
