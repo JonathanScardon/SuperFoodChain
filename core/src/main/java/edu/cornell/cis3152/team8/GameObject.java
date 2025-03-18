@@ -233,7 +233,7 @@ public abstract class GameObject {
     public GameObject(float x, float y) {
         position = new Vector2(x, y);
         velocity = new Vector2(0.0f, 0.0f);
-        radius = 0.0f;
+        radius = 1.0f;
         destroyed = false;
         transform = new Affine2();
     }
