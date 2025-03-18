@@ -9,7 +9,7 @@ public abstract class Boss extends GameObject {
     /**
      * How far forward this boss can move in a single turn
      */
-    private static float MOVE_SPEED = 4f;
+    private static float MOVE_SPEED = 10f;
     /**
      * The damping factor for deceleration
      */
@@ -17,7 +17,7 @@ public abstract class Boss extends GameObject {
     /**
      * How long the boss must wait until it can attack again
      */
-    private static float IDLE_DURATION = 30f;
+    private static float IDLE_DURATION = 5f;
     /**
      * An epsilon for float comparison
      */
