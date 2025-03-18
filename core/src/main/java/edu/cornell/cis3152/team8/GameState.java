@@ -12,7 +12,8 @@ import edu.cornell.gdiac.graphics.*;
 import edu.cornell.cis3152.team8.companions.Strawberry;
 
 /**
- * This is the base model class for the game which stores all the model objects in it.
+ * This is the base model class for the game which stores all the model objects
+ * in it.
  */
 
 public class GameState {
@@ -46,14 +47,14 @@ public class GameState {
     private Array<Projectile> projectiles;
 
     /**
-     * Creates a new game session. This method will call reset() to set up the board.
+     * Creates a new game session. This method will call reset() to set up the
+     * board.
      *
-     * @param assets The associated asset directory
      */
     public GameState(AssetDirectory assets) {
         mouseSprite = assets.getEntry("mouse.animation", SpriteSheet.class);
         warningSprite = assets.getEntry("mouseWarn.animation", SpriteSheet.class);
-
+        projectiles = new Array<Projectile>();
         reset();
     }
 
@@ -61,20 +62,20 @@ public class GameState {
      * Generates the level and everything in it.
      */
     public void reset() {
-//        // are we using json?
-//        level = new Level(25,25);
-//        // tile information
-//
-//        // Player --> first companion (not a list yet?)
-//        player = new Player(13,13);
-//        // player texture
-//
-//        // Minions - requires information of number of minions
-//        num_enemies = 0;
-//        for (int i = 0; i < num_enemies; i++ ) {
-//            minions[i] = new Minion(0,0);
-//            // minion texture
-//        }
+        // // are we using json?
+        // level = new Level(25,25);
+        // // tile information
+        //
+        // // Player --> first companion (not a list yet?)
+        // player = new Player(13,13);
+        // // player texture
+        //
+        // // Minions - requires information of number of minions
+        // num_enemies = 0;
+        // for (int i = 0; i < num_enemies; i++ ) {
+        // minions[i] = new Minion(0,0);
+        // // minion texture
+        // }
 
         // Boss
         bosses = new Boss[1];
@@ -85,15 +86,15 @@ public class GameState {
         // Coins - none at the beginning
 
         // Companions - requires information of number of companions
-//        for (int i = 0; i < num_companions; i++) {
-//            companions[i] = new Companion(assets);
-//            // companion texture
+        // for (int i = 0; i < num_companions; i++) {
+        // companions[i] = new Companion(assets);
+        // // companion texture
     }
-  
-//        // Projectives
-//        projectiles = new ProjectilePool(assets);
-//        // projectile texture
-//}
+
+    // // Projectives
+    // projectiles = new ProjectilePool(assets);
+    // // projectile texture
+    // }
 
     /**
      * @return the current level
@@ -107,6 +108,15 @@ public class GameState {
      */
     public Player getPlayer() {
         return player;
+    }
+
+    /**
+     * Sets the player in the level
+     * 
+     * @param player The player to set
+     */
+    public void setPlayer(Player player) {
+        this.player = player;
     }
 
     /**
@@ -140,7 +150,7 @@ public class GameState {
     /**
      * @return the array of active projectiles
      */
-    public Array<Projectile> getProjectiles() {
+    public Array<Projectile> getActiveProjectiles() {
         return projectiles;
     }
 }

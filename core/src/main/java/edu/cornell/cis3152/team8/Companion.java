@@ -1,6 +1,7 @@
 package edu.cornell.cis3152.team8;
 
 import com.badlogic.gdx.math.Vector2;
+import edu.cornell.gdiac.graphics.SpriteBatch;
 import static edu.cornell.cis3152.team8.InputController.CONTROL_MOVE_LEFT;
 import static edu.cornell.cis3152.team8.InputController.CONTROL_NO_ACTION;
 
@@ -29,7 +30,7 @@ public abstract class Companion extends GameObject {
     private int cooldown;
 
     /** The number of frames until use ability again */
-    private int abilityCool;
+    private float abilityCool;
     private boolean collected;
     private Vector2 prevVelocity;
 
@@ -38,7 +39,6 @@ public abstract class Companion extends GameObject {
 
     /** The direction the companion is currently moving in */
     private int direction;
-
 
     private float prevX;
 
@@ -64,7 +64,9 @@ public abstract class Companion extends GameObject {
     }
 
     /** Get type of Companion */
-    public CompanionType getCompanionType() {return type;};
+    public CompanionType getCompanionType() {
+        return type;
+    };
 
     /** Set type of Companion */
     public void setCompanionType(CompanionType type) {
@@ -72,7 +74,9 @@ public abstract class Companion extends GameObject {
     }
 
     /** Get cost of Companion */
-    public int getCost() {return cost;};
+    public int getCost() {
+        return cost;
+    };
 
     /** Set cost of Companion */
     public void setCost(int cost) {
@@ -80,7 +84,9 @@ public abstract class Companion extends GameObject {
     }
 
     /** Get cooldown of ability */
-    public int getCooldown() {return cooldown;};
+    public int getCooldown() {
+        return cooldown;
+    };
 
     /** Set cooldown of ability */
     public void setCooldown(int cooldown) {
@@ -88,40 +94,42 @@ public abstract class Companion extends GameObject {
     }
 
     /** Returns whether companion can use ability */
-    public boolean canUse() { return abilityCool <= 0; }
+    public boolean canUse() {
+        return abilityCool <= 0;
+    }
 
     /** Companion uses ability */
     public void useAbility(GameState state) {
         // individual abilities depending on type --> overrided by different types
     };
 
-    /** Resets the cool down of the companion ability
+    /**
+     * Resets the cool down of the companion ability
      *
      * If flag is true, the weapon will cool down by one animation frame.
      * Otherwise it will reset to its maximum cooldown.
      *
      * @param flag whether to cooldown or reset
      */
-    public void coolDown(boolean flag) {
-//        if (flag && abilityCool > 0) {
-//            abilityCool--;
-//        } else if (!flag) {
-//            abilityCool = COOLDOWN;
-//        }
+    public void coolDown(boolean flag, float delta) {
+        if (flag && abilityCool > 0) {
+            abilityCool -= delta;
+        } else if (!flag) {
+            abilityCool = cooldown;
+        }
     }
 
-    public void follow(long delta){
-        if (delta % 120 == 0){
+    public void follow(long delta) {
+        if (delta % 120 == 0) {
             prevVelocity = velocity;
         }
     }
 
-
-    public boolean isCollected(){
+    public boolean isCollected() {
         return collected;
     }
 
-    public void setCollected(Boolean b){
+    public void setCollected(Boolean b) {
         collected = b;
     }
 
@@ -131,9 +139,10 @@ public abstract class Companion extends GameObject {
 
     /**
      * Updates the movement of a companion in the chain
+     *
      * @param controlCode
      */
-    public void update (int controlCode){
+    public void update(int controlCode) {
         if (!isAlive) {
             return;
         }
@@ -145,7 +154,7 @@ public abstract class Companion extends GameObject {
         boolean movingDown = controlCode == 8;
 
         // Process movement command.
-        //int s = 2;
+        // int s = 2;
         if (movingLeft) {
             this.direction = InputController.CONTROL_MOVE_LEFT;
             velocity.x = -MOVE_SPEED;
@@ -162,7 +171,7 @@ public abstract class Companion extends GameObject {
             this.direction = InputController.CONTROL_MOVE_DOWN;
             velocity.y = -MOVE_SPEED;
             velocity.x = 0;
-        }else{
+        } else {
             velocity.x = 0;
             velocity.y = 0;
         }
@@ -173,19 +182,19 @@ public abstract class Companion extends GameObject {
      *
      * @return control code of companion's current movement
      */
-    public int getDirection () {
+    public int getDirection() {
         return this.direction;
     }
 
-    public void setDirection ( int direction){
+    public void setDirection(int direction) {
         this.direction = direction;
     }
 
-    public float getPrevX(){
+    public float getPrevX() {
         return this.prevX;
     }
 
-    public float getPrevY(){
+    public float getPrevY() {
         return this.prevY;
     }
 

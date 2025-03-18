@@ -44,7 +44,10 @@ public class Strawberry extends Companion {
 
         for (int i = 0; i < 5; i++) {
             StrawberryProjectile projectile = ProjectilePools.strawberryPool.obtain();
-
+            // need to add this because previous projectiles from pool that were used would be setDestroyed
+            projectile.setDestroyed(false);
+            // same idea here: need to reset the life count of the projectile from the pool to reuse
+            projectile.resetLife();
             projectile.setX(getX());
             projectile.setY(getY());
 
@@ -52,9 +55,9 @@ public class Strawberry extends Companion {
             projectile.setVX((float) Math.cos(Math.toRadians(fireAngle)));
             projectile.setVY((float) Math.sin(Math.toRadians(fireAngle)));
 
-            state.getProjectiles().add(projectile);
+            state.getActiveProjectiles().add(projectile);
         }
 
-        coolDown(false);
+        coolDown(false, 0);
     };
 }

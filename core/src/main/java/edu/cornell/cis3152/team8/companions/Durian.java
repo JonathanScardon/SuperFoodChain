@@ -4,14 +4,18 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import edu.cornell.cis3152.team8.Companion;
 import edu.cornell.cis3152.team8.GameState;
+import edu.cornell.cis3152.team8.ProjectilePools;
+import edu.cornell.cis3152.team8.StrawberryProjectile;
 import edu.cornell.gdiac.graphics.SpriteBatch;
+import java.util.Random;
 
 public class Durian extends Companion {
 
     Texture texture;
+
     /**
      * Constructs a Durian at the given position
-
+     *
      * @param x The x-coordinate of the object
      * @param y The y-coordinate of the object
      */
@@ -24,20 +28,20 @@ public class Durian extends Companion {
         texture = new Texture("images/Durian.png");
     }
 
-    public void draw(SpriteBatch batch){
-        if (isDestroyed()){
+    public void draw(SpriteBatch batch) {
+        if (isDestroyed()) {
             batch.setColor(Color.BLACK);
         }
-        batch.draw(texture,position.x,position.y,64,64);
+        batch.draw(texture, position.x, position.y, 64, 64);
         batch.setColor(Color.WHITE);
     }
+
     @Override
     /**
      * A Durian creates a shield for the player
      */
     public void useAbility(GameState state) {
         state.getPlayer().setShield(true);
-
-        coolDown(false);
-    };
+        coolDown(false, 0);
+    }
 }
