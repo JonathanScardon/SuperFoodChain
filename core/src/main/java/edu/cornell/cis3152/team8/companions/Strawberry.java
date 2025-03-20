@@ -1,6 +1,8 @@
 package edu.cornell.cis3152.team8.companions;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.math.Vector2;
 import edu.cornell.cis3152.team8.Companion;
 import edu.cornell.cis3152.team8.GameState;
 import edu.cornell.cis3152.team8.ProjectilePools;
@@ -21,14 +23,20 @@ public class Strawberry extends Companion {
     public Strawberry(float x, float y) {
         super(x, y);
         setCompanionType(CompanionType.STRAWBERRY);
-        setCost(3);
+        //temp cost (was 3)
+        setCost(2);
         setCooldown(3);
         radius = 1;
         texture = new Texture("images/Strawberry.png");
+
     }
 
     public void draw(SpriteBatch batch){
-        batch.draw(texture,position.x,position.y,64,64);
+        if (isDestroyed()) {
+            batch.setColor(Color.BLACK);
+        }
+        batch.draw(texture, position.x, position.y, 64, 64);
+        batch.setColor(Color.WHITE);
     }
 
 
@@ -59,5 +67,5 @@ public class Strawberry extends Companion {
         }
 
         coolDown(false, 0);
-    };
+    }
 }

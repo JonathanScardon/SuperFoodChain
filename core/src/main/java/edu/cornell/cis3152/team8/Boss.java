@@ -60,7 +60,7 @@ public abstract class Boss extends GameObject {
         warnPatterns = new Array<>();
         warnSprites = new Array<>();
         radius = 3;
-        health = 5;
+        health = 10;
     }
 
     // accessors

@@ -9,11 +9,12 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ScreenUtils;
+import edu.cornell.cis3152.team8.companions.Strawberry;
 import edu.cornell.gdiac.assets.AssetDirectory;
 import edu.cornell.cis3152.team8.companions.Durian;
-import edu.cornell.cis3152.team8.companions.Strawberry;
 import edu.cornell.gdiac.graphics.SpriteBatch;
 import edu.cornell.gdiac.graphics.TextLayout;
 import edu.cornell.gdiac.util.ScreenListener;
@@ -73,7 +74,7 @@ public class GameScene implements Screen {
         coinTexture = new Texture("images/Coin.png");
         player = new Player(500, 350);
         state.setPlayer(player);
-        initMinions(2);
+        initMinions(5);
         initCompanionPositions(5);
         // initCoins(5);
         coins = new LinkedList<>();
@@ -137,9 +138,14 @@ public class GameScene implements Screen {
         Random rand = new Random();
         companions = new Companion[numCompanions];
         for (int i = 0; i < companions.length; i++) {
-            int x = rand.nextInt(1280);
-            int y = rand.nextInt(720);
-            Companion c = new Durian(x, y);
+            Companion c;
+            int x = rand.nextInt(1180);
+            int y = rand.nextInt(620);
+            if (i%2 == 0){
+                c = new Strawberry(x,y);
+            }else{
+                c = new Durian(x, y);
+            }
             companions[i] = c;
         }
     }
@@ -169,7 +175,7 @@ public class GameScene implements Screen {
         if (Gdx.input.isTouched()) {
             start = true;
         }
-        if (start && player.isAlive()) {
+        if (start && player.isAlive() && !bosses[0].isDestroyed()) {
             // iterate through all companions in the chain
             for (Companion c : player.companions) {
                 if (c.canUse()) {
@@ -227,6 +233,7 @@ public class GameScene implements Screen {
     }
 
     public void draw(float delta) {
+        BitmapFont font = new BitmapFont();
         ScreenUtils.clear(Color.WHITE);
 
         game.batch.begin();
@@ -240,9 +247,17 @@ public class GameScene implements Screen {
             m.draw(game.batch);
         }
 
+
         player.draw(game.batch);
         for (Companion c : companions) {
+            String cost = "Cost: " + c.getCost();
+            TextLayout compCost = new TextLayout(cost, font);
             c.draw(game.batch);
+            //temp UI
+            if(!player.companions.contains(c)) {
+                game.batch.drawText(compCost, c.getX() + 35, c.getY());
+            }
+
         }
 
         for (Projectile p : state.getActiveProjectiles()) {
@@ -254,9 +269,12 @@ public class GameScene implements Screen {
         }
 
         String coins = "X" + player.getCoins();
-        BitmapFont font = new BitmapFont();
+        String HP = "Boss HP: " + bosses[0].getHealth();
         TextLayout coinCount = new TextLayout(coins, font, 128);
+        TextLayout bossHP = new TextLayout(HP, font, 128);
+        //Temp UI
         game.batch.draw(coinTexture, 1150, 65, 50, 50);
+        game.batch.drawText(bossHP,600,700);
         game.batch.drawText(coinCount, 1200f, 80f);
 
         if (!player.isAlive()) {
