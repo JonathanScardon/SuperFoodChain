@@ -21,8 +21,11 @@ public class Durian extends Companion {
      */
     public Durian(float x, float y) {
         super(x, y);
+        //System.out.println(animator);
+        //System.out.println(origin);
         setCompanionType(CompanionType.DURIAN);
-        setCost(0);
+        //temp cost (was 10)
+        setCost(1);
         setCooldown(10);
         radius = 1;
         texture = new Texture("images/Durian.png");
