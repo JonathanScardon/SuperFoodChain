@@ -5,6 +5,8 @@ package edu.cornell.cis3152.team8;
  */
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
@@ -61,6 +63,7 @@ public class GameScene implements Screen {
 
     private CollisionController collision;
     private boolean start;
+    private boolean reset;
 
     /**
      * Creates a GameScene
@@ -70,33 +73,8 @@ public class GameScene implements Screen {
     public GameScene(final GDXRoot game, AssetDirectory assets) {
         this.game = game;
         this.state = new GameState(assets);
-        start = false;
         coinTexture = new Texture("images/Coin.png");
-        player = new Player(500, 350);
-        state.setPlayer(player);
-        initMinions(5);
-        initCompanionPositions(5);
-        // initCoins(5);
-        coins = new LinkedList<>();
-        bosses = state.getBosses();
-        bossControls = new InputController[bosses.length];
-        bossControls[0] = new MouseController(bosses[0], state);
-        projectiles = state.getActiveProjectiles();
-
-        collision = new CollisionController(minions, player, companions, coins, bosses, projectiles);
-
-        // assuming player is a list of Companions btw
-        // player = state.getPlayer();
-        playerControls = new PlayerController(player);
-
-        // level = state.getLevel();
-
-        // assuming each level has number of enemies assigned?
-        minionControls = new InputController[minions.length];
-        for (int i = 0; i < minions.length; i++) {
-            minionControls[i] = new MinionController(i, minions, player);
-        }
-
+        reset();
     }
 
     /**
@@ -172,8 +150,12 @@ public class GameScene implements Screen {
      * but photon collisions are not.
      */
     public void update(float delta) {
+        if (Gdx.input.isKeyPressed(Keys.R) && !reset){
+            reset();
+        }
         if (Gdx.input.isTouched()) {
             start = true;
+            reset = false;
         }
         if (start && player.isAlive() && !bosses[0].isDestroyed()) {
             // iterate through all companions in the chain
@@ -301,15 +283,16 @@ public class GameScene implements Screen {
 
     private void drawTiles() {
         // technically this should be a call to the draw function inside of level
-        int tileSize = 64;
-        Texture tileTexture = new Texture("images/Tile1.png");
-        for (int x = 0; x < 20; x++) {
-            for (int y = 0; y < 12; y++) {
-                float xx = (float) (x) * tileSize;
-                float yy = (float) (y) * tileSize;
-                game.batch.draw(tileTexture, xx, yy, tileSize, tileSize);
-            }
-        }
+        //int tileSize = 64;
+        Texture tileTexture = new Texture("images/Background.png");
+        game.batch.draw(tileTexture, 0, 0, 1280, 720);
+//        for (int x = 0; x < 20; x++) {
+//            for (int y = 0; y < 12; y++) {
+//                float xx = (float) (x) * tileSize;
+//                float yy = (float) (y) * tileSize;
+//                game.batch.draw(tileTexture, xx, yy, tileSize, tileSize);
+//            }
+//        }
     }
 
     private void drawLose() {
@@ -358,5 +341,35 @@ public class GameScene implements Screen {
     @Override
     public void dispose() {
 
+    }
+
+    private void reset(){
+        start = false;
+        reset = true;
+        state.reset();
+        player = new Player(500, 350);
+        state.setPlayer(player);
+        initMinions(5);
+        initCompanionPositions(5);
+        // initCoins(5);
+        coins = new LinkedList<>();
+        bosses = state.getBosses();
+        bossControls = new InputController[bosses.length];
+        bossControls[0] = new MouseController(bosses[0], state);
+        projectiles = state.getActiveProjectiles();
+
+        collision = new CollisionController(minions, player, companions, coins, bosses, projectiles);
+
+        // assuming player is a list of Companions btw
+        // player = state.getPlayer();
+        playerControls = new PlayerController(player);
+
+        // level = state.getLevel();
+
+        // assuming each level has number of enemies assigned?
+        minionControls = new InputController[minions.length];
+        for (int i = 0; i < minions.length; i++) {
+            minionControls[i] = new MinionController(i, minions, player);
+        }
     }
 }
