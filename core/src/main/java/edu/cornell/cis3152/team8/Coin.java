@@ -22,7 +22,7 @@ public class Coin extends GameObject{
      */
     public Coin(float x, float y) {
         super(x,y);
-        texture = new Texture("images/Coin.png");
+        texture = new Texture("images/coin.png");
         //setConstants(constants);
     }
 
