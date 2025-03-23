@@ -73,7 +73,7 @@ public class GameScene implements Screen {
     public GameScene(final GDXRoot game, AssetDirectory assets) {
         this.game = game;
         this.state = new GameState(assets);
-        coinTexture = new Texture("images/Coin.png");
+        coinTexture = new Texture("images/coin.png");
         reset();
     }
 
