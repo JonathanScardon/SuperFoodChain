@@ -1,15 +1,28 @@
 # team8
 
+## Instructions
+
+*The UI sizes, designs, and placements are all temporary*
+
+Use the arrow keys to move around.
+Move over a companion to collect it. Coin spending happens automatically.
+Companion costs are shown underneath them.
+The strawberry shoots 5 seeds in random directions automatically.
+The durian adds a shield on the player.
+Each ant drops one coin upon death. Move over it to collect it.
+Win the level by hitting the beetle with strawberry seeds.
+
+## LibGDX
 A [libGDX](https://libgdx.com/) project generated with [gdx-liftoff](https://github.com/libgdx/gdx-liftoff).
 
 This project was generated with a template including simple application launchers and an `ApplicationAdapter` extension that draws libGDX logo.
 
-## Platforms
+### Platforms
 
 - `core`: Main module with the application logic shared by all platforms.
 - `lwjgl3`: Primary desktop platform using LWJGL3; was called 'desktop' in older docs.
 
-## Gradle
+### Gradle
 
 This project uses [Gradle](https://gradle.org/) to manage dependencies.
 The Gradle wrapper was included, so you can run Gradle tasks using `gradlew.bat` or `./gradlew` commands.
