@@ -65,6 +65,8 @@ public class GameScene implements Screen {
     private boolean start;
     private boolean reset;
 
+    private boolean background;
+
     /**
      * Creates a GameScene
      *
@@ -73,7 +75,7 @@ public class GameScene implements Screen {
     public GameScene(final GDXRoot game, AssetDirectory assets) {
         this.game = game;
         this.state = new GameState(assets);
-        coinTexture = new Texture("images/coin.png");
+        coinTexture = new Texture("images/CoinUI.png");
         reset();
     }
 
@@ -211,6 +213,10 @@ public class GameScene implements Screen {
             if (player.isAlive()) {
                 collision.update();
             }
+
+            for (Coin c: coins){
+                c.update(delta);
+            }
         }
     }
 
@@ -219,7 +225,10 @@ public class GameScene implements Screen {
         ScreenUtils.clear(Color.WHITE);
 
         game.batch.begin();
-        drawTiles();
+
+        if (!background){
+            drawTiles();
+        }
 
         for (Boss boss : bosses) {
             boss.draw(game.batch);
@@ -295,7 +304,8 @@ public class GameScene implements Screen {
 
     private void drawTiles() {
         // technically this should be a call to the draw function inside of level
-        //int tileSize = 64;
+        int tileSize = 64;
+        //Texture tileTexture = new Texture("images/Tile.png");
         Texture tileTexture = new Texture("images/Background.png");
         game.batch.draw(tileTexture, 0, 0, 1280, 720);
 //        for (int x = 0; x < 20; x++) {
@@ -305,6 +315,7 @@ public class GameScene implements Screen {
 //                game.batch.draw(tileTexture, xx, yy, tileSize, tileSize);
 //            }
 //        }
+//        System.out.println("Draw Tiles");
     }
 
     private void drawLose() {
@@ -358,6 +369,7 @@ public class GameScene implements Screen {
     private void reset(){
         start = false;
         reset = true;
+        background = false;
         state.reset();
         player = new Player(500, 350);
         state.setPlayer(player);

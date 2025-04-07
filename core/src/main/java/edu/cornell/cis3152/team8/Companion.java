@@ -43,6 +43,9 @@ public abstract class Companion extends GameObject {
     private float prevX;
 
     private float prevY;
+    protected static float animationSpeed;
+    protected float animationFrame;
+
 
     public Companion(float x, float y) {
         super(x, y);
@@ -176,6 +179,15 @@ public abstract class Companion extends GameObject {
             velocity.y = 0;
         }
         position.add(velocity);
+
+//        if (animator != null) {
+//            animationFrame += animationSpeed;
+//            //System.out.println(animationFrame);
+//            if (animationFrame >= animator.getSize()) {
+//                animationFrame -= animator.getSize();
+//            }
+//        }
+
     }
 
     /**
