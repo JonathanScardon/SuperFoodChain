@@ -155,10 +155,8 @@ public class GameScene implements Screen {
         if (Gdx.input.isKeyPressed(Keys.R) && !reset){
             reset();
         }
-        if (Gdx.input.isTouched()) {
-            start = true;
-            reset = false;
-        }
+        setStart();
+
         if (start && player.isAlive() && !bosses[0].isDestroyed()) {
             // iterate through all companions in the chain
             for (Companion c : player.companions) {
@@ -394,6 +392,14 @@ public class GameScene implements Screen {
         minionControls = new InputController[minions.length];
         for (int i = 0; i < minions.length; i++) {
             minionControls[i] = new MinionController(i, minions, player);
+        }
+    }
+
+    private void setStart(){
+        if (Gdx.input.isKeyPressed(Keys.UP)||Gdx.input.isKeyPressed(Keys.DOWN)||
+            Gdx.input.isKeyPressed(Keys.LEFT)||Gdx.input.isKeyPressed(Keys.RIGHT)){
+            start = true;
+            reset = false;
         }
     }
 }

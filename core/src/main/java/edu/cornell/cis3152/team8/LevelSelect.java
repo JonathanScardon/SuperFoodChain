@@ -5,8 +5,9 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.ScreenUtils;
+import edu.cornell.gdiac.graphics.SpriteBatch.BlendMode;
 
-    public class LevelSelect implements Screen {
+public class LevelSelect implements Screen {
         /**
          * Reference to the GDX root
          */
@@ -45,7 +46,23 @@ import com.badlogic.gdx.utils.ScreenUtils;
             game.batch.draw(tray,0,0);
             for (int i = 1; i <= 2; i++) {
                 for (int j = 1; j <= 3; j++) {
-                    game.batch.draw(plate, 125+ j*200, i*200-60);
+                    int x = 125+ j*220;
+                    int y = i*200-60;
+                    int cx = Gdx.input.getX();
+                    int cy = 720 - Gdx.input.getY();
+                    //if (i == 1 && j == 1) {
+                        //System.out.println("Plate" + i + "," + j + " " + x + " " + y);
+                       // System.out.println("Cursor" + cx + " " + cy);
+                       // System.out.println("upper: " + (y + plate.getHeight()));
+                        if (cx >= x && cx <= x + plate.getWidth() && cy >= y
+                            && cy <= y + plate.getHeight()) {
+                            game.batch.setBlendMode(BlendMode.ADDITIVE);
+
+
+                        }
+                        game.batch.draw(plate, x, y);
+                        game.batch.setBlendMode(BlendMode.ALPHA_BLEND);
+                    //}
                 }
             }
 
