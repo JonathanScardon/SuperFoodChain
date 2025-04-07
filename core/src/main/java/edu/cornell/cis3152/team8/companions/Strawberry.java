@@ -43,7 +43,7 @@ public class Strawberry extends Companion {
 
     public void draw(SpriteBatch batch){
         if (isDestroyed()) {
-            animator.setFrame(0);
+            animator.setFrame(1);
             batch.setColor(Color.BLACK);
         }else {
             animator.setFrame((int)animationFrame);
