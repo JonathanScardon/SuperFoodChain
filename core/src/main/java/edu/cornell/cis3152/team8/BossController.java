@@ -5,25 +5,7 @@ import com.badlogic.gdx.utils.Array;
 import java.util.Queue;
 
 public abstract class BossController implements InputController {
-    public interface AttackPattern {
-        void warn();
-        void attack();
-    }
-
-    public class WarnPattern extends GameObject {
-        public boolean active;
-
-        public WarnPattern(float x, float y) {
-            super(x, y);
-        }
-
-        @Override
-        public ObjectType getType() {
-            return ObjectType.WARNING;
-        }
-    }
-
-    protected enum FSMState {
+    public enum FSMState {
         /**
          * Either the boss just spawned or it is waiting to attack again
          */
@@ -61,15 +43,15 @@ public abstract class BossController implements InputController {
     /**
      * The set of attack patterns that the boss can choose from
      */
-    protected Array<AttackPattern> attackPatterns;
+    protected Array<BossAttackPattern> attackPatterns;
     /**
      * A queue of attacks the boss plans to use before idling again
      */
     protected Queue<Integer> plannedAttacks;
     /**
-     * Current amount of time until next attack within a set of attacks
+     * The attack pattern that the boss is currently warning/executing
      */
-    protected float warnTime;
+    protected BossAttackPattern curAttack;
 
     public BossController(Boss boss, GameState gameState) {
         this.state = FSMState.IDLE;
@@ -81,5 +63,13 @@ public abstract class BossController implements InputController {
     @Override
     public int getAction() {
         return action;
+    }
+
+    public void setState(FSMState state) {
+        this.state = state;
+    }
+
+    public void setAction(int action) {
+        this.action = action;
     }
 }
