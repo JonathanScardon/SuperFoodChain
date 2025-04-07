@@ -5,61 +5,14 @@ import com.badlogic.gdx.utils.Array;
 import java.util.LinkedList;
 
 public class MouseController extends BossController {
-    private class MouseAttackPattern implements AttackPattern {
-        private final int id;
-        private final int startX, startY;
-        private final int controlCode;
-        private final int warnDuration;
-
-        public MouseAttackPattern(int id, int x, boolean top, int warnDuration) {
-            this.id = id;
-            this.startX = x;
-            this.startY = top ? 720 + RADIUS : -RADIUS;
-            this.controlCode = top ? CONTROL_MOVE_DOWN : CONTROL_MOVE_UP;
-            this.warnDuration = warnDuration;
-
-            WarnPattern wp = new WarnPattern(startX, 720f / 2f);
-            wp.setSpriteSheet(boss.warnSprites.get(0));
-            boss.warnPatterns.add(wp);
-        }
-
-        @Override
-        public void warn() {
-            state = FSMState.WARN;
-            boss.setX(startX);
-            boss.setY(startY);
-            boss.setVX(0);
-            if (controlCode == CONTROL_MOVE_UP) {
-                boss.setVY(15f);
-                boss.angle = 90f;
-            } else if (controlCode == CONTROL_MOVE_DOWN) {
-                boss.setVY(-15f);
-                boss.angle = 270f;
-            }
-            action = CONTROL_NO_ACTION;
-            warnTime = warnDuration;
-            boss.warnPatterns.get(id).active = true;
-        }
-
-        @Override
-        public void attack() {
-            state = FSMState.ATTACK;
-            boss.attackCooldown(false);
-            action = controlCode;
-            boss.warnPatterns.get(id).active = false;
-        }
-    }
-
-    final int RADIUS = 40 * 3 / 2; // TEMPORARY
-
     public MouseController(Boss boss, GameState gameState) {
         super(boss, gameState);
 
         // generate attack patterns
-        int num_attacks = (int) Math.ceil(1280f / (RADIUS * 2f));
+        int num_attacks = (int) Math.ceil(1280f / (boss.getRadius() * 2f));
         attackPatterns = new Array<>();
         for (int i = 0; i < num_attacks; i++) {
-            attackPatterns.add(new MouseAttackPattern(i, i * RADIUS * 2 + RADIUS, i % 2 == 1, 10));
+            attackPatterns.add(new DashAttackPattern(this, i * boss.getRadius() * 2 + boss.getRadius(), i % 2 == 1, 10, boss.warnSprites.get(0)));
         }
         plannedAttacks = new LinkedList<>();
 
@@ -74,32 +27,27 @@ public class MouseController extends BossController {
 
             // try to attack all the time
             if (boss.canAttack()) {
-                // choose set of attacks to do
-                for (int i = 0; i < attackPatterns.size; i++) {
-                    plannedAttacks.add(i);
-                }
-                state = FSMState.WARN;
-                attackPatterns.get(plannedAttacks.peek()).warn();
-            }
-        } else if (state == FSMState.WARN) {
-            if (warnTime > 0) {
-                warnTime--;
-            }
-            boolean warningEnded = warnTime <= 0;
-            if (warningEnded) {
-                attackPatterns.get(plannedAttacks.poll()).attack();
+                chooseAttacks();
+                curAttack = attackPatterns.get(plannedAttacks.poll());
+                curAttack.warn();
             }
         } else if (state == FSMState.ATTACK) {
-            boolean attackEnded = boss.getY() + RADIUS < 0 || boss.getY() - RADIUS > 720;
-            if (attackEnded) {
+            // if we finished the current attack do the next one in the queue
+            if (curAttack.attackEnded()) {
                 if (plannedAttacks.isEmpty()) {
-                    // finished all attacks
-                    idle();
+                    idle(); // finished all attacks
                 } else {
-                    state = FSMState.WARN;
-                    attackPatterns.get(plannedAttacks.peek()).warn();
+                    curAttack = attackPatterns.get(plannedAttacks.poll()); // get next attack in queue
+                    curAttack.warn();
                 }
             }
+        }
+    }
+
+    private void chooseAttacks() {
+        // choose set of attacks to do
+        for (int i = 0; i < attackPatterns.size; i++) {
+            plannedAttacks.add(i);
         }
     }
 
@@ -108,6 +56,9 @@ public class MouseController extends BossController {
         ticks++;
 
         if (ticks % 10 == 0) {
+            if (curAttack != null) {
+                curAttack.update();
+            }
             updateState();
         }
 
@@ -120,6 +71,7 @@ public class MouseController extends BossController {
     public void idle() {
         state = FSMState.IDLE;
         action = CONTROL_NO_ACTION;
+        curAttack = null;
 
         boss.setX((float) 1280 / 2);
         boss.setY((float) 720 / 2);
