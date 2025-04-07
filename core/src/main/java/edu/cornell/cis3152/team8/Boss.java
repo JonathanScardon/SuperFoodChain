@@ -60,12 +60,6 @@ public abstract class Boss extends GameObject {
         EPSILON = constants.getFloat("epsilon", 0.01f);
         animationSpeed = constants.getFloat("animationSpeed", 0.1f);
     }
-    public static void setConstants() {
-        MOVE_SPEED = 10;
-        SPEED_DAMP = 0.75f;
-        EPSILON = 0.01f;
-        animationSpeed = 0.1f;
-    }
 
     public Boss(float x, float y) {
         super(x, y);

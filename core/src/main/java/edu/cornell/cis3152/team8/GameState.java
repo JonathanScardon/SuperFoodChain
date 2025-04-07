@@ -33,9 +33,13 @@ public class GameState {
      * The minions
      */
     private Minion[] minions;
-    /** The bosses */
+    /**
+     * The bosses
+     */
     private Boss[] bosses;
-    /** The coins on the map */
+    /**
+     * The coins on the map
+     */
     private Coin[] coins;
     /**
      * The companions on the map
@@ -62,6 +66,9 @@ public class GameState {
         mouseSprite = assets.getEntry("mouse.animation", SpriteSheet.class);
         warningSprite = assets.getEntry("mouseWarn.animation", SpriteSheet.class);
         projectiles = new Array<Projectile>();
+
+        Boss.setConstants(this.constants.get("boss"));
+
         reset();
     }
 
