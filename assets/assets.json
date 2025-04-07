@@ -20,8 +20,18 @@
                 }
             }
         },
-        "mouseWarn": {
-            "file": "images/mouseWarn.png",
+        "dashWarn": {
+            "file": "images/dashWarn.png",
+            "sprites": {
+                "animation": {
+                    "rows": 1,
+                    "cols": 2,
+                    "size": 2
+                }
+            }
+        },
+        "idleWarn": {
+            "file": "images/idleWarn.png",
             "sprites": {
                 "animation": {
                     "rows": 1,
