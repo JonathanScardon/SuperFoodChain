@@ -31,7 +31,7 @@ public class Strawberry extends Companion {
         texture = new Texture("images/Strawberry.png");
         SpriteSheet coin = new SpriteSheet(texture, 1, 7);
         setSpriteSheet(coin);
-        animationSpeed = 0.25f;
+        animationSpeed = 0.15f;
         size = 0.4f;
     }
 
@@ -41,24 +41,24 @@ public class Strawberry extends Companion {
 
     }
 
-    public void draw(SpriteBatch batch){
-        if (isDestroyed()) {
-            animator.setFrame(1);
-            batch.setColor(Color.BLACK);
-        }else {
-            animator.setFrame((int)animationFrame);
-            batch.setColor( Color.WHITE );
-
-        }
-        SpriteBatch.computeTransform(transform, origin.x, origin.y,
-            position.x, position.y, 0.0f, size
-            , size);
-
-        batch.draw( animator, transform );
-        //batch.draw(texture, position.x, position.y, 64, 64);
-        //batch.draw(texture, position.x, position.y, 64, 64);
-        batch.setColor(Color.WHITE);
-    }
+//    public void draw(SpriteBatch batch){
+//        if (isDestroyed()) {
+//            animator.setFrame(1);
+//            batch.setColor(Color.BLACK);
+//        }else {
+//            animator.setFrame((int)animationFrame);
+//            batch.setColor( Color.WHITE );
+//
+//        }
+//        SpriteBatch.computeTransform(transform, origin.x, origin.y,
+//            position.x, position.y, 0.0f, size
+//            , size);
+//
+//        batch.draw( animator, transform );
+//        //batch.draw(texture, position.x, position.y, 64, 64);
+//        //batch.draw(texture, position.x, position.y, 64, 64);
+//        batch.setColor(Color.WHITE);
+//    }
 
 
     @Override
