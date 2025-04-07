@@ -38,60 +38,89 @@ import edu.cornell.gdiac.util.*;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.*;
+
 import javax.swing.Box;
 
 /**
  * Class that provides a loading screen for the state of the game.
- *
+ * <p>
  * This is a fairly generic loading screen that shows the GDIAC logo and a
  * progress bar. Once all assets are loaded, the progress bar is replaced
  * by a play button. You are free to adopt this to your needs.
  */
 public class LoadingScene implements Screen, InputProcessor {
-    /** Default budget for asset loader (do nothing but load 60 fps) */
+    /**
+     * Default budget for asset loader (do nothing but load 60 fps)
+     */
     private static int DEFAULT_BUDGET = 15;
 
     // There are TWO asset managers.
     // One to load the loading screen. The other to load the assets
-    /** Internal assets for this loading screen */
+    /**
+     * Internal assets for this loading screen
+     */
     private AssetDirectory internal;
-    /** The actual assets to be loaded */
+    /**
+     * The actual assets to be loaded
+     */
     private AssetDirectory assets;
 
-    /** The drawing camera for this scene */
+    /**
+     * The drawing camera for this scene
+     */
     private OrthographicCamera camera;
-    /** Reference to sprite batch created by the root */
+    /**
+     * Reference to sprite batch created by the root
+     */
     private SpriteBatch batch;
-    /** Affine transform for displaying images */
+    /**
+     * Affine transform for displaying images
+     */
     private Affine2 affine;
-    /** Listener that will update the player mode when we are done */
+    /**
+     * Listener that will update the player mode when we are done
+     */
     private ScreenListener listener;
 
-    /** The width of this scene */
+    /**
+     * The width of this scene
+     */
     private int width;
-    /** The height of this scene */
+    /**
+     * The height of this scene
+     */
     private int height;
 
-    /** The constants for arranging images on the screen */
+    /**
+     * The constants for arranging images on the screen
+     */
     JsonValue constants;
 
-    /** Scaling factor for when the student changes the resolution. */
+    /**
+     * Scaling factor for when the student changes the resolution.
+     */
     private float scale;
-    /** Current progress (0 to 1) of the asset manager */
+    /**
+     * Current progress (0 to 1) of the asset manager
+     */
     private float progress;
-    /** The current state of the play button */
-    private int   pressState;
-    /** The amount of time to devote to loading assets (as opposed to on screen hints, etc.) */
-    private int   budget;
+    /**
+     * The current state of the play button
+     */
+    private int pressState;
+    /**
+     * The amount of time to devote to loading assets (as opposed to on screen hints, etc.)
+     */
+    private int budget;
 
-    /** Whether or not this player mode is still active */
+    /**
+     * Whether this player mode is still active
+     */
     private boolean active;
-
-    private long ticks;
 
     /**
      * Returns the budget for the asset loader.
-     *
+     * <p>
      * The budget is the number of milliseconds to spend loading assets each
      * animation frame. This allows you to do something other than load assets.
      * An animation frame is ~16 milliseconds. So if the budget is 10, you have
@@ -106,7 +135,7 @@ public class LoadingScene implements Screen, InputProcessor {
 
     /**
      * Sets the budget for the asset loader.
-     *
+     * <p>
      * The budget is the number of milliseconds to spend loading assets each
      * animation frame. This allows you to do something other than load assets.
      * An animation frame is ~16 milliseconds. So if the budget is 10, you have
@@ -125,14 +154,12 @@ public class LoadingScene implements Screen, InputProcessor {
      * @return true if the player is ready to go
      */
     public boolean isReady() {
-        return ticks >= 100;
-
-        //return pressState == 2;
+        return pressState == 2;
     }
 
     /**
      * Returns the asset directory produced by this loading screen
-     *
+     * <p>
      * This asset loader is NOT owned by this loading scene, so it persists even
      * after the scene is disposed. It is your responsbility to unload the
      * assets in this directory.
@@ -146,8 +173,8 @@ public class LoadingScene implements Screen, InputProcessor {
     /**
      * Creates a LoadingMode with the default budget, size and position.
      *
-     * @param file      The asset directory to load in the background
-     * @param batch     The sprite batch to draw to
+     * @param file  The asset directory to load in the background
+     * @param batch The sprite batch to draw to
      */
     public LoadingScene(String file, SpriteBatch batch) {
         this(file, batch, DEFAULT_BUDGET);
@@ -155,37 +182,37 @@ public class LoadingScene implements Screen, InputProcessor {
 
     /**
      * Creates a LoadingMode with the default size and position.
-     *
+     * <p>
      * The budget is the number of milliseconds to spend loading assets each animation
      * frame. This allows you to do something other than load assets. An animation
      * frame is ~16 milliseconds. So if the budget is 10, you have 6 milliseconds to
      * do something else. This is how game companies animate their loading screens.
      *
-     * @param file      The asset directory to load in the background
-     * @param canvas     The game canvas to draw to
+     * @param file   The asset directory to load in the background
+     * @param batch The game canvas to draw to
      * @param millis The loading budget in milliseconds
      */
     public LoadingScene(String file, SpriteBatch batch, int millis) {
-        this.batch  = batch;
+        this.batch = batch;
         budget = millis;
 
-        // We need these files loaded immediately
-        internal = new AssetDirectory( "loading/boot.json" );
+        // Load files for loading screen immediately
+        internal = new AssetDirectory("loading/boot.json");
         internal.loadAssets();
         internal.finishLoading();
 
-        constants = internal.getEntry( "constants", JsonValue.class );
-        resize(Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
+        constants = internal.getEntry("constants", JsonValue.class);
+        resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
-        // No progress so far.
+        // No progress so far
         progress = 0;
         pressState = 0;
 
         affine = new Affine2();
-        Gdx.input.setInputProcessor( this );
+        Gdx.input.setInputProcessor(this);
 
         // Start loading the REAL assets
-        assets = new AssetDirectory( file );
+        assets = new AssetDirectory(file);
         assets.loadAssets();
         active = true;
     }
@@ -200,7 +227,7 @@ public class LoadingScene implements Screen, InputProcessor {
 
     /**
      * Updates the status of this scene
-     *
+     * <p>
      * We prefer to separate update and draw from one another as separate
      * methods, instead of using the single render() method that LibGDX does.
      * We will talk about why we prefer this in lecture.
@@ -210,106 +237,104 @@ public class LoadingScene implements Screen, InputProcessor {
     private void update(float delta) {
         if (progress < 1.0f) {
             assets.update(budget);
-            this.progress+= 0.01;
-            //System.out.println(progress);
-            //this.progress = assets.getProgress();
+            this.progress = assets.getProgress();
             if (progress >= 1.0f) {
                 this.progress = 1.0f;
             }
         }
-        ticks++;
     }
 
     /**
      * Draws the status of this player mode.
-     *
+     * <p>
      * We prefer to separate update and draw from one another as separate
      * methods, instead of using the single render() method that LibGDX does.
      * We will talk about why we prefer this in lecture.
      */
     private void draw() {
         // Cornell colors
-        ScreenUtils.clear( 173, 153, 191,1.0f );
+        ScreenUtils.clear(173, 153, 191, 1.0f);
 
         batch.begin(camera);
-        batch.setColor(173, 153, 191,1.0f);
+        batch.setColor(173, 153, 191, 1.0f);
 
         // Height lock the logo
-        Texture texture = internal.getEntry( "splash", Texture.class );
+        Texture texture = internal.getEntry("splash", Texture.class);
 
-        batch.draw(texture,0, 0, width, height);
+        batch.draw(texture, 0, 0, width, height);
 
         if (progress < 1.0f) {
             drawProgress();
         } else {
-            float cx = width/2;
-            float cy = (int)(constants.getFloat( "bar.height" )*height);
-            float s = constants.getFloat("button.scale")*scale;
+            float cx = width / 2;
+            float cy = (int) (constants.getFloat("bar.height") * height);
+            float s = constants.getFloat("button.scale") * scale;
             Color tint = (pressState == 1 ? Color.GRAY : Color.WHITE);
-            texture = internal.getEntry("play",Texture.class);
+            texture = internal.getEntry("play", Texture.class);
 
-            SpriteBatch.computeTransform( affine, texture.getWidth() / 2, texture.getHeight() / 2,
-                cx, cy, 0, s, s );
+            SpriteBatch.computeTransform(affine, texture.getWidth() / 2, texture.getHeight() / 2,
+                cx, cy, 0, s, s);
 
-            batch.setColor( tint );
-            batch.draw( texture, affine );
+            batch.setColor(tint);
+            batch.draw(texture, affine);
         }
         batch.end();
     }
 
     /**
      * Updates the progress bar according to loading progress
-     *
+     * <p>
      * The progress bar is composed of parts: two rounded caps on the end, and
      * a rectangle in a middle. We adjust the size of the rectangle in the
      * middle to represent the amount of progress.
      */
     private void drawProgress() {
-        float w = (int)(constants.getFloat( "bar.width" )*width);
-        float cx = width/2;
-        float cy = (int)(constants.getFloat( "bar.height" )*height);
+        float w = (int) (constants.getFloat("bar.width") * width);
+        float cx = width / 2;
+        float cy = (int) (constants.getFloat("bar.height") * height);
         TextureRegion region1, region2, region3;
 
         // "3-patch" the background
-        batch.setColor( Color.WHITE );
-        region1 = internal.getEntry( "progress.backleft", TextureRegion.class );
-        batch.draw(region1,cx-w/2, cy, scale*region1.getRegionWidth(), scale*region1.getRegionHeight());
+        batch.setColor(Color.WHITE);
+        region1 = internal.getEntry("progress.backleft", TextureRegion.class);
+        batch.draw(region1, cx - w / 2, cy, scale * region1.getRegionWidth(), scale * region1.getRegionHeight());
 
-        region2 = internal.getEntry( "progress.backright", TextureRegion.class );
-        batch.draw(region2,cx+w/2-scale*region2.getRegionWidth(), cy,
-            scale*region2.getRegionWidth(), scale*region2.getRegionHeight());
+        region2 = internal.getEntry("progress.backright", TextureRegion.class);
+        batch.draw(region2, cx + w / 2 - scale * region2.getRegionWidth(), cy,
+            scale * region2.getRegionWidth(), scale * region2.getRegionHeight());
 
-        region3 = internal.getEntry( "progress.background", TextureRegion.class );
-        batch.draw(region3, cx-w/2+scale*region1.getRegionWidth(), cy,
-            w-scale*(region2.getRegionWidth()+region1.getRegionWidth()),
-            scale*region3.getRegionHeight());
+        region3 = internal.getEntry("progress.background", TextureRegion.class);
+        batch.draw(region3, cx - w / 2 + scale * region1.getRegionWidth(), cy,
+            w - scale * (region2.getRegionWidth() + region1.getRegionWidth()),
+            scale * region3.getRegionHeight());
 
         // "3-patch" the foreground
-        region1 = internal.getEntry( "progress.foreleft", TextureRegion.class );
-        batch.draw(region1,cx-w/2, cy,scale*region1.getRegionWidth(), scale*region1.getRegionHeight());
+        region1 = internal.getEntry("progress.foreleft", TextureRegion.class);
+        batch.draw(region1, cx - w / 2, cy, scale * region1.getRegionWidth(), scale * region1.getRegionHeight());
 
         if (progress > 0) {
-            region2 = internal.getEntry( "progress.foreright", TextureRegion.class );
-            float span = progress*(w-scale*(region1.getRegionWidth()+region2.getRegionWidth()));
+            region2 = internal.getEntry("progress.foreright", TextureRegion.class);
+            float span = progress * (w - scale * (region1.getRegionWidth() + region2.getRegionWidth()));
 
-            batch.draw( region2,cx-w/2+scale*region1.getRegionWidth()+span, cy,
-                scale*region2.getRegionWidth(), scale*region2.getRegionHeight());
+            batch.draw(region2, cx - w / 2 + scale * region1.getRegionWidth() + span, cy,
+                scale * region2.getRegionWidth(), scale * region2.getRegionHeight());
 
-            region3 = internal.getEntry( "progress.foreground", TextureRegion.class );
-            batch.draw(region3, cx-w/2+scale*region1.getRegionWidth(), cy,
-                span, scale*region3.getRegionHeight());
+            region3 = internal.getEntry("progress.foreground", TextureRegion.class);
+            batch.draw(region3, cx - w / 2 + scale * region1.getRegionWidth(), cy,
+                span, scale * region3.getRegionHeight());
         } else {
-            region2 = internal.getEntry( "progress.foreright", TextureRegion.class );
-            batch.draw(region2, cx-w/2+scale*region1.getRegionWidth(), cy,
-                scale*region2.getRegionWidth(), scale*region2.getRegionHeight());
+            region2 = internal.getEntry("progress.foreright", TextureRegion.class);
+            batch.draw(region2, cx - w / 2 + scale * region1.getRegionWidth(), cy,
+                scale * region2.getRegionWidth(), scale * region2.getRegionHeight());
         }
 
     }
 
     // ADDITIONAL SCREEN METHODS
+
     /**
      * Called when the Screen should render itself.
-     *
+     * <p>
      * We defer to the other methods update() and draw(). However, it is VERY
      * important that we only quit AFTER a draw.
      *
@@ -329,7 +354,7 @@ public class LoadingScene implements Screen, InputProcessor {
 
     /**
      * Called when the Screen is resized.
-     *
+     * <p>
      * This can happen at any point during a non-paused state but will never
      * happen before a call to show().
      *
@@ -338,20 +363,20 @@ public class LoadingScene implements Screen, InputProcessor {
      */
     public void resize(int width, int height) {
         // Compute the drawing scale
-        scale = ((float)height)/constants.getFloat( "height" );
+        scale = ((float) height) / constants.getFloat("height");
 
-        this.width  = width;
+        this.width = width;
         this.height = height;
         if (camera == null) {
-            camera = new OrthographicCamera(width,height);
+            camera = new OrthographicCamera(width, height);
         } else {
-            camera.setToOrtho( false, width, height  );
+            camera.setToOrtho(false, width, height);
         }
     }
 
     /**
      * Called when the Screen is paused.
-     *
+     * <p>
      * This is usually when it's not active or visible on screen. An Application
      * is also paused before it is destroyed.
      */
@@ -362,7 +387,7 @@ public class LoadingScene implements Screen, InputProcessor {
 
     /**
      * Called when the Screen is resumed from a paused state.
-     *
+     * <p>
      * This is usually when it regains focus.
      */
     public void resume() {
@@ -388,7 +413,7 @@ public class LoadingScene implements Screen, InputProcessor {
 
     /**
      * Sets the ScreenListener for this mode
-     *
+     * <p>
      * The ScreenListener will respond to requests to quit.
      */
     public void setScreenListener(ScreenListener listener) {
@@ -396,9 +421,10 @@ public class LoadingScene implements Screen, InputProcessor {
     }
 
     // PROCESSING PLAYER INPUT
+
     /**
      * Called when the screen was touched or a mouse button was pressed.
-     *
+     * <p>
      * This method checks to see if the play button is available and if the click
      * is in the bounds of the play button. If so, it signals the that the button
      * has been pressed and is currently down. Any mouse button is accepted.
@@ -414,15 +440,15 @@ public class LoadingScene implements Screen, InputProcessor {
         }
 
         // Flip to match graphics coordinates
-        screenY = height-screenY;
+        screenY = height - screenY;
 
         // Play button is a circle.
-        float cx = width/2;
-        float cy = (int)(constants.getFloat( "bar.height" )*height);
-        float s = constants.getFloat( "button.scale" )*scale;
-        float radius = s*internal.getEntry("play",Texture.class).getWidth()/2.0f;
-        float dist = (screenX-cx)*(screenX-cx)+(screenY-cy)*(screenY-cy);
-        if (dist < radius*radius) {
+        float cx = width / 2;
+        float cy = (int) (constants.getFloat("bar.height") * height);
+        float s = constants.getFloat("button.scale") * scale;
+        float radius = s * internal.getEntry("play", Texture.class).getWidth() / 2.0f;
+        float dist = (screenX - cx) * (screenX - cx) + (screenY - cy) * (screenY - cy);
+        if (dist < radius * radius) {
             pressState = 1;
         }
         return false;
@@ -430,7 +456,7 @@ public class LoadingScene implements Screen, InputProcessor {
 
     /**
      * Called when a finger was lifted or a mouse button was released.
-     *
+     * <p>
      * This method checks to see if the play button is currently pressed down.
      * If so, it signals the that the player is ready to go.
      *
@@ -462,7 +488,7 @@ public class LoadingScene implements Screen, InputProcessor {
     /**
      * Called when a key is typed (UNSUPPORTED)
      *
-     * @param keycode the key typed
+     * @param character the key typed
      * @return whether to hand the event to other listeners.
      */
     public boolean keyTyped(char character) {
@@ -495,7 +521,6 @@ public class LoadingScene implements Screen, InputProcessor {
      *
      * @param dx the amount of horizontal scroll
      * @param dy the amount of vertical scroll
-     *
      * @return whether to hand the event to other listeners.
      */
     public boolean scrolled(float dx, float dy) {
@@ -504,7 +529,7 @@ public class LoadingScene implements Screen, InputProcessor {
 
     /**
      * Called when the touch gesture is cancelled (UNSUPPORTED)
-     *
+     * <p>
      * Reason may be from OS interruption to touch becoming a large surface such
      * as the user cheek. Relevant on Android and iOS only. The button parameter
      * will be Input.Buttons.LEFT on iOS.

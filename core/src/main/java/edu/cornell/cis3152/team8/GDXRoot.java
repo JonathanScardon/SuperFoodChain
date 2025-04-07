@@ -35,12 +35,10 @@ public class GDXRoot extends Game implements ScreenListener {
         font.setUseIntegerPositions(false);
         font.getData().setScale(viewport.getWorldHeight() / Gdx.graphics.getHeight());
 
-
         menuScene = new MainMenuScene(this);
+        loadingScene = new LoadingScene("assets.json", batch, 1);
+        loadingScene.setScreenListener(this);
         this.setScreen(menuScene);
-//        loadingScene = new LoadingScene("assets.json", batch, 1);
-//        loadingScene.setScreenListener(this);
-//        this.setScreen(loadingScene);
     }
 
     @Override
@@ -71,7 +69,7 @@ public class GDXRoot extends Game implements ScreenListener {
         font.dispose();
         batch = null;
 
-        // Unload all of the resources
+        // Unload all the resources
         if (directory != null) {
             directory.unloadAssets();
             directory.dispose();
@@ -83,8 +81,6 @@ public class GDXRoot extends Game implements ScreenListener {
     @Override
     public void exitScreen(Screen screen, int exitCode) {
         if (screen == menuScene) {
-            loadingScene = new LoadingScene("assets.json", batch, 1);
-            loadingScene.setScreenListener(this);
             this.setScreen(loadingScene);
         } else if (screen == loadingScene) {
             directory = loadingScene.getAssets();
@@ -92,7 +88,7 @@ public class GDXRoot extends Game implements ScreenListener {
             loadingScene = null;
 
             gameScene = new GameScene(this, directory);
-            setScreen(gameScene);
+            this.setScreen(gameScene);
         } else {
             Gdx.app.exit();
         }
