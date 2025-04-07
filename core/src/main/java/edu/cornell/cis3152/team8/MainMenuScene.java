@@ -5,6 +5,7 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.ScreenUtils;
+import edu.cornell.gdiac.graphics.SpriteBatch.BlendMode;
 
 public class MainMenuScene implements Screen {
     /**
@@ -26,10 +27,10 @@ public class MainMenuScene implements Screen {
     }
 
     public void update(float delta) {
-        if (Gdx.input.isTouched()) {
-            game.exitScreen(this, 0);
-            dispose();
-        }
+//        if (Gdx.input.isTouched()) {
+//            game.exitScreen(this, 0);
+//            dispose();
+//        }
     }
 
     public void draw(float delta) {
@@ -41,9 +42,45 @@ public class MainMenuScene implements Screen {
         game.batch.begin();
         //draw text. Remember that x and y are in meters
         game.batch.draw(background,0,0);
+
+        float buttonWidth = play.getWidth();
+        float buttonHeight = play.getHeight();
+
+        int cx = Gdx.input.getX();
+        int cy = 720 - Gdx.input.getY();
+        if (cx >= 833 && cx <= 833 + buttonWidth && cy >= 340
+            && cy <= 340 + buttonHeight) {
+            game.batch.setBlendMode(BlendMode.ADDITIVE);
+            if (Gdx.input.isTouched()){
+                game.exitScreen(this, 0);
+                dispose();
+            }
+        }
         game.batch.draw(play,833,340);
+        game.batch.setBlendMode(BlendMode.ALPHA_BLEND);
+
+        if (cx >= 833 && cx <= 833 +buttonWidth && cy >= 240
+            && cy <= 240 + buttonHeight) {
+            game.batch.setBlendMode(BlendMode.ADDITIVE);
+            if (Gdx.input.isTouched()){
+//                game.exitScreen(this, 0);
+//                dispose();
+            }
+        }
         game.batch.draw(settings,833,240);
+        game.batch.setBlendMode(BlendMode.ALPHA_BLEND);
+
+        if (cx >= 833 && cx <= 833 + buttonWidth && cy >= 140
+            && cy <= 140 + buttonHeight) {
+            game.batch.setBlendMode(BlendMode.ADDITIVE);
+            if (Gdx.input.isTouched()){
+                game.exitScreen(this, 1);
+                dispose();
+            }
+        }
+
         game.batch.draw(exit,833,140);
+        game.batch.setBlendMode(BlendMode.ALPHA_BLEND);
 
 
 //        game.font.setColor(Color.WHITE);

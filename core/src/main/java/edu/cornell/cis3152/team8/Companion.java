@@ -1,5 +1,6 @@
 package edu.cornell.cis3152.team8;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector2;
 import edu.cornell.gdiac.graphics.SpriteBatch;
 import static edu.cornell.cis3152.team8.InputController.CONTROL_MOVE_LEFT;
@@ -188,6 +189,25 @@ public abstract class Companion extends GameObject {
 //            }
 //        }
 
+    }
+
+    public void draw(SpriteBatch batch){
+        if (isDestroyed()) {
+            animator.setFrame(1);
+            batch.setColor(Color.BLACK);
+        }else {
+            animator.setFrame((int)animationFrame);
+            batch.setColor( Color.WHITE );
+
+        }
+        SpriteBatch.computeTransform(transform, origin.x, origin.y,
+            position.x, position.y, 0.0f, size
+            , size);
+
+        batch.draw( animator, transform );
+        //batch.draw(texture, position.x, position.y, 64, 64);
+        //batch.draw(texture, position.x, position.y, 64, 64);
+        batch.setColor(Color.WHITE);
     }
 
     /**

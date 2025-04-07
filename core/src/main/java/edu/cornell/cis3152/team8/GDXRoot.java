@@ -85,9 +85,14 @@ public class GDXRoot extends Game implements ScreenListener {
     @Override
     public void exitScreen(Screen screen, int exitCode) {
         if (screen == menuScene) {
+            if (exitCode == 0){
             loadingScene = new LoadingScene("assets.json", batch, 1);
             loadingScene.setScreenListener(this);
             this.setScreen(loadingScene);
+            }else{
+                Gdx.app.exit();
+            }
+
         } else if (screen == loadingScene) {
             directory = loadingScene.getAssets();
             loadingScene.dispose();
