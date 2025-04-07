@@ -6,6 +6,8 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.ScreenUtils;
 import edu.cornell.gdiac.graphics.SpriteBatch.BlendMode;
+import java.awt.Point;
+import java.awt.PointerInfo;
 
 public class LevelSelect implements Screen {
         /**
@@ -27,10 +29,10 @@ public class LevelSelect implements Screen {
         }
 
         public void update(float delta) {
-            if (Gdx.input.isTouched()) {
-                game.exitScreen(this, 0);
-                dispose();
-            }
+//            if (Gdx.input.isTouched()) {
+//                game.exitScreen(this, 0);
+//                dispose();
+//            }
         }
 
         public void draw(float delta) {
@@ -57,8 +59,10 @@ public class LevelSelect implements Screen {
                         if (cx >= x && cx <= x + plate.getWidth() && cy >= y
                             && cy <= y + plate.getHeight()) {
                             game.batch.setBlendMode(BlendMode.ADDITIVE);
-
-
+                            if (Gdx.input.isTouched() && i == 2 && j == 1){
+                                game.exitScreen(this, 0);
+                                dispose();
+                            }
                         }
                         game.batch.draw(plate, x, y);
                         game.batch.setBlendMode(BlendMode.ALPHA_BLEND);
