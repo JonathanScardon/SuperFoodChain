@@ -26,6 +26,8 @@ public class GDXRoot extends Game implements ScreenListener {
     private GameScene gameScene;
     private MainMenuScene menuScene;
 
+    private LevelSelect levels;
+
     @Override
     public void create() {
         batch = new SpriteBatch();
@@ -91,8 +93,14 @@ public class GDXRoot extends Game implements ScreenListener {
             loadingScene.dispose();
             loadingScene = null;
 
+            levels = new LevelSelect(this);
+            setScreen(levels);
+        } else if (screen == levels) {
+            //levels.dispose();
+
             gameScene = new GameScene(this, directory);
             setScreen(gameScene);
+
         } else {
             Gdx.app.exit();
         }
