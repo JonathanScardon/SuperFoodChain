@@ -68,7 +68,7 @@ public class GameScene implements Screen {
      */
     protected InputController playerControls;
     protected InputController[] minionControls;
-    protected InputController[] bossControls;
+    protected BossController[] bossControls;
 
     private CollisionController collision;
     private boolean start;
@@ -107,7 +107,7 @@ public class GameScene implements Screen {
         // initCoins(5);
         coins = new LinkedList<>();
         bosses = state.getBosses();
-        bossControls = new InputController[bosses.length];
+        bossControls = new BossController[bosses.length];
         bossControls[0] = new MouseController(bosses[0], state);
         projectiles = state.getActiveProjectiles();
 
@@ -244,6 +244,7 @@ public class GameScene implements Screen {
             //
             // boss moves and acts
             for (int i = 0; i < bosses.length; i++) {
+                bossControls[i].update(delta);
                 bosses[i].update(delta, bossControls[i].getAction());
             }
             //

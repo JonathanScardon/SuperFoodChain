@@ -17,7 +17,7 @@ public class BossWarnPattern extends GameObject {
     /**
      * How fast we change frames
      */
-    private static float animationSpeed = 0.10f;
+    private static float animationSpeed = 0.05f;
 
     public BossWarnPattern(float x, float y) {
         super(x, y);
@@ -36,6 +36,9 @@ public class BossWarnPattern extends GameObject {
         }
 
         animeframe += animationSpeed;
+        if (animeframe >= animator.getSize()) {
+            animeframe -= animator.getSize();
+        }
     }
 
     /**
