@@ -19,7 +19,8 @@ import edu.cornell.cis3152.team8.companions.Strawberry;
 public class GameState {
     // Graphics assets
     private SpriteSheet mouseSprite;
-    private SpriteSheet warningSprite;
+    private SpriteSheet dashWarnSprite;
+    private SpriteSheet idleWarnSprite;
 
     /**
      * The grid of tiles
@@ -58,13 +59,13 @@ public class GameState {
     /**
      * Creates a new game session. This method will call reset() to set up the
      * board.
-     *
      */
     public GameState(JsonValue constants, AssetDirectory assets) {
         this.constants = constants;
 
         mouseSprite = assets.getEntry("mouse.animation", SpriteSheet.class);
-        warningSprite = assets.getEntry("mouseWarn.animation", SpriteSheet.class);
+        idleWarnSprite = assets.getEntry("idleWarn.animation", SpriteSheet.class);
+        dashWarnSprite = assets.getEntry("dashWarn.animation", SpriteSheet.class);
         projectiles = new Array<Projectile>();
 
         Boss.setConstants(this.constants.get("boss"));
@@ -95,7 +96,8 @@ public class GameState {
         bosses = new Boss[1];
         bosses[0] = new Mouse(-100f, -100f);
         bosses[0].setSpriteSheet(mouseSprite);
-        bosses[0].warnSprites.add(warningSprite);
+        bosses[0].warnSprites.add(idleWarnSprite);
+        bosses[0].warnSprites.add(dashWarnSprite);
 
         // Coins - none at the beginning
 
@@ -126,7 +128,7 @@ public class GameState {
 
     /**
      * Sets the player in the level
-     * 
+     *
      * @param player The player to set
      */
     public void setPlayer(Player player) {

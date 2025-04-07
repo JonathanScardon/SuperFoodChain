@@ -15,7 +15,7 @@ public class MouseController extends BossController {
         attackPatterns = new Array<>();
         attackPatterns.add(new IdleAttackPattern(this, 1280f / 2, 720f / 2, 2, 2, boss.warnSprites.get(0)));
         for (int i = 0; i < num_attacks; i++) {
-            attackPatterns.add(new DashAttackPattern(this, i * boss.getRadius() * 2 + boss.getRadius(), i % 2 == 1, 2, boss.warnSprites.get(0)));
+            attackPatterns.add(new DashAttackPattern(this, i * boss.getRadius() * 2 + boss.getRadius(), i % 2 == 1, 2, boss.warnSprites.get(1)));
         }
 
         plannedAttacks = new LinkedList<>();
