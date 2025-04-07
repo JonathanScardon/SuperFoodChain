@@ -14,12 +14,14 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ScreenUtils;
-import edu.cornell.cis3152.team8.companions.Strawberry;
+import com.badlogic.gdx.utils.JsonValue;
 import edu.cornell.gdiac.assets.AssetDirectory;
-import edu.cornell.cis3152.team8.companions.Durian;
 import edu.cornell.gdiac.graphics.SpriteBatch;
 import edu.cornell.gdiac.graphics.TextLayout;
 import edu.cornell.gdiac.util.ScreenListener;
+
+import edu.cornell.cis3152.team8.companions.Strawberry;
+import edu.cornell.cis3152.team8.companions.Durian;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -36,16 +38,24 @@ public class GameScene implements Screen {
      */
     private GameState state;
 
-    /** The grid of tiles */
+    /**
+     * The grid of tiles
+     */
     private Level level;
 
-    /** Companions in the chain */
+    /**
+     * Companions in the chain
+     */
     private Player player;
 
-    /** Minions in the level */
+    /**
+     * Minions in the level
+     */
     private Minion[] minions;
 
-    /** Bosses in the level */
+    /**
+     * Bosses in the level
+     */
     private Boss[] bosses;
 
     private Companion[] companions;
@@ -53,17 +63,24 @@ public class GameScene implements Screen {
     private LinkedList<Coin> coins;
     private Array<Projectile> projectiles;
 
-    /** List of all the input controllers */
+    /**
+     * List of all the input controllers
+     */
     protected InputController playerControls;
     protected InputController[] minionControls;
     protected InputController[] bossControls;
-    private ScreenListener listener;
-
-    private Texture coinTexture;
 
     private CollisionController collision;
     private boolean start;
     private boolean reset;
+
+    // Loaded assets
+    /**
+     * The constants defining the game behavior
+     */
+    private JsonValue constants;
+
+    private Texture coinTexture;
 
     /**
      * Creates a GameScene
@@ -72,14 +89,46 @@ public class GameScene implements Screen {
      */
     public GameScene(final GDXRoot game, AssetDirectory assets) {
         this.game = game;
-        this.state = new GameState(assets);
+        constants = assets.getEntry("constants", JsonValue.class);
         coinTexture = new Texture("images/coin.png");
+
+        this.state = new GameState(constants, assets);
         reset();
+    }
+
+    private void reset() {
+        start = false;
+        reset = true;
+        state.reset();
+        player = new Player(500, 350);
+        state.setPlayer(player);
+        initMinions(5);
+        initCompanionPositions(5);
+        // initCoins(5);
+        coins = new LinkedList<>();
+        bosses = state.getBosses();
+        bossControls = new InputController[bosses.length];
+        bossControls[0] = new MouseController(bosses[0], state);
+        projectiles = state.getActiveProjectiles();
+
+        collision = new CollisionController(minions, player, companions, coins, bosses, projectiles);
+
+        // assuming player is a list of Companions btw
+        // player = state.getPlayer();
+        playerControls = new PlayerController(player);
+
+        // level = state.getLevel();
+
+        // assuming each level has number of enemies assigned?
+        minionControls = new InputController[minions.length];
+        for (int i = 0; i < minions.length; i++) {
+            minionControls[i] = new MinionController(i, minions, player);
+        }
     }
 
     /**
      * Initializes the player to center of the board.
-     *
+     * <p>
      * UNLESS the player is also at random position.
      */
     private void initPlayerPosition() {
@@ -119,9 +168,9 @@ public class GameScene implements Screen {
             Companion c;
             int x = rand.nextInt(1180);
             int y = rand.nextInt(620);
-            if (i%2 == 0){
-                c = new Strawberry(x,y);
-            }else{
+            if (i % 2 == 0) {
+                c = new Strawberry(x, y);
+            } else {
                 c = new Durian(x, y);
             }
             companions[i] = c;
@@ -150,7 +199,7 @@ public class GameScene implements Screen {
      * but photon collisions are not.
      */
     public void update(float delta) {
-        if (Gdx.input.isKeyPressed(Keys.R) && !reset){
+        if (Gdx.input.isKeyPressed(Keys.R) && !reset) {
             reset();
         }
         if (Gdx.input.isTouched()) {
@@ -195,7 +244,7 @@ public class GameScene implements Screen {
             //
             // boss moves and acts
             for (int i = 0; i < bosses.length; i++) {
-                bosses[i].update(bossControls[i].getAction());
+                bosses[i].update(delta, bossControls[i].getAction());
             }
             //
             // // player chain moves
@@ -236,7 +285,7 @@ public class GameScene implements Screen {
             TextLayout compCost = new TextLayout(cost, font);
             c.draw(game.batch);
             //temp UI
-            if(!player.companions.contains(c)) {
+            if (!player.companions.contains(c)) {
                 game.batch.drawText(compCost, c.getX() + 35, c.getY());
             }
 
@@ -257,10 +306,10 @@ public class GameScene implements Screen {
         TextLayout bossHP = new TextLayout(HP, font, 128);
         //Temp UI
         game.batch.draw(coinTexture, 1150, 65, 50, 50);
-        game.batch.drawText(bossHP,600,700);
+        game.batch.drawText(bossHP, 600, 700);
         game.batch.drawText(coinCount, 1200f, 80f);
 
-        if (player.hasShield()){
+        if (player.hasShield()) {
             font.setColor(Color.GREEN);
             shield = new TextLayout("Shield: On", font);
 
@@ -268,7 +317,7 @@ public class GameScene implements Screen {
             font.setColor(Color.RED);
             shield = new TextLayout("Shield: Off", font);
         }
-        game.batch.drawText(shield,600,20);
+        game.batch.drawText(shield, 600, 20);
         font.setColor(Color.WHITE);
 
         if (!player.isAlive()) {
@@ -353,35 +402,5 @@ public class GameScene implements Screen {
     @Override
     public void dispose() {
 
-    }
-
-    private void reset(){
-        start = false;
-        reset = true;
-        state.reset();
-        player = new Player(500, 350);
-        state.setPlayer(player);
-        initMinions(5);
-        initCompanionPositions(5);
-        // initCoins(5);
-        coins = new LinkedList<>();
-        bosses = state.getBosses();
-        bossControls = new InputController[bosses.length];
-        bossControls[0] = new MouseController(bosses[0], state);
-        projectiles = state.getActiveProjectiles();
-
-        collision = new CollisionController(minions, player, companions, coins, bosses, projectiles);
-
-        // assuming player is a list of Companions btw
-        // player = state.getPlayer();
-        playerControls = new PlayerController(player);
-
-        // level = state.getLevel();
-
-        // assuming each level has number of enemies assigned?
-        minionControls = new InputController[minions.length];
-        for (int i = 0; i < minions.length; i++) {
-            minionControls[i] = new MinionController(i, minions, player);
-        }
     }
 }

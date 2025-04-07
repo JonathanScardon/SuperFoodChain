@@ -47,11 +47,18 @@ public class GameState {
     private Array<Projectile> projectiles;
 
     /**
+     * Gamestate constants
+     */
+    private JsonValue constants;
+
+    /**
      * Creates a new game session. This method will call reset() to set up the
      * board.
      *
      */
-    public GameState(AssetDirectory assets) {
+    public GameState(JsonValue constants, AssetDirectory assets) {
+        this.constants = constants;
+
         mouseSprite = assets.getEntry("mouse.animation", SpriteSheet.class);
         warningSprite = assets.getEntry("mouseWarn.animation", SpriteSheet.class);
         projectiles = new Array<Projectile>();
