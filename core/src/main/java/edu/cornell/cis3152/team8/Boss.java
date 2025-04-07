@@ -16,20 +16,9 @@ public abstract class Boss extends GameObject {
      */
     private static float SPEED_DAMP;
     /**
-     * How long the boss must wait until it can attack again
-     */
-    private static float IDLE_DURATION;
-    /**
      * An epsilon for float comparison
      */
     private static float EPSILON;
-
-    /**
-     * Current amount of time until next set of attacks
-     */
-    private float idleTime;
-    protected float angle; // angle of the sprite TEMPORARY
-
     /**
      * Current animation frame for this boss
      */
@@ -38,6 +27,10 @@ public abstract class Boss extends GameObject {
      * How fast we change frames
      */
     private static float animationSpeed;
+    /**
+     * Current angle of the sprite
+     */
+    protected float angle;
 
     /**
      * The sprite sheets that correspond to each warning pattern
@@ -64,14 +57,12 @@ public abstract class Boss extends GameObject {
     public static void setConstants(JsonValue constants) {
         MOVE_SPEED = constants.getFloat("moveSpeed", 10);
         SPEED_DAMP = constants.getFloat("speedDamp", 0.75f);
-        IDLE_DURATION = constants.getFloat("idleDuration", 5f);
         EPSILON = constants.getFloat("epsilon", 0.01f);
         animationSpeed = constants.getFloat("animationSpeed", 0.1f);
     }
     public static void setConstants() {
         MOVE_SPEED = 10;
         SPEED_DAMP = 0.75f;
-        IDLE_DURATION = 5f;
         EPSILON = 0.01f;
         animationSpeed = 0.1f;
     }
@@ -79,8 +70,8 @@ public abstract class Boss extends GameObject {
     public Boss(float x, float y) {
         super(x, y);
         warnSprites = new Array<>();
-//        radius = 3;
         health = 10;
+        angle = 90f;
     }
 
     // accessors
@@ -148,26 +139,6 @@ public abstract class Boss extends GameObject {
     }
 
     public abstract BossType getBossType();
-
-    /**
-     * Resets the cooldown of the boss attack
-     * <p>
-     * If flag is true, the weapon will cool down by one animation frame.
-     * Otherwise, it will reset to its maximum cooldown.
-     *
-     * @param flag whether to cooldown or reset
-     */
-    public void attackCooldown(boolean flag) {
-        if (flag && idleTime > 0) {
-            idleTime--;
-        } else if (!flag) {
-            idleTime = IDLE_DURATION;
-        }
-    }
-
-    public boolean canAttack() {
-        return idleTime <= 0;
-    }
 
     /**
      * Draws this object to the sprite batch

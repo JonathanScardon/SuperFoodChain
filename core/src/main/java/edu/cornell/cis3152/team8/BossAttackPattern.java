@@ -14,6 +14,6 @@ public interface BossAttackPattern {
 
     void warn();
     void attack();
-    void update();
+    void update(float delta);
     boolean attackEnded();
 }

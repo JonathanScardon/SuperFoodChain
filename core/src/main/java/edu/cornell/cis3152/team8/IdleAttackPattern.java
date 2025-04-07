@@ -5,31 +5,31 @@ import edu.cornell.gdiac.graphics.SpriteSheet;
 import static edu.cornell.cis3152.team8.InputController.*;
 
 /**
- * The boss will start at the top or bottom of the screen
- * and then travel across it until it is off the screen again
+ * The boss will idle in the center of the screen
  */
-public class DashAttackPattern implements BossAttackPattern {
+public class IdleAttackPattern implements BossAttackPattern {
     private final BossController controller;
     private final Boss boss;
     private final BossWarnPattern warnPattern;
 
-    private final float startX, startY;
-    private final int controlCode;
+    private final float idleX, idleY;
     private final float warnDuration;
+    private final float attackDuration;
 
     private float warnTime;
+    private float attackTime;
     private AttackState state;
 
-    public DashAttackPattern(BossController controller, float x, boolean top, float warnDuration, SpriteSheet warnSprite) {
+    public IdleAttackPattern(BossController controller, float x, float y, float warnDuration, float attackDuration, SpriteSheet warnSprite) {
         this.controller = controller;
         this.boss = controller.boss;
 
-        this.startX = x;
-        this.startY = top ? 720f + boss.getRadius() : -boss.getRadius();
-        this.controlCode = top ? CONTROL_MOVE_DOWN : CONTROL_MOVE_UP;
+        this.idleX = x;
+        this.idleY = y;
         this.warnDuration = warnDuration;
+        this.attackDuration = attackDuration;
 
-        this.warnPattern = new BossWarnPattern(startX, 720f / 2f);
+        this.warnPattern = new BossWarnPattern(this.idleX, this.idleY);
         this.warnPattern.setSpriteSheet(warnSprite);
     }
 
@@ -38,25 +38,21 @@ public class DashAttackPattern implements BossAttackPattern {
         state = AttackState.WARN;
         controller.setAction(CONTROL_NO_ACTION);
 
-        boss.setX(startX);
-        boss.setY(startY);
-        boss.setVX(0);
-        if (controlCode == CONTROL_MOVE_UP) {
-            boss.setVY(15f); // make the boss slide up a little bit
-            boss.angle = 90f;
-        } else if (controlCode == CONTROL_MOVE_DOWN) {
-            boss.setVY(-15f); // make the boss slide down a little bit
-            boss.angle = 270f;
-        }
         warnTime = warnDuration;
+        attackTime = attackDuration;
         warnPattern.active = true;
         boss.curWarn = warnPattern;
     }
 
     @Override
     public void attack() {
-        state = AttackState.WARN;
-        controller.setAction(controlCode);
+        state = AttackState.ATTACK;
+        controller.setAction(CONTROL_NO_ACTION);
+
+        boss.setX(this.idleX);
+        boss.setY(this.idleY);
+        attackTime = attackDuration;
+        boss.angle = 90f;
 
         warnPattern.active = false;
         boss.curWarn = null;
@@ -72,10 +68,13 @@ public class DashAttackPattern implements BossAttackPattern {
                 if (warnEnded()) {
                     attack();
                 }
+                break;
             case ATTACK:
+                if (attackTime > 0) {
+                    attackTime -= delta;
+                }
                 break;
         }
-
     }
 
     private boolean warnEnded() {
@@ -84,11 +83,6 @@ public class DashAttackPattern implements BossAttackPattern {
 
     @Override
     public boolean attackEnded() {
-        if (controlCode == CONTROL_MOVE_UP) {
-            return boss.getY() - boss.getRadius() > 720;
-        } else if (controlCode == CONTROL_MOVE_DOWN) {
-            return boss.getY() + boss.getRadius() < 0;
-        }
-        return true; // it should never reach here
+        return attackTime <= 0;
     }
 }

@@ -5,21 +5,6 @@ import com.badlogic.gdx.utils.Array;
 import java.util.Queue;
 
 public abstract class BossController implements InputController {
-    public enum FSMState {
-        /**
-         * Either the boss just spawned or it is waiting to attack again
-         */
-        IDLE,
-        /**
-         * The boss is about to attack, and it is marking the tiles for the player to avoid
-         */
-        WARN,
-        /**
-         * The boss is attacking
-         */
-        ATTACK,
-    }
-
     /**
      * The boss to be controlled
      */
@@ -28,10 +13,6 @@ public abstract class BossController implements InputController {
      * The state of the game
      */
     protected GameState gameState;
-    /**
-     * The Boss's current state in the FSM
-     */
-    protected FSMState state;
     /**
      * The Boss's next action as a control code
      */
@@ -54,7 +35,6 @@ public abstract class BossController implements InputController {
     protected BossAttackPattern curAttack;
 
     public BossController(Boss boss, GameState gameState) {
-        this.state = FSMState.IDLE;
         this.action = CONTROL_NO_ACTION;
         this.gameState = gameState;
         this.boss = boss;
@@ -65,11 +45,9 @@ public abstract class BossController implements InputController {
         return action;
     }
 
-    public void setState(FSMState state) {
-        this.state = state;
-    }
-
     public void setAction(int action) {
         this.action = action;
     }
+
+    public abstract void update(float delta);
 }

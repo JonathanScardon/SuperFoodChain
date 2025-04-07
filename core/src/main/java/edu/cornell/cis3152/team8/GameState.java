@@ -86,7 +86,7 @@ public class GameState {
 
         // Boss
         bosses = new Boss[1];
-        bosses[0] = new Mouse(100f, 100f);
+        bosses[0] = new Mouse(-100f, -100f);
         bosses[0].setSpriteSheet(mouseSprite);
         bosses[0].warnSprites.add(warningSprite);
 
