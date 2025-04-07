@@ -22,7 +22,12 @@ public class Coin extends GameObject{
      */
     public Coin(float x, float y) {
         super(x,y);
-        texture = new Texture("images/coin.png");
+        //texture = new Texture("images/coin.png");
+        size = 0.3f;
+        texture = new Texture("images/Coin.png");
+        SpriteSheet coin = new SpriteSheet(texture, 1, 22);
+        setSpriteSheet(coin);
+        animationSpeed = 0.5f;
         //setConstants(constants);
     }
 
@@ -65,6 +70,7 @@ public class Coin extends GameObject{
                 animationFrame -= animator.getSize();
             }
         }
+        System.out.println(animationFrame);
     }
     /**
      * Draws this Coin to the sprite batch
@@ -77,9 +83,25 @@ public class Coin extends GameObject{
 //            position.x, position.y, 0.0f, 1, 1);
 //        batch.setColor( Color.WHITE );
 //        batch.draw( animator, transform );
-        if (!isDestroyed()) {
-            batch.draw(texture, position.x, position.y, 64, 64);
+//        if (!isDestroyed()) {
+//            batch.draw(texture, position.x, position.y, 64, 64);
+//        }
+        if (isDestroyed()) {
+            animator.setFrame(0);
+            batch.setColor(Color.BLACK);
+        }else {
+            animator.setFrame((int)animationFrame);
+            batch.setColor( Color.WHITE );
+
         }
+        SpriteBatch.computeTransform(transform, origin.x, origin.y,
+            position.x, position.y, 0.0f, size
+            , size);
+
+        batch.draw( animator, transform );
+        //batch.draw(texture, position.x, position.y, 64, 64);
+        //batch.draw(texture, position.x, position.y, 64, 64);
+        batch.setColor(Color.WHITE);
     }
 
 }

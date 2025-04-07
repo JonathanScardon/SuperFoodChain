@@ -9,6 +9,7 @@ import edu.cornell.cis3152.team8.ProjectilePools;
 import edu.cornell.cis3152.team8.StrawberryProjectile;
 
 import edu.cornell.gdiac.graphics.SpriteBatch;
+import edu.cornell.gdiac.graphics.SpriteSheet;
 import java.util.Random;
 
 public class Strawberry extends Companion {
@@ -28,14 +29,34 @@ public class Strawberry extends Companion {
         setCooldown(3);
         radius = 1;
         texture = new Texture("images/Strawberry.png");
+        SpriteSheet coin = new SpriteSheet(texture, 1, 7);
+        setSpriteSheet(coin);
+        animationSpeed = 0.25f;
+        size = 0.4f;
+    }
+
+    @Override
+    public void update(float delta) {
+        super.update(delta);
 
     }
 
     public void draw(SpriteBatch batch){
         if (isDestroyed()) {
+            animator.setFrame(0);
             batch.setColor(Color.BLACK);
+        }else {
+            animator.setFrame((int)animationFrame);
+            batch.setColor( Color.WHITE );
+
         }
-        batch.draw(texture, position.x, position.y, 64, 64);
+        SpriteBatch.computeTransform(transform, origin.x, origin.y,
+            position.x, position.y, 0.0f, size
+            , size);
+
+        batch.draw( animator, transform );
+        //batch.draw(texture, position.x, position.y, 64, 64);
+        //batch.draw(texture, position.x, position.y, 64, 64);
         batch.setColor(Color.WHITE);
     }
 

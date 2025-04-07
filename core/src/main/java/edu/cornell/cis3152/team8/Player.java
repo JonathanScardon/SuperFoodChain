@@ -128,6 +128,18 @@ public class Player extends GameObject{
             CircularBuffer.PositionAndDirection prev = controlBuffer.getCompanion(i);
             c.update(prev.dir);
         }
+
+        for (Companion c: companions){
+            c.animationFrame = getPlayerHead().animationFrame;
+            if (c.animator != null) {
+                c.animationFrame += c.animationSpeed;
+                //System.out.println(animationFrame);
+                if (c.animationFrame >= c.animator.getSize()) {
+                    c.animationFrame -= c.animator.getSize();
+                }
+            }
+        }
+
     }
 
     /**
