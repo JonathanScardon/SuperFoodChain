@@ -33,7 +33,7 @@
          "objects":[
                 {
                  "gid":2,
-                 "height":128,
+                 "height":195,
                  "id":5,
                  "name":"mouse",
                  "properties":[
@@ -50,9 +50,9 @@
                  "rotation":0,
                  "type":"",
                  "visible":true,
-                 "width":128,
-                 "x":33.5093532870123,
-                 "y":883.647247461251
+                 "width":150,
+                 "x":31.3776583670859,
+                 "y":932.677057557024
                 }],
          "opacity":1,
          "type":"objectgroup",
