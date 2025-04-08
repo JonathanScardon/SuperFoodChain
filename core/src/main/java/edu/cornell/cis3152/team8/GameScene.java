@@ -25,7 +25,6 @@ import edu.cornell.gdiac.util.ScreenListener;
 import edu.cornell.cis3152.team8.companions.Strawberry;
 import edu.cornell.cis3152.team8.companions.Durian;
 
-import java.awt.Button;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
@@ -35,6 +34,10 @@ public class GameScene implements Screen {
      * Reference to the GDX root
      */
     private final GDXRoot game;
+    private final Texture pauseBackground;
+    private final Button resetButton;
+    private final Button levelsButton;
+    private final Button exitButton;
 
     /**
      * Reference to the game session
@@ -97,6 +100,13 @@ public class GameScene implements Screen {
         coinTexture = new Texture("images/CoinUI.png");
         constants = assets.getEntry("constants", JsonValue.class);
         this.state = new GameState(constants, assets);
+        pauseBackground = new Texture("images/Paused.png");
+        Texture resetT = new Texture("images/Reset.png");
+        Texture levels = new Texture("images/Levels.png");
+        Texture exit = new Texture("images/Exit.png");
+        resetButton = new Button(422,415,resetT,0);
+        levelsButton = new Button(422,264,levels,1);
+        exitButton = new Button(422,113,exit,0);
         reset();
     }
 
@@ -210,12 +220,24 @@ public class GameScene implements Screen {
 //        }
         setStart();
 
-        if (Gdx.input.isKeyPressed(Keys.ESCAPE)){
+        if (Gdx.input.isKeyPressed(Keys.ESCAPE) && !paused){
             paused = true;
-        }
-        if (Gdx.input.isKeyPressed(Keys.R)){
+        } else if (Gdx.input.isKeyPressed(Keys.R) && paused){
             paused = false;
         }
+
+        if (paused){
+            if (resetButton.isHovering() && Gdx.input.isTouched()){
+                reset();
+                paused = false;
+            } else if (levelsButton.isHovering() && Gdx.input.isTouched()) {
+                game.exitScreen(this, levelsButton.getExitCode());
+                dispose();
+            } else if (exitButton.isHovering() && Gdx.input.isTouched()) {
+                Gdx.app.exit();
+            }
+        }
+
 
         if (start && player.isAlive() && !bosses[0].isDestroyed() && !paused) {
             // iterate through all companions in the chain
@@ -367,7 +389,7 @@ public class GameScene implements Screen {
     private void drawTiles() {
         // technically this should be a call to the draw function inside of level
         int tileSize = 64;
-        Texture tileTexture = new Texture("images/Tile.png");
+        Texture tileTexture = new Texture("images/Brown.png");
         //Texture tileTexture = new Texture("images/Background.png");
         game.batch.draw(tileTexture, 0, 0, 1280, 720);
 //        for (int x = 0; x < 20; x++) {
@@ -401,67 +423,11 @@ public class GameScene implements Screen {
     }
 
     private void drawPause(){
-        Texture background = new Texture("images/Paused.png");
-        Texture reset = new Texture("images/Reset.png");
-        Texture levels = new Texture("images/Levels.png");
-        Texture exit = new Texture("images/Exit.png");
-
         game.batch.setBlendMode(BlendMode.ALPHA_BLEND);
-       game.batch.draw(background,0,0);
-
-
-
-        float buttonWidth = reset.getWidth();
-        float buttonHeight = reset.getHeight();
-
-        int x = 422;
-        int y = 415;
-        int cx = Gdx.input.getX();
-        int cy = 720 - Gdx.input.getY();
-        if (cx >= x && cx <= x + buttonWidth && cy >= y
-            && cy <= y + buttonHeight) {
-            game.batch.setBlendMode(BlendMode.ADDITIVE);
-            if (Gdx.input.isTouched()){
-                reset();
-                paused = false;
-            }
-        }
-        game.batch.draw(reset,x,y);
-        game.batch.setBlendMode(BlendMode.ALPHA_BLEND);
-
-        y -= 151;
-        if (cx >= x && cx <= x +buttonWidth && cy >= y
-            && cy <= y + buttonHeight) {
-            game.batch.setBlendMode(BlendMode.ADDITIVE);
-            if (Gdx.input.isTouched()){
-                game.exitScreen(this, 1);
-                dispose();
-            }
-        }
-        game.batch.draw(levels,x,y);
-        game.batch.setBlendMode(BlendMode.ALPHA_BLEND);
-
-        y -= 151;
-        if (cx >= x && cx <= x + buttonWidth && cy >= y
-            && cy <= y + buttonHeight) {
-            game.batch.setBlendMode(BlendMode.ADDITIVE);
-            if (Gdx.input.isTouched()){
-                Gdx.app.exit();
-            }
-        }
-
-        game.batch.draw(exit,x,y);
-        game.batch.setBlendMode(BlendMode.ALPHA_BLEND);
-
-
-//        game.font.setColor(Color.WHITE);
-//        game.font.draw(game.batch, "Main Menu", 100f, 100f);
-
-
-
-
-
-
+        game.batch.draw(pauseBackground,0,0);
+        resetButton.draw(game.batch);
+        levelsButton.draw(game.batch);
+        exitButton.draw(game.batch);
     }
 
     @Override
