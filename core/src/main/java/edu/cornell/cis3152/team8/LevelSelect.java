@@ -14,7 +14,8 @@ public class LevelSelect implements Screen {
          * Reference to the GDX root
          */
         private final GDXRoot game;
-        private Texture background;
+    private final Texture one;
+    private Texture background;
         private Texture tray;
         private Texture plate;
         private Texture arrow;
@@ -25,6 +26,8 @@ public class LevelSelect implements Screen {
             tray = new Texture("images/LevelSelectTray.png");
             plate = new Texture("images/LevelSelectPlate.png");
             arrow = new Texture("images/LevelSelectArrow.png");
+            one = new Texture("images/1.png");
+
 
         }
 
@@ -52,12 +55,21 @@ public class LevelSelect implements Screen {
                             && cy <= y + plate.getHeight()) {
                             game.batch.setBlendMode(BlendMode.ADDITIVE);
                             if (Gdx.input.isTouched() && i == 2 && j == 1){
-                                game.exitScreen(this, 0);
-                                dispose();
+
+                                if (Gdx.input.isTouched()){
+                                    game.exitScreen(this, 0);
+                                    dispose();
+                                }
+
                             }
                         }
+
                         game.batch.draw(plate, x, y);
-                        game.batch.setBlendMode(BlendMode.ALPHA_BLEND);
+                    game.batch.setBlendMode(BlendMode.ALPHA_BLEND);
+                    if (i == 2 && j == 1){
+                        game.batch.draw(one,x,y);
+                    }
+
                 }
             }
 
