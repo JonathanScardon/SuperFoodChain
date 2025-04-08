@@ -70,7 +70,6 @@ public class Coin extends GameObject{
                 animationFrame -= animator.getSize();
             }
         }
-        System.out.println(animationFrame);
     }
     /**
      * Draws this Coin to the sprite batch
