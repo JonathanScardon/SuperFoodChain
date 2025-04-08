@@ -3,7 +3,7 @@
         "height": 4300,
         "width": 2
     },
-    "activeFile": "level_1.tmx",
+    "activeFile": "mouse.tsx",
     "expandedProjectPaths": [
         "."
     ],
@@ -25,7 +25,7 @@
         "mouse.tsx": {
             "dynamicWrapping": false,
             "scaleInDock": 1,
-            "scaleInEditor": 0.26
+            "scaleInEditor": 2.2677
         },
         "tiled/mouse.tsx": {
             "scaleInDock": 1,
@@ -42,15 +42,15 @@
     "map.width": 80,
     "openFiles": [
         "cutting_board.tsx",
-        "mouse.tsx",
-        "level_1.tmx"
+        "level_1.tmx",
+        "mouse.tsx"
     ],
     "project": "team8.tiled-project",
     "property.type": "int",
     "recentFiles": [
         "cutting_board.tsx",
-        "mouse.tsx",
         "level_1.tmx",
+        "mouse.tsx",
         "tiled/mouse.tsx"
     ],
     "tileset.lastUsedFormat": "tsx",
