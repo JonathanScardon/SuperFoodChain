@@ -75,7 +75,7 @@ public class Minion extends GameObject{
         }
 
         // Determine how we are moving.
-        boolean movingLeft  = controlCode ==  1;
+        boolean movingLeft  = controlCode == 1;
         boolean movingRight = controlCode == 2;
         boolean movingUp    = controlCode == 4;
         boolean movingDown  = controlCode == 8;
