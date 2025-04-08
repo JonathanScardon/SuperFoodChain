@@ -324,7 +324,7 @@ public class GameScene implements Screen {
         TextLayout coinCount = new TextLayout(coins, font, 128);
         TextLayout bossHP = new TextLayout(HP, font, 128);
         //Temp UI
-        game.batch.draw(coinTexture, 1150, 65, 50, 50);
+        game.batch.draw(coinTexture, 1140, 65, 45, 45);
         game.batch.drawText(bossHP, 600, 700);
         game.batch.drawText(coinCount, 1200f, 80f);
 
