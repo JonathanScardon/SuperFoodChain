@@ -2,6 +2,7 @@ package edu.cornell.cis3152.team8;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.JsonValue;
 import edu.cornell.gdiac.graphics.SpriteBatch;
 import edu.cornell.gdiac.graphics.SpriteSheet;
 
@@ -9,43 +10,36 @@ public abstract class Boss extends GameObject {
     /**
      * How far forward this boss can move in a single turn
      */
-    private static float MOVE_SPEED = 10f;
+    private static float MOVE_SPEED;
     /**
      * The damping factor for deceleration
      */
-    private static float SPEED_DAMP = 0.75f;
-    /**
-     * How long the boss must wait until it can attack again
-     */
-    private static float IDLE_DURATION = 5f;
+    private static float SPEED_DAMP;
     /**
      * An epsilon for float comparison
      */
-    private static float EPSILON = 0.01f;
-
+    private static float EPSILON;
     /**
-     * Current amount of time until next set of attacks
-     */
-    private float idleTime;
-    protected float angle; // angle of the sprite TEMPORARY
-
-    /**
-     * Current animation frame for this ship
+     * Current animation frame for this boss
      */
     private float animeframe;
     /**
      * How fast we change frames
      */
-    private static float animationSpeed = 0.10f;
+    private static float animationSpeed;
+    /**
+     * Current angle of the sprite
+     */
+    protected float angle;
 
     /**
      * The sprite sheets that correspond to each warning pattern
      */
     protected Array<SpriteSheet> warnSprites;
     /**
-     * The warning patterns that correspond to the attack patterns
+     * The warn pattern that the boss is currently drawing
      */
-    protected Array<BossController.WarnPattern> warnPatterns;
+    protected BossWarnPattern curWarn;
 
     public enum BossType {
         MOUSE,
@@ -55,12 +49,23 @@ public abstract class Boss extends GameObject {
 
     protected float health;
 
+    /**
+     * Defines the constants for this class.
+     *
+     * @param constants The JSON value with constants
+     */
+    public static void setConstants(JsonValue constants) {
+        MOVE_SPEED = constants.getFloat("moveSpeed", 10);
+        SPEED_DAMP = constants.getFloat("speedDamp", 0.75f);
+        EPSILON = constants.getFloat("epsilon", 0.01f);
+        animationSpeed = constants.getFloat("animationSpeed", 0.1f);
+    }
+
     public Boss(float x, float y) {
         super(x, y);
-        warnPatterns = new Array<>();
         warnSprites = new Array<>();
-        radius = 3;
         health = 10;
+        angle = 90f;
     }
 
     // accessors
@@ -69,7 +74,7 @@ public abstract class Boss extends GameObject {
         return ObjectType.BOSS;
     }
 
-    public void update(int controlCode) {
+    public void update(float delta, int controlCode) {
         // Determine how we are moving.
         boolean movingLeft = (controlCode & InputController.CONTROL_MOVE_LEFT) != 0;
         boolean movingRight = (controlCode & InputController.CONTROL_MOVE_RIGHT) != 0;
@@ -113,6 +118,10 @@ public abstract class Boss extends GameObject {
         }
 
         position.add(velocity);
+
+        if (curWarn != null) {
+            curWarn.update(delta);
+        }
     }
 
     public float getHealth() {
@@ -126,26 +135,6 @@ public abstract class Boss extends GameObject {
     public abstract BossType getBossType();
 
     /**
-     * Resets the cooldown of the boss attack
-     * <p>
-     * If flag is true, the weapon will cool down by one animation frame.
-     * Otherwise, it will reset to its maximum cooldown.
-     *
-     * @param flag whether to cooldown or reset
-     */
-    public void attackCooldown(boolean flag) {
-        if (flag && idleTime > 0) {
-            idleTime--;
-        } else if (!flag) {
-            idleTime = IDLE_DURATION;
-        }
-    }
-
-    public boolean canAttack() {
-        return idleTime <= 0;
-    }
-
-    /**
      * Draws this object to the sprite batch
      *
      * @param batch The sprite batch
@@ -157,10 +146,8 @@ public abstract class Boss extends GameObject {
         batch.setColor(Color.WHITE);
         batch.draw(animator, transform);
 
-        for (BossController.WarnPattern wp : warnPatterns) {
-            if (wp.active) {
-                wp.draw(batch);
-            }
+        if (curWarn != null) {
+            curWarn.draw(batch);
         }
     }
 }
