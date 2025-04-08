@@ -1,17 +1,9 @@
 {
-  "coin": {
-    "velocity": [0,0],
-    "origin": [0,0] ,
-    "size": 1,
-    "animation speed": 0
-  },
-  "minion": {
-    "size": 1,
-    "health": 1,
-    "move speed": 2
-  },
-  "board": {
-    "size": [0,0],
-    "tile size": 0
-  }
+    "boss": {
+        "moveSpeed": 10,
+        "speedDamp": 0.75,
+        "idleDuration": 5,
+        "epsilon": 0.01,
+        "animationSpeed": 0.1
+    }
 }
