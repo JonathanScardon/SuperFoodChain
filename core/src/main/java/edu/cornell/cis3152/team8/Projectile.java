@@ -48,7 +48,7 @@ public abstract class Projectile extends GameObject {
 
         // Attributes below are placeholder values since setConstants isn't implemented
         // yet
-        speed = 10;
+        speed = 750;
         maxLife = 150;
         imageScale = 1;
         animationSpeed = 4;

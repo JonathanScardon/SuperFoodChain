@@ -15,7 +15,8 @@ public abstract class Companion extends GameObject {
         CORN,
         DURIAN,
         TANGERINE,
-        BLUE_RASPBERRY
+        BLUE_RASPBERRY,
+        PINEAPPLE,
     }
 
     /** The type of Companion */
