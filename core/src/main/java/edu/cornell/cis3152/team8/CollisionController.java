@@ -4,6 +4,7 @@ package edu.cornell.cis3152.team8;
 import com.badlogic.gdx.utils.Array;
 import edu.cornell.cis3152.team8.GameObject.ObjectType;
 
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
@@ -70,8 +71,13 @@ public class CollisionController {
 
 //            //Test coin-player collisions.
 
-        for (Coin c : coins) {
+        Iterator<Coin> iter = coins.iterator();
+        while (iter.hasNext()) {
+            Coin c = iter.next();
             checkForCollision(c, player);
+            if (c.isDestroyed()) {
+                iter.remove();
+            }
         }
 
         //Test companion-player collisions.
@@ -160,9 +166,7 @@ public class CollisionController {
         float my = minion.getY();
         float px = projectile.getX();
         float py = projectile.getY();
-
-        // kill projectile and minion if they collided
-        boolean collide = mx >= px - 12 && mx <= px + 12 && my >= py - 12 && my <= py + 12;
+        boolean collide = mx >= px - 12 && mx <= px + 12 && my >= py - 12 && my <= py + 12;;
 
         if (collide) {
             projectile.setDestroyed(true);
@@ -260,7 +264,7 @@ public class CollisionController {
         if (collide) {
             player.setCoins(player.getCoins() + 1);
             coin.setDestroyed(true);
-            coins.remove(coin);
+            // coins.remove(coin); ERROR! Sometimes coin being removed while for-loop iterating through coins
         }
     }
 
