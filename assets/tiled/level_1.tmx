@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="40" height="22" tilewidth="32" tileheight="32" infinite="0" nextlayerid="7" nextobjectid="7">
+ <editorsettings>
+  <export target="../jsons/level_1.json" format="json"/>
+ </editorsettings>
+ <tileset firstgid="1" source="cutting_board.tsx"/>
+ <tileset firstgid="2" source="mouse.tsx"/>
+ <objectgroup id="4" name="background" locked="1">
+  <object id="2" name="wood" gid="1" x="0" y="1000" width="1280" height="1280"/>
+ </objectgroup>
+ <objectgroup id="6" name="objects">
+  <object id="5" name="mouse" gid="2" x="33.5094" y="883.647" width="128" height="128">
+   <properties>
+    <property name="idleX" type="int" value="640"/>
+    <property name="idleY" type="int" value="360"/>
+   </properties>
+  </object>
+ </objectgroup>
+</map>

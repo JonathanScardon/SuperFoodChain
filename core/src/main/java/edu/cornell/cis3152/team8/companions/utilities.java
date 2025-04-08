@@ -1,6 +1,7 @@
 package edu.cornell.cis3152.team8.companions;
 
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.Array;
 import edu.cornell.cis3152.team8.GameState;
 import edu.cornell.cis3152.team8.Minion;
 import edu.cornell.cis3152.team8.Boss;
@@ -19,7 +20,7 @@ public class utilities {
         float dx = 0.0f;
         float dy = 0.0f;
         Minion[] minionList = state.getMinions();
-        Boss[] bossList = state.getBosses();
+        Array<Boss> bossList = state.getBosses();
         float closestEnemyDist = Float.POSITIVE_INFINITY;
 
         if (minionList != null) {

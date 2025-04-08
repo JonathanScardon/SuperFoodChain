@@ -32,13 +32,13 @@ public class CollisionController {
     private Player player;
     private Companion[] companions;
     private LinkedList<Coin> coins;
-    private Boss[] bosses;
+    private Array<Boss> bosses;
     private Array<Projectile> projectiles;
 
     /**
      * Creates a CollisionController for the given models.
      */
-    public CollisionController(Minion[] minions, Player player, Companion[] companions, LinkedList<Coin> coins, Boss[] bosses, Array<Projectile> projectiles) {
+    public CollisionController(Minion[] minions, Player player, Companion[] companions, LinkedList<Coin> coins, Array<Boss> bosses, Array<Projectile> projectiles) {
         tmp = new Vector2();
         this.minions = minions;
         this.player = player;
