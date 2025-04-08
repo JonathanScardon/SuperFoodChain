@@ -11,6 +11,8 @@ import edu.cornell.gdiac.assets.*;
 import edu.cornell.gdiac.graphics.*;
 import edu.cornell.cis3152.team8.companions.Strawberry;
 
+import java.util.ArrayList;
+
 /**
  * This is the base model class for the game which stores all the model objects
  * in it.
@@ -18,9 +20,10 @@ import edu.cornell.cis3152.team8.companions.Strawberry;
 
 public class GameState {
     // Graphics assets
-    private SpriteSheet mouseSprite;
-    private SpriteSheet dashWarnSprite;
-    private SpriteSheet idleWarnSprite;
+    // TODO: these should probably be private, but they are public for the level loader right now
+    public SpriteSheet mouseSprite;
+    public SpriteSheet dashWarnSprite;
+    public SpriteSheet idleWarnSprite;
 
     /**
      * The grid of tiles
@@ -37,7 +40,7 @@ public class GameState {
     /**
      * The bosses
      */
-    private Boss[] bosses;
+    private Array<Boss> bosses;
     /**
      * The coins on the map
      */
@@ -93,11 +96,12 @@ public class GameState {
         // }
 
         // Boss
-        bosses = new Boss[1];
-        bosses[0] = new Mouse(-100f, -100f);
-        bosses[0].setSpriteSheet(mouseSprite);
-        bosses[0].warnSprites.add(idleWarnSprite);
-        bosses[0].warnSprites.add(dashWarnSprite);
+        bosses = new Array<>();
+//        Boss mouse = new Mouse(-100f, -100f);
+//        mouse.setSpriteSheet(mouseSprite);
+//        mouse.warnSprites.add(idleWarnSprite);
+//        mouse.warnSprites.add(dashWarnSprite);
+//        bosses.add(mouse);
 
         // Coins - none at the beginning
 
@@ -149,7 +153,7 @@ public class GameState {
     /**
      * @return the array of bosses in the level
      */
-    public Boss[] getBosses() {
+    public Array<Boss> getBosses() {
         return bosses;
     }
 
