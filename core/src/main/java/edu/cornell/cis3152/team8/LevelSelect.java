@@ -29,10 +29,6 @@ public class LevelSelect implements Screen {
         }
 
         public void update(float delta) {
-//            if (Gdx.input.isTouched()) {
-//                game.exitScreen(this, 0);
-//                dispose();
-//            }
         }
 
         public void draw(float delta) {
@@ -52,10 +48,6 @@ public class LevelSelect implements Screen {
                     int y = i*200-60;
                     int cx = Gdx.input.getX();
                     int cy = 720 - Gdx.input.getY();
-                    //if (i == 1 && j == 1) {
-                        //System.out.println("Plate" + i + "," + j + " " + x + " " + y);
-                       // System.out.println("Cursor" + cx + " " + cy);
-                       // System.out.println("upper: " + (y + plate.getHeight()));
                         if (cx >= x && cx <= x + plate.getWidth() && cy >= y
                             && cy <= y + plate.getHeight()) {
                             game.batch.setBlendMode(BlendMode.ADDITIVE);
@@ -66,15 +58,10 @@ public class LevelSelect implements Screen {
                         }
                         game.batch.draw(plate, x, y);
                         game.batch.setBlendMode(BlendMode.ALPHA_BLEND);
-                    //}
                 }
             }
 
-            game.batch.draw(arrow,1050,220);
-
-
-//        game.font.setColor(Color.WHITE);
-//        game.font.draw(game.batch, "Main Menu", 100f, 100f);
+            //game.batch.draw(arrow,1050,220);
             game.batch.end();
         }
 
