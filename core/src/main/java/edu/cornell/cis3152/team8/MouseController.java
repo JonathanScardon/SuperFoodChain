@@ -5,7 +5,7 @@ import com.badlogic.gdx.utils.Array;
 import java.util.LinkedList;
 
 public class MouseController extends BossController {
-    public MouseController(Boss boss, GameState gameState) {
+    public MouseController(Boss boss, GameState gameState, float idleX, float idleY) {
         super(boss, gameState);
 
         // generate attack patterns
@@ -13,7 +13,7 @@ public class MouseController extends BossController {
 
         int num_attacks = (int) Math.ceil(1280f / (boss.getRadius() * 2f));
         attackPatterns = new Array<>();
-        attackPatterns.add(new IdleAttackPattern(this, 1280f / 2, 720f / 2, 2, 2, boss.warnSprites.get(0)));
+        attackPatterns.add(new IdleAttackPattern(this, idleX, idleY, 2, 2, boss.warnSprites.get(0)));
         for (int i = 0; i < num_attacks; i++) {
             attackPatterns.add(new DashAttackPattern(this, i * boss.getRadius() * 2 + boss.getRadius(), i % 2 == 1, 2, boss.warnSprites.get(1)));
         }
