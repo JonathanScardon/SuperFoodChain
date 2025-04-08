@@ -9,15 +9,13 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.maps.tiled.*;
-import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.JsonValue;
+import edu.cornell.cis3152.team8.companions.Pineapple;
 import edu.cornell.gdiac.assets.AssetDirectory;
 import edu.cornell.gdiac.graphics.SpriteBatch;
 import edu.cornell.gdiac.graphics.SpriteBatch.BlendMode;
@@ -180,7 +178,7 @@ public class GameScene implements Screen {
             if (i % 2 == 0) {
                 c = new Strawberry(x, y);
             } else {
-                c = new Durian(x, y);
+                c = new Pineapple(x, y);
             }
             companions[i] = c;
         }
@@ -299,7 +297,7 @@ public class GameScene implements Screen {
         }
 
         for (Minion m : minions) {
-            m.draw(game.batch);
+            m.draw(game.batch, delta);
         }
 
 
@@ -325,23 +323,23 @@ public class GameScene implements Screen {
 
         String coins = "X" + player.getCoins();
         String HP = "Boss HP: " + bosses.get(0).getHealth();
-        TextLayout shield;
+//        TextLayout shield;
         TextLayout coinCount = new TextLayout(coins, font, 128);
         TextLayout bossHP = new TextLayout(HP, font, 128);
         //Temp UI
-        game.batch.draw(coinTexture, 1150, 65, 50, 50);
+        game.batch.draw(coinTexture, 1140, 65, 45, 45);
         game.batch.drawText(bossHP, 600, 700);
         game.batch.drawText(coinCount, 1200f, 80f);
 
-        if (player.hasShield()) {
-            font.setColor(Color.GREEN);
-            shield = new TextLayout("Shield: On", font);
-
-        } else {
-            font.setColor(Color.RED);
-            shield = new TextLayout("Shield: Off", font);
-        }
-        game.batch.drawText(shield, 600, 20);
+//        if (player.hasShield()) {
+//            font.setColor(Color.GREEN);
+//            shield = new TextLayout("Shield: On", font);
+//
+//        } else {
+//            font.setColor(Color.RED);
+//            shield = new TextLayout("Shield: Off", font);
+//        }
+//        game.batch.drawText(shield, 600, 20);
         font.setColor(Color.WHITE);
 
         if (!player.isAlive()) {
