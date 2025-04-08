@@ -15,6 +15,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.JsonValue;
+import edu.cornell.cis3152.team8.companions.Pineapple;
 import edu.cornell.gdiac.assets.AssetDirectory;
 import edu.cornell.gdiac.graphics.SpriteBatch;
 import edu.cornell.gdiac.graphics.SpriteBatch.BlendMode;
@@ -176,7 +177,7 @@ public class GameScene implements Screen {
             if (i % 2 == 0) {
                 c = new Strawberry(x, y);
             } else {
-                c = new Durian(x, y);
+                c = new Pineapple(x, y);
             }
             companions[i] = c;
         }

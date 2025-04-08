@@ -8,6 +8,7 @@ import edu.cornell.cis3152.team8.GameState;
 import edu.cornell.cis3152.team8.PineappleProjectile;
 import edu.cornell.cis3152.team8.ProjectilePools;
 import edu.cornell.gdiac.graphics.SpriteBatch;
+import edu.cornell.gdiac.graphics.SpriteSheet;
 
 public class Pineapple extends Companion {
     Texture texture;
@@ -21,14 +22,10 @@ public class Pineapple extends Companion {
         setCooldown(2);
         radius = 1;
         texture = new Texture("images/Pineapple.png");
-    }
-
-    public void draw(SpriteBatch batch) {
-        if (isDestroyed()) {
-            batch.setColor(Color.BLACK);
-        }
-        batch.draw(texture, position.x, position.y, 64, 64);
-        batch.setColor(Color.WHITE);
+        SpriteSheet pineapple = new SpriteSheet(texture, 1, 7);
+        setSpriteSheet(pineapple);
+        animationSpeed = 0.25f;
+        size = 0.4f;
     }
 
     @Override
