@@ -17,12 +17,14 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.JsonValue;
 import edu.cornell.gdiac.assets.AssetDirectory;
 import edu.cornell.gdiac.graphics.SpriteBatch;
+import edu.cornell.gdiac.graphics.SpriteBatch.BlendMode;
 import edu.cornell.gdiac.graphics.TextLayout;
 import edu.cornell.gdiac.util.ScreenListener;
 
 import edu.cornell.cis3152.team8.companions.Strawberry;
 import edu.cornell.cis3152.team8.companions.Durian;
 
+import java.awt.Button;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
@@ -82,6 +84,7 @@ public class GameScene implements Screen {
     private JsonValue constants;
 
     private Texture coinTexture;
+    private boolean paused;
 
     /**
      * Creates a GameScene
@@ -99,6 +102,7 @@ public class GameScene implements Screen {
     private void reset() {
         start = false;
         reset = true;
+        paused = false;
         state.reset();
         player = new Player(500, 350);
         state.setPlayer(player);
@@ -199,12 +203,19 @@ public class GameScene implements Screen {
      * but photon collisions are not.
      */
     public void update(float delta) {
-        if (Gdx.input.isKeyPressed(Keys.R) && !reset) {
-            reset();
-        }
+//        if (Gdx.input.isKeyPressed(Keys.R) && !reset) {
+//            reset();
+//        }
         setStart();
 
-        if (start && player.isAlive() && !bosses[0].isDestroyed()) {
+        if (Gdx.input.isKeyPressed(Keys.ESCAPE)){
+            paused = true;
+        }
+        if (Gdx.input.isKeyPressed(Keys.R)){
+            paused = false;
+        }
+
+        if (start && player.isAlive() && !bosses[0].isDestroyed() && !paused) {
             // iterate through all companions in the chain
             for (Companion c : player.companions) {
                 if (c.canUse()) {
@@ -333,6 +344,9 @@ public class GameScene implements Screen {
         if (bosses[0].isDestroyed()) {
             drawWin();
         }
+        if (paused){
+            drawPause();
+        }
         game.batch.end();
     }
 
@@ -382,6 +396,70 @@ public class GameScene implements Screen {
             start = true;
             reset = false;
         }
+    }
+
+    private void drawPause(){
+        Texture background = new Texture("images/Paused.png");
+        Texture reset = new Texture("images/Reset.png");
+        Texture levels = new Texture("images/Levels.png");
+        Texture exit = new Texture("images/Exit.png");
+
+        game.batch.setBlendMode(BlendMode.ALPHA_BLEND);
+       game.batch.draw(background,0,0);
+
+
+
+        float buttonWidth = reset.getWidth();
+        float buttonHeight = reset.getHeight();
+
+        int x = 422;
+        int y = 415;
+        int cx = Gdx.input.getX();
+        int cy = 720 - Gdx.input.getY();
+        if (cx >= x && cx <= x + buttonWidth && cy >= y
+            && cy <= y + buttonHeight) {
+            game.batch.setBlendMode(BlendMode.ADDITIVE);
+            if (Gdx.input.isTouched()){
+                reset();
+                paused = false;
+            }
+        }
+        game.batch.draw(reset,x,y);
+        game.batch.setBlendMode(BlendMode.ALPHA_BLEND);
+
+        y -= 151;
+        if (cx >= x && cx <= x +buttonWidth && cy >= y
+            && cy <= y + buttonHeight) {
+            game.batch.setBlendMode(BlendMode.ADDITIVE);
+            if (Gdx.input.isTouched()){
+                game.exitScreen(this, 1);
+                dispose();
+            }
+        }
+        game.batch.draw(levels,x,y);
+        game.batch.setBlendMode(BlendMode.ALPHA_BLEND);
+
+        y -= 151;
+        if (cx >= x && cx <= x + buttonWidth && cy >= y
+            && cy <= y + buttonHeight) {
+            game.batch.setBlendMode(BlendMode.ADDITIVE);
+            if (Gdx.input.isTouched()){
+                Gdx.app.exit();
+            }
+        }
+
+        game.batch.draw(exit,x,y);
+        game.batch.setBlendMode(BlendMode.ALPHA_BLEND);
+
+
+//        game.font.setColor(Color.WHITE);
+//        game.font.draw(game.batch, "Main Menu", 100f, 100f);
+
+
+
+
+
+
     }
 
     @Override
