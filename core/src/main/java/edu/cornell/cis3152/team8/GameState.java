@@ -142,6 +142,10 @@ public class GameState {
         return minions;
     }
 
+    public void setMinions(Minion[] m) {
+        minions = m;
+    }
+
     /**
      * @return the array of bosses in the level
      */

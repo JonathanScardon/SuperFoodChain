@@ -103,6 +103,7 @@ public class GameScene implements Screen {
         player = new Player(500, 350);
         state.setPlayer(player);
         initMinions(5);
+        state.setMinions(minions);
         initCompanionPositions(5);
         // initCoins(5);
         coins = new LinkedList<>();
