@@ -320,7 +320,7 @@ public class GameScene implements Screen {
 
         String coins = "X" + player.getCoins();
         String HP = "Boss HP: " + bosses[0].getHealth();
-        TextLayout shield;
+//        TextLayout shield;
         TextLayout coinCount = new TextLayout(coins, font, 128);
         TextLayout bossHP = new TextLayout(HP, font, 128);
         //Temp UI
@@ -328,15 +328,15 @@ public class GameScene implements Screen {
         game.batch.drawText(bossHP, 600, 700);
         game.batch.drawText(coinCount, 1200f, 80f);
 
-        if (player.hasShield()) {
-            font.setColor(Color.GREEN);
-            shield = new TextLayout("Shield: On", font);
-
-        } else {
-            font.setColor(Color.RED);
-            shield = new TextLayout("Shield: Off", font);
-        }
-        game.batch.drawText(shield, 600, 20);
+//        if (player.hasShield()) {
+//            font.setColor(Color.GREEN);
+//            shield = new TextLayout("Shield: On", font);
+//
+//        } else {
+//            font.setColor(Color.RED);
+//            shield = new TextLayout("Shield: Off", font);
+//        }
+//        game.batch.drawText(shield, 600, 20);
         font.setColor(Color.WHITE);
 
         if (!player.isAlive()) {

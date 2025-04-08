@@ -140,7 +140,7 @@ public abstract class Boss extends GameObject {
      * @param batch The sprite batch
      */
     public void draw(SpriteBatch batch) {
-        SpriteBatch.computeTransform(transform, origin.x, origin.y, position.x, position.y, -(-90 + angle), 4f, 4f);
+        SpriteBatch.computeTransform(transform, origin.x, origin.y, position.x, position.y, -(-90 + angle), 0.4f, 0.4f);
 
         animator.setFrame((int) animeframe);
         batch.setColor(Color.WHITE);
