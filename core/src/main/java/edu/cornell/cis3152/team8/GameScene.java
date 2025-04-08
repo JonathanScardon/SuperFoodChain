@@ -62,8 +62,11 @@ public class GameScene implements Screen {
     /**
      * Bosses in the level
      */
-    private Boss[] bosses;
+    private Array<Boss> bosses;
 
+    /**
+     * Companions in the level
+     */
     private Companion[] companions;
 
     private LinkedList<Coin> coins;
@@ -74,7 +77,7 @@ public class GameScene implements Screen {
      */
     protected InputController playerControls;
     protected InputController[] minionControls;
-    protected BossController[] bossControls;
+    protected Array<BossController> bossControls;
 
     private CollisionController collision;
     private boolean start;
@@ -123,8 +126,8 @@ public class GameScene implements Screen {
         // initCoins(5);
         coins = new LinkedList<>();
         bosses = state.getBosses();
-        bossControls = new BossController[bosses.length];
-        bossControls[0] = new MouseController(bosses[0], state);
+        bossControls = new Array<>();
+
         projectiles = state.getActiveProjectiles();
 
         collision = new CollisionController(minions, player, companions, coins, bosses, projectiles);
@@ -155,11 +158,10 @@ public class GameScene implements Screen {
         head.setY(py);
     }
 
-    //
-    // /**
-    // * Initializes the minions to new random location.
-    // *
-    // */
+
+     /**
+     * Initializes the minions to new random location.
+     */
     private void initMinions(int num_minions) {
         Random rand = new Random();
         minions = new Minion[num_minions];
@@ -172,11 +174,10 @@ public class GameScene implements Screen {
         }
     }
 
-    //
-    // /**
-    // * Initializes the companions to new random location.
-    // *
-    // */
+
+     /**
+     * Initializes the companions to new random location.
+     */
     private void initCompanionPositions(int numCompanions) {
         Random rand = new Random();
         companions = new Companion[numCompanions];
@@ -204,8 +205,9 @@ public class GameScene implements Screen {
         }
     }
 
-    // public int getPlayerSelection() {
-    // return playerControls.getSelection();
+    public GameState getState() {
+        return state;
+    }
 
     /**
      * Invokes the controller for each Object.
@@ -276,9 +278,9 @@ public class GameScene implements Screen {
             }
             //
             // boss moves and acts
-            for (int i = 0; i < bosses.length; i++) {
-                bossControls[i].update(delta);
-                bosses[i].update(delta, bossControls[i].getAction());
+            for (int i = 0; i < bosses.size; i++) {
+                bossControls.get(i).update(delta);
+                bosses.get(i).update(delta, bossControls.get(i).getAction());
             }
             //
             // // player chain moves
@@ -295,7 +297,7 @@ public class GameScene implements Screen {
                 collision.update();
             }
 
-            for (Coin c: coins){
+            for (Coin c : coins) {
                 c.update(delta);
             }
         }
@@ -307,8 +309,9 @@ public class GameScene implements Screen {
 
         game.batch.begin();
 
-        if (!background){
-            drawTiles();
+        if (!background) {
+            Texture tileTexture = new Texture("images/Tile.png");
+            game.batch.draw(tileTexture, 0, 0, 1280, 720);
         }
 
         for (Boss boss : bosses) {
@@ -341,7 +344,7 @@ public class GameScene implements Screen {
         }
 
         String coins = "X" + player.getCoins();
-        String HP = "Boss HP: " + bosses[0].getHealth();
+        String HP = "Boss HP: " + bosses.get(0).getHealth();
 //        TextLayout shield;
         TextLayout coinCount = new TextLayout(coins, font, 128);
         TextLayout bossHP = new TextLayout(HP, font, 128);
@@ -365,10 +368,10 @@ public class GameScene implements Screen {
             drawLose();
         }
 
-        if (bosses[0].isDestroyed()) {
+        if (bosses.get(0).isDestroyed()) {
             drawWin();
         }
-        if (paused){
+        if (paused) {
             drawPause();
         }
         game.batch.end();
@@ -386,22 +389,6 @@ public class GameScene implements Screen {
     // c.coolDown(false);
     // }
 
-    private void drawTiles() {
-        // technically this should be a call to the draw function inside of level
-        int tileSize = 64;
-        Texture tileTexture = new Texture("images/Brown.png");
-        //Texture tileTexture = new Texture("images/Background.png");
-        game.batch.draw(tileTexture, 0, 0, 1280, 720);
-//        for (int x = 0; x < 20; x++) {
-//            for (int y = 0; y < 12; y++) {
-//                float xx = (float) (x) * tileSize;
-//                float yy = (float) (y) * tileSize;
-//                game.batch.draw(tileTexture, xx, yy, tileSize, tileSize);
-//            }
-//        }
-//        System.out.println("Draw Tiles");
-    }
-
     private void drawLose() {
         Texture texture = new Texture("images/Lose.png");
         game.batch.draw(texture, 250, 150);
@@ -414,9 +401,9 @@ public class GameScene implements Screen {
 
     }
 
-    private void setStart(){
-        if (Gdx.input.isKeyPressed(Keys.UP)||Gdx.input.isKeyPressed(Keys.DOWN)||
-            Gdx.input.isKeyPressed(Keys.LEFT)||Gdx.input.isKeyPressed(Keys.RIGHT)){
+    private void setStart() {
+        if (Gdx.input.isKeyPressed(Keys.UP) || Gdx.input.isKeyPressed(Keys.DOWN) ||
+            Gdx.input.isKeyPressed(Keys.LEFT) || Gdx.input.isKeyPressed(Keys.RIGHT)) {
             start = true;
             reset = false;
         }
