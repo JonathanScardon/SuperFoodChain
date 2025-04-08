@@ -11,7 +11,7 @@
             }
         },
         "mouse": {
-            "file": "images/beetle.png",
+            "file": "images/Mouse.png",
             "sprites": {
                 "animation": {
                     "rows": 1,
