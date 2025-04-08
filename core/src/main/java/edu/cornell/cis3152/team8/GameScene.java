@@ -294,7 +294,7 @@ public class GameScene implements Screen {
         }
 
         for (Minion m : minions) {
-            m.draw(game.batch);
+            m.draw(game.batch, delta);
         }
 
 
