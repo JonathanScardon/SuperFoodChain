@@ -24,6 +24,14 @@ public class Button {
         height = texture.getHeight();
         this.exitCode = exitCode;
     }
+    public Button(float x, float y, Texture texture, int exitCode, float width, float height){
+        posX = x;
+        posY = y;
+        this.texture = texture;
+        this.width = width;
+        this.height = height;
+        this.exitCode = exitCode;
+    }
 
     public boolean isHovering(){
         int x = Gdx.input.getX();
@@ -36,7 +44,7 @@ public class Button {
         if (isHovering()) {
             batch.setBlendMode(BlendMode.ADDITIVE);
         }
-        batch.draw(texture,posX,posY);
+        batch.draw(texture,posX,posY,width,height);
         batch.setBlendMode(BlendMode.ALPHA_BLEND);
     }
     public int getExitCode(){
