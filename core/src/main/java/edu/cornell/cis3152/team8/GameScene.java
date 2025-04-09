@@ -8,9 +8,11 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ScreenUtils;
@@ -28,6 +30,7 @@ import edu.cornell.cis3152.team8.companions.Durian;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
+import org.w3c.dom.Text;
 
 public class GameScene implements Screen {
     /**
@@ -37,7 +40,9 @@ public class GameScene implements Screen {
     private final Texture pauseBackground;
     private final Button resetButton;
     private final Button levelsButton;
+    private final Button settingsButton;
     private final Button exitButton;
+    private final Settings settingsScreen;
 
     /**
      * Reference to the game session
@@ -92,6 +97,7 @@ public class GameScene implements Screen {
 
     private Texture coinTexture;
     private boolean paused;
+    private boolean settingsOn;
 
     /**
      * Creates a GameScene
@@ -104,12 +110,15 @@ public class GameScene implements Screen {
         constants = assets.getEntry("constants", JsonValue.class);
         this.state = new GameState(constants, assets);
         pauseBackground = new Texture("images/Paused.png");
-        Texture resetT = new Texture("images/Reset.png");
-        Texture levels = new Texture("images/Levels.png");
-        Texture exit = new Texture("images/Exit.png");
-        resetButton = new Button(422,415,resetT,0);
-        levelsButton = new Button(422,264,levels,1);
-        exitButton = new Button(422,113,exit,0);
+        Texture resetT = new Texture("images/ResetButton.png");
+        Texture levels = new Texture("images/LevelsButton.png");
+        Texture settings = new Texture("images/SettingsButton.png");
+        Texture exit = new Texture("images/ExitButton.png");
+        resetButton = new Button(399,459,resetT,0,482,120);
+        levelsButton = new Button(399,319,levels,1,482,120);
+        settingsButton = new Button(399,180,settings,0,482,120);
+        exitButton = new Button(399,41,exit,0,482,120);
+        settingsScreen = new Settings();
         reset();
     }
 
@@ -235,13 +244,20 @@ public class GameScene implements Screen {
             } else if (levelsButton.isHovering() && Gdx.input.isTouched()) {
                 game.exitScreen(this, levelsButton.getExitCode());
                 dispose();
-            } else if (exitButton.isHovering() && Gdx.input.isTouched()) {
+            } else if (settingsButton.isHovering() && Gdx.input.isTouched()){
+                settingsOn = true;
+                settingsScreen.update();
+            }else if (exitButton.isHovering() && Gdx.input.isTouched()) {
                 Gdx.app.exit();
+            }
+
+            if (settingsOn && Gdx.input.isKeyPressed(Keys.ESCAPE)){
+                settingsOn = false;
             }
         }
 
 
-        if (start && player.isAlive() && !bosses[0].isDestroyed() && !paused) {
+        if (start && player.isAlive() && !bosses.get(0).isDestroyed() && !paused) {
             // iterate through all companions in the chain
             for (Companion c : player.companions) {
                 if (c.canUse()) {
@@ -305,10 +321,18 @@ public class GameScene implements Screen {
 
     public void draw(float delta) {
         BitmapFont font = new BitmapFont();
+        //FileHandle f = new FileHandle("fonts/LePetitCochon/LPC.fnt");
+        //FileHandle image = new FileHandle("fonts/LePetitCochon/LPC.fnt");
+
+        //Texture tt = new Texture("fonts/LPC.png");
+
+       // TextureRegion t = new TextureRegion(tt);
+
+        //System.out.println(t);
+        //BitmapFont font = new BitmapFont(Gdx.files.internal("fonts/Arial.fnt"));
         ScreenUtils.clear(Color.WHITE);
 
         game.batch.begin();
-
         if (!background) {
             Texture tileTexture = new Texture("images/Tile.png");
             game.batch.draw(tileTexture, 0, 0, 1280, 720);
@@ -364,6 +388,7 @@ public class GameScene implements Screen {
 //        game.batch.drawText(shield, 600, 20);
         font.setColor(Color.WHITE);
 
+
         if (!player.isAlive()) {
             drawLose();
         }
@@ -371,8 +396,11 @@ public class GameScene implements Screen {
         if (bosses.get(0).isDestroyed()) {
             drawWin();
         }
-        if (paused) {
+        if (paused && !settingsOn) {
             drawPause();
+        }
+        if (settingsOn){
+            settingsScreen.draw(game.batch);
         }
         game.batch.end();
     }
@@ -414,6 +442,7 @@ public class GameScene implements Screen {
         game.batch.draw(pauseBackground,0,0);
         resetButton.draw(game.batch);
         levelsButton.draw(game.batch);
+        settingsButton.draw(game.batch);
         exitButton.draw(game.batch);
     }
 
