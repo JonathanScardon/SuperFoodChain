@@ -1,6 +1,8 @@
 package edu.cornell.cis3152.team8;
 //Heavily inspired by AILab Collision Controller
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.utils.Array;
 import edu.cornell.cis3152.team8.GameObject.ObjectType;
 
@@ -137,7 +139,7 @@ public class CollisionController {
             Companion c = player.companions.get(i);
             float px = c.getX();
             float py = c.getY();
-            boolean collide = px >= mx - 10 && px <= mx + 10 && py >= my - 10 && py <= my + 10;
+            boolean collide = px >= mx && px <= mx + 50 && py >= my  && py <= my + 50;
             //kill companion and minion if they collided
             if (collide) {
                 player.deleteCompanion(c);
@@ -276,11 +278,12 @@ public class CollisionController {
      * @param player    The player
      */
     private void checkForCollision(Companion companion, Player player) {
+
         //Do nothing if companion or player are dead
         if (companion.isDestroyed() || !player.isAlive()) {
             return;
         }
-
+        companion.setGlow(false);
         //Get tiles for coin and player
         float cx = companion.getX();
         float cy = companion.getY();
@@ -291,15 +294,18 @@ public class CollisionController {
         //System.out.println(cx+", "+cy+"  "+px+", "+py);
         // Player buys companion if enough coins and they collided
         int cost = companion.getCost();
-        boolean collide = px >= cx - 10 && px <= cx + 10 && py >= cy - 10 && py <= cy + 10;
+        boolean collide = px >= cx && px <= cx + 50 && py >= cy && py <= cy + 50;
         //System.out.println(collide);
         boolean afford = player.getCoins() >= cost;
         //System.out.println(afford);
-        if (collide && afford) {
+        if (collide && afford){
+            companion.setGlow(true);
+            if (Gdx.input.isKeyPressed(Keys.E)) {
             //System.out.println("collected");
             player.setCoins(player.getCoins() - cost);
             player.addCompanion(companion);
             companion.setCollected(true);
+            }
         }
     }
 }

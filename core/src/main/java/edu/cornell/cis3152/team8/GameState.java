@@ -41,6 +41,7 @@ public class GameState {
      * The bosses
      */
     private Array<Boss> bosses;
+    private Array<BossController> bossControls;
     /**
      * The coins on the map
      */
@@ -95,13 +96,19 @@ public class GameState {
         // // minion texture
         // }
 
+
+
         // Boss
         bosses = new Array<>();
-//        Boss mouse = new Mouse(-100f, -100f);
-//        mouse.setSpriteSheet(mouseSprite);
-//        mouse.warnSprites.add(idleWarnSprite);
-//        mouse.warnSprites.add(dashWarnSprite);
-//        bosses.add(mouse);
+        bossControls = new Array<>();
+        Boss mouse = new Mouse(-100f, -100f);
+        mouse.setSpriteSheet(mouseSprite);
+        mouse.warnSprites.add(idleWarnSprite);
+        mouse.warnSprites.add(dashWarnSprite);
+        bosses.add(mouse);
+        bossControls.add(new MouseController(mouse,this,640,360));
+
+
 
         // Coins - none at the beginning
 
@@ -155,6 +162,9 @@ public class GameState {
      */
     public Array<Boss> getBosses() {
         return bosses;
+    }
+    public Array<BossController> getBossControls() {
+        return bossControls;
     }
 
     /**
