@@ -109,6 +109,7 @@ public class GameScene implements Screen {
         coinTexture = new Texture("images/CoinUI.png");
         constants = assets.getEntry("constants", JsonValue.class);
         this.state = new GameState(constants, assets);
+
         pauseBackground = new Texture("images/Paused.png");
         Texture resetT = new Texture("images/ResetButton.png");
         Texture levels = new Texture("images/LevelsButton.png");
@@ -119,7 +120,10 @@ public class GameScene implements Screen {
         settingsButton = new Button(399,180,settings,0,482,120);
         exitButton = new Button(399,41,exit,0,482,120);
         settingsScreen = new Settings();
+
+        System.out.println(bosses);
         reset();
+        System.out.println(bosses);
     }
 
     private void reset() {
@@ -135,7 +139,8 @@ public class GameScene implements Screen {
         // initCoins(5);
         coins = new LinkedList<>();
         bosses = state.getBosses();
-        bossControls = new Array<>();
+        bossControls = state.getBossControls();
+       // bossControls = new Array<>();
 
         projectiles = state.getActiveProjectiles();
 
@@ -152,6 +157,7 @@ public class GameScene implements Screen {
         for (int i = 0; i < minions.length; i++) {
             minionControls[i] = new MinionController(i, minions, player);
         }
+        System.out.println("Reset" + bosses);
     }
 
     /**
@@ -229,7 +235,9 @@ public class GameScene implements Screen {
 //        if (Gdx.input.isKeyPressed(Keys.R) && !reset) {
 //            reset();
 //        }
+
         setStart();
+        //System.out.println("Update" + bosses);
 
         if (Gdx.input.isKeyPressed(Keys.ESCAPE) && !paused){
             paused = true;

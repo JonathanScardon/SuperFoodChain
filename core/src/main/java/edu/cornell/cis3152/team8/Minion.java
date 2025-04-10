@@ -119,8 +119,8 @@ public class Minion extends GameObject{
                 deathExpirationTimer -= delta; // decrement timer with the delta value passed in GameScene
             } // if it's pass, say 3 seconds, don't draw the dead corpse to free up screen real estate
         } else { // if not destroyed, draw as normal
-            batch.draw(texture,position.x,position.y,64,64);
             batch.setColor(Color.WHITE);
+            batch.draw(texture,position.x,position.y,64,64);
         }
     }
 }

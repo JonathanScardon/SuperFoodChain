@@ -97,6 +97,7 @@ public class Player extends GameObject{
         this.shield = false;
         Companion head = new Strawberry(x,y);
         companions.add(head);
+        head.setCollected(true);
         radius = 2;
         ticks = 0;
 
@@ -135,7 +136,7 @@ public class Player extends GameObject{
                 c.animationFrame += c.animationSpeed;
                 //System.out.println(animationFrame);
                 if (c.animationFrame >= c.animator.getSize()) {
-                    c.animationFrame -= c.animator.getSize();
+                    c.animationFrame -= c.animator.getSize()-1;
                 }
             }
         }

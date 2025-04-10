@@ -38,10 +38,11 @@ public class Strawberry extends Companion {
         setCooldown(3);
         radius = 1;
         texture = new Texture("images/Strawberry.png");
-        SpriteSheet coin = new SpriteSheet(texture, 1, 7);
-        setSpriteSheet(coin);
+        SpriteSheet strawberry = new SpriteSheet(texture, 1, 8);
+        setSpriteSheet(strawberry);
         animationSpeed = 0.15f;
         size = 0.4f;
+        glow = new Texture("images/StrawberryGlow.png");
     }
 
     @Override

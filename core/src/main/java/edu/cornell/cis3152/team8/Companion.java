@@ -1,6 +1,7 @@
 package edu.cornell.cis3152.team8;
 
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import edu.cornell.gdiac.graphics.SpriteBatch;
 import static edu.cornell.cis3152.team8.InputController.CONTROL_MOVE_LEFT;
@@ -47,6 +48,8 @@ public abstract class Companion extends GameObject {
     private float prevY;
     protected static float animationSpeed;
     protected float animationFrame;
+    protected Texture glow;
+    protected Boolean highlight;
 
 
     public Companion(float x, float y) {
@@ -58,6 +61,8 @@ public abstract class Companion extends GameObject {
         collected = false;
         prevVelocity = new Vector2();
         direction = InputController.CONTROL_NO_ACTION;
+        highlight = false;
+        animationFrame = 1;
     }
 
     // accessors
@@ -197,15 +202,23 @@ public abstract class Companion extends GameObject {
             animator.setFrame(1);
             batch.setColor(Color.BLACK);
         }else {
-            animator.setFrame((int)animationFrame);
-            batch.setColor( Color.WHITE );
-
+            if (collected) {
+                animator.setFrame((int) animationFrame);
+            } else {
+                System.out.println(this + " " + highlight );
+                if (highlight){
+                    animator.setFrame(0);
+                }else {
+                    animator.setFrame(1);
+                }
+            }
+            batch.setColor(Color.WHITE);
         }
         SpriteBatch.computeTransform(transform, origin.x, origin.y,
             position.x, position.y, 0.0f, size
             , size);
-
-        batch.draw( animator, transform );
+        //System.out.println(highlight);
+            batch.draw(animator, transform);
         //batch.draw(texture, position.x, position.y, 64, 64);
         //batch.draw(texture, position.x, position.y, 64, 64);
         batch.setColor(Color.WHITE);
@@ -229,6 +242,10 @@ public abstract class Companion extends GameObject {
 
     public float getPrevY() {
         return this.prevY;
+    }
+
+    public void setGlow(Boolean g){
+        highlight = g;
     }
 
 }
