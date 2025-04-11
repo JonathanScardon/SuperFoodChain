@@ -17,6 +17,8 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.JsonValue;
+import edu.cornell.cis3152.team8.Companion.CompanionType;
+import edu.cornell.cis3152.team8.companions.Garlic;
 import edu.cornell.cis3152.team8.companions.Pineapple;
 import edu.cornell.gdiac.assets.AssetDirectory;
 import edu.cornell.gdiac.graphics.SpriteBatch;
@@ -45,9 +47,17 @@ public class GameScene implements Screen {
     private final Settings settingsScreen;
 
     private int maxEnemies;
-    private int numCompanions;
+    private int maxStrawberry;
+    private int maxPineapple;
+    private int maxAvocado;
+    private int curStrawberry;
+    private int curPineapple;
+    private int curAvocado;
+
+
 
     private Vector2[] minionSpawns;
+private Vector2[] companionSpawns;
 
     /**
      * Reference to the game session
@@ -77,7 +87,7 @@ public class GameScene implements Screen {
     /**
      * Companions in the level
      */
-    private Companion[] companions;
+    private Array<Companion> companions;
 
     private LinkedList<Coin> coins;
     private Array<Projectile> projectiles;
@@ -114,10 +124,16 @@ public class GameScene implements Screen {
         coinTexture = new Texture("images/CoinUI.png");
         constants = assets.getEntry("constants", JsonValue.class);
         this.state = new GameState(constants, assets);
+
         maxEnemies = state.getMaxEnemies();
-        numCompanions = state.getNumCompanions();
+        maxStrawberry = state.getMaxStrawberry();
+        maxPineapple = state.getMaxPineapple();
+        maxAvocado = state.getMaxAvocado();
+
         minions = state.getMinions();
         minionSpawns = state.getMinionSpawns();
+        companions = state.getCompanions();
+        companionSpawns = state.getCompanionSpawns();
 
         pauseBackground = new Texture("images/Paused.png");
         Texture resetT = new Texture("images/ResetButton.png");
@@ -143,14 +159,17 @@ public class GameScene implements Screen {
         state.reset();
         player = new Player(500, 350);
         state.setPlayer(player);
-
         state.setMinions(minions);
-        initCompanionPositions();
+
+        curStrawberry = 0;
+        curPineapple = 0;
+        curAvocado = 0;
         coins = new LinkedList<>();
         bosses = state.getBosses();
         bossControls = state.getBossControls();
         minionControls = state.getMinionControls();
         addMinions();
+        addCompanions();
 
        // bossControls = new Array<>();
 
@@ -187,15 +206,13 @@ public class GameScene implements Screen {
      */
     private void addMinions() {
         Random rand = new Random();
-        while (minions.size < maxEnemies) {
+        while (minions.size < maxStrawberry + maxPineapple + maxAvocado) {
             int spawn = rand.nextInt(5);
             float x = minionSpawns[spawn].x;
             float y = minionSpawns[spawn].y;
             Minion m = new Minion(x, y, minions.size);
-            // System.out.println("Id: " + i + " (" + x + ", " + y +")");
             minions.add(m);
             minionControls.add(new MinionController(m.getId(),minions,player));
-            //System.out.println("Spawn " + x + "," + y);
         }
     }
 
@@ -203,19 +220,24 @@ public class GameScene implements Screen {
      /**
      * Initializes the companions to new random location.
      */
-    private void initCompanionPositions() {
+    private void addCompanions() {
         Random rand = new Random();
-        companions = new Companion[numCompanions];
-        for (int i = 0; i < companions.length; i++) {
+        while (companions.size < maxStrawberry+maxPineapple+maxAvocado) {
+            int spawn = rand.nextInt(5);
+            float x = companionSpawns[spawn].x;
+            float y = companionSpawns[spawn].y;
             Companion c;
-            int x = rand.nextInt(1180);
-            int y = rand.nextInt(620);
-            if (i % 2 == 0) {
-                c = new Strawberry(x, y);
-            } else {
-                c = new Pineapple(x, y);
+            if (curStrawberry < maxStrawberry){
+                c = new Strawberry(x,y, companions.size);
+                curStrawberry++;
+            } else if (curPineapple < maxPineapple) {
+                c = new Pineapple(x,y, companions.size);
+                curPineapple++;
+            }else{
+                c = new Garlic(x,y, companions.size);
+                curAvocado++;
             }
-            companions[i] = c;
+            companions.add(c);
         }
     }
 
@@ -266,9 +288,27 @@ public class GameScene implements Screen {
 
         if (start && player.isAlive() && !bosses.get(0).isDestroyed() && !paused) {
             // iterate through all companions in the chain
+
+            for (Companion c : companions){
+                if (c.isCollected()){
+                    companions.removeIndex(c.getId());
+                    CompanionType type = c.getCompanionType();
+                    if (type.equals(CompanionType.STRAWBERRY)){
+                        curStrawberry--;
+                    }else if (type.equals(CompanionType.PINEAPPLE)){
+                        curPineapple--;
+                    }else{
+                        curAvocado--;
+                    }
+
+                }
+            }
+
             for (int i = 0; i < minions.size; i++) {
-//            addMinions();
                 minions.get(i).setID(i);
+            }
+            for (int i = 0; i < companions.size; i++) {
+                companions.get(i).setId(i);
             }
 
 
@@ -338,6 +378,7 @@ public class GameScene implements Screen {
                 c.update(delta);
             }
             addMinions();
+            addCompanions();
         }
     }
 

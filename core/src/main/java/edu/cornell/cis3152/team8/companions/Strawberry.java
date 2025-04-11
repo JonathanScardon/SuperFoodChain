@@ -30,8 +30,8 @@ public class Strawberry extends Companion {
     float dx = 0.0f; // make directional components global vars with default value
     float dy = 0.0f;
 
-    public Strawberry(float x, float y) {
-        super(x, y);
+    public Strawberry(float x, float y, int id) {
+        super(x, y, id);
         setCompanionType(CompanionType.STRAWBERRY);
         //temp cost (was 3)
         setCost(2);

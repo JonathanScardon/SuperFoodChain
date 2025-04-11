@@ -20,8 +20,8 @@ public class Durian extends Companion {
      * @param x The x-coordinate of the object
      * @param y The y-coordinate of the object
      */
-    public Durian(float x, float y) {
-        super(x, y);
+    public Durian(float x, float y, int id) {
+        super(x, y,id);
         //System.out.println(animator);
         //System.out.println(origin);
         setCompanionType(CompanionType.DURIAN);

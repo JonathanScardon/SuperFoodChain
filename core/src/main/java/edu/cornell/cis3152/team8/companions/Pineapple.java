@@ -15,8 +15,8 @@ public class Pineapple extends Companion {
     float dx = 0.0f;
     float dy = 0.0f;
 
-    public Pineapple(float x, float y) {
-        super(x, y);
+    public Pineapple(float x, float y, int id) {
+        super(x, y, id);
         setCompanionType(CompanionType.PINEAPPLE);
         setCost(4);
         setCooldown(2);

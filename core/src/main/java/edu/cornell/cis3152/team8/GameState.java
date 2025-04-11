@@ -21,7 +21,7 @@ import java.util.ArrayList;
 
 public class GameState {
 
-    private final Array<MinionController> minionControls;
+    private Array<MinionController> minionControls;
     // Graphics assets
     // TODO: these should probably be private, but they are public for the level loader right now
     public SpriteSheet mouseSprite;
@@ -52,7 +52,7 @@ public class GameState {
     /**
      * The companions on the map
      */
-    private Companion[] companions;
+    private Array<Companion> companions;
     /**
      * Collection of projectiles on the screen
      */
@@ -66,7 +66,12 @@ public class GameState {
     private int maxEnemies;
     private int numCompanions;
     private Vector2[] minionSpawns;
-    private int numSpawns;
+    private Vector2[] companionSpawns;
+    private int numMinionSpawns;
+    private int numCompanionSpawns;
+    private int maxStrawberry;
+    private int maxPineapple;
+    private int maxAvocado;
 
     /**
      * Creates a new game session. This method will call reset() to set up the
@@ -79,12 +84,24 @@ public class GameState {
         idleWarnSprite = assets.getEntry("idleWarn.animation", SpriteSheet.class);
         dashWarnSprite = assets.getEntry("dashWarn.animation", SpriteSheet.class);
         projectiles = new Array<Projectile>();
-        maxEnemies = 5;
-        numCompanions = 5;
+
+        JsonValue minionConstants = this.constants.get("Minion Spawns");
+        JsonValue companionConstants = this.constants.get("Companion Spawns");
+
+        maxEnemies = minionConstants.getInt("Max Enemies");
+        maxStrawberry = companionConstants.getInt("Max Strawberry");
+        maxPineapple = companionConstants.getInt("Max Pineapple");
+        maxAvocado = companionConstants.getInt("Max Avocado");
+
+        companions = new Array<>();
+
         minions = new Array<>();
         minionControls = new Array<>();
-        numSpawns = 5;
+        numMinionSpawns = minionConstants.getInt("Number of Spawns");
+        numCompanionSpawns = companionConstants.getInt("Number of Spawns");
+
         initMinionSpawns(this.constants.get("Minion Spawns"));
+        initCompanionSpawns(this.constants.get("Companion Spawns"));
         Boss.setConstants(this.constants.get("boss"));
 
         reset();
@@ -121,6 +138,9 @@ public class GameState {
         bosses.add(mouse);
         bossControls.add(new MouseController(mouse,this,640,360));
 
+        minions.clear();
+        minionControls.clear();
+        companions.clear();
 
 
         // Coins - none at the beginning
@@ -190,7 +210,7 @@ public class GameState {
     /**
      * @return the array of companions in the level
      */
-    public Companion[] getCompanions() {
+    public Array<Companion> getCompanions() {
         return companions;
     }
 
@@ -203,22 +223,44 @@ public class GameState {
 
     public int getMaxEnemies() {
         return maxEnemies;
-    }public int getNumCompanions() {
-        return numCompanions;
     }
+
+    public int getMaxStrawberry(){
+        return maxStrawberry;
+    }
+    public int getMaxPineapple(){
+        return maxPineapple;
+    }
+    public int getMaxAvocado(){
+        return maxAvocado;
+    }
+
     public Array<MinionController> getMinionControls() {
         return minionControls;
     }
     public Vector2[] getMinionSpawns() {
         return minionSpawns;
     }
+    public Vector2[] getCompanionSpawns() {
+        return companionSpawns;
+    }
 
     private void initMinionSpawns(JsonValue spawns){
-        minionSpawns = new Vector2[numSpawns];
+        minionSpawns = new Vector2[numMinionSpawns];
         for (int i = 0; i < minionSpawns.length; i++) {
             float x = spawns.get("Spawn " + i ).getFloat(0);
             float y = spawns.get("Spawn " + i).getFloat(1);
             minionSpawns[i] = new Vector2(x,y);
         }
     }
+    private void initCompanionSpawns(JsonValue spawns){
+        companionSpawns = new Vector2[numCompanionSpawns];
+        for (int i = 0; i < companionSpawns.length; i++) {
+            float x = spawns.get("Spawn " + i ).getFloat(0);
+            float y = spawns.get("Spawn " + i).getFloat(1);
+            companionSpawns[i] = new Vector2(x,y);
+        }
+    }
+
+
 }
