@@ -119,10 +119,11 @@ private Vector2[] companionSpawns;
      *
      * @param game the GDX root
      */
-    public GameScene(final GDXRoot game, AssetDirectory assets) {
+    public GameScene(final GDXRoot game, AssetDirectory assets, int level) {
         this.game = game;
         coinTexture = new Texture("images/CoinUI.png");
-        constants = assets.getEntry("constants", JsonValue.class);
+        constants = assets.getEntry("level0", JsonValue.class);
+        System.out.println(constants);
         this.state = new GameState(constants, assets);
 
         maxEnemies = state.getMaxEnemies();

@@ -2,10 +2,11 @@ package edu.cornell.cis3152.team8;
 
 import com.badlogic.gdx.utils.Array;
 
+import com.badlogic.gdx.utils.JsonValue;
 import java.util.LinkedList;
 
 public class MouseController extends BossController {
-    public MouseController(Boss boss, GameState gameState, float idleX, float idleY) {
+    public MouseController(Boss boss, GameState gameState, float idleX, float idleY, String attack) {
         super(boss, gameState);
 
         // generate attack patterns
@@ -14,8 +15,12 @@ public class MouseController extends BossController {
         int num_attacks = (int) Math.ceil(1280f / (boss.getRadius() * 2f));
         attackPatterns = new Array<>();
         attackPatterns.add(new IdleAttackPattern(this, idleX, idleY, 2, 2, boss.warnSprites.get(0)));
-        for (int i = 0; i < num_attacks; i++) {
-            attackPatterns.add(new DashAttackPattern(this, i * boss.getRadius() * 2 + boss.getRadius(), i % 2 == 1, 2, boss.warnSprites.get(1)));
+        if (attack == "Dash") {
+            for (int i = 0; i < num_attacks; i++) {
+                attackPatterns.add(
+                    new DashAttackPattern(this, i * boss.getRadius() * 2 + boss.getRadius(),
+                        i % 2 == 1, 2, boss.warnSprites.get(1)));
+            }
         }
 
         plannedAttacks = new LinkedList<>();

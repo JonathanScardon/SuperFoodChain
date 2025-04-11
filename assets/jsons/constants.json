@@ -4,7 +4,8 @@
         "speedDamp": 0.75,
         "idleDuration": 5,
         "epsilon": 0.01,
-        "animationSpeed": 0.1
+        "animationSpeed": 0.1,
+        "attack" : "Dash"
     },
   "Minion Spawns":{
         "Max Enemies": 4,
