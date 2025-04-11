@@ -44,6 +44,11 @@ public class GameScene implements Screen {
     private final Button exitButton;
     private final Settings settingsScreen;
 
+    private int maxEnemies;
+    private int numCompanions;
+
+    private Vector2[] minionSpawns;
+
     /**
      * Reference to the game session
      */
@@ -62,7 +67,7 @@ public class GameScene implements Screen {
     /**
      * Minions in the level
      */
-    private Minion[] minions;
+    private Array<Minion> minions;
 
     /**
      * Bosses in the level
@@ -81,7 +86,7 @@ public class GameScene implements Screen {
      * List of all the input controllers
      */
     protected InputController playerControls;
-    protected InputController[] minionControls;
+    protected Array<MinionController> minionControls;
     protected Array<BossController> bossControls;
 
     private CollisionController collision;
@@ -109,6 +114,10 @@ public class GameScene implements Screen {
         coinTexture = new Texture("images/CoinUI.png");
         constants = assets.getEntry("constants", JsonValue.class);
         this.state = new GameState(constants, assets);
+        maxEnemies = state.getMaxEnemies();
+        numCompanions = state.getNumCompanions();
+        minions = state.getMinions();
+        minionSpawns = state.getMinionSpawns();
 
         pauseBackground = new Texture("images/Paused.png");
         Texture resetT = new Texture("images/ResetButton.png");
@@ -121,9 +130,10 @@ public class GameScene implements Screen {
         exitButton = new Button(399,41,exit,0,482,120);
         settingsScreen = new Settings();
 
-        System.out.println(bosses);
+
+
         reset();
-        System.out.println(bosses);
+       // System.out.println(minionControls);
     }
 
     private void reset() {
@@ -133,18 +143,19 @@ public class GameScene implements Screen {
         state.reset();
         player = new Player(500, 350);
         state.setPlayer(player);
-        initMinions(5);
+
         state.setMinions(minions);
-        initCompanionPositions(5);
-        // initCoins(5);
+        initCompanionPositions();
         coins = new LinkedList<>();
         bosses = state.getBosses();
         bossControls = state.getBossControls();
+        minionControls = state.getMinionControls();
+        addMinions();
+
        // bossControls = new Array<>();
 
         projectiles = state.getActiveProjectiles();
-
-        collision = new CollisionController(minions, player, companions, coins, bosses, projectiles);
+        collision = new CollisionController(minions, player, companions, coins, bosses, projectiles ,minionControls);
 
         // assuming player is a list of Companions btw
         // player = state.getPlayer();
@@ -153,11 +164,8 @@ public class GameScene implements Screen {
         // level = state.getLevel();
 
         // assuming each level has number of enemies assigned?
-        minionControls = new InputController[minions.length];
-        for (int i = 0; i < minions.length; i++) {
-            minionControls[i] = new MinionController(i, minions, player);
-        }
-        System.out.println("Reset" + bosses);
+
+        //System.out.println("Reset" + bosses);
     }
 
     /**
@@ -177,15 +185,17 @@ public class GameScene implements Screen {
      /**
      * Initializes the minions to new random location.
      */
-    private void initMinions(int num_minions) {
+    private void addMinions() {
         Random rand = new Random();
-        minions = new Minion[num_minions];
-        for (int i = 0; i < num_minions; i++) {
-            int x = rand.nextInt(1280);
-            int y = rand.nextInt(720);
-            Minion m = new Minion(x, y, i);
+        while (minions.size < maxEnemies) {
+            int spawn = rand.nextInt(5);
+            float x = minionSpawns[spawn].x;
+            float y = minionSpawns[spawn].y;
+            Minion m = new Minion(x, y, minions.size);
             // System.out.println("Id: " + i + " (" + x + ", " + y +")");
-            minions[i] = m;
+            minions.add(m);
+            minionControls.add(new MinionController(m.getId(),minions,player));
+            //System.out.println("Spawn " + x + "," + y);
         }
     }
 
@@ -193,7 +203,7 @@ public class GameScene implements Screen {
      /**
      * Initializes the companions to new random location.
      */
-    private void initCompanionPositions(int numCompanions) {
+    private void initCompanionPositions() {
         Random rand = new Random();
         companions = new Companion[numCompanions];
         for (int i = 0; i < companions.length; i++) {
@@ -206,17 +216,6 @@ public class GameScene implements Screen {
                 c = new Pineapple(x, y);
             }
             companions[i] = c;
-        }
-    }
-
-    private void initCoins(int numCoins) {
-        Random rand = new Random();
-        coins = new LinkedList<>();
-        for (int i = 0; i < companions.length; i++) {
-            int x = rand.nextInt(1280);
-            int y = rand.nextInt(720);
-            Coin c = new Coin(x, y);
-            coins.add(c);
         }
     }
 
@@ -267,6 +266,14 @@ public class GameScene implements Screen {
 
         if (start && player.isAlive() && !bosses.get(0).isDestroyed() && !paused) {
             // iterate through all companions in the chain
+            for (int i = 0; i < minions.size; i++) {
+//            addMinions();
+                minions.get(i).setID(i);
+            }
+
+
+
+
             for (Companion c : player.companions) {
                 if (c.canUse()) {
                     c.useAbility(state);
@@ -292,12 +299,18 @@ public class GameScene implements Screen {
 
             // System.out.println(player.position);
             // moves enemies - assume always moving (no CONTROL_NO_ACTION)
-            for (int i = 0; i < minions.length; i++) {
-                if (!minions[i].isDestroyed()) {
+            for (int i = 0; i < minions.size; i++) {
+                Minion m = minions.get(i);
+                if (!m.isDestroyed()) {
                     // System.out.println("CONTROL " + i);
-                    int action = minionControls[i].getAction();
+                    int action = minionControls.get(i).getAction();
                     // System.out.println("Id: " + i + " (" + action + ")");
-                    minions[i].update(action);
+                    m.update(action);
+                } else {
+                    if (m.shouldRemove()){
+                        minions.removeIndex(m.getId());
+                        minionControls.removeIndex(m.getId());
+                    }
                 }
             }
             //
@@ -324,6 +337,7 @@ public class GameScene implements Screen {
             for (Coin c : coins) {
                 c.update(delta);
             }
+            addMinions();
         }
     }
 

@@ -14,6 +14,8 @@ public class Minion extends GameObject{
     // 5 second death expiration timer
     private float deathExpirationTimer = 3.0f;
     private float moveSpeed;
+    private boolean remove;
+    private boolean trash;
 
     /**
      * Constructs a Minion at the given position
@@ -24,10 +26,11 @@ public class Minion extends GameObject{
     public Minion(float x, float y, int id) {
         super(x, y);
         constants = new JsonValue("assets/constants.json");
-        this.id = id;
         texture = new Texture("images/Minion.png");
         radius = 2;
-
+        this.id = id;
+        remove = false;
+        trash = false;
         //setConstants(constants);
     }
 
@@ -40,7 +43,7 @@ public class Minion extends GameObject{
         this.constants = constants;
         health = constants.getInt("health");
         //MOVE_SPEED = constants.getFloat("move speed");
-        moveSpeed = 2;
+        moveSpeed = 4;
     }
 
     @Override
@@ -116,11 +119,23 @@ public class Minion extends GameObject{
             if (deathExpirationTimer > 0.0f) { // and within recent death timer
                 batch.setColor(Color.BLACK); // show black shadow
                 batch.draw(texture,position.x,position.y,64,64); // draw the blackened corpse
-                deathExpirationTimer -= delta; // decrement timer with the delta value passed in GameScene
-            } // if it's pass, say 3 seconds, don't draw the dead corpse to free up screen real estate
+                deathExpirationTimer -= delta;
+                // decrement timer with the delta value passed in GameScene
+
+            }else{
+                remove = true;
+            }
+            // if it's pass, say 3 seconds, don't draw the dead corpse to free up screen real estate
         } else { // if not destroyed, draw as normal
             batch.setColor(Color.WHITE);
             batch.draw(texture,position.x,position.y,64,64);
         }
+    }
+    public boolean shouldRemove(){
+        return remove;
+    }
+
+    public void setID(int id){
+        this.id = id;
     }
 }

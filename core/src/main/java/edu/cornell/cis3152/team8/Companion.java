@@ -205,7 +205,7 @@ public abstract class Companion extends GameObject {
             if (collected) {
                 animator.setFrame((int) animationFrame);
             } else {
-                System.out.println(this + " " + highlight );
+                //System.out.println(this + " " + highlight );
                 if (highlight){
                     animator.setFrame(0);
                 }else {

@@ -5,6 +5,7 @@
 package edu.cornell.cis3152.team8;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.JsonValue;
 import edu.cornell.gdiac.assets.*;
@@ -19,6 +20,8 @@ import java.util.ArrayList;
  */
 
 public class GameState {
+
+    private final Array<MinionController> minionControls;
     // Graphics assets
     // TODO: these should probably be private, but they are public for the level loader right now
     public SpriteSheet mouseSprite;
@@ -36,7 +39,7 @@ public class GameState {
     /**
      * The minions
      */
-    private Minion[] minions;
+    private Array<Minion> minions;
     /**
      * The bosses
      */
@@ -60,6 +63,11 @@ public class GameState {
      */
     private JsonValue constants;
 
+    private int maxEnemies;
+    private int numCompanions;
+    private Vector2[] minionSpawns;
+    private int numSpawns;
+
     /**
      * Creates a new game session. This method will call reset() to set up the
      * board.
@@ -71,7 +79,12 @@ public class GameState {
         idleWarnSprite = assets.getEntry("idleWarn.animation", SpriteSheet.class);
         dashWarnSprite = assets.getEntry("dashWarn.animation", SpriteSheet.class);
         projectiles = new Array<Projectile>();
-
+        maxEnemies = 5;
+        numCompanions = 5;
+        minions = new Array<>();
+        minionControls = new Array<>();
+        numSpawns = 5;
+        initMinionSpawns(this.constants.get("Minion Spawns"));
         Boss.setConstants(this.constants.get("boss"));
 
         reset();
@@ -149,11 +162,11 @@ public class GameState {
     /**
      * @return the array of minions in the level
      */
-    public Minion[] getMinions() {
+    public Array<Minion> getMinions() {
         return minions;
     }
 
-    public void setMinions(Minion[] m) {
+    public void setMinions(Array<Minion> m) {
         minions = m;
     }
 
@@ -186,5 +199,26 @@ public class GameState {
      */
     public Array<Projectile> getActiveProjectiles() {
         return projectiles;
+    }
+
+    public int getMaxEnemies() {
+        return maxEnemies;
+    }public int getNumCompanions() {
+        return numCompanions;
+    }
+    public Array<MinionController> getMinionControls() {
+        return minionControls;
+    }
+    public Vector2[] getMinionSpawns() {
+        return minionSpawns;
+    }
+
+    private void initMinionSpawns(JsonValue spawns){
+        minionSpawns = new Vector2[numSpawns];
+        for (int i = 0; i < minionSpawns.length; i++) {
+            float x = spawns.get("Spawn " + i ).getFloat(0);
+            float y = spawns.get("Spawn " + i).getFloat(1);
+            minionSpawns[i] = new Vector2(x,y);
+        }
     }
 }

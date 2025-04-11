@@ -22,7 +22,7 @@ public class Pineapple extends Companion {
         setCooldown(2);
         radius = 1;
         texture = new Texture("images/Pineapple.png");
-        SpriteSheet pineapple = new SpriteSheet(texture, 1, 7);
+        SpriteSheet pineapple = new SpriteSheet(texture, 1, 8);
         setSpriteSheet(pineapple);
         animationSpeed = 0.25f;
         size = 0.4f;

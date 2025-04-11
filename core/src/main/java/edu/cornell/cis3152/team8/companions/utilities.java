@@ -19,7 +19,7 @@ public class utilities {
     public static Vector2 autoshoot(GameState state, Vector2 pos) {
         float dx = 0.0f;
         float dy = 0.0f;
-        Minion[] minionList = state.getMinions();
+        Array<Minion> minionList = state.getMinions();
         Array<Boss> bossList = state.getBosses();
         float closestEnemyDist = Float.POSITIVE_INFINITY;
 
