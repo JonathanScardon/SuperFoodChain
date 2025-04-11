@@ -47,7 +47,7 @@ public class LevelLoader {
                         mouse.warnSprites.add(state.idleWarnSprite);
                         mouse.warnSprites.add(state.dashWarnSprite);
                         state.getBosses().add(mouse);
-                        scene.bossControls.add(new MouseController(mouse, state, idleX, idleY));
+                        scene.bossControls.add(new MouseController(mouse, state, idleX, idleY,"Dash"));
                     }
                 }
             }

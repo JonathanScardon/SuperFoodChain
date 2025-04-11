@@ -73,6 +73,8 @@ public class GameState {
     private int maxPineapple;
     private int maxAvocado;
 
+    private String bossAttack;
+
     /**
      * Creates a new game session. This method will call reset() to set up the
      * board.
@@ -103,6 +105,8 @@ public class GameState {
         initMinionSpawns(this.constants.get("Minion Spawns"));
         initCompanionSpawns(this.constants.get("Companion Spawns"));
         Boss.setConstants(this.constants.get("boss"));
+
+        bossAttack = this.constants.get("boss").getString("attack");
 
         reset();
     }
@@ -136,7 +140,8 @@ public class GameState {
         mouse.warnSprites.add(idleWarnSprite);
         mouse.warnSprites.add(dashWarnSprite);
         bosses.add(mouse);
-        bossControls.add(new MouseController(mouse,this,640,360));
+
+        bossControls.add(new MouseController(mouse,this,640,360, bossAttack));
 
         minions.clear();
         minionControls.clear();
