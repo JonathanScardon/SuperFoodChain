@@ -154,7 +154,10 @@ Thumbs.db
 *.*#
 *#*#
 /.kotlin/
+/core/resources/META-INF/MANIFEST.MF
 /assets/assets.txt
+/assets/tiled/team8.tiled-session
+/out/*
 
 ## Special cases:
 
@@ -163,4 +166,3 @@ Thumbs.db
 ## You could also add that configuration to the text in nativeimage.gradle .
 ## You should delete or comment out the next line if you have configuration in a different resource-config.json .
 **/resource-config.json
-/core/resources/META-INF/MANIFEST.MF
