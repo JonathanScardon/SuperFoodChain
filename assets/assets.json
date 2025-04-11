@@ -43,6 +43,9 @@
     },
     "jsons": {
         "constants": "jsons/constants.json",
-        "level1": "jsons/level_1.json"
+      "level1": "jsons/level1.json",
+      "level2": "jsons/level2.json"
+
+
     }
 }
