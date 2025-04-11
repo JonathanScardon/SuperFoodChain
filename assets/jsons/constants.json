@@ -5,5 +5,12 @@
         "idleDuration": 5,
         "epsilon": 0.01,
         "animationSpeed": 0.1
+    },
+  "Minion Spawns":{
+        "Spawn 0": [100,100],
+        "Spawn 1": [100,600],
+        "Spawn 2": [800,100],
+        "Spawn 3": [500,500],
+        "Spawn 4": [200,600]
     }
 }
