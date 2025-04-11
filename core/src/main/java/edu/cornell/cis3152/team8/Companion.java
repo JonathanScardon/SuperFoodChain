@@ -50,9 +50,10 @@ public abstract class Companion extends GameObject {
     protected float animationFrame;
     protected Texture glow;
     protected Boolean highlight;
+    private int id;
 
 
-    public Companion(float x, float y) {
+    public Companion(float x, float y, int id) {
         super(x, y);
         isAlive = true;
         cost = 0;
@@ -63,6 +64,7 @@ public abstract class Companion extends GameObject {
         direction = InputController.CONTROL_NO_ACTION;
         highlight = false;
         animationFrame = 1;
+        this.id = id;
     }
 
     // accessors
@@ -246,6 +248,12 @@ public abstract class Companion extends GameObject {
 
     public void setGlow(Boolean g){
         highlight = g;
+    }
+    public int getId(){
+        return id;
+    }
+    public void setId(int id){
+        this.id = id;
     }
 
 }
