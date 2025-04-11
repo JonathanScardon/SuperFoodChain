@@ -9,10 +9,12 @@
   <object id="2" name="wood" gid="1" x="0" y="1000" width="1280" height="1280"/>
  </objectgroup>
  <objectgroup id="6" name="objects">
-  <object id="5" name="mouse" gid="2" x="31.3777" y="932.677" width="150" height="195">
+  <object id="5" gid="2" x="31.3777" y="932.677" width="150" height="195">
    <properties>
-    <property name="idleX" type="int" value="640"/>
-    <property name="idleY" type="int" value="360"/>
+    <property name="bossType" value="mouse"/>
+    <property name="idleX" type="float" value="640"/>
+    <property name="idleY" type="float" value="360"/>
+    <property name="type" value="boss"/>
    </properties>
   </object>
  </objectgroup>
