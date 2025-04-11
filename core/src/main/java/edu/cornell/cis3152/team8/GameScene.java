@@ -152,6 +152,8 @@ public class GameScene implements Screen {
         for (int i = 0; i < minions.length; i++) {
             minionControls[i] = new MinionController(i, minions, player);
         }
+
+        LevelLoader.load(this, "tiled/level_1.tmx");
     }
 
     /**
