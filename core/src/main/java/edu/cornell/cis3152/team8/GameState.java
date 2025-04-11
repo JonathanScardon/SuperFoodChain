@@ -141,6 +141,7 @@ public class GameState {
         minions.clear();
         minionControls.clear();
         companions.clear();
+        projectiles.clear();
 
 
         // Coins - none at the beginning

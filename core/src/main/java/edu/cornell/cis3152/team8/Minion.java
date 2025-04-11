@@ -15,7 +15,9 @@ public class Minion extends GameObject{
     private float deathExpirationTimer = 3.0f;
     private float moveSpeed;
     private boolean remove;
-    private boolean trash;
+    private boolean damage;
+    private float animationSpeed;
+    private float animationFrame;
 
     /**
      * Constructs a Minion at the given position
@@ -30,7 +32,13 @@ public class Minion extends GameObject{
         radius = 2;
         this.id = id;
         remove = false;
-        trash = false;
+        damage = false;
+        health = 4;
+        SpriteSheet minion = new SpriteSheet(texture, 1, 1);
+        setSpriteSheet(minion);
+        animationSpeed = 0.15f;
+        size = 0.3f;
+        animationFrame = 0;
         //setConstants(constants);
     }
 
@@ -107,6 +115,15 @@ public class Minion extends GameObject{
         //System.out.println(velocity);
         position.add(velocity);
         //System.out.println(position);
+
+
+        if (animator != null) {
+            animationFrame += animationSpeed;
+            //System.out.println(animationFrame);
+            if (animationFrame >= animator.getSize()) {
+                animationFrame -= animator.getSize();
+            }
+        }
     }
 
     /**
@@ -115,10 +132,14 @@ public class Minion extends GameObject{
      * @param batch The sprite batch
      */
     public void draw(SpriteBatch batch, float delta){
+        SpriteBatch.computeTransform(transform, origin.x, origin.y,
+            position.x, position.y, 0.0f, size
+            , size);
         if (isDestroyed()){ // if destroyed...
+            animator.setFrame(0);
             if (deathExpirationTimer > 0.0f) { // and within recent death timer
                 batch.setColor(Color.BLACK); // show black shadow
-                batch.draw(texture,position.x,position.y,64,64); // draw the blackened corpse
+                batch.draw(animator, transform); // draw the blackened corpse
                 deathExpirationTimer -= delta;
                 // decrement timer with the delta value passed in GameScene
 
@@ -127,9 +148,15 @@ public class Minion extends GameObject{
             }
             // if it's pass, say 3 seconds, don't draw the dead corpse to free up screen real estate
         } else { // if not destroyed, draw as normal
-            batch.setColor(Color.WHITE);
-            batch.draw(texture,position.x,position.y,64,64);
+            animator.setFrame((int) animationFrame);
+            if (damage){
+                batch.setColor(Color.RED);
+            }
+
+            batch.draw(animator, transform);
+
         }
+        batch.setColor(Color.WHITE);
     }
     public boolean shouldRemove(){
         return remove;
@@ -137,5 +164,9 @@ public class Minion extends GameObject{
 
     public void setID(int id){
         this.id = id;
+    }
+
+    public void setDamage(boolean hit){
+        damage = hit;
     }
 }

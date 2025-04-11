@@ -36,6 +36,7 @@ public abstract class Companion extends GameObject {
     private float abilityCool;
     private boolean collected;
     private Vector2 prevVelocity;
+    private float deathExpirationTimer = 3.0f;
 
     /** How far the player moves in a single turn */
     private static float MOVE_SPEED = 5;
@@ -52,6 +53,8 @@ public abstract class Companion extends GameObject {
     protected Boolean highlight;
     private int id;
 
+    private boolean remove;
+
 
     public Companion(float x, float y, int id) {
         super(x, y);
@@ -65,6 +68,7 @@ public abstract class Companion extends GameObject {
         highlight = false;
         animationFrame = 1;
         this.id = id;
+        remove = false;
     }
 
     // accessors
@@ -199,10 +203,17 @@ public abstract class Companion extends GameObject {
 
     }
 
-    public void draw(SpriteBatch batch){
+    public void draw(SpriteBatch batch, float delta){
         if (isDestroyed()) {
             animator.setFrame(1);
-            batch.setColor(Color.BLACK);
+            if (deathExpirationTimer > 0.0f) { // and within recent death timer
+                batch.setColor(Color.BLACK); // show black shadow
+                batch.draw(animator, transform); // draw the blackened corpse
+                deathExpirationTimer -= delta;
+                // decrement timer with the delta value passed in GameScene
+            }else{
+                remove = true;
+            }
         }else {
             if (collected) {
                 animator.setFrame((int) animationFrame);
@@ -254,6 +265,10 @@ public abstract class Companion extends GameObject {
     }
     public void setId(int id){
         this.id = id;
+    }
+
+    public boolean shouldRemove(){
+        return remove;
     }
 
 }
