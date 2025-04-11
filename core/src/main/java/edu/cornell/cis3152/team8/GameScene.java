@@ -122,7 +122,7 @@ private Vector2[] companionSpawns;
     public GameScene(final GDXRoot game, AssetDirectory assets, int level) {
         this.game = game;
         coinTexture = new Texture("images/CoinUI.png");
-        constants = assets.getEntry("level0", JsonValue.class);
+        constants = assets.getEntry("level" + level, JsonValue.class);
         System.out.println(constants);
         this.state = new GameState(constants, assets);
 

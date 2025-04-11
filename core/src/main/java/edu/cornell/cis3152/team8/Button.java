@@ -9,6 +9,7 @@ public class Button {
     private float posX;
     private float posY;
     private Texture texture;
+    private Texture number;
 
     private float width;
 
@@ -23,6 +24,7 @@ public class Button {
         width = texture.getWidth();
         height = texture.getHeight();
         this.exitCode = exitCode;
+        //this.number = new Texture("images/Empty.png");
     }
     public Button(float x, float y, Texture texture, int exitCode, float width, float height){
         posX = x;
@@ -31,6 +33,16 @@ public class Button {
         this.width = width;
         this.height = height;
         this.exitCode = exitCode;
+        //this.number = new Texture("images/Empty.png");
+    }
+    public Button(float x, float y, Texture texture, Texture number, int exitCode){
+        posX = x;
+        posY = y;
+        width = texture.getWidth();
+        height = texture.getHeight();
+        this.texture = texture;
+        this.exitCode = exitCode;
+        this.number = number;
     }
 
     public boolean isHovering(){
@@ -46,6 +58,7 @@ public class Button {
         }
         batch.draw(texture,posX,posY,width,height);
         batch.setBlendMode(BlendMode.ALPHA_BLEND);
+        batch.draw(number,posX,posY);
     }
     public int getExitCode(){
         return exitCode;
