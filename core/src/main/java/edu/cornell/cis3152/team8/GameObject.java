@@ -261,10 +261,10 @@ public abstract class GameObject {
      * @param batch The sprite batch
      */
     public void draw(SpriteBatch batch) {
-        SpriteBatch.computeTransform(transform, origin.x, origin.y, position.x, position.y, 0, 1.0f, 1.0f);
-
-        batch.setColor(Color.WHITE);
-        batch.draw(animator, transform);
+//        SpriteBatch.computeTransform(transform, origin.x, origin.y, position.x, position.y, 0, 1.0f, 1.0f);
+//
+//        batch.setColor(Color.WHITE);
+//        batch.draw(animator, transform);
     }
 
 }

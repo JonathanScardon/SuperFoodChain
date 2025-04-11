@@ -41,6 +41,8 @@ public abstract class Boss extends GameObject {
      */
     protected BossWarnPattern curWarn;
 
+    private boolean damage;
+
     public enum BossType {
         MOUSE,
         CHEF,
@@ -64,8 +66,9 @@ public abstract class Boss extends GameObject {
     public Boss(float x, float y) {
         super(x, y);
         warnSprites = new Array<>();
-        health = 20;
+        health = 30;
         angle = 90f;
+        damage = false;
     }
 
     // accessors
@@ -143,11 +146,18 @@ public abstract class Boss extends GameObject {
         SpriteBatch.computeTransform(transform, origin.x, origin.y, position.x, position.y, -(-90 + angle), 0.4f, 0.4f);
 
         animator.setFrame((int) animeframe);
-        batch.setColor(Color.WHITE);
+        if (damage){
+            batch.setColor(Color.RED);
+        }
         batch.draw(animator, transform);
-
+        batch.setColor(Color.WHITE);
         if (curWarn != null) {
             curWarn.draw(batch);
         }
+
+    }
+
+    public void setDamage(boolean hit) {
+        damage = hit;
     }
 }

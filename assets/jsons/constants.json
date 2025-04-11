@@ -7,7 +7,7 @@
         "animationSpeed": 0.1
     },
   "Minion Spawns":{
-        "Max Enemies": 5,
+        "Max Enemies": 4,
         "Number of Spawns" : 5,
         "Spawn 0": [100,100],
         "Spawn 1": [100,600],

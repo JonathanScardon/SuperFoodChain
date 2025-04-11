@@ -141,7 +141,7 @@ public class CollisionController {
             Companion c = player.companions.get(i);
             float px = c.getX();
             float py = c.getY();
-            boolean collide = px >= mx && px <= mx + 50 && py >= my  && py <= my + 50;
+            boolean collide = px >= mx && px - 25 <= mx + 25 && py >= my -25 && py <= my + 25;
             //kill companion and minion if they collided
             if (collide) {
                 player.deleteCompanion(c);
@@ -179,6 +179,7 @@ public class CollisionController {
                     minion.setDestroyed(true);
                     coins.add(new Coin(mx, my));
             }
+            minion.setDamage(true);
         }
     }
 
@@ -238,7 +239,7 @@ public class CollisionController {
                 boss.setDestroyed(true);
             }
             projectile.setDestroyed(true);
-
+            boss.setDamage(true);
         }
     }
 
@@ -261,7 +262,7 @@ public class CollisionController {
         Companion head = player.companions.get(0);
         float px = head.getX();
         float py = head.getY();
-        boolean collide = px >= cx - 15 && px <= cx + 15 && py >= cy - 15 && py <= cy + 15;
+        boolean collide = px >= cx - 20 && px <= cx + 20 && py >= cy - 20 && py <= cy + 20;
         //System.out.println(collide);
 
         // Add one coin to player and remove coin from screen if they collided
@@ -296,7 +297,7 @@ public class CollisionController {
         //System.out.println(cx+", "+cy+"  "+px+", "+py);
         // Player buys companion if enough coins and they collided
         int cost = companion.getCost();
-        boolean collide = px >= cx && px <= cx + 50 && py >= cy && py <= cy + 50;
+        boolean collide = px >= cx - 25 && px <= cx + 25 && py >= cy - 25 && py <= cy + 25;
         //System.out.println(collide);
         boolean afford = player.getCoins() >= cost;
         //System.out.println(afford);

@@ -206,8 +206,8 @@ private Vector2[] companionSpawns;
      */
     private void addMinions() {
         Random rand = new Random();
-        while (minions.size < maxStrawberry + maxPineapple + maxAvocado) {
-            int spawn = rand.nextInt(5);
+        while (minions.size < maxEnemies) {
+            int spawn = rand.nextInt(minionSpawns.length);
             float x = minionSpawns[spawn].x;
             float y = minionSpawns[spawn].y;
             Minion m = new Minion(x, y, minions.size);
@@ -223,7 +223,7 @@ private Vector2[] companionSpawns;
     private void addCompanions() {
         Random rand = new Random();
         while (companions.size < maxStrawberry+maxPineapple+maxAvocado) {
-            int spawn = rand.nextInt(5);
+            int spawn = rand.nextInt(companionSpawns.length);
             float x = companionSpawns[spawn].x;
             float y = companionSpawns[spawn].y;
             Companion c;
@@ -288,6 +288,9 @@ private Vector2[] companionSpawns;
 
         if (start && player.isAlive() && !bosses.get(0).isDestroyed() && !paused) {
             // iterate through all companions in the chain
+            addMinions();
+            addCompanions();
+            bosses.get(0).setDamage(false);
 
             for (Companion c : companions){
                 if (c.isCollected()){
@@ -315,10 +318,12 @@ private Vector2[] companionSpawns;
 
 
             for (Companion c : player.companions) {
-                if (c.canUse()) {
-                    c.useAbility(state);
-                } else {
-                    c.coolDown(true, delta);
+                if (!c.isDestroyed()){
+                    if (c.canUse()) {
+                        c.useAbility(state);
+                    } else {
+                        c.coolDown(true, delta);
+                    }
                 }
             }
 
@@ -346,6 +351,7 @@ private Vector2[] companionSpawns;
                     int action = minionControls.get(i).getAction();
                     // System.out.println("Id: " + i + " (" + action + ")");
                     m.update(action);
+                    m.setDamage(false);
                 } else {
                     if (m.shouldRemove()){
                         minions.removeIndex(m.getId());
@@ -377,10 +383,11 @@ private Vector2[] companionSpawns;
             for (Coin c : coins) {
                 c.update(delta);
             }
-            addMinions();
-            addCompanions();
+//            addMinions();
+//            addCompanions();
         }
     }
+
 
     public void draw(float delta) {
         BitmapFont font = new BitmapFont();
@@ -410,14 +417,18 @@ private Vector2[] companionSpawns;
         }
 
 
-        player.draw(game.batch);
+        player.draw(game.batch, delta);
         for (Companion c : companions) {
             String cost = "Cost: " + c.getCost();
             TextLayout compCost = new TextLayout(cost, font);
-            c.draw(game.batch);
+            TextLayout pressE = new TextLayout("E", font);
+            c.draw(game.batch, delta);
             //temp UI
-            if (!player.companions.contains(c)) {
+            if (!c.isCollected()) {
                 game.batch.drawText(compCost, c.getX() + 35, c.getY());
+                if (c.highlight){
+                game.batch.drawText(pressE,c.getX(),c.getY()+35);
+                }
             }
 
         }
