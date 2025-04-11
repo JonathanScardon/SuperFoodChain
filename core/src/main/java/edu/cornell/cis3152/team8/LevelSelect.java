@@ -20,6 +20,7 @@ public class LevelSelect implements Screen {
         private Texture plate;
         private Texture arrow;
         private Array<Button> buttons;
+        private float wait = 0.0f;
 
 
 
@@ -44,9 +45,14 @@ public class LevelSelect implements Screen {
         }
 
         public void update(float delta) {
-            for (Button b: buttons){
-                if (b.isHovering()&&Gdx.input.isTouched()){
-                    game.exitScreen(this,b.getExitCode());
+            //System.out.println(delta);
+            if (wait > 0.0f) {
+                wait -= delta;
+            }else {
+                for (Button b : buttons) {
+                    if (b.isHovering() && Gdx.input.isTouched()) {
+                        game.exitScreen(this, b.getExitCode());
+                    }
                 }
             }
         }
@@ -103,6 +109,9 @@ public class LevelSelect implements Screen {
         @Override
         public void dispose() {
 
+        }
+        public void resetWait(){
+            wait = 1.0f;
         }
     }
 
