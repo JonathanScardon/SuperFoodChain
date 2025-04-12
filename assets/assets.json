@@ -42,6 +42,6 @@
         }
     },
     "jsons": {
-        "constants": "jsons/constants.json"
+        "constants": "constants.json"
     }
 }

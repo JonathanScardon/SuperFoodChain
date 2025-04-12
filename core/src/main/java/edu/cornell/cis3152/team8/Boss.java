@@ -31,11 +31,6 @@ public abstract class Boss extends GameObject {
      * Current angle of the sprite
      */
     protected float angle;
-
-    /**
-     * The sprite sheets that correspond to each warning pattern
-     */
-    protected Array<SpriteSheet> warnSprites;
     /**
      * The warn pattern that the boss is currently drawing
      */
@@ -63,7 +58,6 @@ public abstract class Boss extends GameObject {
 
     public Boss(float x, float y) {
         super(x, y);
-        warnSprites = new Array<>();
         health = 10;
         angle = 90f;
     }
@@ -131,8 +125,6 @@ public abstract class Boss extends GameObject {
     public void setHealth(float health) {
         this.health = health;
     }
-
-    public abstract BossType getBossType();
 
     /**
      * Draws this object to the sprite batch

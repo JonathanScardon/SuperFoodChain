@@ -12,8 +12,15 @@ public interface BossAttackPattern {
         ATTACK,
     }
 
-    void warn();
-    void attack();
+    /**
+     * Start the warning process for the boss
+     */
+    void start();
+
     void update(float delta);
-    boolean attackEnded();
+
+    /**
+     * @return Whether the warning and attack have both ended
+     */
+    boolean ended();
 }
