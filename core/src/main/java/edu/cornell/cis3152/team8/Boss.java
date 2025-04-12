@@ -90,19 +90,19 @@ public abstract class Boss extends GameObject {
         if (movingLeft) {
             velocity.x = -MOVE_SPEED;
             velocity.y = 0;
-            angle = 180f;
+            //angle = 180f;
         } else if (movingRight) {
             velocity.x = MOVE_SPEED;
             velocity.y = 0;
-            angle = 0f;
+            //angle = 0f;
         } else if (movingUp) {
             velocity.y = MOVE_SPEED;
             velocity.x = 0;
-            angle = 90f;
+            //angle = 90f;
         } else if (movingDown) {
             velocity.y = -MOVE_SPEED;
             velocity.x = 0;
-            angle = 270f;
+            //angle = 270f;
         } else {
             // NOT MOVING, SO SLOW DOWN
             velocity.x *= SPEED_DAMP;
@@ -169,5 +169,8 @@ public abstract class Boss extends GameObject {
 
     public void setState(String s){
         state = s;
+    }
+    public void setAnimationSpeed(float speed){
+        animationSpeed = speed;
     }
 }

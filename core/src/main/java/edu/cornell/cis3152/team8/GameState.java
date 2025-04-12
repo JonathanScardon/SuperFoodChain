@@ -125,10 +125,13 @@ public class GameState {
         String state = b.getState();
         if (state.equals("Idle")){
             b.setSpriteSheet(mouseIdleSprite);
+            b.setAnimationSpeed(0.1f);
         }else if (state.equals("Dash")){
             b.setSpriteSheet(mouseDashSprite);
+            b.setAnimationSpeed(0.1f);
         } else if (state.equals("Spin")) {
             b.setSpriteSheet(mouseSpinSprite);
+            b.setAnimationSpeed(0.5f);
         }
 
     }
