@@ -10,13 +10,33 @@
                 }
             }
         },
-        "mouse": {
-            "file": "images/Mouse.png",
+        "IdleMouse": {
+            "file": "images/MouseIdle.png",
+            "sprites": {
+                "animation": {
+                    "rows": 1,
+                    "cols": 1,
+                    "size": 1
+                }
+            }
+        },
+      "DashMouse": {
+            "file": "images/MouseDash.png",
             "sprites": {
                 "animation": {
                     "rows": 1,
                     "cols": 2,
                     "size": 2
+                }
+            }
+        },
+      "SpinMouse": {
+            "file": "images/MouseSpin.png",
+            "sprites": {
+                "animation": {
+                    "rows": 1,
+                    "cols": 1,
+                    "size": 1
                 }
             }
         },

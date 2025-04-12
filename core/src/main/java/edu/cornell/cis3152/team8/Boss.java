@@ -51,6 +51,8 @@ public abstract class Boss extends GameObject {
 
     protected float health;
 
+    private String state;
+
     /**
      * Defines the constants for this class.
      *
@@ -159,5 +161,13 @@ public abstract class Boss extends GameObject {
 
     public void setDamage(boolean hit) {
         damage = hit;
+    }
+
+    public String getState(){
+        return state;
+    }
+
+    public void setState(String s){
+        state = s;
     }
 }
