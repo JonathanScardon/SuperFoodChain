@@ -115,6 +115,7 @@ private Vector2[] companionSpawns;
     private boolean settingsOn;
     private boolean[] minionSpawnTaken;
     private boolean[] companionSpawnTaken;
+    private Array<Companion> deadCompanions;
 
     /**
      * Creates a GameScene
@@ -137,6 +138,7 @@ private Vector2[] companionSpawns;
         minionSpawns = state.getMinionSpawns();
         companions = state.getCompanions();
         companionSpawns = state.getCompanionSpawns();
+        deadCompanions = state.getDeadCompanions();
 
         pauseBackground = new Texture("images/Paused.png");
         Texture resetT = new Texture("images/ResetButton.png");
@@ -181,7 +183,7 @@ private Vector2[] companionSpawns;
        // bossControls = new Array<>();
 
         projectiles = state.getActiveProjectiles();
-        collision = new CollisionController(minions, player, companions, coins, bosses, projectiles ,minionControls);
+        collision = new CollisionController(minions, player, companions, coins, bosses, projectiles ,minionControls, deadCompanions);
 
         // assuming player is a list of Companions btw
         // player = state.getPlayer();
@@ -425,6 +427,13 @@ private Vector2[] companionSpawns;
             for (Coin c : coins) {
                 c.update(delta);
             }
+
+            for (int i = 0; i < deadCompanions.size; i++){
+                deadCompanions.get(i).decreaseDeathExpirationTimer(delta);
+                if (deadCompanions.get(i).getTrash()){
+                     deadCompanions.removeIndex(i);
+                }
+            }
 //            addMinions();
 //            addCompanions();
         }
@@ -449,6 +458,9 @@ private Vector2[] companionSpawns;
             Texture tileTexture = new Texture("images/Tile.png");
             game.batch.draw(tileTexture, 0, 0, 1280, 720);
         }
+        for (Companion c: deadCompanions){
+            c.draw(game.batch);
+        }
 
         for (Boss boss : bosses) {
             boss.draw(game.batch);
@@ -458,13 +470,12 @@ private Vector2[] companionSpawns;
             m.draw(game.batch, delta);
         }
 
-
-        player.draw(game.batch, delta);
+        player.draw(game.batch);
         for (Companion c : companions) {
             String cost = "Cost: " + c.getCost();
             TextLayout compCost = new TextLayout(cost, font);
             TextLayout pressE = new TextLayout("E", font);
-            c.draw(game.batch, delta);
+            c.draw(game.batch);
             //temp UI
             if (!c.isCollected()) {
                 game.batch.drawText(compCost, c.getX() + 35, c.getY());
