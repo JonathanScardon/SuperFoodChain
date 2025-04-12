@@ -114,6 +114,7 @@ private Vector2[] companionSpawns;
     private boolean paused;
     private boolean settingsOn;
     private boolean[] minionSpawnTaken;
+    private boolean[] companionSpawnTaken;
 
     /**
      * Creates a GameScene
@@ -150,6 +151,8 @@ private Vector2[] companionSpawns;
 
         minionSpawnTaken = new boolean[minionSpawns.length];
         Arrays.fill(minionSpawnTaken, false);
+        companionSpawnTaken = new boolean[companionSpawns.length];
+        Arrays.fill(companionSpawnTaken, false);
 
 
         reset();
@@ -212,8 +215,9 @@ private Vector2[] companionSpawns;
         Random rand = new Random();
         boolean r = true;
         for (boolean b :minionSpawnTaken){
-            if (!b){
+            if (!b) {
                 r = false;
+                break;
             }
         }
         if (r){
@@ -238,22 +242,43 @@ private Vector2[] companionSpawns;
      */
     private void addCompanions() {
         Random rand = new Random();
+        boolean r = false;
+        for (boolean b :companionSpawnTaken){
+            if (!b) {
+                r = false;
+                break;
+            }
+        }
+        if (r){
+            Arrays.fill(companionSpawnTaken, false);
+        }
         while (companions.size < maxStrawberry+maxPineapple+maxAvocado) {
             int spawn = rand.nextInt(companionSpawns.length);
-            float x = companionSpawns[spawn].x;
-            float y = companionSpawns[spawn].y;
-            Companion c;
-            if (curStrawberry < maxStrawberry){
-                c = new Strawberry(x,y, companions.size);
-                curStrawberry++;
-            } else if (curPineapple < maxPineapple) {
-                c = new Pineapple(x,y, companions.size);
-                curPineapple++;
-            }else{
-                c = new Garlic(x,y, companions.size);
-                curAvocado++;
+
+                float x = companionSpawns[spawn].x;
+                float y = companionSpawns[spawn].y;
+            for (Companion c: companions) {
+                if (c.getX() == x && c.getY() == y) {
+                    r = true;
+                }else{
+                    r = false;
+                }
             }
-            companions.add(c);
+            if (!r)  {
+                Companion c;
+                if (curStrawberry < maxStrawberry) {
+                    c = new Strawberry(x, y, companions.size);
+                    curStrawberry++;
+                } else if (curPineapple < maxPineapple) {
+                    c = new Pineapple(x, y, companions.size);
+                    curPineapple++;
+                } else {
+                    c = new Garlic(x, y, companions.size);
+                    curAvocado++;
+                }
+                companions.add(c);
+                companionSpawnTaken[spawn] = true;
+            }
         }
     }
 
