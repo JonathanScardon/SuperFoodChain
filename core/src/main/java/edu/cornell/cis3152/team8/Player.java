@@ -51,7 +51,7 @@ public class Player extends GameObject{
             return buffer[actualIndex];
         }
 
-        public PositionAndDirection getCompanion(int index) {
+        public PositionAndDirection getSnapshot(int index) {
             return get(index * DELAY);
         }
 
@@ -67,8 +67,9 @@ public class Player extends GameObject{
     /** Number of instructions to wait before following
      * Also the number of instructions stored per companion
      * */
-    private final static int DELAY = 10;
+    private static int DELAY;
     private final static int MAX_COMPANIONS = 10;
+    private static int MOVE_SPEED = 3;
 
     private CircularBuffer controlBuffer;
 
@@ -100,6 +101,7 @@ public class Player extends GameObject{
         head.setCollected(true);
         radius = 2;
         ticks = 0;
+        DELAY = MOVE_SPEED * 7;
 
 
         this.controlBuffer = new CircularBuffer(MAX_COMPANIONS * DELAY);
@@ -121,13 +123,18 @@ public class Player extends GameObject{
     public void update(int controlCode){
         if (this.isAlive()) {
             Companion head = this.getPlayerHead();
-            controlBuffer.add(head.getX(), head.getY(), controlCode);
+            controlBuffer.add(head.getX(), head.getY(), head.getDirection());
         }
 
         for (int i = 0; i < companions.size(); i++) {
             Companion c = companions.get(i);
-            CircularBuffer.PositionAndDirection prev = controlBuffer.getCompanion(i);
-            c.update(prev.dir);
+            if (c == getPlayerHead()){
+                c.update(controlCode);
+            }
+            else {
+                CircularBuffer.PositionAndDirection prev = controlBuffer.getSnapshot(i);
+                c.update(prev.dir);
+            }
         }
 
         for (Companion c: companions){
@@ -239,14 +246,16 @@ public class Player extends GameObject{
      * @param companion the companion to add
      */
     public void addCompanion(Companion companion){
-        companions.add(companion);
-
-        CircularBuffer.PositionAndDirection tail = controlBuffer.getCompanion(companions.size() - 1);
+        //limited num of companions
+        if (companions.size() == MAX_COMPANIONS){
+            return;
+        }
+        CircularBuffer.PositionAndDirection tail = controlBuffer.getSnapshot(companions.size());
         if (tail != null) {
             companion.setX(tail.x);
             companion.setY(tail.y);
         }
-
+        companions.add(companion);
     }
     /**
      * Removes the companion from the player's chain
@@ -256,28 +265,40 @@ public class Player extends GameObject{
         int index = companions.indexOf(companion);
         //companion out of range
         if (index < 0 || index > companions.size()-1){
-            return;
+            throw new IndexOutOfBoundsException();
         }
 
         float prevX = companion.getX();
         float prevY = companion.getY();
         companions.remove(index);
 
-        //catch up the positions of the rest of the snake
+        //update positions to fill deleted companion
         for (int i = index+1; i < companions.size(); i++){
             Companion c = companions.get(i);
-
-            float tempX = c.getX();
-            float tempY = c.getY();
-
-            c.setX(prevX);
-            c.setY(prevY);
-
-            prevX = tempX;
-            prevY = tempY;
+            CircularBuffer.PositionAndDirection data = controlBuffer.getSnapshot(i-1);
+            if (data != null){
+                c.setX(data.x);
+                c.setY(data.y);
+            }
         }
+        companions.remove(index);
+
     }
 
+    /**
+     * @return player speed
+     */
+    public static int getSpeed(){
+        return MOVE_SPEED;
+    }
+
+    /**
+     * Sets the player's speed
+     * @param speed new speed
+     */
+    public static void setSpeed(int speed) {
+        MOVE_SPEED = speed;
+    }
     /**
      * Returns GameObject type Player
      * */

@@ -156,7 +156,7 @@ public abstract class Companion extends GameObject {
     /**
      * Updates the movement of a companion in the chain
      *
-     * @param controlCode
+     * @param controlCode new direction of the companion
      */
     public void update(int controlCode) {
         if (!isAlive) {
@@ -170,6 +170,7 @@ public abstract class Companion extends GameObject {
         boolean movingDown = controlCode == 8;
 
         // Process movement command.
+        int MOVE_SPEED = Player.getSpeed();
         // int s = 2;
         if (movingLeft) {
             this.direction = InputController.CONTROL_MOVE_LEFT;
