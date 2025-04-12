@@ -25,9 +25,9 @@ public class MouseController extends BossController {
             }
             attackPatterns.add(new IdleAttackPattern(this, idleX, idleY, 2, 2, boss.warnSprites.get(0)));
             for (int i = 0; i < horizontal_num_attacks; i++) {
-//                attackPatterns.add(
-//                    new DashAttackPattern(this, i * boss.getRadius() * 2 + boss.getRadius(),
-//                        i % 2 == 1, 2, boss.warnSprites.get(2), false));
+                attackPatterns.add(
+                    new DashAttackPattern(this, i * boss.getRadius() * 2 + boss.getRadius(),
+                        i % 2 == 1, 2, boss.warnSprites.get(2), false));
             }
         } else if (attack.equals("Spin")) {
             for (int i = 0; i < vertical_num_attacks; i++) {

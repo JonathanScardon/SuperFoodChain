@@ -24,6 +24,7 @@ public class Pineapple extends Companion {
         texture = new Texture("images/Pineapple.png");
         SpriteSheet pineapple = new SpriteSheet(texture, 1, 8);
         setSpriteSheet(pineapple);
+        origin.y = 117.5f;
         animationSpeed = 0.25f;
         size = 0.4f;
     }
