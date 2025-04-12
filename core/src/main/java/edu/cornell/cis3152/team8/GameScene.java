@@ -29,6 +29,7 @@ import edu.cornell.gdiac.util.ScreenListener;
 import edu.cornell.cis3152.team8.companions.Strawberry;
 import edu.cornell.cis3152.team8.companions.Durian;
 
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
@@ -53,7 +54,6 @@ public class GameScene implements Screen {
     private int curStrawberry;
     private int curPineapple;
     private int curAvocado;
-
 
 
     private Vector2[] minionSpawns;
@@ -113,6 +113,7 @@ private Vector2[] companionSpawns;
     private Texture coinTexture;
     private boolean paused;
     private boolean settingsOn;
+    private boolean[] minionSpawnTaken;
 
     /**
      * Creates a GameScene
@@ -147,6 +148,8 @@ private Vector2[] companionSpawns;
         exitButton = new Button(399,41,exit,0,482,120);
         settingsScreen = new Settings();
 
+        minionSpawnTaken = new boolean[minionSpawns.length];
+        Arrays.fill(minionSpawnTaken, false);
 
 
         reset();
@@ -207,13 +210,25 @@ private Vector2[] companionSpawns;
      */
     private void addMinions() {
         Random rand = new Random();
+        boolean r = true;
+        for (boolean b :minionSpawnTaken){
+            if (!b){
+                r = false;
+            }
+        }
+        if (r){
+            Arrays.fill(minionSpawnTaken, false);
+        }
         while (minions.size < maxEnemies) {
             int spawn = rand.nextInt(minionSpawns.length);
-            float x = minionSpawns[spawn].x;
-            float y = minionSpawns[spawn].y;
-            Minion m = new Minion(x, y, minions.size);
-            minions.add(m);
-            minionControls.add(new MinionController(m.getId(),minions,player));
+            if (!minionSpawnTaken[spawn]) {
+                float x = minionSpawns[spawn].x;
+                float y = minionSpawns[spawn].y;
+                Minion m = new Minion(x, y, minions.size);
+                minions.add(m);
+                minionControls.add(new MinionController(m.getId(), minions, player));
+                minionSpawnTaken[spawn] = true;
+            }
         }
     }
 
