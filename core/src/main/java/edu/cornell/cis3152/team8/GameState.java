@@ -27,7 +27,8 @@ public class GameState {
     public SpriteSheet mouseIdleSprite;
      public SpriteSheet mouseDashSprite;
      public SpriteSheet mouseSpinSprite;
-    public SpriteSheet dashWarnSprite;
+    public SpriteSheet dashWarnVerticalSprite;
+    public SpriteSheet dashWarnHorizontalSprite;
     public SpriteSheet idleWarnSprite;
 
     /**
@@ -114,7 +115,9 @@ public class GameState {
         mouseSpinSprite = assets.getEntry("SpinMouse.animation", SpriteSheet.class);
 
         idleWarnSprite = assets.getEntry("idleWarn.animation", SpriteSheet.class);
-        dashWarnSprite = assets.getEntry("dashWarn.animation", SpriteSheet.class);
+        dashWarnVerticalSprite = assets.getEntry("dashWarnVertical.animation", SpriteSheet.class);
+        dashWarnHorizontalSprite = assets.getEntry("dashWarnHorizontal.animation", SpriteSheet.class);
+
         projectiles = new Array<Projectile>();
 
         reset();
@@ -162,7 +165,9 @@ public class GameState {
         Boss mouse = new Mouse(-100f, -100f);
         mouse.setSpriteSheet(mouseDashSprite);
         mouse.warnSprites.add(idleWarnSprite);
-        mouse.warnSprites.add(dashWarnSprite);
+        mouse.warnSprites.add(dashWarnVerticalSprite);
+        mouse.warnSprites.add(dashWarnHorizontalSprite);
+
         bosses.add(mouse);
 
         bossControls.add(new MouseController(mouse,this,640,360, bossAttack));
