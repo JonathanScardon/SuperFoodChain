@@ -29,7 +29,7 @@ public class SpinAttackPattern implements BossAttackPattern {
         this.controlCode = top ? CONTROL_MOVE_DOWN : CONTROL_MOVE_UP;
         this.warnDuration = warnDuration;
 
-        this.warnPattern = new BossWarnPattern(startX, 720f / 2f);
+        this.warnPattern = new BossWarnPattern(startX, startY);
         this.warnPattern.setSpriteSheet(warnSprite);
     }
 
