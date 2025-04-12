@@ -69,10 +69,10 @@ public class Player extends GameObject{
      * Also the number of instructions stored per companion
      * */
     private static int DELAY;
-    private final static int MAX_COMPANIONS = 10;
+    private final static int MAX_COMPANIONS = 15;
 
     /** How far the player moves in a single turn */
-    private static int MOVE_SPEED = 5;
+    private static float MOVE_SPEED = 5;
 
     private CircularBuffer controlBuffer;
 
@@ -132,7 +132,9 @@ public class Player extends GameObject{
             }
             else {
                 CircularBuffer.PositionAndDirection prev = controlBuffer.getSnapshot(i);
-                c.update(prev.dir);
+                if (prev != null){
+                    c.update(prev.dir);
+                }
             }
         }
 
@@ -263,12 +265,14 @@ public class Player extends GameObject{
         }
 
         //update positions to fill deleted companion
-        for (int i = index+1; i < companions.size(); i++){
-            Companion c = companions.get(i);
-            CircularBuffer.PositionAndDirection data = controlBuffer.getSnapshot(i-1);
-            if (data != null){
-                c.setX(data.x);
-                c.setY(data.y);
+        if (companion != this.getPlayerHead()){
+            for (int i = index+1; i < companions.size(); i++){
+                Companion c = companions.get(i);
+                CircularBuffer.PositionAndDirection data = controlBuffer.getSnapshot(i-1);
+                if (data != null){
+                    c.setX(data.x);
+                    c.setY(data.y);
+                }
             }
         }
 
@@ -278,7 +282,7 @@ public class Player extends GameObject{
     /**
      * @return player speed
      */
-    public static int getSpeed(){
+    public static float getSpeed(){
         return MOVE_SPEED;
     }
 

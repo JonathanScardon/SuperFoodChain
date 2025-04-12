@@ -156,8 +156,7 @@ public abstract class Companion extends GameObject {
         boolean movingDown = controlCode == 8;
 
         // Process movement command.
-        // int s = 2;
-        int MOVE_SPEED = Player.getSpeed();
+        float MOVE_SPEED = Player.getSpeed();
         if (movingLeft) {
             this.direction = InputController.CONTROL_MOVE_LEFT;
             velocity.x = -MOVE_SPEED;
