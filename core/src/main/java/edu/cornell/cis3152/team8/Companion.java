@@ -36,9 +36,6 @@ public abstract class Companion extends GameObject {
     private boolean collected;
     private Vector2 prevVelocity;
 
-    /** How far the player moves in a single turn */
-    private static float MOVE_SPEED = 5;
-
     /** The direction the companion is currently moving in */
     private int direction;
 
@@ -160,6 +157,7 @@ public abstract class Companion extends GameObject {
 
         // Process movement command.
         // int s = 2;
+        int MOVE_SPEED = Player.getSpeed();
         if (movingLeft) {
             this.direction = InputController.CONTROL_MOVE_LEFT;
             velocity.x = -MOVE_SPEED;
