@@ -33,7 +33,7 @@ public class MouseController extends BossController {
             for (int i = 0; i < vertical_num_attacks; i++) {
                 attackPatterns.add(
                     new SpinAttackPattern(this, i * boss.getRadius() * 2 + boss.getRadius(),
-                        i % 2 == 1, 2, boss.warnSprites.get(1)));
+                        i % 2 == 1, 2, boss.warnSprites.get(3)));
             }
         }
 

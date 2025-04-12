@@ -60,6 +60,16 @@
                 }
             }
         },
+      "spinWarn": {
+            "file": "images/SpinWarn.png",
+            "sprites": {
+                "animation": {
+                    "rows": 1,
+                    "cols": 2,
+                    "size": 2
+                }
+            }
+        },
         "idleWarn": {
             "file": "images/idleWarn.png",
             "sprites": {
