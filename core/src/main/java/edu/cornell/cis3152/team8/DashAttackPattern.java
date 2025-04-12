@@ -19,18 +19,30 @@ public class DashAttackPattern implements BossAttackPattern {
 
     private float warnTime;
     private AttackState state;
+    private boolean vertical;
 
-    public DashAttackPattern(BossController controller, float x, boolean top, float warnDuration, SpriteSheet warnSprite) {
+    public DashAttackPattern(BossController controller, float x, boolean top, float warnDuration, SpriteSheet warnSprite, boolean vertical) {
         this.controller = controller;
         this.boss = controller.boss;
+        this.vertical = vertical;
 
-        this.startX = x;
-        this.startY = top ? 720f + boss.getRadius() : -boss.getRadius();
-        this.controlCode = top ? CONTROL_MOVE_DOWN : CONTROL_MOVE_UP;
-        this.warnDuration = warnDuration;
+        if (vertical) {
+            this.startX = x;
+            this.startY = top ? 720f + boss.getRadius() : -boss.getRadius();
+            this.controlCode = top ? CONTROL_MOVE_DOWN : CONTROL_MOVE_UP;
+            this.warnDuration = warnDuration;
 
-        this.warnPattern = new BossWarnPattern(startX, 720f / 2f);
-        this.warnPattern.setSpriteSheet(warnSprite);
+            this.warnPattern = new BossWarnPattern(startX, 720f / 2f);
+            this.warnPattern.setSpriteSheet(warnSprite);
+        }else {
+            this.startY = x;
+            this.startX = top ?  -boss.getRadius() : 1280f + boss.getRadius();
+            this.controlCode = top ? CONTROL_MOVE_RIGHT : CONTROL_MOVE_LEFT;
+            this.warnDuration = warnDuration;
+
+            this.warnPattern = new BossWarnPattern(1280f / 2f,startY );
+            this.warnPattern.setSpriteSheet(warnSprite);
+        }
     }
 
     @Override
@@ -40,13 +52,24 @@ public class DashAttackPattern implements BossAttackPattern {
 
         boss.setX(startX);
         boss.setY(startY);
-        boss.setVX(0);
-        if (controlCode == CONTROL_MOVE_UP) {
-            boss.setVY(15f); // make the boss slide up a little bit
-            boss.angle = 90f;
-        } else if (controlCode == CONTROL_MOVE_DOWN) {
-            boss.setVY(-15f); // make the boss slide down a little bit
-            boss.angle = 270f;
+        if (vertical) {
+            boss.setVX(0);
+            if (controlCode == CONTROL_MOVE_UP) {
+                boss.setVY(15f); // make the boss slide up a little bit
+                boss.angle = 90f;
+            } else if (controlCode == CONTROL_MOVE_DOWN) {
+                boss.setVY(-15f); // make the boss slide down a little bit
+                boss.angle = 270f;
+            }
+        }else{
+            boss.setVY(0);
+            if (controlCode == CONTROL_MOVE_RIGHT) {
+                boss.setVX(15f); // make the boss slide up a little bit
+                boss.angle = 180f;
+            } else if (controlCode == CONTROL_MOVE_LEFT) {
+                boss.setVX(-15f); // make the boss slide down a little bit
+                boss.angle = 360f;
+            }
         }
         warnTime = warnDuration;
         warnPattern.active = true;
@@ -84,10 +107,11 @@ public class DashAttackPattern implements BossAttackPattern {
 
     @Override
     public boolean attackEnded() {
-        if (controlCode == CONTROL_MOVE_UP) {
-            return boss.getY() - boss.getRadius() > 720;
-        } else if (controlCode == CONTROL_MOVE_DOWN) {
-            return boss.getY() + boss.getRadius() < 0;
+
+        if (controlCode == CONTROL_MOVE_UP || controlCode == CONTROL_MOVE_RIGHT) {
+            return vertical ? boss.getY() - boss.getRadius() > 720 :boss.getX() - boss.getRadius() > 1280;
+        } else if (controlCode == CONTROL_MOVE_DOWN || controlCode == CONTROL_MOVE_LEFT) {
+            return vertical ? boss.getY() + boss.getRadius() < 0 : boss.getX() + boss.getRadius() < 0;
         }
         return true; // it should never reach here
     }

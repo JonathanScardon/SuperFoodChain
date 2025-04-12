@@ -40,12 +40,22 @@
                 }
             }
         },
-        "dashWarn": {
-            "file": "images/dashWarn.png",
+        "dashWarnVertical": {
+            "file": "images/DashWarnVertical.png",
             "sprites": {
                 "animation": {
                     "rows": 1,
                     "cols": 2,
+                    "size": 2
+                }
+            }
+        },
+      "dashWarnHorizontal": {
+            "file": "images/DashWarnHorizontal.png",
+            "sprites": {
+                "animation": {
+                    "rows": 2,
+                    "cols": 1,
                     "size": 2
                 }
             }
