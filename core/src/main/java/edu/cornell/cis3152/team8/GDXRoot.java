@@ -26,8 +26,7 @@ public class GDXRoot extends Game implements ScreenListener {
     private LoadingScene loadingScene;
     private GameScene gameScene;
     private MainMenuScene menuScene;
-
-    private LevelSelect levels;
+    private LevelSelect levelSelectScene;
 
     @Override
     public void create() {
@@ -38,11 +37,12 @@ public class GDXRoot extends Game implements ScreenListener {
         font.setUseIntegerPositions(false);
         font.getData().setScale(viewport.getWorldHeight() / Gdx.graphics.getHeight());
 
-        menuScene = new MainMenuScene(this);
         loadingScene = new LoadingScene("assets.json", batch, 1);
         loadingScene.setScreenListener(this);
+        menuScene = new MainMenuScene(this);
+        levelSelectScene = new LevelSelect(this);
 
-        this.setScreen(menuScene);
+        this.setScreen(loadingScene);
     }
 
     @Override
@@ -84,29 +84,26 @@ public class GDXRoot extends Game implements ScreenListener {
 
     @Override
     public void exitScreen(Screen screen, int exitCode) {
-        if (screen == menuScene) {
-            if (exitCode == 0){
-            loadingScene = new LoadingScene("assets.json", batch, 1);
-            loadingScene.setScreenListener(this);
-            this.setScreen(loadingScene);
-            }else{
-                Gdx.app.exit();
-            }
-
-        } else if (screen == loadingScene) {
+        // loading -> menu -> level select -> game
+        if (screen == loadingScene) {
+            // we know that we're done loading here, so we can get the assets
             directory = loadingScene.getAssets();
+            LevelLoader.getInstance().setAssetDirectory(directory);
+
+            setScreen(menuScene);
             loadingScene.dispose();
             loadingScene = null;
-
-            levels = new LevelSelect(this);
-            setScreen(levels);
-        } else if (screen == levels) {
-            //levels.dispose();
-
+        } else if (screen == menuScene) {
+            if (exitCode == 0) {
+                this.setScreen(levelSelectScene);
+            } else {
+                Gdx.app.exit();
+            }
+        } else if (screen == levelSelectScene) {
             gameScene = new GameScene(this, directory);
             this.setScreen(gameScene);
         } else if (screen == gameScene) {
-            setScreen(levels);
+            this.setScreen(levelSelectScene);
         } else {
             Gdx.app.exit();
         }

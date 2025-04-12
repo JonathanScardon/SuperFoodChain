@@ -20,10 +20,6 @@ import java.util.ArrayList;
 
 public class GameState {
     // Graphics assets
-    // TODO: these should probably be private, but they are public for the level loader right now
-    public SpriteSheet mouseSprite;
-    public SpriteSheet dashWarnSprite;
-    public SpriteSheet idleWarnSprite;
 
     /**
      * The grid of tiles
@@ -66,12 +62,9 @@ public class GameState {
     public GameState(JsonValue constants, AssetDirectory assets) {
         this.constants = constants;
 
-        mouseSprite = assets.getEntry("mouse.animation", SpriteSheet.class);
-        idleWarnSprite = assets.getEntry("idleWarn.animation", SpriteSheet.class);
-        dashWarnSprite = assets.getEntry("dashWarn.animation", SpriteSheet.class);
         projectiles = new Array<Projectile>();
 
-        Boss.setConstants(this.constants.get("boss"));
+        Boss.setConstants(this.constants.get("boss")); // TODO: maybe move this to LevelLoader?
 
         reset();
     }
@@ -97,24 +90,19 @@ public class GameState {
 
         // Boss
         bosses = new Array<>();
-//        Boss mouse = new Mouse(-100f, -100f);
-//        mouse.setSpriteSheet(mouseSprite);
-//        mouse.warnSprites.add(idleWarnSprite);
-//        mouse.warnSprites.add(dashWarnSprite);
-//        bosses.add(mouse);
 
         // Coins - none at the beginning
 
         // Companions - requires information of number of companions
         // for (int i = 0; i < num_companions; i++) {
         // companions[i] = new Companion(assets);
+        // }
         // // companion texture
-    }
 
-    // // Projectives
-    // projectiles = new ProjectilePool(assets);
-    // // projectile texture
-    // }
+        // // Projectiles
+        // projectiles = new ProjectilePool(assets);
+        // // projectile texture
+    }
 
     /**
      * @return the current level

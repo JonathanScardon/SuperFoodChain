@@ -2,8 +2,6 @@ package edu.cornell.cis3152.team8;
 
 import com.badlogic.gdx.utils.Array;
 
-import java.util.Queue;
-
 public abstract class BossController implements InputController {
     /**
      * The boss to be controlled
@@ -18,26 +16,39 @@ public abstract class BossController implements InputController {
      */
     protected int action;
     /**
-     * The number of ticks since we started this controller
-     */
-    protected long ticks;
-    /**
-     * The set of attack patterns that the boss can choose from
+     * The set of attack patterns that the boss cycles through
      */
     protected Array<BossAttackPattern> attackPatterns;
     /**
-     * A queue of attacks the boss plans to use before idling again
+     * The index of the attack pattern that the boss is currently warning/executing
      */
-    protected Queue<Integer> plannedAttacks;
-    /**
-     * The attack pattern that the boss is currently warning/executing
-     */
-    protected BossAttackPattern curAttack;
+    protected int curAttackIdx;
 
     public BossController(Boss boss, GameState gameState) {
-        this.action = CONTROL_NO_ACTION;
         this.gameState = gameState;
         this.boss = boss;
+        this.action = CONTROL_NO_ACTION;
+        this.attackPatterns = new Array<>();
+        this.curAttackIdx = 0;
+    }
+
+    /**
+     * Add an attack pattern to the boss' list of possible attacks
+     * @param attackPattern the attack pattern to add
+     */
+    public void addAttackPattern(BossAttackPattern attackPattern) {
+        attackPatterns.add(attackPattern);
+    }
+
+    /**
+     * Starts the current attack of the boss
+     * If there are no attacks left, resets current attack index to 0
+     */
+    public void startAttack() {
+        if (curAttackIdx >= this.attackPatterns.size) {
+            curAttackIdx = 0;
+        }
+        this.attackPatterns.get(curAttackIdx).start();
     }
 
     @Override
@@ -49,5 +60,12 @@ public abstract class BossController implements InputController {
         this.action = action;
     }
 
-    public abstract void update(float delta);
+    public void update(float delta) {
+        // if we finished the current attack do the next one in the queue
+        if (this.attackPatterns.get(curAttackIdx).ended()) {
+            curAttackIdx++;
+            this.startAttack();
+        }
+        this.attackPatterns.get(curAttackIdx).update(delta);
+    }
 }

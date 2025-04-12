@@ -4,9 +4,4 @@ public class Mouse extends Boss {
     public Mouse(float x, float y) {
         super(x, y);
     }
-
-    @Override
-    public BossType getBossType() {
-        return BossType.MOUSE;
-    }
 }
