@@ -20,7 +20,7 @@ public class SpinAttackPattern implements BossAttackPattern {
     private float warnTime;
     private AttackState state;
 
-    public SpinAttackPattern(BossController controller, Player player, float warnDuration, SpriteSheet warnSprite, boolean top, float x) {
+    public SpinAttackPattern(BossController controller, float x, boolean top, float warnDuration, SpriteSheet warnSprite) {
         this.controller = controller;
         this.boss = controller.boss;
 
@@ -75,6 +75,7 @@ public class SpinAttackPattern implements BossAttackPattern {
             case ATTACK:
                 break;
         }
+//        boss.angle += 5;
 
     }
 

@@ -22,7 +22,11 @@ public class MouseController extends BossController {
                         i % 2 == 1, 2, boss.warnSprites.get(1)));
             }
         } else if (attack.equals("Spin")) {
-
+            for (int i = 0; i < num_attacks; i++) {
+                attackPatterns.add(
+                    new SpinAttackPattern(this, i * boss.getRadius() * 2 + boss.getRadius(),
+                        i % 2 == 1, 2, boss.warnSprites.get(1)));
+            }
         }
 
         plannedAttacks = new LinkedList<>();
