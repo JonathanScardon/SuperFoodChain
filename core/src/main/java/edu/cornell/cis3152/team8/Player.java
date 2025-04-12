@@ -268,10 +268,6 @@ public class Player extends GameObject{
             throw new IndexOutOfBoundsException();
         }
 
-        float prevX = companion.getX();
-        float prevY = companion.getY();
-        companions.remove(index);
-
         //update positions to fill deleted companion
         for (int i = index+1; i < companions.size(); i++){
             Companion c = companions.get(i);
@@ -281,8 +277,8 @@ public class Player extends GameObject{
                 c.setY(data.y);
             }
         }
-        companions.remove(index);
 
+        companions.remove(index);
     }
 
     /**
