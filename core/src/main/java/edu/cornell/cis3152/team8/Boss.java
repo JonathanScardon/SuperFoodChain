@@ -68,7 +68,7 @@ public abstract class Boss extends GameObject {
     public Boss(float x, float y) {
         super(x, y);
         warnSprites = new Array<>();
-        health = 30;
+        health = 1000;
         angle = 90f;
         damage = false;
     }
