@@ -296,8 +296,8 @@ public class GameScene implements Screen {
     private void drawTiles() {
         // technically this should be a call to the draw function inside of level
         //int tileSize = 64;
-        Texture tileTexture = new Texture("images/Background.png");
-        game.batch.draw(tileTexture, 0, 0, 1280, 720);
+//        Texture tileTexture = new Texture("images/Background.png");
+//        game.batch.draw(tileTexture, 0, 0, 1280, 720);
 //        for (int x = 0; x < 20; x++) {
 //            for (int y = 0; y < 12; y++) {
 //                float xx = (float) (x) * tileSize;
