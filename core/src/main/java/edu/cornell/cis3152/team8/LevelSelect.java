@@ -19,7 +19,8 @@ public class LevelSelect implements Screen {
         private Texture tray;
         private Texture plate;
         private Texture arrow;
-        private Array<Button> buttons;
+        private Texture lock;
+        private Array<LevelButton> buttons;
         private float wait = 0.0f;
 
 
@@ -31,6 +32,7 @@ public class LevelSelect implements Screen {
             tray = new Texture("images/LevelSelectTray.png");
             plate = new Texture("images/LevelSelectPlate.png");
             arrow = new Texture("images/LevelSelectArrow.png");
+            lock = new Texture("images/Lock.png");
 
             buttons = new Array<>();
             int level = 1;
@@ -38,7 +40,13 @@ public class LevelSelect implements Screen {
                 for (int j = 1; j <= 3; j++) {
                     int x = 140+ j*210;
                     int y = i*208-73;
-                    buttons.add(new Button(x, y, plate, new Texture("images/"+level+".png"), level));
+                    LevelButton b = new LevelButton(x, y, new Texture("images/"+level+".png"),level);
+                    buttons.add(b);
+                    if ((i == 2 && j == 1)||(i == 2 && j == 2)){
+                        b.setLocked(false);
+                    }else {
+                        b.setLocked(true);
+                    }
                     level++;
                 }
             }
@@ -49,8 +57,8 @@ public class LevelSelect implements Screen {
             if (wait > 0.0f) {
                 wait -= delta;
             }else {
-                for (Button b : buttons) {
-                    if (b.isHovering() && Gdx.input.isTouched()) {
+                for (LevelButton b : buttons) {
+                    if (b.isHovering() && Gdx.input.isTouched() && !b.getLocked()) {
                         game.exitScreen(this, b.getExitCode());
                     }
                 }
