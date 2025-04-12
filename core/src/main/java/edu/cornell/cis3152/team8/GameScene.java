@@ -123,7 +123,7 @@ private Vector2[] companionSpawns;
         this.game = game;
         coinTexture = new Texture("images/CoinUI.png");
         constants = assets.getEntry("level" + level, JsonValue.class);
-        System.out.println(constants);
+        //System.out.println(constants);
         this.state = new GameState(constants, assets);
 
         maxEnemies = state.getMaxEnemies();
@@ -289,6 +289,7 @@ private Vector2[] companionSpawns;
 
         if (start && player.isAlive() && !bosses.get(0).isDestroyed() && !paused) {
             // iterate through all companions in the chain
+            state.update();
             addMinions();
             addCompanions();
             bosses.get(0).setDamage(false);

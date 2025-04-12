@@ -43,7 +43,7 @@ public class LevelLoader {
                         }
 
                         Boss mouse = new Mouse(x, y);
-                        mouse.setSpriteSheet(state.mouseSprite);
+                        mouse.setSpriteSheet(state.mouseDashSprite);
                         mouse.warnSprites.add(state.idleWarnSprite);
                         mouse.warnSprites.add(state.dashWarnSprite);
                         state.getBosses().add(mouse);

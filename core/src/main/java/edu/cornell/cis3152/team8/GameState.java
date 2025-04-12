@@ -24,7 +24,9 @@ public class GameState {
     private Array<MinionController> minionControls;
     // Graphics assets
     // TODO: these should probably be private, but they are public for the level loader right now
-    public SpriteSheet mouseSprite;
+    public SpriteSheet mouseIdleSprite;
+     public SpriteSheet mouseDashSprite;
+     public SpriteSheet mouseSpinSprite;
     public SpriteSheet dashWarnSprite;
     public SpriteSheet idleWarnSprite;
 
@@ -82,13 +84,12 @@ public class GameState {
     public GameState(JsonValue constants, AssetDirectory assets) {
         this.constants = constants;
 
-        mouseSprite = assets.getEntry("mouse.animation", SpriteSheet.class);
-        idleWarnSprite = assets.getEntry("idleWarn.animation", SpriteSheet.class);
-        dashWarnSprite = assets.getEntry("dashWarn.animation", SpriteSheet.class);
-        projectiles = new Array<Projectile>();
+
 
         JsonValue minionConstants = this.constants.get("Minion Spawns");
         JsonValue companionConstants = this.constants.get("Companion Spawns");
+        JsonValue bossConstants = this.constants.get("boss");
+
 
         maxEnemies = minionConstants.getInt("Max Enemies");
         maxStrawberry = companionConstants.getInt("Max Strawberry");
@@ -104,13 +105,33 @@ public class GameState {
 
         initMinionSpawns(this.constants.get("Minion Spawns"));
         initCompanionSpawns(this.constants.get("Companion Spawns"));
-        Boss.setConstants(this.constants.get("boss"));
+        Boss.setConstants(bossConstants);
 
-        bossAttack = this.constants.get("boss").getString("attack");
+        bossAttack =  bossConstants.getString("attack");
+
+        mouseIdleSprite = assets.getEntry("IdleMouse.animation", SpriteSheet.class);
+        mouseDashSprite = assets.getEntry("DashMouse.animation", SpriteSheet.class);
+        mouseSpinSprite = assets.getEntry("SpinMouse.animation", SpriteSheet.class);
+
+        idleWarnSprite = assets.getEntry("idleWarn.animation", SpriteSheet.class);
+        dashWarnSprite = assets.getEntry("dashWarn.animation", SpriteSheet.class);
+        projectiles = new Array<Projectile>();
 
         reset();
     }
 
+    public void update(){
+        Boss b = bosses.get(0);
+        String state = b.getState();
+        if (state.equals("Idle")){
+            b.setSpriteSheet(mouseIdleSprite);
+        }else if (state.equals("Dash")){
+            b.setSpriteSheet(mouseDashSprite);
+        } else if (state.equals("Spin")) {
+            b.setSpriteSheet(mouseSpinSprite);
+        }
+
+    }
     /**
      * Generates the level and everything in it.
      */
@@ -136,7 +157,7 @@ public class GameState {
         bosses = new Array<>();
         bossControls = new Array<>();
         Boss mouse = new Mouse(-100f, -100f);
-        mouse.setSpriteSheet(mouseSprite);
+        mouse.setSpriteSheet(mouseDashSprite);
         mouse.warnSprites.add(idleWarnSprite);
         mouse.warnSprites.add(dashWarnSprite);
         bosses.add(mouse);

@@ -5,7 +5,8 @@
     "idleDuration": 5,
     "epsilon": 0.01,
     "animationSpeed": 0.1,
-    "attack" : "Dash"
+    "attack" : "Spin",
+    "num" : "Two"
   },
   "Minion Spawns":{
     "Max Enemies": 4,
