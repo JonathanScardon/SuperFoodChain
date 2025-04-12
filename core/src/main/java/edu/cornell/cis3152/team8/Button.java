@@ -6,14 +6,13 @@ import edu.cornell.gdiac.graphics.SpriteBatch;
 import edu.cornell.gdiac.graphics.SpriteBatch.BlendMode;
 
 public class Button {
-    private float posX;
-    private float posY;
-    private Texture texture;
-    private Texture number;
+    protected float posX;
+    protected float posY;
+    protected Texture texture;
 
-    private float width;
+    protected float width;
 
-    private float height;
+    protected float height;
 
     private int exitCode;
 
@@ -35,15 +34,6 @@ public class Button {
         this.exitCode = exitCode;
         //this.number = new Texture("images/Empty.png");
     }
-    public Button(float x, float y, Texture texture, Texture number, int exitCode){
-        posX = x;
-        posY = y;
-        width = texture.getWidth();
-        height = texture.getHeight();
-        this.texture = texture;
-        this.exitCode = exitCode;
-        this.number = number;
-    }
 
     public boolean isHovering(){
         int x = Gdx.input.getX();
@@ -58,12 +48,9 @@ public class Button {
         }
         batch.draw(texture,posX,posY,width,height);
         batch.setBlendMode(BlendMode.ALPHA_BLEND);
-        batch.draw(number,posX,posY);
     }
     public int getExitCode(){
         return exitCode;
     }
-
-
 
 }
