@@ -55,6 +55,8 @@ public class GameScene implements Screen {
     private int curPineapple;
     private int curAvocado;
 
+    private float companionAddTimer = 3.0f;
+
 
     private Vector2[] minionSpawns;
 private Vector2[] companionSpawns;
@@ -256,6 +258,7 @@ private Vector2[] companionSpawns;
         }
         while (companions.size < maxStrawberry+maxPineapple+maxAvocado) {
             int spawn = rand.nextInt(companionSpawns.length);
+            if (!minionSpawnTaken[spawn]) {
 
                 float x = companionSpawns[spawn].x;
                 float y = companionSpawns[spawn].y;
@@ -281,7 +284,7 @@ private Vector2[] companionSpawns;
                 companions.add(c);
                 companionSpawnTaken[spawn] = true;
             }
-        }
+        }}
     }
 
     public GameState getState() {
