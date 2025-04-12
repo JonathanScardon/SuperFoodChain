@@ -37,11 +37,12 @@ public class CollisionController {
     private Array<Boss> bosses;
     private Array<Projectile> projectiles;
     private Array<MinionController> minionControls;
+    private Array<Companion> deadCompanions;
 
     /**
      * Creates a CollisionController for the given models.
      */
-    public CollisionController(Array<Minion> minions, Player player, Array<Companion> companions, LinkedList<Coin> coins, Array<Boss> bosses, Array<Projectile> projectiles,Array<MinionController> minionControls) {
+    public CollisionController(Array<Minion> minions, Player player, Array<Companion> companions, LinkedList<Coin> coins, Array<Boss> bosses, Array<Projectile> projectiles,Array<MinionController> minionControls, Array<Companion> deadCompanions) {
         tmp = new Vector2();
         this.minions = minions;
         this.player = player;
@@ -50,6 +51,7 @@ public class CollisionController {
         this.bosses = bosses;
         this.projectiles = projectiles;
         this.minionControls = minionControls;
+        this.deadCompanions = deadCompanions;
     }
 
     /**
@@ -147,6 +149,7 @@ public class CollisionController {
                 player.deleteCompanion(c);
                 minion.setDestroyed(true);
                 c.setDestroyed(true);
+                deadCompanions.add(c);
                 //MOVE TO PROJECTILE DEATH - choose between spawn anyway
                 coins.add(new Coin(mx, my));
             }
@@ -209,6 +212,7 @@ public class CollisionController {
             if (collide) {
                 player.deleteCompanion(c);
                 c.setDestroyed(true);
+                deadCompanions.add(c);
             }
         }
     }

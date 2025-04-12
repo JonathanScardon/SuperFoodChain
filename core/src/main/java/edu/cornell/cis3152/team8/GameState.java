@@ -32,6 +32,8 @@ public class GameState {
     public SpriteSheet spinWarnSprite;
     public SpriteSheet idleWarnSprite;
 
+    private Array<Companion> deadCompanions;
+
     /**
      * The grid of tiles
      */
@@ -121,6 +123,7 @@ public class GameState {
         spinWarnSprite = assets.getEntry("spinWarn.animation", SpriteSheet.class);
 
         projectiles = new Array<Projectile>();
+        deadCompanions = new Array<>();
 
         reset();
     }
@@ -179,6 +182,7 @@ public class GameState {
         minionControls.clear();
         companions.clear();
         projectiles.clear();
+        deadCompanions.clear();
 
 
         // Coins - none at the beginning
@@ -298,6 +302,10 @@ public class GameState {
             float y = spawns.get("Spawn " + i).getFloat(1);
             companionSpawns[i] = new Vector2(x,y);
         }
+    }
+
+    public Array<Companion>  getDeadCompanions(){
+        return deadCompanions;
     }
 
 

@@ -116,6 +116,7 @@ public abstract class Companion extends GameObject {
 
     /** Companion uses ability */
     public void useAbility(GameState state) {
+
         // individual abilities depending on type --> overrided by different types
     };
 
@@ -204,17 +205,12 @@ public abstract class Companion extends GameObject {
 
     }
 
-    public void draw(SpriteBatch batch, float delta){
+    public void draw(SpriteBatch batch){
         if (isDestroyed()) {
             animator.setFrame(1);
-            if (deathExpirationTimer > 0.0f) { // and within recent death timer
                 batch.setColor(Color.BLACK); // show black shadow
                 batch.draw(animator, transform); // draw the blackened corpse
-                deathExpirationTimer -= delta;
                 // decrement timer with the delta value passed in GameScene
-            }else{
-                remove = true;
-            }
         }else {
             if (collected) {
                 animator.setFrame((int) animationFrame);
@@ -270,6 +266,13 @@ public abstract class Companion extends GameObject {
 
     public boolean shouldRemove(){
         return remove;
+    }
+
+    public void decreaseDeathExpirationTimer(float delta){
+        deathExpirationTimer -= delta;
+    }
+    public boolean getTrash(){
+        return deathExpirationTimer < 0.0;
     }
 
 }
