@@ -16,17 +16,10 @@ import java.util.Map;
  * This is a singleton class meant to load levels from the tmx file format
  */
 public class LevelLoader {
-    /**
-     * Small class to allow for sorting the attack map
-     */
-    private record IndexedAttack(int idx, BossAttackPattern attack) { }
 
     private static final LevelLoader instance = new LevelLoader();
     private final TmxMapLoader mapLoader = new TmxMapLoader(new InternalFileHandleResolver());
     private AssetDirectory assets = null;
-
-    private Map<Integer, BossController> bossControllerMap;
-    private Map<Integer, Array<IndexedAttack>> attackMap;
 
     // boss sprites
     private SpriteSheet mouseSprite;
@@ -61,8 +54,6 @@ public class LevelLoader {
         if (assets == null) {
             throw new RuntimeException("Asset directory not set");
         }
-        bossControllerMap = new HashMap<>();
-        attackMap = new HashMap<>();
 
         // load assets
         mouseSprite = assets.getEntry("DashMouse.animation", SpriteSheet.class);
@@ -73,35 +64,11 @@ public class LevelLoader {
 
         MapLayer objects = map.getLayers().get("objects");
 
-        // create all bosses first
+        // create bosses and attach attacks to them
         for (MapObject obj : objects.getObjects()) {
             if ("boss".equals(obj.getProperties().get("type", String.class))) {
                 createBoss(obj, scene);
             }
-        }
-
-        // create attacks and attach them to bosses
-        for (MapObject obj : objects.getObjects()) {
-            if ("attack".equals(obj.getProperties().get("type", String.class))) {
-                createAttack(obj, scene);
-            }
-        }
-
-        for (Map.Entry<Integer, Array<IndexedAttack>> entry : attackMap.entrySet()) {
-            int bossId = entry.getKey();
-            Array<IndexedAttack> attacks = entry.getValue();
-
-            // sort the array using the attackIdx property stored in each attack's source MapObject
-            attacks.sort(Comparator.comparingInt(IndexedAttack::idx));
-
-            // add the attacks to the boss controller
-            BossController controller = bossControllerMap.get(bossId);
-            for (IndexedAttack ia : attacks) {
-                controller.addAttackPattern(ia.attack());
-            }
-
-            // automatically start the first attack
-            controller.startAttack();
         }
     }
 
@@ -134,48 +101,57 @@ public class LevelLoader {
                 break;
         }
 
-        if (boss != null) {
-            bossControllerMap.put(id, bossController);
-            state.getBosses().add(boss);
-            scene.bossControls.add(bossController);
+        if (boss == null) {
+            throw new RuntimeException("Boss creation failed");
         }
+
+        // get all attacks
+        int attackIdx = 0;
+        MapObject attackObj;
+        BossAttackPattern attack;
+        while (props.containsKey("attack" + attackIdx)) {
+            attackObj = props.get("attack" + attackIdx, TiledMapTileMapObject.class);
+            attack = createAttack(attackObj, bossController);
+            bossController.addAttackPattern(attack);
+
+            attackIdx++;
+        }
+
+        state.getBosses().add(boss);
+        scene.bossControls.add(bossController);
     }
 
     /**
-     * Create an attack based on the MapObject, but add it to attackMap to be sorted and added to boss later
+     * Create an attack object based on the MapObject
      *
-     * @param obj   the attack object
-     * @param scene the game scene
+     * @param obj        the attack object
+     * @param controller the boss that will execute the attack
      */
-    private void createAttack(MapObject obj, GameScene scene) {
-        GameState state = scene.getState();
+    private BossAttackPattern createAttack(MapObject obj, BossController controller) {
         String attackType = obj.getProperties().get("attackType", String.class);
         MapProperties props = obj.getProperties();
 
         BossAttackPattern attack = null;
-        int attackIdx = props.get("attackIdx", Integer.class);
+        int id = props.get("id", Integer.class);
         float x = props.get("x", Float.class);
         float y = props.get("y", Float.class);
         float warnDuration = props.get("warnDuration", Float.class);
-        int bossId = props.get("boss", TiledMapTileMapObject.class).getProperties().get("id", Integer.class);
-        BossController bossController = bossControllerMap.get(bossId);
 
         switch (attackType) {
             case "idle":
                 float attackDuration = props.get("attackDuration", Float.class);
-                attack = new IdleAttackPattern(bossController, x, y, warnDuration, attackDuration, idleWarnSprite);
+                attack = new IdleAttackPattern(controller, x, y, warnDuration, attackDuration, idleWarnSprite);
                 break;
             case "dash":
                 boolean top = props.get("top", Boolean.class);
-                attack = new DashAttackPattern(bossController, x, top, warnDuration, dashWarnSprite,true);
+                attack = new DashAttackPattern(controller, x, top, warnDuration, dashWarnSprite, true);
                 break;
         }
 
-        if (attack != null) {
-            if (!attackMap.containsKey(bossId)) {
-                attackMap.put(bossId, new Array<>());
-            }
-            attackMap.get(bossId).add(new IndexedAttack(attackIdx, attack));
+        if (attack == null) {
+            throw new RuntimeException("Attack creation failed");
         }
+
+        return attack;
     }
 }

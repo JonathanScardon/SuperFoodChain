@@ -31,6 +31,8 @@ public class IdleAttackPattern implements BossAttackPattern {
 
         this.warnPattern = new BossWarnPattern(this.idleX, this.idleY);
         this.warnPattern.setSpriteSheet(warnSprite);
+
+        this.state = AttackState.INACTIVE;
     }
 
     @Override
@@ -61,11 +63,13 @@ public class IdleAttackPattern implements BossAttackPattern {
     @Override
     public void update(float delta) {
         switch (state) {
+            case INACTIVE:
+                break;
             case WARN:
                 if (warnTime > 0) {
                     warnTime -= delta;
                 }
-                if (warnEnded()) {
+                else {
                     attack();
                 }
                 break;
@@ -77,12 +81,8 @@ public class IdleAttackPattern implements BossAttackPattern {
         }
     }
 
-    private boolean warnEnded() {
-        return warnTime <= 0;
-    }
-
     @Override
     public boolean ended() {
-        return attackTime <= 0;
+        return state == AttackState.ATTACK && attackTime <= 0;
     }
 }

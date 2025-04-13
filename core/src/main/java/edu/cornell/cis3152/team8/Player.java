@@ -89,6 +89,7 @@ public class Player extends GameObject{
     /** The direction the player is facing */
     protected int forwardDirection;
 
+
     private long ticks;
 
     public Player(int x, int y){
@@ -154,15 +155,14 @@ public class Player extends GameObject{
      *
      * @param batch The sprite batch
      */
-    public void draw(SpriteBatch batch){
+    public void draw(SpriteBatch batch, delta){
         if (forwardDirection == 8){
-            for (int i = companions.size()-1; i >=0; i--){
-                companions.get(i).draw(batch);
+            for (int i = companions.size() - 1; i >= 0; i--){
+                companions.get(i).draw(batch, delta);
             }
-
-        }else {
+        } else {
             for (Companion c : companions) {
-                c.draw(batch);
+                c.draw(batch, delta);
             }
         }
     }
