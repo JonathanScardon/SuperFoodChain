@@ -61,11 +61,14 @@ public abstract class BossController implements InputController {
     }
 
     public void update(float delta) {
-        // if we finished the current attack do the next one in the queue
-        if (this.attackPatterns.get(curAttackIdx).ended()) {
-            curAttackIdx++;
-            this.startAttack();
+        // the boss might have no attack patterns if it is not fully initialized
+        if (!this.attackPatterns.isEmpty()) {
+            // if we finished the current attack do the next one in the queue
+            if (this.attackPatterns.get(curAttackIdx).ended()) {
+                curAttackIdx++;
+                this.startAttack();
+            }
+            this.attackPatterns.get(curAttackIdx).update(delta);
         }
-        this.attackPatterns.get(curAttackIdx).update(delta);
     }
 }

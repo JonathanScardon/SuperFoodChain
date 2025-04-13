@@ -36,12 +36,6 @@ public abstract class Boss extends GameObject {
      */
     protected BossWarnPattern curWarn;
 
-    public enum BossType {
-        MOUSE,
-        CHEF,
-        CHOPSTICKS
-    }
-
     protected float health;
 
     /**
@@ -58,7 +52,7 @@ public abstract class Boss extends GameObject {
 
     public Boss(float x, float y) {
         super(x, y);
-        health = 10;
+        health = 10; // TODO: move this to constants?
         angle = 90f;
     }
 

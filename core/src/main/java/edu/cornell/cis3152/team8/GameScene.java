@@ -1,9 +1,5 @@
 package edu.cornell.cis3152.team8;
 
-/**
- * Heavily inspired by the Optimization lab
- */
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Input.Keys;
@@ -30,8 +26,13 @@ import edu.cornell.cis3152.team8.companions.Durian;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
+
 import org.w3c.dom.Text;
 
+/**
+ * The screen for the actual gameplay in the game
+ * Heavily inspired by the Optimization lab
+ */
 public class GameScene implements Screen {
     /**
      * Reference to the GDX root
@@ -114,10 +115,10 @@ public class GameScene implements Screen {
         Texture levels = new Texture("images/LevelsButton.png");
         Texture settings = new Texture("images/SettingsButton.png");
         Texture exit = new Texture("images/ExitButton.png");
-        resetButton = new Button(399,459,resetT,0,482,120);
-        levelsButton = new Button(399,319,levels,1,482,120);
-        settingsButton = new Button(399,180,settings,0,482,120);
-        exitButton = new Button(399,41,exit,0,482,120);
+        resetButton = new Button(399, 459, resetT, 0, 482, 120);
+        levelsButton = new Button(399, 319, levels, 1, 482, 120);
+        settingsButton = new Button(399, 180, settings, 0, 482, 120);
+        exitButton = new Button(399, 41, exit, 0, 482, 120);
         settingsScreen = new Settings();
         reset();
     }
@@ -127,13 +128,18 @@ public class GameScene implements Screen {
         reset = true;
         paused = false;
         state.reset();
+
         player = new Player(500, 350);
         state.setPlayer(player);
+
         initMinions(5);
         state.setMinions(minions);
+
         initCompanionPositions(5);
+
         // initCoins(5);
         coins = new LinkedList<>();
+
         bosses = state.getBosses();
         bossControls = new Array<>();
 
@@ -153,7 +159,7 @@ public class GameScene implements Screen {
             minionControls[i] = new MinionController(i, minions, player);
         }
 
-        LevelLoader.load(this, "tiled/level_1.tmx");
+        LevelLoader.getInstance().load(this, "tiled/level_1.tmx");
     }
 
     /**
@@ -170,7 +176,7 @@ public class GameScene implements Screen {
     }
 
 
-     /**
+    /**
      * Initializes the minions to new random location.
      */
     private void initMinions(int num_minions) {
@@ -186,7 +192,7 @@ public class GameScene implements Screen {
     }
 
 
-     /**
+    /**
      * Initializes the companions to new random location.
      */
     private void initCompanionPositions(int numCompanions) {
@@ -233,27 +239,27 @@ public class GameScene implements Screen {
 //        }
         setStart();
 
-        if (Gdx.input.isKeyPressed(Keys.ESCAPE) && !paused){
+        if (Gdx.input.isKeyPressed(Keys.ESCAPE) && !paused) {
             paused = true;
-        } else if (Gdx.input.isKeyPressed(Keys.R) && paused){
+        } else if (Gdx.input.isKeyPressed(Keys.R) && paused) {
             paused = false;
         }
 
-        if (paused){
-            if (resetButton.isHovering() && Gdx.input.isTouched()){
+        if (paused) {
+            if (resetButton.isHovering() && Gdx.input.isTouched()) {
                 reset();
                 paused = false;
             } else if (levelsButton.isHovering() && Gdx.input.isTouched()) {
                 game.exitScreen(this, levelsButton.getExitCode());
                 dispose();
-            } else if (settingsButton.isHovering() && Gdx.input.isTouched()){
+            } else if (settingsButton.isHovering() && Gdx.input.isTouched()) {
                 settingsOn = true;
                 settingsScreen.update();
-            }else if (exitButton.isHovering() && Gdx.input.isTouched()) {
+            } else if (exitButton.isHovering() && Gdx.input.isTouched()) {
                 Gdx.app.exit();
             }
 
-            if (settingsOn && Gdx.input.isKeyPressed(Keys.ESCAPE)){
+            if (settingsOn && Gdx.input.isKeyPressed(Keys.ESCAPE)) {
                 settingsOn = false;
             }
         }
@@ -328,7 +334,7 @@ public class GameScene implements Screen {
 
         //Texture tt = new Texture("fonts/LPC.png");
 
-       // TextureRegion t = new TextureRegion(tt);
+        // TextureRegion t = new TextureRegion(tt);
 
         //System.out.println(t);
         //BitmapFont font = new BitmapFont(Gdx.files.internal("fonts/Arial.fnt"));
@@ -401,7 +407,7 @@ public class GameScene implements Screen {
         if (paused && !settingsOn) {
             drawPause();
         }
-        if (settingsOn){
+        if (settingsOn) {
             settingsScreen.draw(game.batch);
         }
         game.batch.end();
@@ -439,9 +445,9 @@ public class GameScene implements Screen {
         }
     }
 
-    private void drawPause(){
+    private void drawPause() {
         game.batch.setBlendMode(BlendMode.ALPHA_BLEND);
-        game.batch.draw(pauseBackground,0,0);
+        game.batch.draw(pauseBackground, 0, 0);
         resetButton.draw(game.batch);
         levelsButton.draw(game.batch);
         settingsButton.draw(game.batch);

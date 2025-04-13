@@ -1,7 +1,7 @@
 package edu.cornell.cis3152.team8;
 
 public interface BossAttackPattern {
-    public enum AttackState {
+    enum AttackState {
         /**
          * The boss is about to attack and is providing a warning to the player
          */
