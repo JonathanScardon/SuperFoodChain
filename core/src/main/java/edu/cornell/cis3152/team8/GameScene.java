@@ -363,7 +363,7 @@ public class GameScene implements Screen {
         for (Companion c : companions) {
             String cost = "Cost: " + c.getCost();
             TextLayout compCost = new TextLayout(cost, font);
-            c.draw(game.batch);
+            c.draw(game.batch, delta);
             //temp UI
             if (!player.companions.contains(c)) {
                 game.batch.drawText(compCost, c.getX() + 35, c.getY());

@@ -14,6 +14,7 @@ public class utilities {
     /**
      *
      * @param state GameState "image" that will be used to extract important info like active enemies
+     * @param pos Vector2 representation of current companion position
      * @return Vector2 (dx, dy) which are the normalized directional components used for projectile heading
      */
     public static Vector2 autoshoot(GameState state, Vector2 pos) {
