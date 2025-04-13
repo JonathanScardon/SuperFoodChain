@@ -145,15 +145,11 @@ public class LevelLoader {
                 attack = new IdleAttackPattern(controller, x, y, warnDuration, attackDuration, idleWarnSprite);
                 break;
             case "dash":
-
-                boolean vertical = props.get("vertical", Boolean.class);
-                boolean top = props.get("top", Boolean.class);
-                if (vertical) {
-                    attack = new DashAttackPattern(controller, x, top, warnDuration, dashWarnVerticalSprite,
-                        vertical);
-                }else{
-                    attack = new DashAttackPattern(controller, y, top, warnDuration, dashWarnHorizontalSprite,
-                        vertical);
+                String dir = props.get("dir", String.class);
+                if (dir.equals("up") || dir.equals("down")) {
+                    attack = new DashAttackPattern(controller, x, y, dir, warnDuration, dashWarnVerticalSprite);
+                } else if (dir.equals("left") || dir.equals("right")) {
+                    attack = new DashAttackPattern(controller, x, y, dir, warnDuration, dashWarnHorizontalSprite);
                 }
                 break;
         }

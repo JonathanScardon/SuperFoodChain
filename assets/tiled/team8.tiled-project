@@ -84,6 +84,19 @@
                 "chopsticks"
             ],
             "valuesAsFlags": false
+        },
+        {
+            "id": 5,
+            "name": "direction",
+            "storageType": "string",
+            "type": "enum",
+            "values": [
+                "up",
+                "down",
+                "left",
+                "right"
+            ],
+            "valuesAsFlags": false
         }
     ]
 }
