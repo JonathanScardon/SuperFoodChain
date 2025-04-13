@@ -16,20 +16,10 @@
             "id": 1,
             "members": [
                 {
-                    "name": "attackIdx",
-                    "type": "int",
-                    "value": 0
-                },
-                {
                     "name": "attackType",
                     "propertyType": "attackType",
                     "type": "string",
                     "value": "idle"
-                },
-                {
-                    "name": "boss",
-                    "type": "object",
-                    "value": 0
                 },
                 {
                     "name": "warnDuration",
