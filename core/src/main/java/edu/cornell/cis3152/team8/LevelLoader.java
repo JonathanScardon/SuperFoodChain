@@ -3,18 +3,32 @@ package edu.cornell.cis3152.team8;
 import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
 import com.badlogic.gdx.maps.tiled.*;
 import com.badlogic.gdx.maps.*;
+import com.badlogic.gdx.maps.tiled.objects.TiledMapTileMapObject;
+import com.badlogic.gdx.utils.Array;
 import edu.cornell.gdiac.assets.AssetDirectory;
 import edu.cornell.gdiac.graphics.SpriteSheet;
+
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * This is a singleton class meant to load levels from the tmx file format
  */
 public class LevelLoader {
+    /**
+     * Small class to allow for sorting the attack map
+     */
+    private record IndexedAttack(int idx, BossAttackPattern attack) { }
+
     private static final LevelLoader instance = new LevelLoader();
     private final TmxMapLoader mapLoader = new TmxMapLoader(new InternalFileHandleResolver());
     private AssetDirectory assets = null;
 
-    // boss sprites, TODO: this is probably bad structure to be honest
+    private Map<Integer, BossController> bossControllerMap;
+    private Map<Integer, Array<IndexedAttack>> attackMap;
+
+    // boss sprites
     private SpriteSheet mouseSprite;
 
     // warning sprites
@@ -47,6 +61,8 @@ public class LevelLoader {
         if (assets == null) {
             throw new RuntimeException("Asset directory not set");
         }
+        bossControllerMap = new HashMap<>();
+        attackMap = new HashMap<>();
 
         // load assets
         mouseSprite = assets.getEntry("mouse.animation", SpriteSheet.class);
@@ -56,59 +72,110 @@ public class LevelLoader {
         TiledMap map = this.mapLoader.load(path);
 
         MapLayer objects = map.getLayers().get("objects");
+
+        // create all bosses first
         for (MapObject obj : objects.getObjects()) {
-            parseObject(obj, scene);
-        }
-    }
-
-    private void parseObject(MapObject obj, GameScene scene) {
-        String type = obj.getProperties().get("type", String.class);
-
-        switch (type) {
-            case "boss":
+            if ("boss".equals(obj.getProperties().get("type", String.class))) {
                 createBoss(obj, scene);
-                break;
-            default:
-                // something went wrong
-                break;
+            }
+        }
+
+        // create attacks and attach them to bosses
+        for (MapObject obj : objects.getObjects()) {
+            if ("attack".equals(obj.getProperties().get("type", String.class))) {
+                createAttack(obj, scene);
+            }
+        }
+
+        for (Map.Entry<Integer, Array<IndexedAttack>> entry : attackMap.entrySet()) {
+            int bossId = entry.getKey();
+            Array<IndexedAttack> attacks = entry.getValue();
+
+            // sort the array using the attackIdx property stored in each attack's source MapObject
+            attacks.sort(Comparator.comparingInt(IndexedAttack::idx));
+
+            // add the attacks to the boss controller
+            BossController controller = bossControllerMap.get(bossId);
+            for (IndexedAttack ia : attacks) {
+                controller.addAttackPattern(ia.attack());
+            }
+
+            // automatically start the first attack
+            controller.startAttack();
         }
     }
 
+    /**
+     * Create a boss and put it in the game scene
+     *
+     * @param obj   the boss object
+     * @param scene the game scene
+     */
     private void createBoss(MapObject obj, GameScene scene) {
         GameState state = scene.getState();
         String bossType = obj.getProperties().get("bossType", String.class);
+        MapProperties props = obj.getProperties();
+
+        Boss boss = null;
+        BossController bossController = null;
+        int id = props.get("id", Integer.class);
+        float x = props.get("x", Float.class);
+        float y = props.get("y", Float.class);
 
         switch (bossType) {
             case "mouse":
-                MapProperties properties = obj.getProperties();
-                // starting position, only used at very beginning of game
-                float x = properties.get("x", Float.class);
-                float y = properties.get("y", Float.class);
-                // position for idle attack
-                float idleX = properties.get("idleX", Float.class);
-                float idleY = properties.get("idleY", Float.class);
-
-                Boss mouse = new Mouse(x, y);
-                mouse.setSpriteSheet(mouseSprite);
-
-                MouseController mouseController = new MouseController(mouse, state);
-                mouseController.addAttackPattern(new IdleAttackPattern(mouseController, idleX, idleY, 2f, 2f, idleWarnSprite));
-                int num_attacks = (int) Math.ceil(1280f / 120);
-                for (int i = 0; i < num_attacks; i++) {
-                    mouseController.addAttackPattern(new DashAttackPattern(mouseController, i * 120 + 60, i % 2 == 1, 2, dashWarnSprite));
-                }
-
-                state.getBosses().add(mouse);
-                scene.bossControls.add(mouseController);
-                mouseController.startAttack();
+                boss = new Mouse(x, y);
+                boss.setSpriteSheet(mouseSprite);
+                bossController = new MouseController(boss, state);
                 break;
             case "chef":
                 break;
             case "chopsticks":
                 break;
-            default:
-                // something went wrong
+        }
+
+        if (boss != null) {
+            bossControllerMap.put(id, bossController);
+            state.getBosses().add(boss);
+            scene.bossControls.add(bossController);
+        }
+    }
+
+    /**
+     * Create an attack based on the MapObject, but add it to attackMap to be sorted and added to boss later
+     *
+     * @param obj   the attack object
+     * @param scene the game scene
+     */
+    private void createAttack(MapObject obj, GameScene scene) {
+        GameState state = scene.getState();
+        String attackType = obj.getProperties().get("attackType", String.class);
+        MapProperties props = obj.getProperties();
+
+        BossAttackPattern attack = null;
+        int attackIdx = props.get("attackIdx", Integer.class);
+        float x = props.get("x", Float.class);
+        float y = props.get("y", Float.class);
+        float warnDuration = props.get("warnDuration", Float.class);
+        int bossId = props.get("boss", TiledMapTileMapObject.class).getProperties().get("id", Integer.class);
+        BossController bossController = bossControllerMap.get(bossId);
+
+        switch (attackType) {
+            case "idle":
+                float attackDuration = props.get("attackDuration", Float.class);
+                attack = new IdleAttackPattern(bossController, x, y, warnDuration, attackDuration, idleWarnSprite);
                 break;
+            case "dash":
+                boolean top = props.get("top", Boolean.class);
+                attack = new DashAttackPattern(bossController, x, top, warnDuration, dashWarnSprite);
+                break;
+        }
+
+        if (attack != null) {
+            if (!attackMap.containsKey(bossId)) {
+                attackMap.put(bossId, new Array<>());
+            }
+            attackMap.get(bossId).add(new IndexedAttack(attackIdx, attack));
         }
     }
 }
