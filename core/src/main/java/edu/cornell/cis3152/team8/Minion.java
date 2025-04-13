@@ -11,7 +11,8 @@ public class Minion extends GameObject{
     private Texture texture;
 
     private int id;
-
+    // 5 second death expiration timer
+    private float deathExpirationTimer = 3.0f;
     private float moveSpeed;
 
     /**
@@ -66,7 +67,7 @@ public class Minion extends GameObject{
      * handle collisions (which are determined by the CollisionController). It
      * is not intended to interact with other objects in any way at all.
      *
-     * @param delta Number of seconds since last animation frame
+     * @param controlCode value indicating minion movement direction
      */
     public void update(int controlCode){
         // If we are dead do nothing.
@@ -75,7 +76,7 @@ public class Minion extends GameObject{
         }
 
         // Determine how we are moving.
-        boolean movingLeft  = controlCode ==  1;
+        boolean movingLeft  = controlCode == 1;
         boolean movingRight = controlCode == 2;
         boolean movingUp    = controlCode == 4;
         boolean movingDown  = controlCode == 8;
@@ -110,11 +111,16 @@ public class Minion extends GameObject{
      *
      * @param batch The sprite batch
      */
-    public void draw(SpriteBatch batch){
-        if (isDestroyed()){
-            batch.setColor(Color.BLACK);
+    public void draw(SpriteBatch batch, float delta){
+        if (isDestroyed()){ // if destroyed...
+            if (deathExpirationTimer > 0.0f) { // and within recent death timer
+                batch.setColor(Color.BLACK); // show black shadow
+                batch.draw(texture,position.x,position.y,64,64); // draw the blackened corpse
+                deathExpirationTimer -= delta; // decrement timer with the delta value passed in GameScene
+            } // if it's pass, say 3 seconds, don't draw the dead corpse to free up screen real estate
+        } else { // if not destroyed, draw as normal
+            batch.draw(texture,position.x,position.y,64,64);
+            batch.setColor(Color.WHITE);
         }
-        batch.draw(texture,position.x,position.y,64,64);
-        batch.setColor(Color.WHITE);
     }
 }

@@ -11,6 +11,8 @@ import edu.cornell.gdiac.assets.*;
 import edu.cornell.gdiac.graphics.*;
 import edu.cornell.cis3152.team8.companions.Strawberry;
 
+import java.util.ArrayList;
+
 /**
  * This is the base model class for the game which stores all the model objects
  * in it.
@@ -18,8 +20,6 @@ import edu.cornell.cis3152.team8.companions.Strawberry;
 
 public class GameState {
     // Graphics assets
-    private SpriteSheet mouseSprite;
-    private SpriteSheet warningSprite;
 
     /**
      * The grid of tiles
@@ -33,9 +33,13 @@ public class GameState {
      * The minions
      */
     private Minion[] minions;
-    /** The bosses */
-    private Boss[] bosses;
-    /** The coins on the map */
+    /**
+     * The bosses
+     */
+    private Array<Boss> bosses;
+    /**
+     * The coins on the map
+     */
     private Coin[] coins;
     /**
      * The companions on the map
@@ -47,14 +51,21 @@ public class GameState {
     private Array<Projectile> projectiles;
 
     /**
+     * Gamestate constants
+     */
+    private JsonValue constants;
+
+    /**
      * Creates a new game session. This method will call reset() to set up the
      * board.
-     *
      */
-    public GameState(AssetDirectory assets) {
-        mouseSprite = assets.getEntry("mouse.animation", SpriteSheet.class);
-        warningSprite = assets.getEntry("mouseWarn.animation", SpriteSheet.class);
+    public GameState(JsonValue constants, AssetDirectory assets) {
+        this.constants = constants;
+
         projectiles = new Array<Projectile>();
+
+        Boss.setConstants(this.constants.get("boss")); // TODO: maybe move this to LevelLoader?
+
         reset();
     }
 
@@ -78,23 +89,20 @@ public class GameState {
         // }
 
         // Boss
-        bosses = new Boss[1];
-        bosses[0] = new Mouse(100f, 100f);
-        bosses[0].setSpriteSheet(mouseSprite);
-        bosses[0].warnSprites.add(warningSprite);
+        bosses = new Array<>();
 
         // Coins - none at the beginning
 
         // Companions - requires information of number of companions
         // for (int i = 0; i < num_companions; i++) {
         // companions[i] = new Companion(assets);
+        // }
         // // companion texture
-    }
 
-    // // Projectives
-    // projectiles = new ProjectilePool(assets);
-    // // projectile texture
-    // }
+        // // Projectiles
+        // projectiles = new ProjectilePool(assets);
+        // // projectile texture
+    }
 
     /**
      * @return the current level
@@ -112,7 +120,7 @@ public class GameState {
 
     /**
      * Sets the player in the level
-     * 
+     *
      * @param player The player to set
      */
     public void setPlayer(Player player) {
@@ -126,10 +134,14 @@ public class GameState {
         return minions;
     }
 
+    public void setMinions(Minion[] m) {
+        minions = m;
+    }
+
     /**
      * @return the array of bosses in the level
      */
-    public Boss[] getBosses() {
+    public Array<Boss> getBosses() {
         return bosses;
     }
 

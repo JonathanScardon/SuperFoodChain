@@ -1,5 +1,6 @@
 package edu.cornell.cis3152.team8;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector2;
 import edu.cornell.gdiac.graphics.SpriteBatch;
 import static edu.cornell.cis3152.team8.InputController.CONTROL_MOVE_LEFT;
@@ -14,8 +15,12 @@ public abstract class Companion extends GameObject {
         CORN,
         DURIAN,
         TANGERINE,
-        BLUE_RASPBERRY
+        BLUE_RASPBERRY,
+        PINEAPPLE,
     }
+
+    /** How long the death sprite persists on screen in seconds */
+    private float deathExpirationTimer = 3.0f;
 
     /** The type of Companion */
     private CompanionType type;
@@ -40,6 +45,9 @@ public abstract class Companion extends GameObject {
     private float prevX;
 
     private float prevY;
+    protected static float animationSpeed;
+    protected float animationFrame;
+
 
     public Companion(float x, float y) {
         super(x, y);
@@ -151,7 +159,7 @@ public abstract class Companion extends GameObject {
         boolean movingDown = controlCode == 8;
 
         // Process movement command.
-        int MOVE_SPEED = Player.getSpeed();
+        float MOVE_SPEED = Player.getSpeed();
         if (movingLeft) {
             this.direction = InputController.CONTROL_MOVE_LEFT;
             velocity.x = -MOVE_SPEED;
@@ -173,6 +181,37 @@ public abstract class Companion extends GameObject {
             velocity.y = 0;
         }
         position.add(velocity);
+
+//        if (animator != null) {
+//            animationFrame += animationSpeed;
+//            //System.out.println(animationFrame);
+//            if (animationFrame >= animator.getSize()) {
+//                animationFrame -= animator.getSize();
+//            }
+//        }
+
+    }
+
+    public void draw(SpriteBatch batch, float delta){
+        if (isDestroyed()) {
+            if (deathExpirationTimer > 0.0f) {
+                animator.setFrame(1);
+                batch.setColor(Color.BLACK);
+                deathExpirationTimer -= delta;
+            }
+        }else {
+            animator.setFrame((int)animationFrame);
+            batch.setColor( Color.WHITE );
+
+        }
+        SpriteBatch.computeTransform(transform, origin.x, origin.y,
+            position.x, position.y, 0.0f, size
+            , size);
+
+        batch.draw( animator, transform );
+        //batch.draw(texture, position.x, position.y, 64, 64);
+        //batch.draw(texture, position.x, position.y, 64, 64);
+        batch.setColor(Color.WHITE);
     }
 
     /**

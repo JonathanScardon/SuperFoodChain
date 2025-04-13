@@ -2,42 +2,7 @@ package edu.cornell.cis3152.team8;
 
 import com.badlogic.gdx.utils.Array;
 
-import java.util.Queue;
-
 public abstract class BossController implements InputController {
-    public interface AttackPattern {
-        void warn();
-        void attack();
-    }
-
-    public class WarnPattern extends GameObject {
-        public boolean active;
-
-        public WarnPattern(float x, float y) {
-            super(x, y);
-        }
-
-        @Override
-        public ObjectType getType() {
-            return ObjectType.WARNING;
-        }
-    }
-
-    protected enum FSMState {
-        /**
-         * Either the boss just spawned or it is waiting to attack again
-         */
-        IDLE,
-        /**
-         * The boss is about to attack, and it is marking the tiles for the player to avoid
-         */
-        WARN,
-        /**
-         * The boss is attacking
-         */
-        ATTACK,
-    }
-
     /**
      * The boss to be controlled
      */
@@ -47,39 +12,60 @@ public abstract class BossController implements InputController {
      */
     protected GameState gameState;
     /**
-     * The Boss's current state in the FSM
-     */
-    protected FSMState state;
-    /**
      * The Boss's next action as a control code
      */
     protected int action;
     /**
-     * The number of ticks since we started this controller
+     * The set of attack patterns that the boss cycles through
      */
-    protected long ticks;
+    protected Array<BossAttackPattern> attackPatterns;
     /**
-     * The set of attack patterns that the boss can choose from
+     * The index of the attack pattern that the boss is currently warning/executing
      */
-    protected Array<AttackPattern> attackPatterns;
-    /**
-     * A queue of attacks the boss plans to use before idling again
-     */
-    protected Queue<Integer> plannedAttacks;
-    /**
-     * Current amount of time until next attack within a set of attacks
-     */
-    protected float warnTime;
+    protected int curAttackIdx;
 
     public BossController(Boss boss, GameState gameState) {
-        this.state = FSMState.IDLE;
-        this.action = CONTROL_NO_ACTION;
         this.gameState = gameState;
         this.boss = boss;
+        this.action = CONTROL_NO_ACTION;
+        this.attackPatterns = new Array<>();
+        this.curAttackIdx = 0;
+    }
+
+    /**
+     * Add an attack pattern to the boss' list of possible attacks
+     * @param attackPattern the attack pattern to add
+     */
+    public void addAttackPattern(BossAttackPattern attackPattern) {
+        attackPatterns.add(attackPattern);
+    }
+
+    /**
+     * Starts the current attack of the boss
+     * If there are no attacks left, resets current attack index to 0
+     */
+    public void startAttack() {
+        if (curAttackIdx >= this.attackPatterns.size) {
+            curAttackIdx = 0;
+        }
+        this.attackPatterns.get(curAttackIdx).start();
     }
 
     @Override
     public int getAction() {
         return action;
+    }
+
+    public void setAction(int action) {
+        this.action = action;
+    }
+
+    public void update(float delta) {
+        // if we finished the current attack do the next one in the queue
+        if (this.attackPatterns.get(curAttackIdx).ended()) {
+            curAttackIdx++;
+            this.startAttack();
+        }
+        this.attackPatterns.get(curAttackIdx).update(delta);
     }
 }

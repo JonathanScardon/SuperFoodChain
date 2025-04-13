@@ -154,7 +154,10 @@ Thumbs.db
 *.*#
 *#*#
 /.kotlin/
+/core/resources/META-INF/MANIFEST.MF
 /assets/assets.txt
+/assets/tiled/team8.tiled-session
+/out/*
 
 ## Special cases:
 

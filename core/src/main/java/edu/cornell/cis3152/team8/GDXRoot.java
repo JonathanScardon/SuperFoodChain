@@ -4,6 +4,7 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.utils.JsonValue;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import edu.cornell.gdiac.assets.AssetDirectory;
 import edu.cornell.gdiac.graphics.SpriteBatch;
@@ -25,6 +26,7 @@ public class GDXRoot extends Game implements ScreenListener {
     private LoadingScene loadingScene;
     private GameScene gameScene;
     private MainMenuScene menuScene;
+    private LevelSelect levelSelectScene;
 
     @Override
     public void create() {
@@ -35,12 +37,12 @@ public class GDXRoot extends Game implements ScreenListener {
         font.setUseIntegerPositions(false);
         font.getData().setScale(viewport.getWorldHeight() / Gdx.graphics.getHeight());
 
-
+        loadingScene = new LoadingScene("assets.json", batch, 1);
+        loadingScene.setScreenListener(this);
         menuScene = new MainMenuScene(this);
-        this.setScreen(menuScene);
-//        loadingScene = new LoadingScene("assets.json", batch, 1);
-//        loadingScene.setScreenListener(this);
-//        this.setScreen(loadingScene);
+        levelSelectScene = new LevelSelect(this);
+
+        this.setScreen(loadingScene);
     }
 
     @Override
@@ -71,7 +73,7 @@ public class GDXRoot extends Game implements ScreenListener {
         font.dispose();
         batch = null;
 
-        // Unload all of the resources
+        // Unload all the resources
         if (directory != null) {
             directory.unloadAssets();
             directory.dispose();
@@ -82,17 +84,26 @@ public class GDXRoot extends Game implements ScreenListener {
 
     @Override
     public void exitScreen(Screen screen, int exitCode) {
-        if (screen == menuScene) {
-            loadingScene = new LoadingScene("assets.json", batch, 1);
-            loadingScene.setScreenListener(this);
-            this.setScreen(loadingScene);
-        } else if (screen == loadingScene) {
+        // loading -> menu -> level select -> game
+        if (screen == loadingScene) {
+            // we know that we're done loading here, so we can get the assets
             directory = loadingScene.getAssets();
+            LevelLoader.getInstance().setAssetDirectory(directory);
+
+            setScreen(menuScene);
             loadingScene.dispose();
             loadingScene = null;
-
+        } else if (screen == menuScene) {
+            if (exitCode == 0) {
+                this.setScreen(levelSelectScene);
+            } else {
+                Gdx.app.exit();
+            }
+        } else if (screen == levelSelectScene) {
             gameScene = new GameScene(this, directory);
-            setScreen(gameScene);
+            this.setScreen(gameScene);
+        } else if (screen == gameScene) {
+            this.setScreen(levelSelectScene);
         } else {
             Gdx.app.exit();
         }
