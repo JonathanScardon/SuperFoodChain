@@ -167,16 +167,6 @@ public class GameState {
         // Boss
         bosses = new Array<>();
         bossControls = new Array<>();
-        Boss mouse = new Mouse(-100f, -100f);
-        mouse.setSpriteSheet(mouseDashSprite);
-//        mouse.warnSprites.add(idleWarnSprite);
-//        mouse.warnSprites.add(dashWarnVerticalSprite);
-//        mouse.warnSprites.add(dashWarnHorizontalSprite);
-//        mouse.warnSprites.add(spinWarnSprite);
-
-        bosses.add(mouse);
-
-        bossControls.add(new MouseController(mouse,this));
 
         minions.clear();
         minionControls.clear();

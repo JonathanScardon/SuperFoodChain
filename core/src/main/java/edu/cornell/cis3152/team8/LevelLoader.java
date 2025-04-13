@@ -56,7 +56,7 @@ public class LevelLoader {
         }
 
         // load assets
-        mouseSprite = assets.getEntry("DashMouse.animation", SpriteSheet.class);
+        mouseSprite = assets.getEntry("dashMouse.animation", SpriteSheet.class);
         idleWarnSprite = assets.getEntry("idleWarn.animation", SpriteSheet.class);
         dashWarnSprite = assets.getEntry("dashWarnVertical.animation", SpriteSheet.class);
 

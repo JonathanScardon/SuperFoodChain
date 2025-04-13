@@ -12,11 +12,12 @@ public class Avocado extends Companion {
 
     /**
      * Constructor for
+     *
      * @param x x-position for the Avocado companion
      * @param y y-position for the Avocado companion
      */
-    public Avocado(float x, float y) {
-        super(x,y);
+    public Avocado(float x, float y, int id) {
+        super(x, y, id);
         setCompanionType(CompanionType.AVOCADO);
         setCost(2);
         // need to think about how CD will work with support characters
@@ -36,6 +37,6 @@ public class Avocado extends Companion {
 
     @Override
     public void useAbility(GameState state) {
-        
+
     }
 }
