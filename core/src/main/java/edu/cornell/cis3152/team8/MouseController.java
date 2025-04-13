@@ -10,6 +10,8 @@ public class MouseController extends BossController {
         private final int startX, startY;
         private final int controlCode;
         private final int warnDuration;
+        private static final float units = 64f;
+
 
         public MouseAttackPattern(int id, int x, boolean top, int warnDuration) {
             this.id = id;
@@ -26,14 +28,14 @@ public class MouseController extends BossController {
         @Override
         public void warn() {
             state = FSMState.WARN;
-            boss.setX(startX);
-            boss.setY(startY);
-            boss.setVX(0);
+            boss.getObstacle().setX(startX / units);
+            boss.getObstacle().setY(startY / units);
+            boss.getObstacle().setVX(0);
             if (controlCode == CONTROL_MOVE_UP) {
-                boss.setVY(15f);
+                boss.getObstacle().setVY(15f / units);
                 boss.angle = 90f;
             } else if (controlCode == CONTROL_MOVE_DOWN) {
-                boss.setVY(-15f);
+                boss.getObstacle().setVY(-15f / units);
                 boss.angle = 270f;
             }
             action = CONTROL_NO_ACTION;
@@ -51,6 +53,7 @@ public class MouseController extends BossController {
     }
 
     final int RADIUS = 40 * 3 / 2; // TEMPORARY
+    private static final float units = 64f;
 
     public MouseController(Boss boss, GameState gameState) {
         super(boss, gameState);
@@ -90,7 +93,7 @@ public class MouseController extends BossController {
                 attackPatterns.get(plannedAttacks.poll()).attack();
             }
         } else if (state == FSMState.ATTACK) {
-            boolean attackEnded = boss.getY() + RADIUS < 0 || boss.getY() - RADIUS > 720;
+            boolean attackEnded = boss.getObstacle().getY() < 0 || boss.getObstacle().getY() > 720 / units;
             if (attackEnded) {
                 if (plannedAttacks.isEmpty()) {
                     // finished all attacks
@@ -121,9 +124,9 @@ public class MouseController extends BossController {
         state = FSMState.IDLE;
         action = CONTROL_NO_ACTION;
 
-        boss.setX((float) 1280 / 2);
-        boss.setY((float) 720 / 2);
-        boss.setVX(0);
-        boss.setVY(0);
+        boss.getObstacle().setX((float) 1280 / (2 * units));
+        boss.getObstacle().setY((float) 720 / (2 * units));
+        boss.getObstacle().setVX(0);
+        boss.getObstacle().setVY(0);
     }
 }

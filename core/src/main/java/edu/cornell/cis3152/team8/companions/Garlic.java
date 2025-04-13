@@ -1,5 +1,6 @@
 package edu.cornell.cis3152.team8.companions;
 
+import com.badlogic.gdx.physics.box2d.World;
 import edu.cornell.cis3152.team8.*;
 
 public class Garlic extends Companion {
@@ -10,8 +11,8 @@ public class Garlic extends Companion {
      * @param x The x-coordinate of the object
      * @param y The y-coordinate of the object
      */
-    public Garlic(float x, float y) {
-        super(x, y);
+    public Garlic(float x, float y, World world) {
+        super(x, y, world);
         setCompanionType(CompanionType.GARLIC);
         setCost(5);
         setCooldown(5);
@@ -26,11 +27,11 @@ public class Garlic extends Companion {
         GarlicProjectile projectile = ProjectilePools.garlicPool.obtain();
         int forwardDirection = state.getPlayer().getForwardDirection();
 
-        projectile.setDestroyed(false);
-        projectile.resetLife();
+        projectile.getObstacle().setActive(true);
+        projectile.reset();
         // shoots in front
-        projectile.setX(getX());
-        projectile.setY(getY());
+        projectile.getObstacle().setX(obstacle.getX());
+        projectile.getObstacle().setY(obstacle.getY());
         float fireAngle = 0.0f;
 
         if (forwardDirection == InputController.CONTROL_MOVE_DOWN) {
@@ -44,8 +45,8 @@ public class Garlic extends Companion {
         }
 
 
-        projectile.setVX((float) Math.cos(Math.toRadians(fireAngle)));
-        projectile.setVY((float) Math.sin(Math.toRadians(fireAngle)));
+        projectile.getObstacle().setVX((float) Math.cos(Math.toRadians(fireAngle)));
+        projectile.getObstacle().setVY((float) Math.sin(Math.toRadians(fireAngle)));
 
         // half as slow
         // twice as large?
