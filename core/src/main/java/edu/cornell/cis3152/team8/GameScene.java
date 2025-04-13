@@ -208,6 +208,10 @@ private Vector2[] companionSpawns;
         // }
 
         LevelLoader.getInstance().load(this, "tiled/level_1.tmx");
+        // start all the bosses
+        for (BossController bc : bossControls) {
+            bc.startAttack();
+        }
     }
 
     /**
@@ -475,19 +479,19 @@ private Vector2[] companionSpawns;
         }
 
         for (Boss boss : bosses) {
-            boss.draw(game.batch);
+            boss.draw(game.batch, delta);
         }
 
         for (Minion m : minions) {
             m.draw(game.batch, delta);
         }
 
-        player.draw(game.batch);
+        player.draw(game.batch, delta);
         for (Companion c : companions) {
             String cost = "Cost: " + c.getCost();
             TextLayout compCost = new TextLayout(cost, font);
             TextLayout pressE = new TextLayout("E", font);
-            c.draw(game.batch);
+            c.draw(game.batch, delta);
             //temp UI
             if (!c.isCollected()) {
                 game.batch.drawText(compCost, c.getX() + 35, c.getY());

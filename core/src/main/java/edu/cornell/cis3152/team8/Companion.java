@@ -20,6 +20,9 @@ public abstract class Companion extends GameObject {
         PINEAPPLE,
     }
 
+    /** How long the death sprite persists on screen in seconds */
+    private float deathExpirationTimer = 3.0f;
+
     /** The type of Companion */
     private CompanionType type;
 
@@ -202,12 +205,13 @@ public abstract class Companion extends GameObject {
 
     }
 
-    public void draw(SpriteBatch batch){
+    public void draw(SpriteBatch batch, float delta){
         if (isDestroyed()) {
-            animator.setFrame(1);
-                batch.setColor(Color.BLACK); // show black shadow
-                batch.draw(animator, transform); // draw the blackened corpse
-                // decrement timer with the delta value passed in GameScene
+            if (deathExpirationTimer > 0.0f) {
+                animator.setFrame(1);
+                batch.setColor(Color.BLACK);
+                deathExpirationTimer -= delta;
+            }
         }else {
             if (collected) {
                 animator.setFrame((int) animationFrame);

@@ -34,7 +34,7 @@ public class DashAttackPattern implements BossAttackPattern {
 
             this.warnPattern = new BossWarnPattern(startX, 720f / 2f);
             this.warnPattern.setSpriteSheet(warnSprite);
-        }else {
+        } else {
             this.startY = x;
             this.startX = top ?  -boss.getRadius() : 1280f + boss.getRadius();
             this.controlCode = top ? CONTROL_MOVE_RIGHT : CONTROL_MOVE_LEFT;
@@ -43,6 +43,8 @@ public class DashAttackPattern implements BossAttackPattern {
             this.warnPattern = new BossWarnPattern(1280f / 2f,startY );
             this.warnPattern.setSpriteSheet(warnSprite);
         }
+
+        this.state = AttackState.INACTIVE;
     }
 
     @Override
@@ -87,21 +89,19 @@ public class DashAttackPattern implements BossAttackPattern {
     @Override
     public void update(float delta) {
         switch (state) {
+            case INACTIVE:
+                break;
             case WARN:
                 if (warnTime > 0) {
                     warnTime -= delta;
                 }
-                if (warnEnded()) {
+                else {
                     attack();
                 }
             case ATTACK:
                 break;
         }
 
-    }
-
-    private boolean warnEnded() {
-        return warnTime <= 0;
     }
 
     @Override
