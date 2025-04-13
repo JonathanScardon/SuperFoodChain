@@ -260,7 +260,7 @@ public abstract class GameObject {
      *
      * @param batch The sprite batch
      */
-    public void draw(SpriteBatch batch) {
+    public void draw(SpriteBatch batch, float delta) {
         SpriteBatch.computeTransform(transform, origin.x, origin.y, position.x, position.y, 0, 1.0f, 1.0f);
 
         batch.setColor(Color.WHITE);

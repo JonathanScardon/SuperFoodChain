@@ -125,7 +125,8 @@ public abstract class Boss extends GameObject {
      *
      * @param batch The sprite batch
      */
-    public void draw(SpriteBatch batch) {
+    @Override
+    public void draw(SpriteBatch batch, float delta) {
         SpriteBatch.computeTransform(transform, origin.x, origin.y, position.x, position.y, -(-90 + angle), 0.4f, 0.4f);
 
         animator.setFrame((int) animeframe);
@@ -133,7 +134,7 @@ public abstract class Boss extends GameObject {
         batch.draw(animator, transform);
 
         if (curWarn != null) {
-            curWarn.draw(batch);
+            curWarn.draw(batch, delta);
         }
     }
 }

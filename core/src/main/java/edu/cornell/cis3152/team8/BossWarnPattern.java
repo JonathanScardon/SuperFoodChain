@@ -47,7 +47,7 @@ public class BossWarnPattern extends GameObject {
      * @param batch The sprite batch
      */
     @Override
-    public void draw(SpriteBatch batch) {
+    public void draw(SpriteBatch batch, float delta) {
         if (!active) {
             return;
         }

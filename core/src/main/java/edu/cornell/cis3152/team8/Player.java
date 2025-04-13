@@ -156,9 +156,9 @@ public class Player extends GameObject{
      *
      * @param batch The sprite batch
      */
-    public void draw(SpriteBatch batch){
+    public void draw(SpriteBatch batch, float delta){
         for (Companion c: companions){
-            c.draw(batch);
+            c.draw(batch, delta);
         }
     }
 
