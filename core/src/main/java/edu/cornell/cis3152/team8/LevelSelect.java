@@ -42,7 +42,7 @@ public class LevelSelect implements Screen {
                     int y = i*208-73;
                     LevelButton b = new LevelButton(x, y, new Texture("images/"+level+".png"),level);
                     buttons.add(b);
-                    if ((i == 2 && j == 1)||(i == 2 && j == 2)){
+                    if ((i == 2 && j == 1)){
                         b.setLocked(false);
                     }else {
                         b.setLocked(true);
