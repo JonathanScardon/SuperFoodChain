@@ -22,9 +22,8 @@ public class Coin extends GameObject{
      */
     public Coin(float x, float y) {
         super(x,y);
-        //texture = new Texture("images/coin.png");
         size = 0.3f;
-        texture = new Texture("images/Coin.png");
+        texture = new Texture("images/coin.png");
         SpriteSheet coin = new SpriteSheet(texture, 1, 22);
         setSpriteSheet(coin);
         animationSpeed = 0.5f;
