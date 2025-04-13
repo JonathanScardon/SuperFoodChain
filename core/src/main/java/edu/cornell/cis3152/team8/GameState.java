@@ -190,13 +190,13 @@ public class GameState {
         // Companions - requires information of number of companions
         // for (int i = 0; i < num_companions; i++) {
         // companions[i] = new Companion(assets);
+        // }
         // // companion texture
-    }
 
-    // // Projectives
-    // projectiles = new ProjectilePool(assets);
-    // // projectile texture
-    // }
+        // // Projectiles
+        // projectiles = new ProjectilePool(assets);
+        // // projectile texture
+    }
 
     /**
      * @return the current level

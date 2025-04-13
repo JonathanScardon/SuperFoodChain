@@ -1,7 +1,7 @@
 package edu.cornell.cis3152.team8;
 
 public interface BossAttackPattern {
-    public enum AttackState {
+    enum AttackState {
         /**
          * The boss is about to attack and is providing a warning to the player
          */
@@ -12,8 +12,15 @@ public interface BossAttackPattern {
         ATTACK,
     }
 
-    void warn();
-    void attack();
+    /**
+     * Start the warning process for the boss
+     */
+    void start();
+
     void update(float delta);
-    boolean attackEnded();
+
+    /**
+     * @return Whether the warning and attack have both ended
+     */
+    boolean ended();
 }

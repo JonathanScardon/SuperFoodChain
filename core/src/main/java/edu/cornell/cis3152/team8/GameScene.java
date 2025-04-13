@@ -1,9 +1,5 @@
 package edu.cornell.cis3152.team8;
 
-/**
- * Heavily inspired by the Optimization lab
- */
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Input.Keys;
@@ -33,8 +29,13 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
+
 import org.w3c.dom.Text;
 
+/**
+ * The screen for the actual gameplay in the game
+ * Heavily inspired by the Optimization lab
+ */
 public class GameScene implements Screen {
     /**
      * Reference to the GDX root
@@ -147,10 +148,10 @@ private Vector2[] companionSpawns;
         Texture levels = new Texture("images/LevelsButton.png");
         Texture settings = new Texture("images/SettingsButton.png");
         Texture exit = new Texture("images/ExitButton.png");
-        resetButton = new Button(399,459,resetT,0,482,120);
-        levelsButton = new Button(399,319,levels,1,482,120);
-        settingsButton = new Button(399,180,settings,0,482,120);
-        exitButton = new Button(399,41,exit,0,482,120);
+        resetButton = new Button(399, 459, resetT, 0, 482, 120);
+        levelsButton = new Button(399, 319, levels, 1, 482, 120);
+        settingsButton = new Button(399, 180, settings, 0, 482, 120);
+        exitButton = new Button(399, 41, exit, 0, 482, 120);
         settingsScreen = new Settings();
 
         minionSpawnTaken = new boolean[minionSpawns.length];
@@ -168,6 +169,7 @@ private Vector2[] companionSpawns;
         reset = true;
         paused = false;
         state.reset();
+
         player = new Player(500, 350);
         state.setPlayer(player);
         state.setMinions(minions);
@@ -176,6 +178,7 @@ private Vector2[] companionSpawns;
         curPineapple = 0;
         curAvocado = 0;
         coins = new LinkedList<>();
+
         bosses = state.getBosses();
         bossControls = state.getBossControls();
         minionControls = state.getMinionControls();
@@ -199,8 +202,12 @@ private Vector2[] companionSpawns;
         // level = state.getLevel();
 
         // assuming each level has number of enemies assigned?
+        // minionControls = new InputController[minions.length];
+        // for (int i = 0; i < minions.length; i++) {
+        //     minionControls[i] = new MinionController(i, minions, player);
+        // }
 
-        //System.out.println("Reset" + bosses);
+        LevelLoader.getInstance().load(this, "tiled/level_1.tmx");
     }
 
     /**
@@ -217,7 +224,7 @@ private Vector2[] companionSpawns;
     }
 
 
-     /**
+    /**
      * Initializes the minions to new random location.
      */
     private void addMinions() {
@@ -246,7 +253,7 @@ private Vector2[] companionSpawns;
     }
 
 
-     /**
+    /**
      * Initializes the companions to new random location.
      */
     private void addCompanions() {
@@ -308,27 +315,27 @@ private Vector2[] companionSpawns;
         setStart();
         //System.out.println("Update" + bosses);
 
-        if (Gdx.input.isKeyPressed(Keys.ESCAPE) && !paused){
+        if (Gdx.input.isKeyPressed(Keys.ESCAPE) && !paused) {
             paused = true;
-        } else if (Gdx.input.isKeyPressed(Keys.R) && paused){
+        } else if (Gdx.input.isKeyPressed(Keys.R) && paused) {
             paused = false;
         }
 
-        if (paused){
-            if (resetButton.isHovering() && Gdx.input.isTouched()){
+        if (paused) {
+            if (resetButton.isHovering() && Gdx.input.isTouched()) {
                 reset();
                 paused = false;
             } else if (levelsButton.isHovering() && Gdx.input.isTouched()) {
                 game.exitScreen(this, levelsButton.getExitCode());
                 dispose();
-            } else if (settingsButton.isHovering() && Gdx.input.isTouched()){
+            } else if (settingsButton.isHovering() && Gdx.input.isTouched()) {
                 settingsOn = true;
                 settingsScreen.update();
-            }else if (exitButton.isHovering() && Gdx.input.isTouched()) {
+            } else if (exitButton.isHovering() && Gdx.input.isTouched()) {
                 Gdx.app.exit();
             }
 
-            if (settingsOn && Gdx.input.isKeyPressed(Keys.ESCAPE)){
+            if (settingsOn && Gdx.input.isKeyPressed(Keys.ESCAPE)) {
                 settingsOn = false;
             }
         }
@@ -452,7 +459,7 @@ private Vector2[] companionSpawns;
 
         //Texture tt = new Texture("fonts/LPC.png");
 
-       // TextureRegion t = new TextureRegion(tt);
+        // TextureRegion t = new TextureRegion(tt);
 
         //System.out.println(t);
         //BitmapFont font = new BitmapFont(Gdx.files.internal("fonts/Arial.fnt"));
@@ -531,7 +538,7 @@ private Vector2[] companionSpawns;
         if (paused && !settingsOn) {
             drawPause();
         }
-        if (settingsOn){
+        if (settingsOn) {
             settingsScreen.draw(game.batch);
         }
         game.batch.end();
@@ -569,9 +576,9 @@ private Vector2[] companionSpawns;
         }
     }
 
-    private void drawPause(){
+    private void drawPause() {
         game.batch.setBlendMode(BlendMode.ALPHA_BLEND);
-        game.batch.draw(pauseBackground,0,0);
+        game.batch.draw(pauseBackground, 0, 0);
         resetButton.draw(game.batch);
         levelsButton.draw(game.batch);
         settingsButton.draw(game.batch);

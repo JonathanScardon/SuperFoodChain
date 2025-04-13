@@ -46,7 +46,7 @@ public class DashAttackPattern implements BossAttackPattern {
     }
 
     @Override
-    public void warn() {
+    public void start() {
         state = AttackState.WARN;
         controller.setAction(CONTROL_NO_ACTION);
 
@@ -76,9 +76,8 @@ public class DashAttackPattern implements BossAttackPattern {
         boss.curWarn = warnPattern;
     }
 
-    @Override
     public void attack() {
-        state = AttackState.WARN;
+        state = AttackState.ATTACK;
         controller.setAction(controlCode);
 
         warnPattern.active = false;
@@ -106,7 +105,7 @@ public class DashAttackPattern implements BossAttackPattern {
     }
 
     @Override
-    public boolean attackEnded() {
+    public boolean ended() {
 
         if (controlCode == CONTROL_MOVE_UP || controlCode == CONTROL_MOVE_RIGHT) {
             return vertical ? boss.getY() - boss.getRadius() > 720 :boss.getX() - boss.getRadius() > 1280;

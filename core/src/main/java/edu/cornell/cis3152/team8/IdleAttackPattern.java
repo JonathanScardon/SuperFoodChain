@@ -34,17 +34,17 @@ public class IdleAttackPattern implements BossAttackPattern {
     }
 
     @Override
-    public void warn() {
+    public void start() {
         state = AttackState.WARN;
         controller.setAction(CONTROL_NO_ACTION);
 
         warnTime = warnDuration;
         attackTime = attackDuration;
+
         warnPattern.active = true;
         boss.curWarn = warnPattern;
     }
 
-    @Override
     public void attack() {
         state = AttackState.ATTACK;
         controller.setAction(CONTROL_NO_ACTION);
@@ -52,7 +52,7 @@ public class IdleAttackPattern implements BossAttackPattern {
         boss.setX(this.idleX);
         boss.setY(this.idleY);
         attackTime = attackDuration;
-        boss.angle = 90f;
+        boss.angle = 90f; // make the boss face upwards
 
         warnPattern.active = false;
         boss.curWarn = null;
@@ -82,7 +82,7 @@ public class IdleAttackPattern implements BossAttackPattern {
     }
 
     @Override
-    public boolean attackEnded() {
+    public boolean ended() {
         return attackTime <= 0;
     }
 }
