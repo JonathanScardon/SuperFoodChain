@@ -129,18 +129,18 @@ public class GameState {
     }
 
     public void update(){
-        Boss b = bosses.get(0);
-        String state = b.getState();
-        if (state.equals("Idle")){
-            b.setSpriteSheet(mouseIdleSprite);
-            b.setAnimationSpeed(0.1f);
-        }else if (state.equals("Dash")){
-            b.setSpriteSheet(mouseDashSprite);
-            b.setAnimationSpeed(0.1f);
-        } else if (state.equals("Spin")) {
-            b.setSpriteSheet(mouseSpinSprite);
-            b.setAnimationSpeed(0.5f);
-        }
+//        Boss b = bosses.get(0);
+//        String state = b.getState();
+//        if (state.equals("Idle")){
+//            b.setSpriteSheet(mouseIdleSprite);
+//            b.setAnimationSpeed(0.1f);
+//        }else if (state.equals("Dash")){
+//            b.setSpriteSheet(mouseDashSprite);
+//            b.setAnimationSpeed(0.1f);
+//        } else if (state.equals("Spin")) {
+//            b.setSpriteSheet(mouseSpinSprite);
+//            b.setAnimationSpeed(0.5f);
+//        }
 
     }
     /**
@@ -169,14 +169,14 @@ public class GameState {
         bossControls = new Array<>();
         Boss mouse = new Mouse(-100f, -100f);
         mouse.setSpriteSheet(mouseDashSprite);
-        mouse.warnSprites.add(idleWarnSprite);
-        mouse.warnSprites.add(dashWarnVerticalSprite);
-        mouse.warnSprites.add(dashWarnHorizontalSprite);
-        mouse.warnSprites.add(spinWarnSprite);
+//        mouse.warnSprites.add(idleWarnSprite);
+//        mouse.warnSprites.add(dashWarnVerticalSprite);
+//        mouse.warnSprites.add(dashWarnHorizontalSprite);
+//        mouse.warnSprites.add(spinWarnSprite);
 
         bosses.add(mouse);
 
-        bossControls.add(new MouseController(mouse,this,640,360, bossAttack));
+        bossControls.add(new MouseController(mouse,this));
 
         minions.clear();
         minionControls.clear();

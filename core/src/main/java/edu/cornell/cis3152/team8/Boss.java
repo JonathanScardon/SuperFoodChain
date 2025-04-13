@@ -62,7 +62,7 @@ public abstract class Boss extends GameObject {
 
     public Boss(float x, float y) {
         super(x, y);
-        warnSprites = new Array<>();
+        //warnSprites = new Array<>();
         health = 30;// TODO: move this to constants?
         angle = 90f;
         damage = false;
@@ -144,11 +144,13 @@ public abstract class Boss extends GameObject {
         if (damage){
             batch.setColor(Color.RED);
         }
+        //System.out.println(damage);
         batch.draw(animator, transform);
         batch.setColor(Color.WHITE);
         if (curWarn != null) {
             curWarn.draw(batch);
         }
+        damage = false;
 
     }
 
