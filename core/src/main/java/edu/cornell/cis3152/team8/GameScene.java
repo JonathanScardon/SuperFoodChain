@@ -179,6 +179,11 @@ private Vector2[] companionSpawns;
         bosses = state.getBosses();
         bossControls = state.getBossControls();
         minionControls = state.getMinionControls();
+
+        Arrays.fill(minionSpawnTaken,false);
+        Arrays.fill(companionSpawnTaken,false);
+
+
         addMinions();
         addCompanions();
 
@@ -246,7 +251,7 @@ private Vector2[] companionSpawns;
      */
     private void addCompanions() {
         Random rand = new Random();
-        boolean r = false;
+        boolean r = true;
         for (boolean b :companionSpawnTaken){
             if (!b) {
                 r = false;
@@ -258,16 +263,12 @@ private Vector2[] companionSpawns;
         }
         while (companions.size < maxStrawberry+maxPineapple+maxAvocado) {
             int spawn = rand.nextInt(companionSpawns.length);
-            if (!minionSpawnTaken[spawn]) {
+            if (!companionSpawnTaken[spawn]) {
 
                 float x = companionSpawns[spawn].x;
                 float y = companionSpawns[spawn].y;
             for (Companion c: companions) {
-                if (c.getX() == x && c.getY() == y) {
-                    r = true;
-                }else{
-                    r = false;
-                }
+                r = c.getX() == x && c.getY() == y;
             }
             if (!r)  {
                 Companion c;
@@ -284,7 +285,8 @@ private Vector2[] companionSpawns;
                 companions.add(c);
                 companionSpawnTaken[spawn] = true;
             }
-        }}
+        }
+    }
     }
 
     public GameState getState() {
