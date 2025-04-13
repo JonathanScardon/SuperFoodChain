@@ -351,7 +351,7 @@ public class GameScene implements Screen {
         }
 
         for (Boss boss : bosses) {
-            boss.draw(game.batch);
+            boss.draw(game.batch, delta);
         }
 
         for (Minion m : minions) {
@@ -359,7 +359,7 @@ public class GameScene implements Screen {
         }
 
 
-        player.draw(game.batch);
+        player.draw(game.batch, delta);
         for (Companion c : companions) {
             String cost = "Cost: " + c.getCost();
             TextLayout compCost = new TextLayout(cost, font);
