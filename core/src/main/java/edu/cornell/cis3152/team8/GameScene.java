@@ -207,7 +207,7 @@ private Vector2[] companionSpawns;
         //     minionControls[i] = new MinionController(i, minions, player);
         // }
 
-        LevelLoader.getInstance().load(this, "tiled/level_1.tmx");
+        LevelLoader.getInstance().load(this, "tiled/level_2.tmx");
         // start all the bosses
         for (BossController bc : bossControls) {
             bc.startAttack();

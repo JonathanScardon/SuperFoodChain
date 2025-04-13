@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="40" height="22" tilewidth="32" tileheight="32" infinite="0" nextlayerid="8" nextobjectid="34">
- <editorsettings>
-  <export target="level_2.tmx" format="tmx"/>
- </editorsettings>
  <tileset firstgid="1" source="cutting_board.tsx"/>
  <tileset firstgid="2" source="mouse.tsx"/>
  <objectgroup id="4" name="background" visible="0" locked="1">

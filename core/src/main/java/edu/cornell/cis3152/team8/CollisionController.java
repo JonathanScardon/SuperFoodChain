@@ -236,7 +236,6 @@ public class CollisionController {
         float py = projectile.getY();
 
         boolean collide = bx >= px - 50 && bx <= px + 50 && by >= py - 50 && by <= py + 50;
-        System.out.println(collide);
         // decrease boss health if hit by projectile
         if (collide) {
             boss.setHealth(boss.getHealth() - 1);
