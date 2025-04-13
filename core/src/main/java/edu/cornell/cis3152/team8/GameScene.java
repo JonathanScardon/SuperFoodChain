@@ -160,6 +160,10 @@ public class GameScene implements Screen {
         }
 
         LevelLoader.getInstance().load(this, "tiled/level_1.tmx");
+        // start all the bosses
+        for (BossController bc : bossControls) {
+            bc.startAttack();
+        }
     }
 
     /**
