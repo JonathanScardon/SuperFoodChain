@@ -33,7 +33,7 @@ public class Minion extends GameObject{
         this.id = id;
         remove = false;
         damage = false;
-        health = 1;
+        health = 3;
         SpriteSheet minion = new SpriteSheet(texture, 1, 1);
         setSpriteSheet(minion);
         animationSpeed = 0.15f;

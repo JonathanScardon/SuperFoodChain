@@ -70,7 +70,7 @@ public class Player extends GameObject{
      * */
     private static int DELAY;
     private final static int MAX_COMPANIONS = 15;
-    private static int MOVE_SPEED = 4;
+    private static int MOVE_SPEED = 3;
 
     private CircularBuffer controlBuffer;
 

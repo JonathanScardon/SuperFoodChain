@@ -1,4 +1,4 @@
-// package edu.cornell.cis3152.team8;
+package edu.cornell.cis3152.team8;
 
 // import com.badlogic.gdx.utils.Array;
 
@@ -88,4 +88,4 @@ public class MouseController extends BossController {
     //         }
     //     }
     // }
-}
+}}
