@@ -19,6 +19,9 @@ import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 public class Strawberry extends Companion {
+    Texture texture;
+    float dx = 0.0f; // make directional components global vars with default value
+    float dy = 0.0f;
 
     /**
      * Constructs a Strawberry at the given position
@@ -26,10 +29,6 @@ public class Strawberry extends Companion {
      * @param x The x-coordinate of the object
      * @param y The y-coordinate of the object
      */
-    Texture texture;
-    float dx = 0.0f; // make directional components global vars with default value
-    float dy = 0.0f;
-
     public Strawberry(float x, float y) {
         super(x, y);
         setCompanionType(CompanionType.STRAWBERRY);
@@ -38,9 +37,10 @@ public class Strawberry extends Companion {
         setCooldown(3);
         radius = 1;
         texture = new Texture("images/Strawberry.png");
-        SpriteSheet coin = new SpriteSheet(texture, 1, 7);
-        setSpriteSheet(coin);
-        animationSpeed = 0.15f;
+        SpriteSheet strawberry = new SpriteSheet(texture, 1, 7);
+        setSpriteSheet(strawberry);
+        // change this from 0.15 to 0.25 to be more inline with other companion animation speeds
+        animationSpeed = 0.25f;
         size = 0.4f;
     }
 
