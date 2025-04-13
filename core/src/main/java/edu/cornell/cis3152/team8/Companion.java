@@ -142,7 +142,7 @@ public abstract class Companion extends GameObject {
     /**
      * Updates the movement of a companion in the chain
      *
-     * @param controlCode
+     * @param controlCode new direction of the companion
      */
     public void update(int controlCode) {
         if (!isAlive) {
