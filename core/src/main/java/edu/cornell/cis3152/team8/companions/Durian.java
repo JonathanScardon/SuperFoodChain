@@ -2,16 +2,13 @@ package edu.cornell.cis3152.team8.companions;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.physics.box2d.World;
 import edu.cornell.cis3152.team8.Companion;
 import edu.cornell.cis3152.team8.GameState;
-import edu.cornell.cis3152.team8.ProjectilePools;
-import edu.cornell.cis3152.team8.StrawberryProjectile;
 import edu.cornell.gdiac.graphics.SpriteBatch;
-import java.util.Random;
 
 public class Durian extends Companion {
 
-    Texture texture;
 
     /**
      * Constructs a Durian at the given position
@@ -19,24 +16,15 @@ public class Durian extends Companion {
      * @param x The x-coordinate of the object
      * @param y The y-coordinate of the object
      */
-    public Durian(float x, float y) {
-        super(x, y);
+    public Durian(float x, float y, World world) {
+        super(x, y, world);
         //System.out.println(animator);
         //System.out.println(origin);
         setCompanionType(CompanionType.DURIAN);
         //temp cost (was 10)
         setCost(1);
         setCooldown(10);
-        radius = 1;
-        texture = new Texture("images/Durian.png");
-    }
-
-    public void draw(SpriteBatch batch) {
-        if (isDestroyed()) {
-            batch.setColor(Color.BLACK);
-        }
-        batch.draw(texture, position.x, position.y, 64, 64);
-        batch.setColor(Color.WHITE);
+        setTexture(new Texture("images/Durian.png"));
     }
 
     @Override

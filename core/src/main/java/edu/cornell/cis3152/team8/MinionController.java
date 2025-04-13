@@ -38,13 +38,13 @@ public class MinionController implements InputController {
      */
     private long ticks;
 
-    public MinionController(int id, Minion[] minions, Player player) {
+    public MinionController(int id, LinkedList<Minion> minions, Player player) {
         this.id = id;
         move = CONTROL_NO_ACTION;
         ticks = 0;
         target = null;
         this.session = session;
-        minion = minions[id];
+        minion = minions.get(id);
         board = new Board(32,20,40);
         this.player = player;
     }
@@ -109,8 +109,8 @@ public class MinionController implements InputController {
 //System.out.println(player.isAlive());
         if (player.isAlive()) {
             for (Companion c: player.companions) {
-                int targetX = board.screenToBoard(c.getX());
-                int targetY = board.screenToBoard(c.getY());
+                int targetX = board.screenToBoard(c.getObstacle().getX() * 64f);
+                int targetY = board.screenToBoard(c.getObstacle().getY() * 64f);
                     board.setGoal(targetX, targetY);
                     //System.out.println("SET GOAL" + targetX + ", " + targetY);
             }
@@ -132,8 +132,8 @@ public class MinionController implements InputController {
     private int getMoveAlongPathToGoalTile() {
 //        //#region PUT YOUR CODE HERE
 //        // bfs starting from ship location and then return starting direction for the first tile we run into
-        int minionX = board.screenToBoard(minion.getX());
-        int minionY = board.screenToBoard(minion.getY());
+        int minionX = board.screenToBoard(minion.getObstacle().getX() * 64f);
+        int minionY = board.screenToBoard(minion.getObstacle().getY() * 64f);
 
         if (board.isGoal(minionX, minionY)) {
             return CONTROL_NO_ACTION; // we're already on a goal tile

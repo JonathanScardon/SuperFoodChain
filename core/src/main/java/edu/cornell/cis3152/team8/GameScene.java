@@ -12,6 +12,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ScreenUtils;
 import edu.cornell.cis3152.team8.companions.Strawberry;
@@ -19,6 +20,7 @@ import edu.cornell.gdiac.assets.AssetDirectory;
 import edu.cornell.cis3152.team8.companions.Durian;
 import edu.cornell.gdiac.graphics.SpriteBatch;
 import edu.cornell.gdiac.graphics.TextLayout;
+import edu.cornell.gdiac.physics2.ObstacleSprite;
 import edu.cornell.gdiac.util.ScreenListener;
 
 import java.util.LinkedList;
@@ -43,15 +45,16 @@ public class GameScene implements Screen {
     private Player player;
 
     /** Minions in the level */
-    private Minion[] minions;
+    private LinkedList<Minion> minions;
 
-    /** Bosses in the level */
+//    /** Bosses in the level */
     private Boss[] bosses;
 
-    private Companion[] companions;
+    private LinkedList<Companion> companions;
 
     private LinkedList<Coin> coins;
     private Array<Projectile> projectiles;
+    protected World world;
 
     /** List of all the input controllers */
     protected InputController playerControls;
@@ -61,9 +64,10 @@ public class GameScene implements Screen {
 
     private Texture coinTexture;
 
-    private CollisionController collision;
     private boolean start;
     private boolean reset;
+    private boolean debug;
+
 
     /**
      * Creates a GameScene
@@ -86,8 +90,8 @@ public class GameScene implements Screen {
         float px = 15;
         float py = 10;
         Companion head = player.companions.get(0);
-        head.setX(px);
-        head.setY(py);
+        head.getObstacle().setX(px);
+        head.getObstacle().setY(py);
     }
 
     //
@@ -97,44 +101,44 @@ public class GameScene implements Screen {
     // */
     private void initMinions(int num_minions) {
         Random rand = new Random();
-        minions = new Minion[num_minions];
+        minions = new LinkedList<>();
         for (int i = 0; i < num_minions; i++) {
             int x = rand.nextInt(1280);
             int y = rand.nextInt(720);
-            Minion m = new Minion(x, y, i);
+            Minion m = new Minion(x, y, i, world);
             // System.out.println("Id: " + i + " (" + x + ", " + y +")");
-            minions[i] = m;
+            minions.add(m);
         }
     }
 
-    //
-    // /**
-    // * Initializes the companions to new random location.
-    // *
-    // */
+
+     /**
+     * Initializes the companions to new random location.
+     *
+     */
     private void initCompanionPositions(int numCompanions) {
         Random rand = new Random();
-        companions = new Companion[numCompanions];
-        for (int i = 0; i < companions.length; i++) {
+        companions = new LinkedList<>();
+        for (int i = 0; i < numCompanions; i++) {
             Companion c;
             int x = rand.nextInt(1180);
             int y = rand.nextInt(620);
             if (i%2 == 0){
-                c = new Strawberry(x,y);
+                c = new Strawberry(x,y, world);
             }else{
-                c = new Durian(x, y);
+                c = new Durian(x, y, world);
             }
-            companions[i] = c;
+            companions.add(c);
         }
     }
 
     private void initCoins(int numCoins) {
         Random rand = new Random();
         coins = new LinkedList<>();
-        for (int i = 0; i < companions.length; i++) {
+        for (int i = 0; i < companions.size(); i++) {
             int x = rand.nextInt(1280);
             int y = rand.nextInt(720);
-            Coin c = new Coin(x, y);
+            Coin c = new Coin(x, y, world);
             coins.add(c);
         }
     }
@@ -150,6 +154,9 @@ public class GameScene implements Screen {
      * but photon collisions are not.
      */
     public void update(float delta) {
+        float frameTime = Math.min(delta, 0.25f);
+        state.getWorld().step(frameTime, 6, 2);
+
         if (Gdx.input.isKeyPressed(Keys.R) && !reset){
             reset();
         }
@@ -157,7 +164,12 @@ public class GameScene implements Screen {
             start = true;
             reset = false;
         }
-        if (start && player.isAlive() && !bosses[0].isDestroyed()) {
+        if (Gdx.input.isKeyPressed(Keys.D)) {
+            debug = true;
+        }
+
+        if (start && player.isAlive() && bosses[0].getObstacle().isActive()) {
+//        if (start && player.isAlive()) {
             // iterate through all companions in the chain
             for (Companion c : player.companions) {
                 if (c.canUse()) {
@@ -165,35 +177,28 @@ public class GameScene implements Screen {
                 } else {
                     c.coolDown(true, delta);
                 }
+//                System.out.println(c.getObstacle().getName());
             }
 
             for (Projectile p : state.getActiveProjectiles()) {
                 p.update(delta);
+                System.out.println(p.getObstacle().getPosition());
             }
-
-            // Remove dead projectiles and return them to their pools
-            for (int i = state.getActiveProjectiles().size - 1; i >= 0; i--) {
-                Projectile p = state.getActiveProjectiles().get(i);
-                if (p.isDestroyed() || p.getLife() <= 0) {
-                    state.getActiveProjectiles().removeIndex(i);
-                    if (p instanceof StrawberryProjectile) {
-                        ProjectilePools.strawberryPool.free((StrawberryProjectile) p);
-                    }
-                }
-            }
+            System.out.println();
 
             // System.out.println(player.position);
             // moves enemies - assume always moving (no CONTROL_NO_ACTION)
-            for (int i = 0; i < minions.length; i++) {
-                if (!minions[i].isDestroyed()) {
+            for (int i = 0; i < minions.size(); i++) {
+                if (minions.get(i).getObstacle().isActive()) {
                     // System.out.println("CONTROL " + i);
                     int action = minionControls[i].getAction();
                     // System.out.println("Id: " + i + " (" + action + ")");
-                    minions[i].update(action);
+                    minions.get(i).update(action);
+//                    System.out.println(minions[i].getObstacle().getName());
                 }
             }
-            //
-            // boss moves and acts
+//            //
+//            // boss moves and acts
             for (int i = 0; i < bosses.length; i++) {
                 bosses[i].update(bossControls[i].getAction());
             }
@@ -202,16 +207,9 @@ public class GameScene implements Screen {
             int a = playerControls.getAction();
             // System.out.println(a);
             player.update(a);
-            //
-            // // if board isn't updating then no point
-            // state.getLevel().update();
-            //
-            // // projectiles update
-            // //state.getProjectiles().update();
-            if (player.isAlive()) {
-                collision.update();
-            }
         }
+
+        state.getCollisionController().postUpdate();
     }
 
     public void draw(float delta) {
@@ -237,7 +235,7 @@ public class GameScene implements Screen {
             c.draw(game.batch);
             //temp UI
             if(!player.companions.contains(c)) {
-                game.batch.drawText(compCost, c.getX() + 35, c.getY());
+                game.batch.drawText(compCost, c.getObstacle().getX() * 64f, c.getObstacle().getY() * 64f + 32f);
             }
 
         }
@@ -248,6 +246,19 @@ public class GameScene implements Screen {
 
         for (Coin c : coins) {
             c.draw(game.batch);
+        }
+
+        if (debug) {
+            // Draw the outlines
+            LinkedList<ObstacleSprite> sprites = new LinkedList<>();
+            sprites.addAll(player.companions);
+            sprites.addAll(minions);
+            sprites.addAll(coins);
+            sprites.addAll(companions);
+            sprites.add(bosses[0]);
+            for (ObstacleSprite obj : sprites) {
+                obj.drawDebug( game.batch );
+            }
         }
 
         String coins = "X" + player.getCoins();
@@ -275,7 +286,7 @@ public class GameScene implements Screen {
             drawLose();
         }
 
-        if (bosses[0].isDestroyed()) {
+        if (!bosses[0].getObstacle().isActive()) {
             drawWin();
         }
         game.batch.end();
@@ -352,35 +363,39 @@ public class GameScene implements Screen {
 
     @Override
     public void dispose() {
-
+        if (state.getWorld() != null) {
+            state.getWorld().dispose();
+        }
     }
 
     private void reset(){
         start = false;
         reset = true;
         state.reset();
-        player = new Player(500, 350);
+
+        world = state.getWorld();
+
+        player = new Player(500, 350, world);
         state.setPlayer(player);
         initMinions(5);
+        state.setMinions(minions);
         initCompanionPositions(5);
-        // initCoins(5);
-        coins = new LinkedList<>();
+        state.setCompanions(companions);
+//        // initCoins(5);
+        coins = state.getCoins();
+        coins.clear();
         bosses = state.getBosses();
         bossControls = new InputController[bosses.length];
         bossControls[0] = new MouseController(bosses[0], state);
         projectiles = state.getActiveProjectiles();
 
-        collision = new CollisionController(minions, player, companions, coins, bosses, projectiles);
-
-        // assuming player is a list of Companions btw
-        // player = state.getPlayer();
         playerControls = new PlayerController(player);
 
         // level = state.getLevel();
 
         // assuming each level has number of enemies assigned?
-        minionControls = new InputController[minions.length];
-        for (int i = 0; i < minions.length; i++) {
+        minionControls = new InputController[minions.size()];
+        for (int i = 0; i < minions.size(); i++) {
             minionControls[i] = new MinionController(i, minions, player);
         }
     }

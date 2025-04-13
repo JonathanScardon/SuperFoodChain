@@ -1,11 +1,19 @@
 package edu.cornell.cis3152.team8;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.Filter;
+import com.badlogic.gdx.physics.box2d.World;
 import edu.cornell.gdiac.graphics.SpriteBatch;
+import edu.cornell.gdiac.physics2.BoxObstacle;
+import edu.cornell.gdiac.physics2.CapsuleObstacle;
+import edu.cornell.gdiac.physics2.ObstacleSprite;
+
 import static edu.cornell.cis3152.team8.InputController.CONTROL_MOVE_LEFT;
 import static edu.cornell.cis3152.team8.InputController.CONTROL_NO_ACTION;
 
-public abstract class Companion extends GameObject {
+public abstract class Companion extends ObstacleSprite {
 
     public enum CompanionType {
         AVOCADO,
@@ -19,9 +27,6 @@ public abstract class Companion extends GameObject {
 
     /** The type of Companion */
     private CompanionType type;
-
-    /** Is companion alive */
-    private boolean isAlive;
 
     /** Cost of companion */
     private int cost;
@@ -44,24 +49,42 @@ public abstract class Companion extends GameObject {
 
     private float prevY;
 
-    public Companion(float x, float y) {
-        super(x, y);
-        isAlive = true;
+    private static final float units = 64f;
+
+    public Companion(float x, float y, World world) {
+        super(new CapsuleObstacle(x/units, y/units, 0.5f, 0.5f), true);
+        ((CapsuleObstacle)obstacle).setTolerance( 0.5f );
+
         cost = 0;
         cooldown = 5;
         abilityCool = 0;
         collected = false;
         prevVelocity = new Vector2();
         direction = InputController.CONTROL_NO_ACTION;
+
+        // change?
+        obstacle = getObstacle();
+        obstacle.setName("companion");
+        obstacle.setFixedRotation(true);
+        obstacle.setBodyType(BodyDef.BodyType.DynamicBody);
+        obstacle.setPhysicsUnits(units);
+
+        obstacle.activatePhysics(world);
+        obstacle.setUserData(this);
+
+        // prevents physics?
+        obstacle.setSensor(true);
+
+        Filter filter = obstacle.getFilterData();
+        filter.categoryBits = CollisionController.COMPANION_CATEGORY;
+        filter.maskBits = CollisionController.PLAYER_CATEGORY;
+        obstacle.setFilterData(filter);
+
+        float size = 1 * units;
+        mesh.set(-size/2.0f,-size/2.0f,size,size);
     }
 
     // accessors
-    @Override
-
-    /** Object is Companion */
-    public ObjectType getType() {
-        return ObjectType.COMPANION;
-    }
 
     /** Get type of Companion */
     public CompanionType getCompanionType() {
@@ -121,7 +144,7 @@ public abstract class Companion extends GameObject {
 
     public void follow(long delta) {
         if (delta % 120 == 0) {
-            prevVelocity = velocity;
+            prevVelocity = obstacle.getLinearVelocity();
         }
     }
 
@@ -143,7 +166,7 @@ public abstract class Companion extends GameObject {
      * @param controlCode
      */
     public void update(int controlCode) {
-        if (!isAlive) {
+        if (!obstacle.isActive()) {
             return;
         }
 
@@ -155,6 +178,7 @@ public abstract class Companion extends GameObject {
 
         // Process movement command.
         // int s = 2;
+        Vector2 velocity = obstacle.getLinearVelocity();
         if (movingLeft) {
             this.direction = InputController.CONTROL_MOVE_LEFT;
             velocity.x = -MOVE_SPEED;
@@ -175,7 +199,7 @@ public abstract class Companion extends GameObject {
             velocity.x = 0;
             velocity.y = 0;
         }
-        position.add(velocity);
+        obstacle.setLinearVelocity(velocity);
     }
 
     /**
@@ -196,6 +220,15 @@ public abstract class Companion extends GameObject {
 
     public float getPrevY() {
         return this.prevY;
+    }
+
+
+    public void draw(SpriteBatch batch){
+//        if (!obstacle.isActive()) {
+//            batch.setColor(Color.BLACK);
+//        }
+        super.draw(batch);
+        batch.setColor(Color.WHITE);
     }
 
 }
