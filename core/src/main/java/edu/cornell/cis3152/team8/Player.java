@@ -91,6 +91,7 @@ public class Player extends GameObject{
     /** The direction the player is facing */
     protected int forwardDirection;
 
+
     private long ticks;
 
     public Player(int x, int y){
