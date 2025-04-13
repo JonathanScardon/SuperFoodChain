@@ -8,6 +8,14 @@ import edu.cornell.cis3152.team8.GameObject.ObjectType;
 
 import java.util.*;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Keys;
+
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Random;
+
 import com.badlogic.gdx.math.*;
 import edu.cornell.gdiac.audio.SoundEffect;
 import edu.cornell.gdiac.audio.SoundEffectManager;
@@ -40,6 +48,9 @@ public class CollisionController implements ContactListener {
     private Companion companionAdded = null;
 
     private List<Body> removedProjectiles = new ArrayList<>();
+  
+    private Array<MinionController> minionControls;
+    private Array<Companion> deadCompanions;
 
     /**
      * Cache attribute for calculations
@@ -56,6 +67,7 @@ public class CollisionController implements ContactListener {
     public static final short BOSS_CATEGORY = 0x0010;
     public static final short PROJECTILE_CATEGORY = 0x0020;
     public static final short BORDER_CATEGORY = 0x0040;
+ 
 
     /**
      * Creates a CollisionController for the given models.
@@ -64,6 +76,8 @@ public class CollisionController implements ContactListener {
         tmp = new Vector2();
         this.state = state;
         this.world = state.getWorld();
+//         this.minionControls = minionControls;
+//         this.deadCompanions = deadCompanions;
     }
 
     /**
@@ -73,7 +87,128 @@ public class CollisionController implements ContactListener {
     public void update() {
 
     }
+  
+  // player-minion collision
+  // Get the tiles for each creature
+//         float mx = minion.getX();
+//         float my = minion.getY();
 
+
+//         for (int i = 0; i < player.companions.size(); i++) {
+//             Companion c = player.companions.get(i);
+//             float px = c.getX();
+//             float py = c.getY();
+//             boolean collide = px >= mx && px - 25 <= mx + 25 && py >= my -25 && py <= my + 25;
+//             //kill companion and minion if they collided
+//             if (collide) {
+//                 player.deleteCompanion(c);
+//                 minion.setDestroyed(true);
+//                 c.setDestroyed(true);
+//                 deadCompanions.add(c);
+//                 //MOVE TO PROJECTILE DEATH - choose between spawn anyway
+//                 coins.add(new Coin(mx, my));
+  
+  // minion-projectile collision
+          // Get the tiles for minion and projectile
+//         float mx = minion.getX();
+//         float my = minion.getY();
+//         float px = projectile.getX();
+//         float py = projectile.getY();
+//         boolean collide = mx >= px - 12 && mx <= px + 12 && my >= py - 12 && my <= py + 12;;
+
+//         if (collide) {
+//             projectile.setDestroyed(true);
+//             minion.removeHealth(1);
+//             if (minion.getHealth() <= 0) {
+//                     minion.setDestroyed(true);
+//                     coins.add(new Coin(mx, my));
+//             }
+//             minion.setDamage(true);
+  
+  // player-boss collision
+  //Get the tiles for boss
+//         float bx = boss.getX();
+//         float by = boss.getY();
+
+//         for (int i = 0; i < player.companions.size(); i++) {
+//             Companion c = player.companions.get(i);
+//             // Get the tiles for companion
+//             float cx = c.getX();
+//             float cy = c.getY();
+//             boolean collide = bx >= cx - 50 && bx <= cx + 50 && by >= cy - 50 && by <= cy + 50;
+//             // kill companion if it collided with boss
+//             if (collide) {
+//                 player.deleteCompanion(c);
+//                 c.setDestroyed(true);
+//                 deadCompanions.add(c);
+//             }
+//         }
+
+  // boss-projectile collision
+  //Get the tiles for boss and projectile
+//         float bx = boss.getX();
+//         float by = boss.getY();
+//         float px = projectile.getX();
+//         float py = projectile.getY();
+
+//         boolean collide = bx >= px - 50 && bx <= px + 50 && by >= py - 50 && by <= py + 50;
+//         System.out.println(collide);
+//         // decrease boss health if hit by projectile
+//         if (collide) {
+//             boss.setHealth(boss.getHealth() - 1);
+//             if (boss.getHealth() <= 0) {
+//                 boss.setDestroyed(true);
+//             }
+//             projectile.setDestroyed(true);
+//             boss.setDamage(true);
+//         }
+  
+  // player-coin collision
+  //Get tiles for coin and player
+//         float cx = coin.getX();
+//         float cy = coin.getY();
+//         Companion head = player.companions.get(0);
+//         float px = head.getX();
+//         float py = head.getY();
+//         boolean collide = px >= cx - 20 && px <= cx + 20 && py >= cy - 20 && py <= cy + 20;
+//         //System.out.println(collide);
+
+//         // Add one coin to player and remove coin from screen if they collided
+//         if (collide) {
+//             player.setCoins(player.getCoins() + 1);
+//             coin.setDestroyed(true);
+//             // coins.remove(coin); ERROR! Sometimes coin being removed while for-loop iterating through coins
+  
+  // player-companion collision
+//   private void checkForCollision(Companion companion, Player player) {
+
+//         //Do nothing if companion or player are dead
+//         if (companion.isDestroyed() || !player.isAlive()) {
+//             return;
+//         }
+//         companion.setGlow(false);
+//         //Get tiles for coin and player
+//         float cx = companion.getX();
+//         float cy = companion.getY();
+//         Companion head = player.companions.get(0);
+//         float px = head.getX();
+//         float py = head.getY();
+
+//         //System.out.println(cx+", "+cy+"  "+px+", "+py);
+//         // Player buys companion if enough coins and they collided
+//         int cost = companion.getCost();
+//         boolean collide = px >= cx - 25 && px <= cx + 25 && py >= cy - 25 && py <= cy + 25;
+//         //System.out.println(collide);
+//         boolean afford = player.getCoins() >= cost;
+//         //System.out.println(afford);
+//         if (collide && afford){
+//             companion.setGlow(true);
+//             if (Gdx.input.isKeyPressed(Keys.E)) {
+//             //System.out.println("collected");
+//             player.setCoins(player.getCoins() - cost);
+//             player.addCompanion(companion);
+//             companion.setCollected(true);
+  
 //    /**
 //     * Processes minion-projectile collisions.
 //     *
@@ -275,19 +410,16 @@ public class CollisionController implements ContactListener {
     // not used? only interactions when first get contact
     @Override
     public void endContact(Contact contact) {
-
     }
 
     // called just before Box2D resolves a collision --> resolve sound?
     @Override
     public void preSolve(Contact contact, Manifold oldManifold) {
-
     }
 
     // called just after Box2D resolves a collision
     @Override
     public void postSolve(Contact contact, ContactImpulse impulse) {
-
     }
 
     /**
@@ -342,6 +474,7 @@ public class CollisionController implements ContactListener {
                 if (boss.getHealth() <= 0) {
                     removed.add((ObstacleSprite) b.getUserData());
                 }
+    
             }
         }
     }

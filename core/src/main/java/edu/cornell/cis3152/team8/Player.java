@@ -54,9 +54,10 @@ public class Player {
             return buffer[actualIndex];
         }
 
-        public PositionAndDirection getCompanion(int index) {
+        public PositionAndDirection getSnapshot(int index) {
             return get(index * DELAY);
         }
+
 
         public int size() {
             return size;
@@ -70,8 +71,9 @@ public class Player {
     /** Number of instructions to wait before following
      * Also the number of instructions stored per companion
      * */
-    private final static int DELAY = 7;
-    private final static int MAX_COMPANIONS = 10;
+    private static int DELAY;
+    private final static int MAX_COMPANIONS = 15;
+    private static int MOVE_SPEED = 3;
 
     private CircularBuffer controlBuffer;
 
@@ -98,11 +100,14 @@ public class Player {
         this.companions = new LinkedList<>();
         this.coins = 0;
         this.attacking = false;
-        this.shield = true;
-        Companion head = new Strawberry(x,y, world);
+        this.shield = false;
+        Companion head = new Strawberry(x,y,0,world);
         head.getObstacle().setName("player");
         companions.add(head);
+        head.setCollected(true);
+        radius = 2;
         ticks = 0;
+        DELAY = MOVE_SPEED * 7;
 
         Filter filter = head.getObstacle().getFilterData();
         filter.categoryBits = CollisionController.PLAYER_CATEGORY;
@@ -110,7 +115,6 @@ public class Player {
         head.getObstacle().setFilterData(filter);
 
         this.controlBuffer = new CircularBuffer(MAX_COMPANIONS * DELAY);
-
     }
 
     /**
@@ -127,6 +131,7 @@ public class Player {
      */
     public void update(int controlCode){
         // automatically removes "dead" companions --> don't have to individually find in collision
+        // can do deadCompanions instead?
         for (int i = 0; i < companions.size(); i ++) {
             Companion c = companions.get(i);
             if (!c.getObstacle().isActive()) {
@@ -139,22 +144,45 @@ public class Player {
         }
 
         Companion head = this.getPlayerHead();
-        controlBuffer.add(head.getObstacle().getX(), head.getObstacle().getY(), controlCode);
+        controlBuffer.add(head.getObstacle().getX(), head.getObstacle().getY(), head.getDirection());
 
-        for (int i = 0; i < companions.size(); i++) {
+        for (int i = 0; i < companions.size(); i++){
             Companion c = companions.get(i);
-            CircularBuffer.PositionAndDirection prev = controlBuffer.getCompanion(i);
-            c.update(prev.dir);
+            if (c == getPlayerHead()){
+                c.update(controlCode);
+            }
+            else {
+                CircularBuffer.PositionAndDirection prev = controlBuffer.getSnapshot(i);
+                c.update(prev.dir);
+            }
         }
+
+        for (Companion c: companions){
+            c.animationFrame = getPlayerHead().animationFrame;
+            if (c.animator != null) {
+                c.animationFrame += c.animationSpeed;
+                //System.out.println(animationFrame);
+                if (c.animationFrame >= c.animator.getSize()) {
+                    c.animationFrame -= c.animator.getSize()-1;
+                }
+            }
+        }
+
     }
 
     /**
      *
      * @param batch The sprite batch
      */
-    public void draw(SpriteBatch batch){
-        for (Companion c: companions){
-            c.draw(batch);
+    public void draw(SpriteBatch batch, float delta) {
+        if (forwardDirection == 8){
+            for (int i = companions.size() - 1; i >= 0; i--){
+                companions.get(i).draw(batch, delta);
+            }
+        } else {
+            for (Companion c : companions) {
+                c.draw(batch, delta);
+            }
         }
     }
 
@@ -237,20 +265,24 @@ public class Player {
      * @param companion the companion to add
      */
     public void addCompanion(Companion companion){
-        companions.add(companion);
+        //limited num of companions
+        if (companions.size() == MAX_COMPANIONS){
+            return;
+        }
+      
         companion.getObstacle().setName("player");
 
         Filter filter = companion.getObstacle().getFilterData();
         filter.categoryBits = CollisionController.PLAYER_CATEGORY;
         filter.maskBits = CollisionController.MINION_CATEGORY | CollisionController.COMPANION_CATEGORY | CollisionController.COIN_CATEGORY | CollisionController.BOSS_CATEGORY | CollisionController.BORDER_CATEGORY;
         companion.getObstacle().setFilterData(filter);
-
-        CircularBuffer.PositionAndDirection tail = controlBuffer.getCompanion(companions.size() - 1);
+      
+        CircularBuffer.PositionAndDirection tail = controlBuffer.getSnapshot(companions.size());
         if (tail != null) {
             companion.getObstacle().setX(tail.x);
             companion.getObstacle().setY(tail.y);
         }
-
+        companions.add(companion);
     }
     /**
      * Removes the companion from the player's chain
@@ -260,26 +292,40 @@ public class Player {
         int index = companions.indexOf(companion);
         //companion out of range
         if (index < 0 || index > companions.size()-1){
-            return;
+            throw new IndexOutOfBoundsException();
         }
 
-        float prevX = companion.getObstacle().getX();
-        float prevY = companion.getObstacle().getY();
-        companions.remove(index);
-
-        //catch up the positions of the rest of the snake
+        //update positions to fill deleted companion
         for (int i = index+1; i < companions.size(); i++){
             Companion c = companions.get(i);
-
-            float tempX = c.getObstacle().getX();
-            float tempY = c.getObstacle().getY();
-
-            c.getObstacle().setX(prevX);
-            c.getObstacle().setY(prevY);
-
-            prevX = tempX;
-            prevY = tempY;
+            CircularBuffer.PositionAndDirection data = controlBuffer.getSnapshot(i-1);
+            if (data != null){
+                c.setX(data.x);
+                c.setY(data.y);
+            }
         }
+        companions.remove(index);
     }
 
+    /**
+     * @return player speed
+     */
+    public static int getSpeed(){
+        return MOVE_SPEED;
+    }
+
+    /**
+     * Sets the player's speed
+     * @param speed new speed
+     */
+    public static void setSpeed(int speed) {
+        MOVE_SPEED = speed;
+    }
+    /**
+     * Returns GameObject type Player
+     * */
+    @Override
+    public ObjectType getType() {
+        return ObjectType.PLAYER;
+    }
 }

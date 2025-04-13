@@ -1,6 +1,7 @@
 package edu.cornell.cis3152.team8;
 
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Filter;
@@ -22,8 +23,12 @@ public abstract class Companion extends ObstacleSprite {
         CORN,
         DURIAN,
         TANGERINE,
-        BLUE_RASPBERRY
+        BLUE_RASPBERRY,
+        PINEAPPLE,
     }
+
+    /** How long the death sprite persists on screen in seconds */
+    private float deathExpirationTimer = 3.0f;
 
     /** The type of Companion */
     private CompanionType type;
@@ -39,29 +44,38 @@ public abstract class Companion extends ObstacleSprite {
     private boolean collected;
     private Vector2 prevVelocity;
 
-    /** How far the player moves in a single turn */
-    private static float MOVE_SPEED = 5;
-
     /** The direction the companion is currently moving in */
     private int direction;
 
     private float prevX;
 
     private float prevY;
+    protected static float animationSpeed;
+    protected float animationFrame;
+    protected Texture glow;
+    protected Boolean highlight;
+    private int id;
 
-    private static final float units = 64f;
+    private boolean remove;
 
-    public Companion(float x, float y, World world) {
+  private static final float units = 64f;
+
+    public Companion(float x, float y, int id, World world) {
         super(new CapsuleObstacle(x/units, y/units, 0.5f, 0.5f), true);
         ((CapsuleObstacle)obstacle).setTolerance( 0.5f );
 
+        isAlive = true;
         cost = 0;
         cooldown = 5;
         abilityCool = 0;
         collected = false;
         prevVelocity = new Vector2();
         direction = InputController.CONTROL_NO_ACTION;
-
+        highlight = false;
+        animationFrame = 1;
+        this.id = id;
+        remove = false;
+    }
         // change?
         obstacle = getObstacle();
         obstacle.setName("companion");
@@ -80,6 +94,7 @@ public abstract class Companion extends ObstacleSprite {
         filter.maskBits = CollisionController.PLAYER_CATEGORY;
         obstacle.setFilterData(filter);
 
+  // TODO: was this different?
         float size = 1 * units;
         mesh.set(-size/2.0f,-size/2.0f,size,size);
     }
@@ -123,6 +138,7 @@ public abstract class Companion extends ObstacleSprite {
 
     /** Companion uses ability */
     public void useAbility(GameState state) {
+
         // individual abilities depending on type --> overrided by different types
     };
 
@@ -163,7 +179,7 @@ public abstract class Companion extends ObstacleSprite {
     /**
      * Updates the movement of a companion in the chain
      *
-     * @param controlCode
+     * @param controlCode new direction of the companion
      */
     public void update(int controlCode) {
         if (!obstacle.isActive()) {
@@ -177,6 +193,7 @@ public abstract class Companion extends ObstacleSprite {
         boolean movingDown = controlCode == 8;
 
         // Process movement command.
+        int MOVE_SPEED = Player.getSpeed();
         // int s = 2;
         Vector2 velocity = obstacle.getLinearVelocity();
         if (movingLeft) {
@@ -199,7 +216,48 @@ public abstract class Companion extends ObstacleSprite {
             velocity.x = 0;
             velocity.y = 0;
         }
+      
         obstacle.setLinearVelocity(velocity);
+
+//        if (animator != null) {
+//            animationFrame += animationSpeed;
+//            //System.out.println(animationFrame);
+//            if (animationFrame >= animator.getSize()) {
+//                animationFrame -= animator.getSize();
+//            }
+//        }
+
+    }
+
+    public void draw(SpriteBatch batch, float delta){
+        if (!obstacle.isActive()) {
+            if (deathExpirationTimer > 0.0f) {
+                sprite.setFrame(1);
+                batch.setColor(Color.BLACK);
+                deathExpirationTimer -= delta;
+            }
+        }else {
+            if (collected) {
+                sprite.setFrame((int) animationFrame);
+            } else {
+                //System.out.println(this + " " + highlight );
+                if (highlight){
+                    sprite.setFrame(0);
+                }else {
+                    sprite.setFrame(1);
+                }
+            }
+            batch.setColor(Color.WHITE);
+        }
+//         SpriteBatch.computeTransform(transform, origin.x, origin.y,
+//             position.x, position.y, 0.0f, size
+//             , size);
+        SpriteBatch.computeTransform(transform, sprite.getRegionWidth()/2.0f, sprite.getRegionHeight()/2.0f, obstacle.getPosition().x * units, obstacle.getPosition().y * units, 0.0f, size/units, size/units);
+
+        //System.out.println(highlight);
+            batch.draw(sprite, transform);
+        //batch.draw(texture, position.x, position.y, 64, 64);
+        batch.setColor(Color.WHITE);
     }
 
     /**
@@ -222,13 +280,25 @@ public abstract class Companion extends ObstacleSprite {
         return this.prevY;
     }
 
+    public void setGlow(Boolean g){
+        highlight = g;
+    }
+    public int getId(){
+        return id;
+    }
+    public void setId(int id){
+        this.id = id;
+    }
 
-    public void draw(SpriteBatch batch){
-//        if (!obstacle.isActive()) {
-//            batch.setColor(Color.BLACK);
-//        }
-        super.draw(batch);
-        batch.setColor(Color.WHITE);
+    public boolean shouldRemove(){
+        return remove;
+    }
+
+    public void decreaseDeathExpirationTimer(float delta){
+        deathExpirationTimer -= delta;
+    }
+    public boolean getTrash(){
+        return deathExpirationTimer < 0.0;
     }
 
 }

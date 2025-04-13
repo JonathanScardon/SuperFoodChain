@@ -31,7 +31,12 @@ public class Coin extends ObstacleSprite {
     public Coin(float x, float y, World world) {
         // taking in the minion position which is already in units --> change for initCoins
         super(new CapsuleObstacle(x, y, 0.8f, 0.8f), true);
+
+      //         size = 0.3f;
         texture = new Texture("images/coin.png");
+        SpriteSheet coin = new SpriteSheet(texture, 1, 22);
+        setSpriteSheet(coin);
+        animationSpeed = 0.5f;
         //setConstants(constants);
 
         obstacle = getObstacle();
@@ -49,7 +54,7 @@ public class Coin extends ObstacleSprite {
         filter.maskBits = CollisionController.PLAYER_CATEGORY;
         obstacle.setFilterData(filter);
 
-        float size = 1 * units;
+        float size = 0.3f * units;
         mesh.set(-size/2.0f,-size/2.0f,size,size);
     }
 
@@ -98,10 +103,32 @@ public class Coin extends ObstacleSprite {
 //            position.x, position.y, 0.0f, 1, 1);
 //        batch.setColor( Color.WHITE );
 //        batch.draw( animator, transform );
-        if (obstacle.isActive()) {
-            batch.draw(texture, obstacle.getPosition().x * units - 32, obstacle.getPosition().y * units - 32, 64, 64);
+
+//         if (obstacle.isActive()) {
+//             batch.draw(texture, obstacle.getPosition().x * units - 32, obstacle.getPosition().y * units - 32, 64, 64);
 //            super.draw(batch);
+//        if (!isDestroyed()) {
+//            batch.draw(texture, position.x, position.y, 64, 64);
+//        }
+      
+        if (!obstacle.isActive()) {
+            sprite.setFrame(0);
+            batch.setColor(Color.BLACK);
+        }else {
+            sprite.setFrame((int)animationFrame);
+            batch.setColor( Color.WHITE );
+
         }
+//         SpriteBatch.computeTransform(transform, origin.x, origin.y,
+//             position.x, position.y, 0.0f, size
+//             , size);
+        SpriteBatch.computeTransform(transform, sprite.getRegionWidth()/2.0f, sprite.getRegionHeight()/2.0f, obstacle.getPosition().x * units, obstacle.getPosition().y * units, 0.0f, size/units, size/units);
+
+      
+        batch.draw( sprite, transform );
+        //batch.draw(texture, position.x, position.y, 64, 64);
+        //batch.draw(texture, position.x, position.y, 64, 64);
+        batch.setColor(Color.WHITE);
     }
 
 }

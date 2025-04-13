@@ -4,6 +4,7 @@ package edu.cornell.cis3152.team8;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.*;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.JsonValue;
 import edu.cornell.gdiac.graphics.*;
 import java.util.LinkedList;
@@ -20,7 +21,7 @@ public class MinionController implements InputController {
     /**
      * The minion controlled by this AI
      */
-    private Minion minion;
+    public Minion minion;
     /**
      * The target companion.
      */
@@ -38,7 +39,7 @@ public class MinionController implements InputController {
      */
     private long ticks;
 
-    public MinionController(int id, LinkedList<Minion> minions, Player player) {
+    public MinionController(int id, Array<Minion> minions, Player player) {
         this.id = id;
         move = CONTROL_NO_ACTION;
         ticks = 0;

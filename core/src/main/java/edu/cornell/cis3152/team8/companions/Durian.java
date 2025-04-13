@@ -6,6 +6,8 @@ import com.badlogic.gdx.physics.box2d.World;
 import edu.cornell.cis3152.team8.Companion;
 import edu.cornell.cis3152.team8.GameState;
 import edu.cornell.gdiac.graphics.SpriteBatch;
+import edu.cornell.gdiac.graphics.SpriteSheet;
+import java.util.Random;
 
 public class Durian extends Companion {
 
@@ -16,16 +18,29 @@ public class Durian extends Companion {
      * @param x The x-coordinate of the object
      * @param y The y-coordinate of the object
      */
-    public Durian(float x, float y, World world) {
-        super(x, y, world);
+    public Durian(float x, float y, int id, World world) {
+        super(x, y, id, world);
         //System.out.println(animator);
         //System.out.println(origin);
         setCompanionType(CompanionType.DURIAN);
         //temp cost (was 10)
         setCost(1);
         setCooldown(10);
-        setTexture(new Texture("images/Durian.png"));
+      
+        texture = new Texture("images/Pineapple.png");
+        SpriteSheet pineapple = new SpriteSheet(texture, 1, 7);
+        setSpriteSheet(pineapple);
+        animationSpeed = 0.25f;
+        size = 0.4f;
     }
+
+//    public void draw(SpriteBatch batch) {
+//        if (isDestroyed()) {
+//            batch.setColor(Color.BLACK);
+//        }
+//        batch.draw(texture, position.x, position.y, 64, 64);
+//        batch.setColor(Color.WHITE);
+//    }
 
     @Override
     /**

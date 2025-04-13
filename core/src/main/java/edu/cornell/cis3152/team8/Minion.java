@@ -21,9 +21,14 @@ public class Minion extends ObstacleSprite {
     private int health;
     private float size;
     private int id;
-
+    // 5 second death expiration timer
+    private float deathExpirationTimer = 3.0f;
     private float moveSpeed;
     private static final float units = 64f;
+    private boolean remove;
+    private boolean damage;
+    private float animationSpeed;
+    private float animationFrame;
 
     /**
      * Constructs a Minion at the given position
@@ -36,9 +41,19 @@ public class Minion extends ObstacleSprite {
         ((CapsuleObstacle)obstacle).setTolerance( 0.5f );
 
         this.id = id;
-        setConstants(new JsonValue("assets/constants.json"));
-        setTexture(new Texture("images/Minion.png"));
-
+        constants = new JsonValue("assets/constants.json");
+        texture = new Texture("images/Minion.png");
+  
+        radius = 2;
+        remove = false;
+        damage = false;
+        health = 3;
+        SpriteSheet minion = new SpriteSheet(texture, 1, 1);
+        setSpriteSheet(minion);
+        animationSpeed = 0.15f;
+        size = 0.3f * units;
+        animationFrame = 0;
+  
         obstacle = getObstacle();
         obstacle.setName("minion");
         obstacle.setFixedRotation(true);
@@ -63,13 +78,10 @@ public class Minion extends ObstacleSprite {
      * @param constants The JsonValue of the object
      * */
     private void setConstants(JsonValue constants){
-        // for some reason, not working??
-//        health = constants.getInt("health");
-//        size = constants.getInt("size");
-//        moveSpeed = constants.getInt("move speed");
-        health = 1;
-        size = 1 * units;
-        moveSpeed = 2;
+        this.constants = constants;
+        health = constants.getInt("health");
+        //MOVE_SPEED = constants.getFloat("move speed");
+        moveSpeed = 4;
     }
 
     public int getHealth(){
@@ -91,7 +103,8 @@ public class Minion extends ObstacleSprite {
      * handle collisions (which are determined by the CollisionController). It
      * is not intended to interact with other objects in any way at all.
      *
-     * @param controlCode Number of seconds since last animation frame
+
+     * @param controlCode value indicating minion movement direction
      */
     public void update(int controlCode){
         // If we are dead do nothing.
@@ -100,7 +113,7 @@ public class Minion extends ObstacleSprite {
         }
 
         // Determine how we are moving.
-        boolean movingLeft  = controlCode ==  1;
+        boolean movingLeft  = controlCode == 1;
         boolean movingRight = controlCode == 2;
         boolean movingUp    = controlCode == 4;
         boolean movingDown  = controlCode == 8;
@@ -129,6 +142,15 @@ public class Minion extends ObstacleSprite {
         //System.out.println(velocity);
         obstacle.setLinearVelocity(velocity);
         //System.out.println(position);
+
+
+        if (animator != null) {
+            animationFrame += animationSpeed;
+            //System.out.println(animationFrame);
+            if (animationFrame >= animator.getSize()) {
+                animationFrame -= animator.getSize();
+            }
+        }
     }
 
     /**
@@ -136,12 +158,43 @@ public class Minion extends ObstacleSprite {
      *
      * @param batch The sprite batch
      */
-    public void draw(SpriteBatch batch){
-//        if (!obstacle.isActive()){
-//            batch.setColor(Color.BLACK);
-//        }
-//        batch.draw(texture,position.x,position.y,64,64);
-        super.draw(batch);
+    public void draw(SpriteBatch batch, float delta){
+//         SpriteBatch.computeTransform(transform, origin.x, origin.y,
+//             position.x, position.y, 0.0f, size
+//             , size);
+        SpriteBatch.computeTransform(transform, sprite.getRegionWidth()/2.0f, sprite.getRegionHeight()/2.0f, obstacle.getPosition().x * units, obstacle.getPosition().y * units, 0.0f, size/units, size/units);
+        if (isDestroyed()){ // if destroyed...
+            animator.setFrame(0);
+            if (deathExpirationTimer > 0.0f) { // and within recent death timer
+                batch.setColor(Color.BLACK); // show black shadow
+                batch.draw(animator, transform); // draw the blackened corpse
+                deathExpirationTimer -= delta;
+                // decrement timer with the delta value passed in GameScene
+
+            }else{
+                remove = true;
+            }
+            // if it's pass, say 3 seconds, don't draw the dead corpse to free up screen real estate
+        } else { // if not destroyed, draw as normal
+            animator.setFrame((int) animationFrame);
+            if (damage){
+                batch.setColor(Color.RED);
+            }
+
+            batch.draw(animator, transform);
+
+        }
         batch.setColor(Color.WHITE);
+    }
+    public boolean shouldRemove(){
+        return remove;
+    }
+
+    public void setID(int id){
+        this.id = id;
+    }
+
+    public void setDamage(boolean hit){
+        damage = hit;
     }
 }

@@ -57,7 +57,7 @@ public abstract class Projectile extends ObstacleSprite {
         // Attributes below are placeholder values since setConstants isn't implemented
         // yet
         radius = 1;
-        speed = 10;
+        speed = 750;
         maxLife = 150;
         imageScale = 1;
         animationSpeed = 4;
@@ -154,10 +154,9 @@ public abstract class Projectile extends ObstacleSprite {
      */
     public void draw(SpriteBatch batch) {
         sprite.setFrame((int) animeFrame);
-        // need to override because we pass in imageScale instead of 1.0f in
-        // computeTransform
+        // need to override because we pass in imageScale instead of 1.0f - need to put in size/radius instead?
         SpriteBatch.computeTransform(transform, sprite.getRegionWidth()/2.0f, sprite.getRegionHeight()/2.0f,
-                obstacle.getX() * units, obstacle.getY() * units, 0.0f, imageScale, imageScale);
+                obstacle.getX() * units, obstacle.getY() * units, 0.0f, radius/units, radius/units);
         batch.setColor(Color.WHITE);
         batch.draw(sprite, transform);
     }
