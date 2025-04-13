@@ -1,0 +1,89 @@
+{
+    "automappingRulesFile": "",
+    "commands": [
+    ],
+    "compatibilityVersion": 1100,
+    "extensionsPath": "extensions",
+    "folders": [
+        "."
+    ],
+    "properties": [
+    ],
+    "propertyTypes": [
+        {
+            "color": "#ffa0a0a4",
+            "drawFill": true,
+            "id": 1,
+            "members": [
+                {
+                    "name": "attackType",
+                    "propertyType": "attackType",
+                    "type": "string",
+                    "value": "idle"
+                },
+                {
+                    "name": "warnDuration",
+                    "type": "float",
+                    "value": 2
+                }
+            ],
+            "name": "attack",
+            "type": "class",
+            "useAs": [
+                "property",
+                "object",
+                "tile",
+                "project"
+            ]
+        },
+        {
+            "id": 2,
+            "name": "attackType",
+            "storageType": "string",
+            "type": "enum",
+            "values": [
+                "idle",
+                "dash"
+            ],
+            "valuesAsFlags": false
+        },
+        {
+            "color": "#ffa0a0a4",
+            "drawFill": true,
+            "id": 3,
+            "members": [
+                {
+                    "name": "bossType",
+                    "propertyType": "bossType",
+                    "type": "string",
+                    "value": "mouse"
+                }
+            ],
+            "name": "boss",
+            "type": "class",
+            "useAs": [
+                "property",
+                "map",
+                "layer",
+                "object",
+                "tile",
+                "tileset",
+                "wangcolor",
+                "wangset",
+                "project"
+            ]
+        },
+        {
+            "id": 4,
+            "name": "bossType",
+            "storageType": "string",
+            "type": "enum",
+            "values": [
+                "mouse",
+                "chef",
+                "chopsticks"
+            ],
+            "valuesAsFlags": false
+        }
+    ]
+}

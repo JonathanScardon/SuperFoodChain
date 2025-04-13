@@ -1,10 +1,12 @@
 package edu.cornell.cis3152.team8;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.ScreenUtils;
+import edu.cornell.gdiac.graphics.SpriteBatch.BlendMode;
 
 public class MainMenuScene implements Screen {
     /**
@@ -12,23 +14,40 @@ public class MainMenuScene implements Screen {
      */
     private final GDXRoot game;
     private Texture background;
-    private Texture play;
-    private Texture settings;
-    private Texture exit;
+    private Button playButton;
+    private Button settingsButton;
+    private Button exitButton;
+    private Settings settingsScreen;
+    private boolean settingsOn;
 
     public MainMenuScene(final GDXRoot game) {
         this.game = game;
         background = new Texture("images/Menu.png");
-        play = new Texture("images/PlayButton.png");
-        settings = new Texture("images/SettingsButton.png");
-        exit = new Texture("images/ExitButton.png");
-
+        Texture play = new Texture("images/PlayButton.png");
+        Texture settings = new Texture("images/SettingsButton.png");
+        Texture exit = new Texture("images/ExitButton.png");
+        playButton = new Button(833,340,play,0);
+        settingsButton = new Button(833,240,settings,0);
+        exitButton = new Button(833,140,exit,0);
+        settingsScreen = new Settings();
     }
 
     public void update(float delta) {
-        if (Gdx.input.isTouched()) {
+        if (playButton.isHovering() && Gdx.input.isTouched()){
             game.exitScreen(this, 0);
             dispose();
+        }
+        if (settingsButton.isHovering() && Gdx.input.isTouched()){
+                settingsOn = true;
+                settingsScreen.update();
+        }
+        if (exitButton.isHovering() && Gdx.input.isTouched()){
+            game.exitScreen(this, 1);
+            dispose();
+        }
+
+        if (settingsOn && Gdx.input.isKeyPressed(Keys.ESCAPE)){
+            settingsOn = false;
         }
     }
 
@@ -37,17 +56,17 @@ public class MainMenuScene implements Screen {
 
         game.viewport.apply();
         game.batch.setProjectionMatrix(game.viewport.getCamera().combined);
-
         game.batch.begin();
-        //draw text. Remember that x and y are in meters
+
         game.batch.draw(background,0,0);
-        game.batch.draw(play,833,340);
-        game.batch.draw(settings,833,240);
-        game.batch.draw(exit,833,140);
+        playButton.draw(game.batch);
+        settingsButton.draw(game.batch);
+        exitButton.draw(game.batch);
 
+        if (settingsOn){
+            settingsScreen.draw(game.batch);
+        }
 
-//        game.font.setColor(Color.WHITE);
-//        game.font.draw(game.batch, "Main Menu", 100f, 100f);
         game.batch.end();
     }
 

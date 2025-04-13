@@ -55,6 +55,7 @@ public class Player extends GameObject{
             return get(index * DELAY);
         }
 
+
         public int size() {
             return size;
         }
@@ -68,10 +69,10 @@ public class Player extends GameObject{
      * Also the number of instructions stored per companion
      * */
     private static int DELAY;
-    private final static int MAX_COMPANIONS = 10;
+    private final static int MAX_COMPANIONS = 15;
 
     /** How far the player moves in a single turn */
-    private static int MOVE_SPEED = 3;
+    private static float MOVE_SPEED = 5;
 
     private CircularBuffer controlBuffer;
 
@@ -103,7 +104,7 @@ public class Player extends GameObject{
         companions.add(head);
         radius = 2;
         ticks = 0;
-        DELAY = MOVE_SPEED * 7;
+        DELAY = 20;
         this.controlBuffer = new CircularBuffer(MAX_COMPANIONS * DELAY);
     }
 
@@ -132,9 +133,23 @@ public class Player extends GameObject{
             }
             else {
                 CircularBuffer.PositionAndDirection prev = controlBuffer.getSnapshot(i);
-                c.update(prev.dir);
+                if (prev != null){
+                    c.update(prev.dir);
+                }
             }
         }
+
+        for (Companion c: companions){
+            c.animationFrame = getPlayerHead().animationFrame;
+            if (c.animator != null) {
+                c.animationFrame += c.animationSpeed;
+                //System.out.println(animationFrame);
+                if (c.animationFrame >= c.animator.getSize()) {
+                    c.animationFrame -= c.animator.getSize();
+                }
+            }
+        }
+
     }
 
     /**
@@ -251,12 +266,14 @@ public class Player extends GameObject{
         }
 
         //update positions to fill deleted companion
-        for (int i = index+1; i < companions.size(); i++){
-            Companion c = companions.get(i);
-            CircularBuffer.PositionAndDirection data = controlBuffer.getSnapshot(i-1);
-            if (data != null){
-                c.setX(data.x);
-                c.setY(data.y);
+        if (companion != this.getPlayerHead()){
+            for (int i = index+1; i < companions.size(); i++){
+                Companion c = companions.get(i);
+                CircularBuffer.PositionAndDirection data = controlBuffer.getSnapshot(i-1);
+                if (data != null){
+                    c.setX(data.x);
+                    c.setY(data.y);
+                }
             }
         }
 
@@ -266,7 +283,7 @@ public class Player extends GameObject{
     /**
      * @return player speed
      */
-    public static int getSpeed(){
+    public static float getSpeed(){
         return MOVE_SPEED;
     }
 

@@ -54,6 +54,10 @@ public abstract class GameObject {
      */
     protected JsonValue constants;
 
+    protected float size;
+
+
+
     // ACCESSORS
 
     /**
