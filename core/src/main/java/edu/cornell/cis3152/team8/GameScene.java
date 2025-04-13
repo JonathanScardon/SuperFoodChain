@@ -475,7 +475,7 @@ private Vector2[] companionSpawns;
             game.batch.draw(tileTexture, 0, 0, 1280, 720);
         }
         for (Companion c: deadCompanions){
-            c.draw(game.batch);
+            c.draw(game.batch, delta);
         }
 
         for (Boss boss : bosses) {

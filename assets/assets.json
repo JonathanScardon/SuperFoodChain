@@ -10,7 +10,7 @@
                 }
             }
         },
-        "IdleMouse": {
+        "idleMouse": {
             "file": "images/MouseIdle.png",
             "sprites": {
                 "animation": {
@@ -20,7 +20,7 @@
                 }
             }
         },
-        "DashMouse": {
+        "dashMouse": {
             "file": "images/MouseDash.png",
             "sprites": {
                 "animation": {
@@ -30,7 +30,7 @@
                 }
             }
         },
-        "SpinMouse": {
+        "spinMouse": {
             "file": "images/MouseSpin.png",
             "sprites": {
                 "animation": {

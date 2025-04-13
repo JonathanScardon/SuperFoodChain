@@ -39,7 +39,6 @@ public abstract class Companion extends GameObject {
     private float abilityCool;
     private boolean collected;
     private Vector2 prevVelocity;
-    private float deathExpirationTimer = 3.0f;
 
     /** The direction the companion is currently moving in */
     private int direction;

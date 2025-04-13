@@ -155,7 +155,7 @@ public class Player extends GameObject{
      *
      * @param batch The sprite batch
      */
-    public void draw(SpriteBatch batch, delta){
+    public void draw(SpriteBatch batch, float delta) {
         if (forwardDirection == 8){
             for (int i = companions.size() - 1; i >= 0; i--){
                 companions.get(i).draw(batch, delta);
