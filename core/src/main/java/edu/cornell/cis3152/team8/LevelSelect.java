@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ScreenUtils;
 import edu.cornell.gdiac.graphics.SpriteBatch.BlendMode;
 import java.awt.Point;
@@ -14,11 +15,16 @@ public class LevelSelect implements Screen {
          * Reference to the GDX root
          */
         private final GDXRoot game;
-    private final Texture one;
     private Texture background;
         private Texture tray;
         private Texture plate;
         private Texture arrow;
+        private Texture lock;
+        private Array<LevelButton> buttons;
+        private float wait = 0.0f;
+
+
+
 
         public LevelSelect(final GDXRoot game) {
             this.game = game;
@@ -26,12 +32,37 @@ public class LevelSelect implements Screen {
             tray = new Texture("images/LevelSelectTray.png");
             plate = new Texture("images/LevelSelectPlate.png");
             arrow = new Texture("images/LevelSelectArrow.png");
-            one = new Texture("images/1.png");
+            lock = new Texture("images/Lock.png");
 
-
+            buttons = new Array<>();
+            int level = 1;
+            for (int i = 2; i >= 1; i--) {
+                for (int j = 1; j <= 3; j++) {
+                    int x = 140+ j*210;
+                    int y = i*208-73;
+                    LevelButton b = new LevelButton(x, y, new Texture("images/"+level+".png"),level);
+                    buttons.add(b);
+                    if ((i == 2 && j == 1)){
+                        b.setLocked(false);
+                    }else {
+                        b.setLocked(true);
+                    }
+                    level++;
+                }
+            }
         }
 
         public void update(float delta) {
+            //System.out.println(delta);
+            if (wait > 0.0f) {
+                wait -= delta;
+            }else {
+                for (LevelButton b : buttons) {
+                    if (b.isHovering() && Gdx.input.isTouched() && !b.getLocked()) {
+                        game.exitScreen(this, b.getExitCode());
+                    }
+                }
+            }
         }
 
         public void draw(float delta) {
@@ -45,34 +76,9 @@ public class LevelSelect implements Screen {
             //draw text. Remember that x and y are in meters
             game.batch.draw(background,0,0);
             game.batch.draw(tray,0,0);
-            for (int i = 1; i <= 2; i++) {
-                for (int j = 1; j <= 3; j++) {
-                    int x = 125+ j*220;
-                    int y = i*200-60;
-                    int cx = Gdx.input.getX();
-                    int cy = 720 - Gdx.input.getY();
-                        if (cx >= x && cx <= x + plate.getWidth() && cy >= y
-                            && cy <= y + plate.getHeight()) {
-                            game.batch.setBlendMode(BlendMode.ADDITIVE);
-                            if (Gdx.input.isTouched() && i == 2 && j == 1){
-
-                                if (Gdx.input.isTouched()){
-                                    game.exitScreen(this, 0);
-                                    dispose();
-                                }
-
-                            }
-                        }
-
-                        game.batch.draw(plate, x, y);
-                    game.batch.setBlendMode(BlendMode.ALPHA_BLEND);
-                    if (i == 2 && j == 1){
-                        game.batch.draw(one,x,y);
-                    }
-
-                }
+            for (Button b: buttons){
+                b.draw(game.batch);
             }
-
             //game.batch.draw(arrow,1050,220);
             game.batch.end();
         }
@@ -111,6 +117,9 @@ public class LevelSelect implements Screen {
         @Override
         public void dispose() {
 
+        }
+        public void resetWait(){
+            wait = 1.0f;
         }
     }
 

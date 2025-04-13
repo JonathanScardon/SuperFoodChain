@@ -29,19 +29,20 @@ public class Strawberry extends Companion {
      * @param x The x-coordinate of the object
      * @param y The y-coordinate of the object
      */
-    public Strawberry(float x, float y) {
-        super(x, y);
+
+    public Strawberry(float x, float y, int id) {
+        super(x, y, id);
         setCompanionType(CompanionType.STRAWBERRY);
         //temp cost (was 3)
         setCost(2);
         setCooldown(3);
         radius = 1;
         texture = new Texture("images/Strawberry.png");
-        SpriteSheet strawberry = new SpriteSheet(texture, 1, 7);
+        SpriteSheet strawberry = new SpriteSheet(texture, 1, 8);
         setSpriteSheet(strawberry);
-        // change this from 0.15 to 0.25 to be more inline with other companion animation speeds
         animationSpeed = 0.25f;
         size = 0.4f;
+        glow = new Texture("images/StrawberryGlow.png");
     }
 
     @Override

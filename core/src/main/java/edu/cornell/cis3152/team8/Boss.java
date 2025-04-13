@@ -36,7 +36,17 @@ public abstract class Boss extends GameObject {
      */
     protected BossWarnPattern curWarn;
 
+    private boolean damage;
+
+    public enum BossType {
+        MOUSE,
+        CHEF,
+        CHOPSTICKS
+    }
+
     protected float health;
+
+    private String state;
 
     /**
      * Defines the constants for this class.
@@ -52,8 +62,10 @@ public abstract class Boss extends GameObject {
 
     public Boss(float x, float y) {
         super(x, y);
-        health = 10; // TODO: move this to constants?
+        //warnSprites = new Array<>();
+        health = 30;// TODO: move this to constants?
         angle = 90f;
+        damage = false;
     }
 
     // accessors
@@ -73,19 +85,19 @@ public abstract class Boss extends GameObject {
         if (movingLeft) {
             velocity.x = -MOVE_SPEED;
             velocity.y = 0;
-            angle = 180f;
+            //angle = 180f;
         } else if (movingRight) {
             velocity.x = MOVE_SPEED;
             velocity.y = 0;
-            angle = 0f;
+            //angle = 0f;
         } else if (movingUp) {
             velocity.y = MOVE_SPEED;
             velocity.x = 0;
-            angle = 90f;
+            //angle = 90f;
         } else if (movingDown) {
             velocity.y = -MOVE_SPEED;
             velocity.x = 0;
-            angle = 270f;
+            //angle = 270f;
         } else {
             // NOT MOVING, SO SLOW DOWN
             velocity.x *= SPEED_DAMP;
@@ -130,11 +142,31 @@ public abstract class Boss extends GameObject {
         SpriteBatch.computeTransform(transform, origin.x, origin.y, position.x, position.y, -(-90 + angle), 0.4f, 0.4f);
 
         animator.setFrame((int) animeframe);
-        batch.setColor(Color.WHITE);
+        if (damage){
+            batch.setColor(Color.RED);
+        }
+        //System.out.println(damage);
         batch.draw(animator, transform);
-
+        batch.setColor(Color.WHITE);
         if (curWarn != null) {
             curWarn.draw(batch, delta);
         }
+        damage = false;
+
+    }
+
+    public void setDamage(boolean hit) {
+        damage = hit;
+    }
+
+    public String getState(){
+        return state;
+    }
+
+    public void setState(String s){
+        state = s;
+    }
+    public void setAnimationSpeed(float speed){
+        animationSpeed = speed;
     }
 }

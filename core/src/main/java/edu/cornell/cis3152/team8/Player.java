@@ -70,9 +70,7 @@ public class Player extends GameObject{
      * */
     private static int DELAY;
     private final static int MAX_COMPANIONS = 15;
-
-    /** How far the player moves in a single turn */
-    private static float MOVE_SPEED = 5;
+    private static int MOVE_SPEED = 3;
 
     private CircularBuffer controlBuffer;
 
@@ -100,11 +98,14 @@ public class Player extends GameObject{
         this.coins = 0;
         this.attacking = false;
         this.shield = false;
-        Companion head = new Strawberry(x,y);
+        Companion head = new Strawberry(x,y,0);
         companions.add(head);
+        head.setCollected(true);
         radius = 2;
         ticks = 0;
-        DELAY = 20;
+        DELAY = MOVE_SPEED * 7;
+
+
         this.controlBuffer = new CircularBuffer(MAX_COMPANIONS * DELAY);
     }
 
@@ -133,9 +134,7 @@ public class Player extends GameObject{
             }
             else {
                 CircularBuffer.PositionAndDirection prev = controlBuffer.getSnapshot(i);
-                if (prev != null){
-                    c.update(prev.dir);
-                }
+                c.update(prev.dir);
             }
         }
 
@@ -145,7 +144,7 @@ public class Player extends GameObject{
                 c.animationFrame += c.animationSpeed;
                 //System.out.println(animationFrame);
                 if (c.animationFrame >= c.animator.getSize()) {
-                    c.animationFrame -= c.animator.getSize();
+                    c.animationFrame -= c.animator.getSize()-1;
                 }
             }
         }
@@ -156,9 +155,15 @@ public class Player extends GameObject{
      *
      * @param batch The sprite batch
      */
-    public void draw(SpriteBatch batch, float delta){
-        for (Companion c: companions){
-            c.draw(batch, delta);
+    public void draw(SpriteBatch batch, delta){
+        if (forwardDirection == 8){
+            for (int i = companions.size() - 1; i >= 0; i--){
+                companions.get(i).draw(batch, delta);
+            }
+        } else {
+            for (Companion c : companions) {
+                c.draw(batch, delta);
+            }
         }
     }
 
@@ -245,13 +250,11 @@ public class Player extends GameObject{
         if (companions.size() == MAX_COMPANIONS){
             return;
         }
-
         CircularBuffer.PositionAndDirection tail = controlBuffer.getSnapshot(companions.size());
         if (tail != null) {
             companion.setX(tail.x);
             companion.setY(tail.y);
         }
-
         companions.add(companion);
     }
     /**
@@ -266,14 +269,12 @@ public class Player extends GameObject{
         }
 
         //update positions to fill deleted companion
-        if (companion != this.getPlayerHead()){
-            for (int i = index+1; i < companions.size(); i++){
-                Companion c = companions.get(i);
-                CircularBuffer.PositionAndDirection data = controlBuffer.getSnapshot(i-1);
-                if (data != null){
-                    c.setX(data.x);
-                    c.setY(data.y);
-                }
+        for (int i = index+1; i < companions.size(); i++){
+            Companion c = companions.get(i);
+            CircularBuffer.PositionAndDirection data = controlBuffer.getSnapshot(i-1);
+            if (data != null){
+                c.setX(data.x);
+                c.setY(data.y);
             }
         }
 
@@ -283,7 +284,7 @@ public class Player extends GameObject{
     /**
      * @return player speed
      */
-    public static float getSpeed(){
+    public static int getSpeed(){
         return MOVE_SPEED;
     }
 
@@ -291,10 +292,9 @@ public class Player extends GameObject{
      * Sets the player's speed
      * @param speed new speed
      */
-    public static void setSpeed(int speed){
+    public static void setSpeed(int speed) {
         MOVE_SPEED = speed;
     }
-
     /**
      * Returns GameObject type Player
      * */

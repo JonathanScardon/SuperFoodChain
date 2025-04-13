@@ -93,17 +93,39 @@ public class GDXRoot extends Game implements ScreenListener {
             setScreen(menuScene);
             loadingScene.dispose();
             loadingScene = null;
-        } else if (screen == menuScene) {
+
+            menuScene = new MainMenuScene(this);
+            setScreen(menuScene);
+        }else if (screen == menuScene){
+            menuScene.dispose();
             if (exitCode == 0) {
+                levelSelectScene = new LevelSelect(this);
                 this.setScreen(levelSelectScene);
             } else {
                 Gdx.app.exit();
             }
+
+            setScreen(levelSelectScene);
         } else if (screen == levelSelectScene) {
-            gameScene = new GameScene(this, directory);
+            levelSelectScene.dispose();
+                gameScene = new GameScene(this, directory, exitCode);
+            //LevelLoader.apply(gameScene, directory.getEntry("level1", JsonValue.class));
             this.setScreen(gameScene);
         } else if (screen == gameScene) {
-            this.setScreen(levelSelectScene);
+            levelSelectScene.resetWait();
+            setScreen(levelSelectScene);
+
+        // } else if (screen == menuScene) {
+        //     if (exitCode == 0) {
+        //         this.setScreen(levelSelectScene);
+        //     } else {
+        //         Gdx.app.exit();
+        //     }
+        // } else if (screen == levelSelectScene) {
+        //     gameScene = new GameScene(this, directory);
+        //     this.setScreen(gameScene);
+        // } else if (screen == gameScene) {
+        //     this.setScreen(levelSelectScene);
         } else {
             Gdx.app.exit();
         }
