@@ -1,6 +1,8 @@
 package edu.cornell.cis3152.team8;
 //Heavily inspired by AILab Collision Controller
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.utils.Array;
 import edu.cornell.cis3152.team8.GameObject.ObjectType;
 
@@ -28,17 +30,19 @@ public class CollisionController {
      */
     private Vector2 tmp;
 
-    private Minion[] minions;
+    private Array<Minion> minions;
     private Player player;
-    private Companion[] companions;
+    private Array<Companion> companions;
     private LinkedList<Coin> coins;
     private Array<Boss> bosses;
     private Array<Projectile> projectiles;
+    private Array<MinionController> minionControls;
+    private Array<Companion> deadCompanions;
 
     /**
      * Creates a CollisionController for the given models.
      */
-    public CollisionController(Minion[] minions, Player player, Companion[] companions, LinkedList<Coin> coins, Array<Boss> bosses, Array<Projectile> projectiles) {
+    public CollisionController(Array<Minion> minions, Player player, Array<Companion> companions, LinkedList<Coin> coins, Array<Boss> bosses, Array<Projectile> projectiles,Array<MinionController> minionControls, Array<Companion> deadCompanions) {
         tmp = new Vector2();
         this.minions = minions;
         this.player = player;
@@ -46,6 +50,8 @@ public class CollisionController {
         this.coins = coins;
         this.bosses = bosses;
         this.projectiles = projectiles;
+        this.minionControls = minionControls;
+        this.deadCompanions = deadCompanions;
     }
 
     /**
@@ -137,12 +143,13 @@ public class CollisionController {
             Companion c = player.companions.get(i);
             float px = c.getX();
             float py = c.getY();
-            boolean collide = px >= mx - 10 && px <= mx + 10 && py >= my - 10 && py <= my + 10;
+            boolean collide = px >= mx && px - 25 <= mx + 25 && py >= my -25 && py <= my + 25;
             //kill companion and minion if they collided
             if (collide) {
                 player.deleteCompanion(c);
                 minion.setDestroyed(true);
                 c.setDestroyed(true);
+                deadCompanions.add(c);
                 //MOVE TO PROJECTILE DEATH - choose between spawn anyway
                 coins.add(new Coin(mx, my));
             }
@@ -172,9 +179,10 @@ public class CollisionController {
             projectile.setDestroyed(true);
             minion.removeHealth(1);
             if (minion.getHealth() <= 0) {
-                minion.setDestroyed(true);
-                coins.add(new Coin(mx, my));
+                    minion.setDestroyed(true);
+                    coins.add(new Coin(mx, my));
             }
+            minion.setDamage(true);
         }
     }
 
@@ -204,6 +212,7 @@ public class CollisionController {
             if (collide) {
                 player.deleteCompanion(c);
                 c.setDestroyed(true);
+                deadCompanions.add(c);
             }
         }
     }
@@ -227,6 +236,7 @@ public class CollisionController {
         float py = projectile.getY();
 
         boolean collide = bx >= px - 50 && bx <= px + 50 && by >= py - 50 && by <= py + 50;
+        System.out.println(collide);
         // decrease boss health if hit by projectile
         if (collide) {
             boss.setHealth(boss.getHealth() - 1);
@@ -234,7 +244,7 @@ public class CollisionController {
                 boss.setDestroyed(true);
             }
             projectile.setDestroyed(true);
-
+            boss.setDamage(true);
         }
     }
 
@@ -257,7 +267,7 @@ public class CollisionController {
         Companion head = player.companions.get(0);
         float px = head.getX();
         float py = head.getY();
-        boolean collide = px >= cx - 15 && px <= cx + 15 && py >= cy - 15 && py <= cy + 15;
+        boolean collide = px >= cx - 20 && px <= cx + 20 && py >= cy - 20 && py <= cy + 20;
         //System.out.println(collide);
 
         // Add one coin to player and remove coin from screen if they collided
@@ -276,11 +286,12 @@ public class CollisionController {
      * @param player    The player
      */
     private void checkForCollision(Companion companion, Player player) {
+
         //Do nothing if companion or player are dead
         if (companion.isDestroyed() || !player.isAlive()) {
             return;
         }
-
+        companion.setGlow(false);
         //Get tiles for coin and player
         float cx = companion.getX();
         float cy = companion.getY();
@@ -291,15 +302,18 @@ public class CollisionController {
         //System.out.println(cx+", "+cy+"  "+px+", "+py);
         // Player buys companion if enough coins and they collided
         int cost = companion.getCost();
-        boolean collide = px >= cx - 10 && px <= cx + 10 && py >= cy - 10 && py <= cy + 10;
+        boolean collide = px >= cx - 25 && px <= cx + 25 && py >= cy - 25 && py <= cy + 25;
         //System.out.println(collide);
         boolean afford = player.getCoins() >= cost;
         //System.out.println(afford);
-        if (collide && afford) {
+        if (collide && afford){
+            companion.setGlow(true);
+            if (Gdx.input.isKeyPressed(Keys.E)) {
             //System.out.println("collected");
             player.setCoins(player.getCoins() - cost);
             player.addCompanion(companion);
             companion.setCollected(true);
+            }
         }
     }
 }

@@ -1,6 +1,7 @@
 package edu.cornell.cis3152.team8;
 
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import edu.cornell.gdiac.graphics.SpriteBatch;
 import static edu.cornell.cis3152.team8.InputController.CONTROL_MOVE_LEFT;
@@ -38,6 +39,7 @@ public abstract class Companion extends GameObject {
     private float abilityCool;
     private boolean collected;
     private Vector2 prevVelocity;
+    private float deathExpirationTimer = 3.0f;
 
     /** The direction the companion is currently moving in */
     private int direction;
@@ -47,9 +49,14 @@ public abstract class Companion extends GameObject {
     private float prevY;
     protected static float animationSpeed;
     protected float animationFrame;
+    protected Texture glow;
+    protected Boolean highlight;
+    private int id;
+
+    private boolean remove;
 
 
-    public Companion(float x, float y) {
+    public Companion(float x, float y, int id) {
         super(x, y);
         isAlive = true;
         cost = 0;
@@ -58,6 +65,10 @@ public abstract class Companion extends GameObject {
         collected = false;
         prevVelocity = new Vector2();
         direction = InputController.CONTROL_NO_ACTION;
+        highlight = false;
+        animationFrame = 1;
+        this.id = id;
+        remove = false;
     }
 
     // accessors
@@ -105,6 +116,7 @@ public abstract class Companion extends GameObject {
 
     /** Companion uses ability */
     public void useAbility(GameState state) {
+
         // individual abilities depending on type --> overrided by different types
     };
 
@@ -159,7 +171,8 @@ public abstract class Companion extends GameObject {
         boolean movingDown = controlCode == 8;
 
         // Process movement command.
-        float MOVE_SPEED = Player.getSpeed();
+        int MOVE_SPEED = Player.getSpeed();
+        // int s = 2;
         if (movingLeft) {
             this.direction = InputController.CONTROL_MOVE_LEFT;
             velocity.x = -MOVE_SPEED;
@@ -200,15 +213,23 @@ public abstract class Companion extends GameObject {
                 deathExpirationTimer -= delta;
             }
         }else {
-            animator.setFrame((int)animationFrame);
-            batch.setColor( Color.WHITE );
-
+            if (collected) {
+                animator.setFrame((int) animationFrame);
+            } else {
+                //System.out.println(this + " " + highlight );
+                if (highlight){
+                    animator.setFrame(0);
+                }else {
+                    animator.setFrame(1);
+                }
+            }
+            batch.setColor(Color.WHITE);
         }
         SpriteBatch.computeTransform(transform, origin.x, origin.y,
             position.x, position.y, 0.0f, size
             , size);
-
-        batch.draw( animator, transform );
+        //System.out.println(highlight);
+            batch.draw(animator, transform);
         //batch.draw(texture, position.x, position.y, 64, 64);
         //batch.draw(texture, position.x, position.y, 64, 64);
         batch.setColor(Color.WHITE);
@@ -232,6 +253,27 @@ public abstract class Companion extends GameObject {
 
     public float getPrevY() {
         return this.prevY;
+    }
+
+    public void setGlow(Boolean g){
+        highlight = g;
+    }
+    public int getId(){
+        return id;
+    }
+    public void setId(int id){
+        this.id = id;
+    }
+
+    public boolean shouldRemove(){
+        return remove;
+    }
+
+    public void decreaseDeathExpirationTimer(float delta){
+        deathExpirationTimer -= delta;
+    }
+    public boolean getTrash(){
+        return deathExpirationTimer < 0.0;
     }
 
 }

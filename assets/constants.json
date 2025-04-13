@@ -1,9 +1,0 @@
-{
-    "boss": {
-        "moveSpeed": 10,
-        "speedDamp": 0.75,
-        "idleDuration": 5,
-        "epsilon": 0.01,
-        "animationSpeed": 0.1
-    }
-}

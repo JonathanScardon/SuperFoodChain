@@ -10,8 +10,38 @@
                 }
             }
         },
-        "mouse": {
-            "file": "images/Mouse.png",
+        "IdleMouse": {
+            "file": "images/MouseIdle.png",
+            "sprites": {
+                "animation": {
+                    "rows": 1,
+                    "cols": 4,
+                    "size": 4
+                }
+            }
+        },
+        "DashMouse": {
+            "file": "images/MouseDash.png",
+            "sprites": {
+                "animation": {
+                    "rows": 1,
+                    "cols": 4,
+                    "size": 4
+                }
+            }
+        },
+        "SpinMouse": {
+            "file": "images/MouseSpin.png",
+            "sprites": {
+                "animation": {
+                    "rows": 1,
+                    "cols": 4,
+                    "size": 4
+                }
+            }
+        },
+        "dashWarnVertical": {
+            "file": "images/DashWarnVertical.png",
             "sprites": {
                 "animation": {
                     "rows": 1,
@@ -20,8 +50,18 @@
                 }
             }
         },
-        "dashWarn": {
-            "file": "images/dashWarn.png",
+        "dashWarnHorizontal": {
+            "file": "images/DashWarnHorizontal.png",
+            "sprites": {
+                "animation": {
+                    "rows": 2,
+                    "cols": 1,
+                    "size": 2
+                }
+            }
+        },
+        "spinWarn": {
+            "file": "images/SpinWarn.png",
             "sprites": {
                 "animation": {
                     "rows": 1,
@@ -42,6 +82,8 @@
         }
     },
     "jsons": {
-        "constants": "constants.json"
+        "constants": "jsons/constants.json",
+        "level1": "jsons/level1.json",
+        "level2": "jsons/level2.json"
     }
 }

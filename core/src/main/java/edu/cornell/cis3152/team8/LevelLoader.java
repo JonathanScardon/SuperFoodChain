@@ -56,9 +56,9 @@ public class LevelLoader {
         }
 
         // load assets
-        mouseSprite = assets.getEntry("mouse.animation", SpriteSheet.class);
+        mouseSprite = assets.getEntry("DashMouse.animation", SpriteSheet.class);
         idleWarnSprite = assets.getEntry("idleWarn.animation", SpriteSheet.class);
-        dashWarnSprite = assets.getEntry("dashWarn.animation", SpriteSheet.class);
+        dashWarnSprite = assets.getEntry("dashWarnVertical.animation", SpriteSheet.class);
 
         TiledMap map = this.mapLoader.load(path);
 
@@ -144,7 +144,7 @@ public class LevelLoader {
                 break;
             case "dash":
                 boolean top = props.get("top", Boolean.class);
-                attack = new DashAttackPattern(controller, x, top, warnDuration, dashWarnSprite);
+                attack = new DashAttackPattern(controller, x, top, warnDuration, dashWarnSprite, true);
                 break;
         }
 

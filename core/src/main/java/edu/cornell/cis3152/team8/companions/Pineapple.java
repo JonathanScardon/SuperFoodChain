@@ -15,15 +15,16 @@ public class Pineapple extends Companion {
     float dx = 0.0f;
     float dy = 0.0f;
 
-    public Pineapple(float x, float y) {
-        super(x, y);
+    public Pineapple(float x, float y, int id) {
+        super(x, y, id);
         setCompanionType(CompanionType.PINEAPPLE);
         setCost(4);
         setCooldown(2);
         radius = 1;
         texture = new Texture("images/Pineapple.png");
-        SpriteSheet pineapple = new SpriteSheet(texture, 1, 7);
+        SpriteSheet pineapple = new SpriteSheet(texture, 1, 8);
         setSpriteSheet(pineapple);
+        origin.y = 117.5f;
         animationSpeed = 0.25f;
         size = 0.4f;
     }
