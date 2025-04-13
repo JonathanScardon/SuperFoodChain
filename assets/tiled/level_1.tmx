@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="40" height="22" tilewidth="32" tileheight="32" infinite="0" nextlayerid="8" nextobjectid="25">
+ <editorsettings>
+  <export target="../jsons/level_1.json" format="json"/>
+ </editorsettings>
+ <tileset firstgid="1" source="cutting_board.tsx"/>
+ <tileset firstgid="2" source="mouse.tsx"/>
+ <objectgroup id="4" name="background" visible="0" locked="1">
+  <object id="2" name="wood" gid="1" x="0" y="1000" width="1280" height="1280"/>
+ </objectgroup>
+ <objectgroup id="6" name="objects">
+  <object id="5" type="boss" gid="2" x="172.795" y="1142.04" width="150" height="195">
+   <properties>
+    <property name="attack0" type="object" value="7"/>
+    <property name="attack1" type="object" value="14"/>
+    <property name="attack2" type="object" value="9"/>
+    <property name="attack3" type="object" value="15"/>
+    <property name="attack4" type="object" value="16"/>
+    <property name="attack5" type="object" value="17"/>
+    <property name="attack6" type="object" value="18"/>
+    <property name="attack7" type="object" value="19"/>
+    <property name="attack8" type="object" value="20"/>
+    <property name="attack9" type="object" value="21"/>
+    <property name="bossType" propertytype="bossType" value="mouse"/>
+   </properties>
+  </object>
+  <object id="7" type="attack" x="640" y="360">
+   <properties>
+    <property name="attackDuration" type="float" value="2"/>
+    <property name="attackType" propertytype="attackType" value="idle"/>
+    <property name="warnDuration" type="float" value="2"/>
+   </properties>
+  </object>
+  <object id="9" type="attack" x="220" y="-20">
+   <properties>
+    <property name="attackType" propertytype="attackType" value="dash"/>
+    <property name="top" type="bool" value="true"/>
+    <property name="warnDuration" type="float" value="2"/>
+   </properties>
+  </object>
+  <object id="14" type="attack" x="80" y="740">
+   <properties>
+    <property name="attackType" propertytype="attackType" value="dash"/>
+    <property name="top" type="bool" value="false"/>
+    <property name="warnDuration" type="float" value="2"/>
+   </properties>
+  </object>
+  <object id="15" type="attack" x="360" y="740">
+   <properties>
+    <property name="attackType" propertytype="attackType" value="dash"/>
+    <property name="top" type="bool" value="false"/>
+    <property name="warnDuration" type="float" value="2"/>
+   </properties>
+  </object>
+  <object id="16" type="attack" x="500" y="-20">
+   <properties>
+    <property name="attackType" propertytype="attackType" value="dash"/>
+    <property name="top" type="bool" value="true"/>
+    <property name="warnDuration" type="float" value="2"/>
+   </properties>
+  </object>
+  <object id="17" type="attack" x="640" y="740">
+   <properties>
+    <property name="attackType" propertytype="attackType" value="dash"/>
+    <property name="top" type="bool" value="false"/>
+    <property name="warnDuration" type="float" value="2"/>
+   </properties>
+  </object>
+  <object id="18" type="attack" x="780" y="-20">
+   <properties>
+    <property name="attackType" propertytype="attackType" value="dash"/>
+    <property name="top" type="bool" value="true"/>
+    <property name="warnDuration" type="float" value="2"/>
+   </properties>
+  </object>
+  <object id="19" type="attack" x="920" y="740">
+   <properties>
+    <property name="attackType" propertytype="attackType" value="dash"/>
+    <property name="top" type="bool" value="false"/>
+    <property name="warnDuration" type="float" value="2"/>
+   </properties>
+  </object>
+  <object id="20" type="attack" x="1060" y="-20">
+   <properties>
+    <property name="attackType" propertytype="attackType" value="dash"/>
+    <property name="top" type="bool" value="true"/>
+    <property name="warnDuration" type="float" value="2"/>
+   </properties>
+  </object>
+  <object id="21" type="attack" x="1200" y="740">
+   <properties>
+    <property name="attackType" propertytype="attackType" value="dash"/>
+    <property name="top" type="bool" value="false"/>
+    <property name="warnDuration" type="float" value="2"/>
+   </properties>
+  </object>
+ </objectgroup>
+</map>

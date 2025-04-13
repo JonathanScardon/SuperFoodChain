@@ -23,6 +23,12 @@ public class ProjectilePools {
         @Override
         protected GarlicProjectile newObject() {
             return new GarlicProjectile(0,0, 0, 0, world);
+    };
+
+    public static final Pool<PineappleProjectile> pineapplePool = new Pool<PineappleProjectile>() {
+        @Override
+        protected PineappleProjectile newObject() {
+            return new PineappleProjectile(0, 0, 0, 0, world);
         }
     };
 }

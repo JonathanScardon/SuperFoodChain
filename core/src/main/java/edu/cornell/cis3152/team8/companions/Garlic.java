@@ -11,8 +11,9 @@ public class Garlic extends Companion {
      * @param x The x-coordinate of the object
      * @param y The y-coordinate of the object
      */
-    public Garlic(float x, float y, World world) {
-        super(x, y, world);
+    public Garlic(float x, float y, int id, World world) {
+        super(x, y, id, world);
+
         setCompanionType(CompanionType.GARLIC);
         setCost(5);
         setCooldown(5);
