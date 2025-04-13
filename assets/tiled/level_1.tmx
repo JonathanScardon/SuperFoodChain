@@ -1,18 +1,107 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="40" height="22" tilewidth="32" tileheight="32" infinite="0" nextlayerid="7" nextobjectid="7">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="40" height="22" tilewidth="32" tileheight="32" infinite="0" nextlayerid="8" nextobjectid="22">
  <editorsettings>
   <export target="../jsons/level_1.json" format="json"/>
  </editorsettings>
  <tileset firstgid="1" source="cutting_board.tsx"/>
  <tileset firstgid="2" source="mouse.tsx"/>
- <objectgroup id="4" name="background" locked="1">
+ <objectgroup id="4" name="background" visible="0" locked="1">
   <object id="2" name="wood" gid="1" x="0" y="1000" width="1280" height="1280"/>
  </objectgroup>
  <objectgroup id="6" name="objects">
-  <object id="5" name="mouse" gid="2" x="31.3777" y="932.677" width="150" height="195">
+  <object id="5" type="boss" gid="2" x="40.0847" y="978.389" width="150" height="195">
    <properties>
-    <property name="idleX" type="int" value="640"/>
-    <property name="idleY" type="int" value="360"/>
+    <property name="bossType" propertytype="bossType" value="mouse"/>
+   </properties>
+  </object>
+  <object id="7" type="attack" x="640" y="360">
+   <properties>
+    <property name="attackDuration" type="float" value="2"/>
+    <property name="attackIdx" type="int" value="0"/>
+    <property name="attackType" propertytype="attackType" value="idle"/>
+    <property name="boss" type="object" value="5"/>
+    <property name="warnDuration" type="float" value="2"/>
+   </properties>
+  </object>
+  <object id="9" type="attack" x="220" y="-20">
+   <properties>
+    <property name="attackIdx" type="int" value="2"/>
+    <property name="attackType" propertytype="attackType" value="dash"/>
+    <property name="boss" type="object" value="5"/>
+    <property name="top" type="bool" value="true"/>
+    <property name="warnDuration" type="float" value="2"/>
+   </properties>
+  </object>
+  <object id="14" type="attack" x="80" y="740">
+   <properties>
+    <property name="attackIdx" type="int" value="1"/>
+    <property name="attackType" propertytype="attackType" value="dash"/>
+    <property name="boss" type="object" value="5"/>
+    <property name="top" type="bool" value="false"/>
+    <property name="warnDuration" type="float" value="2"/>
+   </properties>
+  </object>
+  <object id="15" type="attack" x="360" y="740">
+   <properties>
+    <property name="attackIdx" type="int" value="3"/>
+    <property name="attackType" propertytype="attackType" value="dash"/>
+    <property name="boss" type="object" value="5"/>
+    <property name="top" type="bool" value="false"/>
+    <property name="warnDuration" type="float" value="2"/>
+   </properties>
+  </object>
+  <object id="16" type="attack" x="500" y="-20">
+   <properties>
+    <property name="attackIdx" type="int" value="4"/>
+    <property name="attackType" propertytype="attackType" value="dash"/>
+    <property name="boss" type="object" value="5"/>
+    <property name="top" type="bool" value="true"/>
+    <property name="warnDuration" type="float" value="2"/>
+   </properties>
+  </object>
+  <object id="17" type="attack" x="640" y="740">
+   <properties>
+    <property name="attackIdx" type="int" value="5"/>
+    <property name="attackType" propertytype="attackType" value="dash"/>
+    <property name="boss" type="object" value="5"/>
+    <property name="top" type="bool" value="false"/>
+    <property name="warnDuration" type="float" value="2"/>
+   </properties>
+  </object>
+  <object id="18" type="attack" x="780" y="-20">
+   <properties>
+    <property name="attackIdx" type="int" value="6"/>
+    <property name="attackType" propertytype="attackType" value="dash"/>
+    <property name="boss" type="object" value="5"/>
+    <property name="top" type="bool" value="true"/>
+    <property name="warnDuration" type="float" value="2"/>
+   </properties>
+  </object>
+  <object id="19" type="attack" x="920" y="740">
+   <properties>
+    <property name="attackIdx" type="int" value="7"/>
+    <property name="attackType" propertytype="attackType" value="dash"/>
+    <property name="boss" type="object" value="5"/>
+    <property name="top" type="bool" value="false"/>
+    <property name="warnDuration" type="float" value="2"/>
+   </properties>
+  </object>
+  <object id="20" type="attack" x="1060" y="-20">
+   <properties>
+    <property name="attackIdx" type="int" value="8"/>
+    <property name="attackType" propertytype="attackType" value="dash"/>
+    <property name="boss" type="object" value="5"/>
+    <property name="top" type="bool" value="true"/>
+    <property name="warnDuration" type="float" value="2"/>
+   </properties>
+  </object>
+  <object id="21" type="attack" x="1200" y="740">
+   <properties>
+    <property name="attackIdx" type="int" value="9"/>
+    <property name="attackType" propertytype="attackType" value="dash"/>
+    <property name="boss" type="object" value="5"/>
+    <property name="top" type="bool" value="false"/>
+    <property name="warnDuration" type="float" value="2"/>
    </properties>
   </object>
  </objectgroup>

@@ -20,7 +20,7 @@
                 }
             }
         },
-      "DashMouse": {
+        "DashMouse": {
             "file": "images/MouseDash.png",
             "sprites": {
                 "animation": {
@@ -30,7 +30,7 @@
                 }
             }
         },
-      "SpinMouse": {
+        "SpinMouse": {
             "file": "images/MouseSpin.png",
             "sprites": {
                 "animation": {
@@ -50,7 +50,7 @@
                 }
             }
         },
-      "dashWarnHorizontal": {
+        "dashWarnHorizontal": {
             "file": "images/DashWarnHorizontal.png",
             "sprites": {
                 "animation": {
@@ -60,7 +60,7 @@
                 }
             }
         },
-      "spinWarn": {
+        "spinWarn": {
             "file": "images/SpinWarn.png",
             "sprites": {
                 "animation": {
@@ -83,9 +83,7 @@
     },
     "jsons": {
         "constants": "jsons/constants.json",
-      "level1": "jsons/level1.json",
-      "level2": "jsons/level2.json"
-
-
+        "level1": "jsons/level1.json",
+        "level2": "jsons/level2.json"
     }
 }

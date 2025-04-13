@@ -38,9 +38,6 @@ public abstract class Companion extends GameObject {
     private Vector2 prevVelocity;
     private float deathExpirationTimer = 3.0f;
 
-    /** How far the player moves in a single turn */
-    private static float MOVE_SPEED = 5;
-
     /** The direction the companion is currently moving in */
     private int direction;
 

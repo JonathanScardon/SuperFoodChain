@@ -55,6 +55,7 @@ public class Player extends GameObject{
             return get(index * DELAY);
         }
 
+
         public int size() {
             return size;
         }
@@ -68,8 +69,8 @@ public class Player extends GameObject{
      * Also the number of instructions stored per companion
      * */
     private static int DELAY;
-    private final static int MAX_COMPANIONS = 10;
-    private static int MOVE_SPEED = 3;
+    private final static int MAX_COMPANIONS = 15;
+    private static int MOVE_SPEED = 4;
 
     private CircularBuffer controlBuffer;
 
@@ -105,7 +106,6 @@ public class Player extends GameObject{
 
 
         this.controlBuffer = new CircularBuffer(MAX_COMPANIONS * DELAY);
-
     }
 
     /**
@@ -121,12 +121,12 @@ public class Player extends GameObject{
      * @param controlCode direction of player input
      */
     public void update(int controlCode){
-        if (this.isAlive()) {
+        if (this.isAlive()){
             Companion head = this.getPlayerHead();
             controlBuffer.add(head.getX(), head.getY(), head.getDirection());
         }
 
-        for (int i = 0; i < companions.size(); i++) {
+        for (int i = 0; i < companions.size(); i++){
             Companion c = companions.get(i);
             if (c == getPlayerHead()){
                 c.update(controlCode);
