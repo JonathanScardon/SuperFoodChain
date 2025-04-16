@@ -79,6 +79,35 @@
           "size": 2
         }
       }
+    },
+    "progress": {
+      "file": "images/progress.png",
+      "atlas": {
+        "back": [
+          0,
+          0,
+          520,
+          33
+        ],
+        "foreground": [
+          24,
+          33,
+          496,
+          66
+        ],
+        "foreleft": [
+          0,
+          33,
+          24,
+          66
+        ],
+        "foreright": [
+          496,
+          33,
+          520,
+          66
+        ]
+      }
     }
   },
   "fonts": {
@@ -87,21 +116,10 @@
       "size": 20
     }
   },
-
   "jsons": {
     "constants": "jsons/constants.json",
+    "save": "jsons/savedGame.json",
     "level1": "jsons/level1.json",
     "level2": "jsons/level2.json"
-  },
-  "progress": {
-    "file":   "images/progress.png",
-    "atlas":  {
-      "background" : [24,   0, 496, 33],
-      "backleft"   : [0,    0,  24, 33],
-      "backright"  : [496,  0, 520, 33],
-      "foreground" : [24,  33, 496, 66],
-      "foreleft"   : [0,   33,  24, 66],
-      "foreright"  : [496, 33, 520, 66]
-    }
   }
 }

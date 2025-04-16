@@ -40,7 +40,6 @@ public class GDXRoot extends Game implements ScreenListener {
         loadingScene = new LoadingScene("assets.json", batch, 1);
         loadingScene.setScreenListener(this);
         menuScene = new MainMenuScene(this);
-        levelSelectScene = new LevelSelect(this);
 
         this.setScreen(loadingScene);
     }
@@ -96,10 +95,10 @@ public class GDXRoot extends Game implements ScreenListener {
 
             menuScene = new MainMenuScene(this);
             setScreen(menuScene);
-        }else if (screen == menuScene){
+        } else if (screen == menuScene) {
             menuScene.dispose();
             if (exitCode == 0) {
-                levelSelectScene = new LevelSelect(this);
+                levelSelectScene = new LevelSelect(this, directory);
                 this.setScreen(levelSelectScene);
             } else {
                 Gdx.app.exit();
@@ -108,24 +107,24 @@ public class GDXRoot extends Game implements ScreenListener {
             setScreen(levelSelectScene);
         } else if (screen == levelSelectScene) {
             levelSelectScene.dispose();
-                gameScene = new GameScene(this, directory, exitCode);
+            gameScene = new GameScene(this, directory, exitCode);
             //LevelLoader.apply(gameScene, directory.getEntry("level1", JsonValue.class));
             this.setScreen(gameScene);
         } else if (screen == gameScene) {
             levelSelectScene.resetWait();
             setScreen(levelSelectScene);
 
-        // } else if (screen == menuScene) {
-        //     if (exitCode == 0) {
-        //         this.setScreen(levelSelectScene);
-        //     } else {
-        //         Gdx.app.exit();
-        //     }
-        // } else if (screen == levelSelectScene) {
-        //     gameScene = new GameScene(this, directory);
-        //     this.setScreen(gameScene);
-        // } else if (screen == gameScene) {
-        //     this.setScreen(levelSelectScene);
+            // } else if (screen == menuScene) {
+            //     if (exitCode == 0) {
+            //         this.setScreen(levelSelectScene);
+            //     } else {
+            //         Gdx.app.exit();
+            //     }
+            // } else if (screen == levelSelectScene) {
+            //     gameScene = new GameScene(this, directory);
+            //     this.setScreen(gameScene);
+            // } else if (screen == gameScene) {
+            //     this.setScreen(levelSelectScene);
         } else {
             Gdx.app.exit();
         }

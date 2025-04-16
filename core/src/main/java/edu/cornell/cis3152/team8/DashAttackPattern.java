@@ -5,10 +5,11 @@ import edu.cornell.gdiac.graphics.SpriteSheet;
 import static edu.cornell.cis3152.team8.InputController.*;
 
 /**
- * The boss will start at the top or bottom of the screen
- * and then travel across it until it is off the screen again
+ * The boss will start at the top or bottom of the screen and then travel across it until it is off
+ * the screen again
  */
 public class DashAttackPattern implements BossAttackPattern {
+
     private final BossController controller;
     private final Boss boss;
     private final BossWarnPattern warnPattern;
@@ -20,7 +21,8 @@ public class DashAttackPattern implements BossAttackPattern {
     private float warnTime;
     private AttackState state;
 
-    public DashAttackPattern(BossController controller, float x, float y, String dir, float warnDuration, SpriteSheet warnSprite) {
+    public DashAttackPattern(BossController controller, float x, float y, String dir,
+        float warnDuration, SpriteSheet warnSprite) {
         this.controller = controller;
         this.boss = controller.boss;
 
@@ -119,7 +121,7 @@ public class DashAttackPattern implements BossAttackPattern {
         return switch (controlCode) {
             case CONTROL_MOVE_UP -> boss.getY() - boss.getRadius() * 2 > 720;
             case CONTROL_MOVE_DOWN -> boss.getY() + boss.getRadius() * 2 < 0;
-            case CONTROL_MOVE_LEFT -> boss.getX() - boss.getRadius() * 2 < 0;
+            case CONTROL_MOVE_LEFT -> boss.getX() + boss.getRadius() * 2 < 0;
             case CONTROL_MOVE_RIGHT -> boss.getX() - boss.getRadius() * 2 > 1280;
             default -> true;
         };

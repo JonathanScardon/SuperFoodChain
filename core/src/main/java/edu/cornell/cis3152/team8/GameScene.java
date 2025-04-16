@@ -37,10 +37,10 @@ import java.util.Random;
 import org.w3c.dom.Text;
 
 /**
- * The screen for the actual gameplay in the game
- * Heavily inspired by the Optimization lab
+ * The screen for the actual gameplay in the game Heavily inspired by the Optimization lab
  */
 public class GameScene implements Screen {
+
     /**
      * Reference to the GDX root
      */
@@ -64,7 +64,7 @@ public class GameScene implements Screen {
 
 
     private Vector2[] minionSpawns;
-private Vector2[] companionSpawns;
+    private Vector2[] companionSpawns;
 
     /**
      * Reference to the game session
@@ -74,7 +74,7 @@ private Vector2[] companionSpawns;
     /**
      * The grid of tiles
      */
-    private Level level;
+    private int level;
 
     /**
      * Companions in the chain
@@ -139,10 +139,11 @@ private Vector2[] companionSpawns;
     public GameScene(final GDXRoot game, AssetDirectory assets, int level) {
         this.game = game;
         this.assets = assets;
+        this.level = level;
         coinTexture = new Texture("images/CoinUI.png");
         constants = assets.getEntry("level" + level, JsonValue.class);
         //System.out.println(constants);
-        font = assets.getEntry( "lpc", BitmapFont.class );
+        font = assets.getEntry("lpc", BitmapFont.class);
 //        hit = assets.getEntry( "pop", SoundEffect.class );
 //        backgroundMusic = assets.getEntry( "dodge", AudioSource.class );
 //        AudioEngine engine = (AudioEngine)Gdx.audio;
@@ -187,9 +188,8 @@ private Vector2[] companionSpawns;
         companionSpawnTaken = new boolean[companionSpawns.length];
         Arrays.fill(companionSpawnTaken, false);
 
-
         reset();
-       // System.out.println(minionControls);
+        // System.out.println(minionControls);
     }
 
     private void reset() {
@@ -211,17 +211,17 @@ private Vector2[] companionSpawns;
         bossControls = state.getBossControls();
         minionControls = state.getMinionControls();
 
-        Arrays.fill(minionSpawnTaken,false);
-        Arrays.fill(companionSpawnTaken,false);
-
+        Arrays.fill(minionSpawnTaken, false);
+        Arrays.fill(companionSpawnTaken, false);
 
         addMinions();
         addCompanions();
 
-       // bossControls = new Array<>();
+        // bossControls = new Array<>();
 
         projectiles = state.getActiveProjectiles();
-        collision = new CollisionController(minions, player, companions, coins, bosses, projectiles ,minionControls, deadCompanions);
+        collision = new CollisionController(minions, player, companions, coins, bosses, projectiles,
+            minionControls, deadCompanions);
 
         // assuming player is a list of Companions btw
         // player = state.getPlayer();
@@ -235,7 +235,7 @@ private Vector2[] companionSpawns;
         //     minionControls[i] = new MinionController(i, minions, player);
         // }
 
-        LevelLoader.getInstance().load(this, "tiled/level_1.tmx");
+        LevelLoader.getInstance().load(this, "tiled/level_" + level + ".tmx");
         // start all the bosses
         for (BossController bc : bossControls) {
             bc.startAttack();
@@ -262,13 +262,13 @@ private Vector2[] companionSpawns;
     private void addMinions() {
         Random rand = new Random();
         boolean r = true;
-        for (boolean b :minionSpawnTaken){
+        for (boolean b : minionSpawnTaken) {
             if (!b) {
                 r = false;
                 break;
             }
         }
-        if (r){
+        if (r) {
             Arrays.fill(minionSpawnTaken, false);
         }
         while (minions.size < maxEnemies) {
@@ -291,41 +291,41 @@ private Vector2[] companionSpawns;
     private void addCompanions() {
         Random rand = new Random();
         boolean r = true;
-        for (boolean b :companionSpawnTaken){
+        for (boolean b : companionSpawnTaken) {
             if (!b) {
                 r = false;
                 break;
             }
         }
-        if (r){
+        if (r) {
             Arrays.fill(companionSpawnTaken, false);
         }
-        while (companions.size < maxStrawberry+maxPineapple+maxAvocado) {
+        while (companions.size < maxStrawberry + maxPineapple + maxAvocado) {
             int spawn = rand.nextInt(companionSpawns.length);
             if (!companionSpawnTaken[spawn]) {
 
                 float x = companionSpawns[spawn].x;
                 float y = companionSpawns[spawn].y;
-            for (Companion c: companions) {
-                r = c.getX() == x && c.getY() == y;
-            }
-            if (!r)  {
-                Companion c;
-                if (curStrawberry < maxStrawberry) {
-                    c = new Strawberry(x, y, companions.size);
-                    curStrawberry++;
-                } else if (curPineapple < maxPineapple) {
-                    c = new Pineapple(x, y, companions.size);
-                    curPineapple++;
-                } else {
-                    c = new Garlic(x, y, companions.size);
-                    curAvocado++;
+                for (Companion c : companions) {
+                    r = c.getX() == x && c.getY() == y;
                 }
-                companions.add(c);
-                companionSpawnTaken[spawn] = true;
+                if (!r) {
+                    Companion c;
+                    if (curStrawberry < maxStrawberry) {
+                        c = new Strawberry(x, y, companions.size);
+                        curStrawberry++;
+                    } else if (curPineapple < maxPineapple) {
+                        c = new Pineapple(x, y, companions.size);
+                        curPineapple++;
+                    } else {
+                        c = new Garlic(x, y, companions.size);
+                        curAvocado++;
+                    }
+                    companions.add(c);
+                    companionSpawnTaken[spawn] = true;
+                }
             }
         }
-    }
     }
 
     public GameState getState() {
@@ -335,9 +335,8 @@ private Vector2[] companionSpawns;
     /**
      * Invokes the controller for each Object.
      * <p>
-     * Movement actions are determined, but not committed (e.g. the velocity
-     * is updated, but not the position). New ability action is processed
-     * but photon collisions are not.
+     * Movement actions are determined, but not committed (e.g. the velocity is updated, but not the
+     * position). New ability action is processed but photon collisions are not.
      */
     public void update(float delta) {
 //        if (Gdx.input.isKeyPressed(Keys.R) && !reset) {
@@ -372,7 +371,6 @@ private Vector2[] companionSpawns;
             }
         }
 
-
         if (start && player.isAlive() && !bosses.get(0).isDestroyed() && !paused) {
             // iterate through all companions in the chain
             state.update();
@@ -380,15 +378,15 @@ private Vector2[] companionSpawns;
             addCompanions();
             bosses.get(0).setDamage(false);
 
-            for (Companion c : companions){
-                if (c.isCollected()){
+            for (Companion c : companions) {
+                if (c.isCollected()) {
                     companions.removeIndex(c.getId());
                     CompanionType type = c.getCompanionType();
-                    if (type.equals(CompanionType.STRAWBERRY)){
+                    if (type.equals(CompanionType.STRAWBERRY)) {
                         curStrawberry--;
-                    }else if (type.equals(CompanionType.PINEAPPLE)){
+                    } else if (type.equals(CompanionType.PINEAPPLE)) {
                         curPineapple--;
-                    }else{
+                    } else {
                         curAvocado--;
                     }
 
@@ -402,11 +400,8 @@ private Vector2[] companionSpawns;
                 companions.get(i).setId(i);
             }
 
-
-
-
             for (Companion c : player.companions) {
-                if (!c.isDestroyed()){
+                if (!c.isDestroyed()) {
                     if (c.canUse()) {
                         c.useAbility(state);
                     } else {
@@ -441,7 +436,7 @@ private Vector2[] companionSpawns;
                     m.update(action);
                     m.setDamage(false);
                 } else {
-                    if (m.shouldRemove()){
+                    if (m.shouldRemove()) {
                         minions.removeIndex(m.getId());
                         minionControls.removeIndex(m.getId());
                     }
@@ -450,7 +445,9 @@ private Vector2[] companionSpawns;
             //
             // boss moves and acts
             for (int i = 0; i < bosses.size; i++) {
-                bossControls.get(i).update(delta);
+                if (!bosses.get(i).isDestroyed()) {
+                    bossControls.get(i).update(delta);
+                }
                 bosses.get(i).update(delta, bossControls.get(i).getAction());
             }
             //
@@ -472,10 +469,10 @@ private Vector2[] companionSpawns;
                 c.update(delta);
             }
 
-            for (int i = 0; i < deadCompanions.size; i++){
+            for (int i = 0; i < deadCompanions.size; i++) {
                 deadCompanions.get(i).decreaseDeathExpirationTimer(delta);
-                if (deadCompanions.get(i).getTrash()){
-                     deadCompanions.removeIndex(i);
+                if (deadCompanions.get(i).getTrash()) {
+                    deadCompanions.removeIndex(i);
                 }
             }
 //            addMinions();
@@ -502,7 +499,7 @@ private Vector2[] companionSpawns;
             Texture tileTexture = new Texture("images/Tile.png");
             game.batch.draw(tileTexture, 0, 0, 1280, 720);
         }
-        for (Companion c: deadCompanions){
+        for (Companion c : deadCompanions) {
             c.draw(game.batch, delta);
         }
 
@@ -523,8 +520,8 @@ private Vector2[] companionSpawns;
             //temp UI
             if (!c.isCollected()) {
                 game.batch.drawText(compCost, c.getX() + 35, c.getY());
-                if (c.highlight){
-                game.batch.drawText(pressE,c.getX(),c.getY()+35);
+                if (c.highlight) {
+                    game.batch.drawText(pressE, c.getX(), c.getY() + 35);
                 }
             }
 
@@ -545,9 +542,8 @@ private Vector2[] companionSpawns;
         TextLayout bossHP = new TextLayout(HP, font, 128);
         //Temp UI
         game.batch.draw(coinTexture, 1140, 65, 45, 45);
-        game.batch.drawText(bossHP, 600, 700);
         game.batch.drawText(coinCount, 1200f, 80f);
-        drawHPBar(bosses.get(0));
+        drawHPBars();
 
 //        if (player.hasShield()) {
 //            font.setColor(Color.GREEN);
@@ -559,7 +555,6 @@ private Vector2[] companionSpawns;
 //        }
 //        game.batch.drawText(shield, 600, 20);
         font.setColor(Color.WHITE);
-
 
         if (!player.isAlive()) {
             drawLose();
@@ -617,53 +612,52 @@ private Vector2[] companionSpawns;
         settingsButton.draw(game.batch);
         exitButton.draw(game.batch);
     }
-    private void drawHPBar(Boss boss){
-//        Texture bottom = new Texture("images/progressBottom.png");
-//        Texture top = new Texture("images/progressTop.png");
-//        float width = 520;
-//        float newWidth = boss.getHealth()/30 * width;
-//        game.batch.draw(bottom, 367,623,520,36);
-//        game.batch.draw(top, 367 ,624, newWidth, 34);
-        Texture texture = new Texture("images/progress.png");
-        float w = texture.getWidth();
-        float cx = 367;
-        float cy = 623;
-        TextureRegion region1, region2, region3;
 
-        // "3-patch" the background
-        game.batch.setColor( Color.WHITE );
-        region1 = assets.getEntry( "progress.backleft", TextureRegion.class );
-        game.batch.draw(region1,cx-w/2, cy, region1.getRegionWidth(), region1.getRegionHeight());
+    private void drawHPBars() {
+        float w = 520;
+        float cx, ratio;
+        float cy = 650;
 
-        region2 = assets.getEntry( "progress.backright", TextureRegion.class );
-        game.batch.draw(region2,cx+w/2-region2.getRegionWidth(), cy,
-            region2.getRegionWidth(), region2.getRegionHeight());
+        for (int i = 0; i < bosses.size; i++) {
+            if (bosses.size == 1) {
+                cx = 367;
+                ratio = bosses.get(0).health / bosses.get(0).getStartHealth();
+            } else {
+                if (i == 0) {
+                    cx = 71;
+                    ratio = bosses.get(0).health / bosses.get(0).getStartHealth();
+                } else {
+                    cx = 662;
+                    ratio = bosses.get(1).health / bosses.get(1).getStartHealth();
+                }
+            }
+            TextureRegion region1, region2, region3;
+            TextLayout bossName = new TextLayout((bosses.get(0).getBossType().name()), font);
+            game.batch.drawText(bossName, cx + (w / 2 - (bossName.getWidth() / 2)),
+                cy + 50);
 
-        region3 = assets.getEntry( "progress.background", TextureRegion.class );
-        game.batch.draw(region3, cx-w/2+region1.getRegionWidth(), cy,
-            w-(region2.getRegionWidth()+region1.getRegionWidth()),
-            region3.getRegionHeight());
+            // "3-patch" the background
+            game.batch.setColor(Color.WHITE);
+            region1 = assets.getEntry("progress.back", TextureRegion.class);
+            game.batch.draw(region1, cx, cy, region1.getRegionWidth(),
+                region1.getRegionHeight());
 
-        float ratio = boss.health/30;
+            // "3-patch" the foreground
 
-        // "3-patch" the foreground
-        region1 = assets.getEntry( "progress.foreleft", TextureRegion.class );
-        game.batch.draw(region1,cx-w/2, cy,region1.getRegionWidth(), region1.getRegionHeight());
+            if (ratio > 0) {
+                region1 = assets.getEntry("progress.foreleft", TextureRegion.class);
+                game.batch.draw(region1, cx, cy, region1.getRegionWidth(),
+                    region1.getRegionHeight());
+                region2 = assets.getEntry("progress.foreright", TextureRegion.class);
+                float span = ratio * (w - (region1.getRegionWidth() + region2.getRegionWidth()));
 
-        if (ratio > 0) {
-            region2 = assets.getEntry( "progress.foreright", TextureRegion.class );
-            float span = ratio*(w-(region1.getRegionWidth()+region2.getRegionWidth()));
+                game.batch.draw(region2, cx + region1.getRegionWidth() + span, cy,
+                    region2.getRegionWidth(), region2.getRegionHeight());
 
-            game.batch.draw( region2,cx-w/2+region1.getRegionWidth()+span, cy,
-                region2.getRegionWidth(), region2.getRegionHeight());
-
-            region3 = assets.getEntry( "progress.foreground", TextureRegion.class );
-            game.batch.draw(region3, cx-w/2+region1.getRegionWidth(), cy,
-                span, region3.getRegionHeight());
-        } else {
-            region2 = assets.getEntry( "progress.foreright", TextureRegion.class );
-            game.batch.draw(region2, cx-w/2+region1.getRegionWidth(), cy,
-                region2.getRegionWidth(), region2.getRegionHeight());
+                region3 = assets.getEntry("progress.foreground", TextureRegion.class);
+                game.batch.draw(region3, cx + region1.getRegionWidth(), cy,
+                    span, region3.getRegionHeight());
+            }
         }
     }
 

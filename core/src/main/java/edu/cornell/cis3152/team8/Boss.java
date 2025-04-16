@@ -7,6 +7,7 @@ import edu.cornell.gdiac.graphics.SpriteBatch;
 import edu.cornell.gdiac.graphics.SpriteSheet;
 
 public abstract class Boss extends GameObject {
+
     /**
      * How far forward this boss can move in a single turn
      */
@@ -44,7 +45,9 @@ public abstract class Boss extends GameObject {
         CHOPSTICKS
     }
 
+    protected static float startHealth;
     protected float health;
+
 
     private String state;
 
@@ -60,10 +63,11 @@ public abstract class Boss extends GameObject {
         animationSpeed = constants.getFloat("animationSpeed", 0.1f);
     }
 
-    public Boss(float x, float y) {
+    public Boss(float x, float y, float health) {
         super(x, y);
         //warnSprites = new Array<>();
-        health = 30;// TODO: move this to constants?
+        startHealth = health;
+        this.health = startHealth;
         angle = 90f;
         damage = false;
     }
@@ -73,6 +77,8 @@ public abstract class Boss extends GameObject {
     public ObjectType getType() {
         return ObjectType.BOSS;
     }
+
+    public abstract BossType getBossType();
 
     public void update(float delta, int controlCode) {
         // Determine how we are moving.
@@ -139,11 +145,15 @@ public abstract class Boss extends GameObject {
      */
     @Override
     public void draw(SpriteBatch batch, float delta) {
-        SpriteBatch.computeTransform(transform, origin.x, origin.y, position.x, position.y, -90 + angle, 0.4f, 0.4f);
+        SpriteBatch.computeTransform(transform, origin.x, origin.y, position.x, position.y,
+            -90 + angle, 0.4f, 0.4f);
 
         animator.setFrame((int) animeframe);
-        if (damage){
+        if (damage) {
             batch.setColor(Color.RED);
+        }
+        if (isDestroyed()) {
+            batch.setColor(Color.BLACK);
         }
         //System.out.println(damage);
         batch.draw(animator, transform);
@@ -159,14 +169,19 @@ public abstract class Boss extends GameObject {
         damage = hit;
     }
 
-    public String getState(){
+    public String getState() {
         return state;
     }
 
-    public void setState(String s){
+    public void setState(String s) {
         state = s;
     }
-    public void setAnimationSpeed(float speed){
+
+    public void setAnimationSpeed(float speed) {
         animationSpeed = speed;
+    }
+
+    public float getStartHealth() {
+        return startHealth;
     }
 }

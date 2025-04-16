@@ -60,7 +60,8 @@ public class LevelLoader {
         mouseSprite = assets.getEntry("dashMouse.animation", SpriteSheet.class);
         idleWarnSprite = assets.getEntry("idleWarn.animation", SpriteSheet.class);
         dashWarnVerticalSprite = assets.getEntry("dashWarnVertical.animation", SpriteSheet.class);
-        dashWarnHorizontalSprite = assets.getEntry("dashWarnHorizontal.animation", SpriteSheet.class);
+        dashWarnHorizontalSprite = assets.getEntry("dashWarnHorizontal.animation",
+            SpriteSheet.class);
 
         TiledMap map = this.mapLoader.load(path);
 
@@ -90,10 +91,11 @@ public class LevelLoader {
         int id = props.get("id", Integer.class);
         float x = props.get("x", Float.class);
         float y = props.get("y", Float.class);
+        float health = props.get("health", Float.class);
 
         switch (bossType) {
             case "mouse":
-                boss = new Mouse(x, y);
+                boss = new Mouse(x, y, health);
                 boss.setSpriteSheet(mouseSprite);
                 bossController = new MouseController(boss, state);
                 break;
@@ -142,14 +144,17 @@ public class LevelLoader {
         switch (attackType) {
             case "idle":
                 float attackDuration = props.get("attackDuration", Float.class);
-                attack = new IdleAttackPattern(controller, x, y, warnDuration, attackDuration, idleWarnSprite);
+                attack = new IdleAttackPattern(controller, x, y, warnDuration, attackDuration,
+                    idleWarnSprite);
                 break;
             case "dash":
                 String dir = props.get("dir", String.class);
                 if (dir.equals("up") || dir.equals("down")) {
-                    attack = new DashAttackPattern(controller, x, y, dir, warnDuration, dashWarnVerticalSprite);
+                    attack = new DashAttackPattern(controller, x, y, dir, warnDuration,
+                        dashWarnVerticalSprite);
                 } else if (dir.equals("left") || dir.equals("right")) {
-                    attack = new DashAttackPattern(controller, x, y, dir, warnDuration, dashWarnHorizontalSprite);
+                    attack = new DashAttackPattern(controller, x, y, dir, warnDuration,
+                        dashWarnHorizontalSprite);
                 }
                 break;
         }

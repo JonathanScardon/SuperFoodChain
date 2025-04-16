@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="40" height="22" tilewidth="32" tileheight="32" infinite="0" nextlayerid="8" nextobjectid="35">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="40" height="22" tilewidth="32" tileheight="32" infinite="0" nextlayerid="8" nextobjectid="58">
  <tileset firstgid="1" source="cutting_board.tsx"/>
  <tileset firstgid="2" source="mouse.tsx"/>
  <objectgroup id="4" name="background" visible="0" locked="1">
@@ -10,7 +10,7 @@
    <properties>
     <property name="attack0" type="object" value="7"/>
     <property name="attack1" type="object" value="14"/>
-    <property name="attack10" type="object" value="26"/>
+    <property name="attack10" type="object" value="7"/>
     <property name="attack11" type="object" value="28"/>
     <property name="attack12" type="object" value="32"/>
     <property name="attack13" type="object" value="29"/>
@@ -29,14 +29,37 @@
     <property name="health" type="float" value="10"/>
    </properties>
   </object>
-  <object id="7" name="a0" type="attack" x="640" y="360">
+  <object id="35" type="boss" gid="2" x="928" y="1120" width="150" height="195">
+   <properties>
+    <property name="attack0" type="object" value="36"/>
+    <property name="attack1" type="object" value="21"/>
+    <property name="attack10" type="object" value="36"/>
+    <property name="attack11" type="object" value="33"/>
+    <property name="attack12" type="object" value="30"/>
+    <property name="attack13" type="object" value="31"/>
+    <property name="attack14" type="object" value="29"/>
+    <property name="attack15" type="object" value="32"/>
+    <property name="attack16" type="object" value="28"/>
+    <property name="attack2" type="object" value="20"/>
+    <property name="attack3" type="object" value="19"/>
+    <property name="attack4" type="object" value="18"/>
+    <property name="attack5" type="object" value="17"/>
+    <property name="attack6" type="object" value="16"/>
+    <property name="attack7" type="object" value="15"/>
+    <property name="attack8" type="object" value="9"/>
+    <property name="attack9" type="object" value="14"/>
+    <property name="bossType" value="mouse"/>
+    <property name="health" type="float" value="10"/>
+   </properties>
+  </object>
+  <object id="7" name="a0" type="attack" x="480" y="352">
    <properties>
     <property name="attackDuration" type="float" value="2"/>
     <property name="attackType" value="idle"/>
     <property name="warnDuration" type="float" value="2"/>
    </properties>
   </object>
-  <object id="26" name="a10" type="attack" x="640" y="360">
+  <object id="36" name="b0" type="attack" x="800" y="352">
    <properties>
     <property name="attackDuration" type="float" value="2"/>
     <property name="attackType" value="idle"/>
