@@ -17,6 +17,10 @@ import edu.cornell.cis3152.team8.Companion.CompanionType;
 import edu.cornell.cis3152.team8.companions.Garlic;
 import edu.cornell.cis3152.team8.companions.Pineapple;
 import edu.cornell.gdiac.assets.AssetDirectory;
+import edu.cornell.gdiac.audio.AudioEngine;
+import edu.cornell.gdiac.audio.AudioSource;
+import edu.cornell.gdiac.audio.MusicQueue;
+import edu.cornell.gdiac.audio.SoundEffect;
 import edu.cornell.gdiac.graphics.SpriteBatch;
 import edu.cornell.gdiac.graphics.SpriteBatch.BlendMode;
 import edu.cornell.gdiac.graphics.TextLayout;
@@ -119,6 +123,13 @@ private Vector2[] companionSpawns;
     private boolean[] minionSpawnTaken;
     private boolean[] companionSpawnTaken;
     private Array<Companion> deadCompanions;
+    private BitmapFont font;
+
+    private SoundEffect hit;
+    private AudioSource backgroundMusic;
+
+    private MusicQueue music;
+    private AssetDirectory assets;
 
     /**
      * Creates a GameScene
@@ -127,9 +138,26 @@ private Vector2[] companionSpawns;
      */
     public GameScene(final GDXRoot game, AssetDirectory assets, int level) {
         this.game = game;
+        this.assets = assets;
         coinTexture = new Texture("images/CoinUI.png");
         constants = assets.getEntry("level" + level, JsonValue.class);
         //System.out.println(constants);
+        font = assets.getEntry( "lpc", BitmapFont.class );
+//        hit = assets.getEntry( "pop", SoundEffect.class );
+//        backgroundMusic = assets.getEntry( "dodge", AudioSource.class );
+//        AudioEngine engine = (AudioEngine)Gdx.audio;
+//        music = engine.newMusicQueue( false, 44100 );
+//        music.addSource( backgroundMusic );
+//        music.play();
+//        "soundfx": {
+//            "pop": "sounds/Pop.wav",
+//                "pew": "sounds/Pew.wav"
+//        },
+//        "samples": {
+//            "dodge": "sounds/Dodge.ogg",
+//                "win": "sounds/Victory.ogg"
+//        }
+
         this.state = new GameState(constants, assets);
 
         maxEnemies = state.getMaxEnemies();
@@ -457,7 +485,7 @@ private Vector2[] companionSpawns;
 
 
     public void draw(float delta) {
-        BitmapFont font = new BitmapFont();
+        //BitmapFont font = new BitmapFont();
         //FileHandle f = new FileHandle("fonts/LePetitCochon/LPC.fnt");
         //FileHandle image = new FileHandle("fonts/LePetitCochon/LPC.fnt");
 
@@ -466,7 +494,7 @@ private Vector2[] companionSpawns;
         // TextureRegion t = new TextureRegion(tt);
 
         //System.out.println(t);
-        //BitmapFont font = new BitmapFont(Gdx.files.internal("fonts/Arial.fnt"));
+        //BitmapFont font = new BitmapFont(Gdx.files.assets("fonts/Arial.fnt"));
         ScreenUtils.clear(Color.WHITE);
 
         game.batch.begin();
@@ -519,6 +547,7 @@ private Vector2[] companionSpawns;
         game.batch.draw(coinTexture, 1140, 65, 45, 45);
         game.batch.drawText(bossHP, 600, 700);
         game.batch.drawText(coinCount, 1200f, 80f);
+        drawHPBar(bosses.get(0));
 
 //        if (player.hasShield()) {
 //            font.setColor(Color.GREEN);
@@ -587,6 +616,55 @@ private Vector2[] companionSpawns;
         levelsButton.draw(game.batch);
         settingsButton.draw(game.batch);
         exitButton.draw(game.batch);
+    }
+    private void drawHPBar(Boss boss){
+//        Texture bottom = new Texture("images/progressBottom.png");
+//        Texture top = new Texture("images/progressTop.png");
+//        float width = 520;
+//        float newWidth = boss.getHealth()/30 * width;
+//        game.batch.draw(bottom, 367,623,520,36);
+//        game.batch.draw(top, 367 ,624, newWidth, 34);
+        Texture texture = new Texture("images/progress.png");
+        float w = texture.getWidth();
+        float cx = 367;
+        float cy = 623;
+        TextureRegion region1, region2, region3;
+
+        // "3-patch" the background
+        game.batch.setColor( Color.WHITE );
+        region1 = assets.getEntry( "progress.backleft", TextureRegion.class );
+        game.batch.draw(region1,cx-w/2, cy, region1.getRegionWidth(), region1.getRegionHeight());
+
+        region2 = assets.getEntry( "progress.backright", TextureRegion.class );
+        game.batch.draw(region2,cx+w/2-region2.getRegionWidth(), cy,
+            region2.getRegionWidth(), region2.getRegionHeight());
+
+        region3 = assets.getEntry( "progress.background", TextureRegion.class );
+        game.batch.draw(region3, cx-w/2+region1.getRegionWidth(), cy,
+            w-(region2.getRegionWidth()+region1.getRegionWidth()),
+            region3.getRegionHeight());
+
+        float ratio = boss.health/30;
+
+        // "3-patch" the foreground
+        region1 = assets.getEntry( "progress.foreleft", TextureRegion.class );
+        game.batch.draw(region1,cx-w/2, cy,region1.getRegionWidth(), region1.getRegionHeight());
+
+        if (ratio > 0) {
+            region2 = assets.getEntry( "progress.foreright", TextureRegion.class );
+            float span = ratio*(w-(region1.getRegionWidth()+region2.getRegionWidth()));
+
+            game.batch.draw( region2,cx-w/2+region1.getRegionWidth()+span, cy,
+                region2.getRegionWidth(), region2.getRegionHeight());
+
+            region3 = assets.getEntry( "progress.foreground", TextureRegion.class );
+            game.batch.draw(region3, cx-w/2+region1.getRegionWidth(), cy,
+                span, region3.getRegionHeight());
+        } else {
+            region2 = assets.getEntry( "progress.foreright", TextureRegion.class );
+            game.batch.draw(region2, cx-w/2+region1.getRegionWidth(), cy,
+                region2.getRegionWidth(), region2.getRegionHeight());
+        }
     }
 
     @Override

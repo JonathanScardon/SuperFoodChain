@@ -119,7 +119,7 @@ public class LevelSelect implements Screen {
 
         }
         public void resetWait(){
-            wait = 1.0f;
+            wait = 0.5f;
         }
     }
 
