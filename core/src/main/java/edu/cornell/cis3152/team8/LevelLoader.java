@@ -26,7 +26,8 @@ public class LevelLoader {
 
     // warning sprites
     private SpriteSheet idleWarnSprite;
-    private SpriteSheet dashWarnSprite;
+    private SpriteSheet dashWarnVerticalSprite;
+    private SpriteSheet dashWarnHorizontalSprite;
 
     /**
      * @return The single instance of the LevelLoader class
@@ -58,7 +59,8 @@ public class LevelLoader {
         // load assets
         mouseSprite = assets.getEntry("dashMouse.animation", SpriteSheet.class);
         idleWarnSprite = assets.getEntry("idleWarn.animation", SpriteSheet.class);
-        dashWarnSprite = assets.getEntry("dashWarnVertical.animation", SpriteSheet.class);
+        dashWarnVerticalSprite = assets.getEntry("dashWarnVertical.animation", SpriteSheet.class);
+        dashWarnHorizontalSprite = assets.getEntry("dashWarnHorizontal.animation", SpriteSheet.class);
 
         TiledMap map = this.mapLoader.load(path);
 
@@ -143,8 +145,12 @@ public class LevelLoader {
                 attack = new IdleAttackPattern(controller, x, y, warnDuration, attackDuration, idleWarnSprite);
                 break;
             case "dash":
-                boolean top = props.get("top", Boolean.class);
-                attack = new DashAttackPattern(controller, x, top, warnDuration, dashWarnSprite, true);
+                String dir = props.get("dir", String.class);
+                if (dir.equals("up") || dir.equals("down")) {
+                    attack = new DashAttackPattern(controller, x, y, dir, warnDuration, dashWarnVerticalSprite);
+                } else if (dir.equals("left") || dir.equals("right")) {
+                    attack = new DashAttackPattern(controller, x, y, dir, warnDuration, dashWarnHorizontalSprite);
+                }
                 break;
         }
 

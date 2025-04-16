@@ -159,8 +159,8 @@ public abstract class Boss extends ObstacleSprite {
      *
      * @param batch The sprite batch
      */
-    public void draw(SpriteBatch batch) {
-        SpriteBatch.computeTransform(transform, sprite.getRegionWidth()/2.0f, sprite.getRegionHeight()/2.0f, obstacle.getPosition().x * units, obstacle.getPosition().y * units, -(-90 + angle), 0.4f, 0.4f);
+    public void draw(SpriteBatch batch, float delta) {
+        SpriteBatch.computeTransform(transform, sprite.getRegionWidth()/2.0f, sprite.getRegionHeight()/2.0f, obstacle.getPosition().x * units, obstacle.getPosition().y * units, -90 + angle, 0.4f, 0.4f);
 
         sprite.setFrame((int) animeframe);
         if (damage){
