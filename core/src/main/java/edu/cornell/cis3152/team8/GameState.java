@@ -5,13 +5,15 @@
 package edu.cornell.cis3152.team8;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.JsonValue;
 import edu.cornell.gdiac.assets.*;
 import edu.cornell.gdiac.graphics.*;
+import com.badlogic.gdx.physics.box2d.World;
 import edu.cornell.cis3152.team8.companions.Strawberry;
-
+import java.util.LinkedList;
 import java.util.ArrayList;
 
 /**
@@ -20,13 +22,11 @@ import java.util.ArrayList;
  */
 
 public class GameState {
-
-    private Array<MinionController> minionControls;
     // Graphics assets
     // TODO: these should probably be private, but they are public for the level loader right now
     public SpriteSheet mouseIdleSprite;
-     public SpriteSheet mouseDashSprite;
-     public SpriteSheet mouseSpinSprite;
+    public SpriteSheet mouseDashSprite;
+    public SpriteSheet mouseSpinSprite;
     public SpriteSheet dashWarnVerticalSprite;
     public SpriteSheet dashWarnHorizontalSprite;
     public SpriteSheet spinWarnSprite;
@@ -46,6 +46,7 @@ public class GameState {
      * The minions
      */
     private Array<Minion> minions;
+    private Array<MinionController> minionControls;
     /**
      * The bosses
      */
@@ -65,8 +66,14 @@ public class GameState {
     private Array<Projectile> projectiles;
 
     /**
-     * Gamestate constants
+     * The collision controller for the world
      */
+    private CollisionController collision;
+
+    /** The Box2D world */
+    protected World world;
+
+    /** Gamestate constants */
     private JsonValue constants;
 
     private int maxEnemies;
@@ -123,6 +130,7 @@ public class GameState {
         spinWarnSprite = assets.getEntry("spinWarn.animation", SpriteSheet.class);
 
         projectiles = new Array<Projectile>();
+
         deadCompanions = new Array<>();
 
         reset();
@@ -147,6 +155,20 @@ public class GameState {
      * Generates the level and everything in it.
      */
     public void reset() {
+        if (world != null) {
+            Array<Body> bodies = new Array<>();
+            world.getBodies(bodies);
+            for (Body b : bodies) {
+                world.destroyBody(b);
+            }
+            world.dispose();
+        }
+
+        // will doSleep cause companions (inactive) to not contactListener
+        world = new World(new Vector2(0,0), true);
+        collision = new CollisionController(this);
+        world.setContactListener(collision);
+
         // // are we using json?
         // level = new Level(25,25);
         // // tile information
@@ -161,6 +183,12 @@ public class GameState {
         // minions[i] = new Minion(0,0);
         // // minion texture
         // }
+      
+        // Boss
+//         bosses = new Boss[1];
+//         bosses[0] = new Mouse(100f, 100f, world);
+//         bosses[0].setSpriteSheet(mouseSprite);
+//         bosses[0].warnSprites.add(warningSprite);
 
 
 
@@ -174,8 +202,11 @@ public class GameState {
         projectiles.clear();
         deadCompanions.clear();
 
-
         // Coins - none at the beginning
+        coins = new LinkedList<>();
+
+        // Projectiles
+        projectiles = new Array<>();
 
         // Companions - requires information of number of companions
         // for (int i = 0; i < num_companions; i++) {
@@ -223,6 +254,13 @@ public class GameState {
     }
 
     /**
+     * Sets the minions in the level
+     *
+     * @param minions The minions to set
+     */
+    public void setMinions(LinkedList<Minion> minions) {this.minions = minions; }
+
+    /**
      * @return the array of bosses in the level
      */
     public Array<Boss> getBosses() {
@@ -235,7 +273,7 @@ public class GameState {
     /**
      * @return the array of coins in the level
      */
-    public Coin[] getCoins() {
+    public LinkedList<Coin> getCoins() {
         return coins;
     }
 
@@ -247,10 +285,33 @@ public class GameState {
     }
 
     /**
+     * Sets the companions in the level
+     *
+     * @param companions The companions to set
+     */
+    public void setCompanions(LinkedList<Companion> companions) {
+        this.companions = companions;
+    }
+
+    /**
      * @return the array of active projectiles
      */
     public Array<Projectile> getActiveProjectiles() {
         return projectiles;
+    }
+
+    /**
+     * @return CollisionController of current world
+     */
+    public CollisionController getCollisionController() {
+        return collision;
+    }
+
+    /**
+     * @return Box2D world
+     */
+    public World getWorld() {
+        return world;
     }
 
     public int getMaxEnemies() {
@@ -297,6 +358,4 @@ public class GameState {
     public Array<Companion>  getDeadCompanions(){
         return deadCompanions;
     }
-
-
 }

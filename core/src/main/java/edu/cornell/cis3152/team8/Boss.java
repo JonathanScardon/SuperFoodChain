@@ -1,12 +1,18 @@
 package edu.cornell.cis3152.team8;
 
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.Filter;
+import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.JsonValue;
 import edu.cornell.gdiac.graphics.SpriteBatch;
 import edu.cornell.gdiac.graphics.SpriteSheet;
+import edu.cornell.gdiac.physics2.CapsuleObstacle;
+import edu.cornell.gdiac.physics2.ObstacleSprite;
 
-public abstract class Boss extends GameObject {
+public abstract class Boss extends ObstacleSprite {
     /**
      * How far forward this boss can move in a single turn
      */
@@ -45,7 +51,7 @@ public abstract class Boss extends GameObject {
     }
 
     protected float health;
-
+  
     private String state;
 
     /**
@@ -60,19 +66,35 @@ public abstract class Boss extends GameObject {
         animationSpeed = constants.getFloat("animationSpeed", 0.1f);
     }
 
-    public Boss(float x, float y) {
-        super(x, y);
-        //warnSprites = new Array<>();
+
+    private static final float units = 64f;
+
+
+    public Boss(float x, float y, World world) {
+        super(new CapsuleObstacle(x/units, y/units, 1.5f, 1.5f), true);
         health = 30;// TODO: move this to constants?
         angle = 90f;
         damage = false;
+
+        obstacle = getObstacle();
+        obstacle.setName("boss");
+        obstacle.setFixedRotation(true);
+        obstacle.setBodyType(BodyDef.BodyType.DynamicBody);
+        obstacle.setPhysicsUnits(units);
+
+        obstacle.setBullet(true);
+        obstacle.activatePhysics(world);
+        obstacle.setUserData(this);
+
+        Filter filter = obstacle.getFilterData();
+        filter.categoryBits = CollisionController.BOSS_CATEGORY;
+        filter.maskBits = CollisionController.PLAYER_CATEGORY | CollisionController.PROJECTILE_CATEGORY;
+        obstacle.setFilterData(filter);
+
+        float size = 4 * units;
+        mesh.set(-size/2.0f,-size/2.0f,size,size);
     }
 
-    // accessors
-    @Override
-    public ObjectType getType() {
-        return ObjectType.BOSS;
-    }
 
     public void update(float delta, int controlCode) {
         // Determine how we are moving.
@@ -82,6 +104,7 @@ public abstract class Boss extends GameObject {
         boolean movingDown = (controlCode & InputController.CONTROL_MOVE_DOWN) != 0;
 
         // Process movement command.
+        Vector2 velocity = obstacle.getLinearVelocity();
         if (movingLeft) {
             velocity.x = -MOVE_SPEED;
             velocity.y = 0;
@@ -110,15 +133,14 @@ public abstract class Boss extends GameObject {
             }
         }
 
-        if ((movingDown || movingLeft || movingRight || movingUp) && animator != null) {
+        if ((movingDown || movingLeft || movingRight || movingUp) && sprite != null) {
             animeframe += animationSpeed;
-            if (animeframe >= animator.getSize()) {
-                animeframe -= animator.getSize();
+            if (animeframe >= sprite.getSize()) {
+                animeframe -= sprite.getSize();
             }
         }
 
-        position.add(velocity);
-
+        obstacle.setLinearVelocity(velocity);
         if (curWarn != null) {
             curWarn.update(delta);
         }
@@ -137,20 +159,21 @@ public abstract class Boss extends GameObject {
      *
      * @param batch The sprite batch
      */
-    @Override
     public void draw(SpriteBatch batch, float delta) {
-        SpriteBatch.computeTransform(transform, origin.x, origin.y, position.x, position.y, -90 + angle, 0.4f, 0.4f);
+        SpriteBatch.computeTransform(transform, sprite.getRegionWidth()/2.0f, sprite.getRegionHeight()/2.0f, obstacle.getPosition().x * units, obstacle.getPosition().y * units, -90 + angle, 0.4f, 0.4f);
 
-        animator.setFrame((int) animeframe);
+        sprite.setFrame((int) animeframe);
         if (damage){
             batch.setColor(Color.RED);
         }
-        //System.out.println(damage);
-        batch.draw(animator, transform);
+        batch.draw(sprite, transform);
         batch.setColor(Color.WHITE);
+
         if (curWarn != null) {
             curWarn.draw(batch, delta);
         }
+
+//         SpriteBatch.computeTransform(transform, origin.x, origin.y, position.x, position.y, -(-90 + angle), 0.4f, 0.4f);
         damage = false;
 
     }
