@@ -196,7 +196,7 @@ public abstract class GameObject {
      * <p>
      * Objects are not removed immediately when destroyed. They are garbage
      * collected at the end of the frame. This tells us whether the object
-     * should be garbage collected at the frame end.
+     * shou=ld be garbage collected at the frame end.
      *
      * @param value whether this object is destroyed
      */

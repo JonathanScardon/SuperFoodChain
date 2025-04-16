@@ -5,6 +5,7 @@ import static java.util.Collections.min;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Timer;
 import edu.cornell.cis3152.team8.Companion;
@@ -29,9 +30,8 @@ public class Strawberry extends Companion {
      * @param x The x-coordinate of the object
      * @param y The y-coordinate of the object
      */
-
-    public Strawberry(float x, float y, int id) {
-        super(x, y, id);
+    public Strawberry(float x, float y, int id, World world) {
+        super(x, y, id, world);
         setCompanionType(CompanionType.STRAWBERRY);
         //temp cost (was 3)
         setCost(2);
@@ -70,18 +70,28 @@ public class Strawberry extends Companion {
 //        batch.setColor(Color.WHITE);
 //    }
 
-
     @Override
     /**
      * A Strawberry shoots 5 small and quick projectiles in a radius around it
      */
     public void useAbility(GameState state) {
+        ProjectilePools.initialize(state.getWorld());
+
+//             // need to add this because previous projectiles from pool that were used would be setDestroyed
+//             projectile.getObstacle().setActive(true);
+//             projectile.getObstacle().getBody().setActive(true);
+//             projectile.getObstacle().markRemoved(false);
+
+//             float vx = (float) Math.cos(Math.toRadians(fireAngle)) * speed;
+//             float vy = (float) Math.sin(Math.toRadians(fireAngle)) * speed;
+
+//             projectile.getObstacle().setLinearVelocity(new Vector2(vx, vy));
+
         Vector2 directionalVector = utilities.autoshoot(state, getPosition());
         dx = directionalVector.x;
         dy = directionalVector.y;
 
         if (dx != 0.0f || dy != 0.0f) {
-
             for (int i = 0; i < 3; i++) {
                 final int delay = i * 100; // time-delay before each successive shot
                 Timer.schedule(new Timer.Task() {
@@ -90,8 +100,8 @@ public class Strawberry extends Companion {
                         StrawberryProjectile projectile = ProjectilePools.strawberryPool.obtain();
                         projectile.setDestroyed(false);
                         projectile.resetLife();
-                        projectile.setX(getX());
-                        projectile.setY(getY());
+                        projectile.getObstacle().setX(obstacle.getX());
+                        projectile.getObstacle().setY(obstacle.getY());
                         projectile.setVX((float) Math.toRadians(dx));
                         projectile.setVY((float) Math.toRadians(dy));
                         state.getActiveProjectiles().add(projectile);

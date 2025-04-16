@@ -1,19 +1,30 @@
 package edu.cornell.cis3152.team8;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.*;
+import com.badlogic.gdx.physics.box2d.Filter;
+import com.badlogic.gdx.utils.Json;
+import com.badlogic.gdx.utils.JsonReader;
 import com.badlogic.gdx.utils.JsonValue;
+import edu.cornell.gdiac.assets.ParserUtils;
 import edu.cornell.gdiac.graphics.*;
-public class Minion extends GameObject{
+import edu.cornell.gdiac.physics2.BoxObstacle;
+import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.World;
+import edu.cornell.gdiac.physics2.CapsuleObstacle;
+import edu.cornell.gdiac.physics2.ObstacleSprite;
+
+public class Minion extends ObstacleSprite {
 
     private int health;
-    private Texture texture;
-
+    private float size;
     private int id;
     // 5 second death expiration timer
     private float deathExpirationTimer = 3.0f;
     private float moveSpeed;
+    private static final float units = 64f;
     private boolean remove;
     private boolean damage;
     private float animationSpeed;
@@ -25,21 +36,40 @@ public class Minion extends GameObject{
      * @param x The x-coordinate of the object
      * @param y The y-coordinate of the object
      */
-    public Minion(float x, float y, int id) {
-        super(x, y);
+    public Minion(float x, float y, int id, World world) {
+        super(new CapsuleObstacle(x/units, y/units, 0.8f, 0.8f), true);
+        ((CapsuleObstacle)obstacle).setTolerance( 0.5f );
+
+        this.id = id;
         constants = new JsonValue("assets/constants.json");
         texture = new Texture("images/Minion.png");
+  
         radius = 2;
-        this.id = id;
         remove = false;
         damage = false;
         health = 3;
         SpriteSheet minion = new SpriteSheet(texture, 1, 1);
         setSpriteSheet(minion);
         animationSpeed = 0.15f;
-        size = 0.3f;
+        size = 0.3f * units;
         animationFrame = 0;
-        //setConstants(constants);
+  
+        obstacle = getObstacle();
+        obstacle.setName("minion");
+        obstacle.setFixedRotation(true);
+        obstacle.setBodyType(BodyDef.BodyType.DynamicBody);
+
+        obstacle.setPhysicsUnits(units);
+
+        obstacle.activatePhysics(world);
+        obstacle.setUserData(this);
+
+        Filter filter = obstacle.getFilterData();
+        filter.categoryBits = CollisionController.MINION_CATEGORY;
+        filter.maskBits = CollisionController.PLAYER_CATEGORY | CollisionController.PROJECTILE_CATEGORY;
+        obstacle.setFilterData(filter);
+
+        mesh.set(-size/2.0f,-size/2.0f,size,size);
     }
 
     /**
@@ -52,11 +82,6 @@ public class Minion extends GameObject{
         health = constants.getInt("health");
         //MOVE_SPEED = constants.getFloat("move speed");
         moveSpeed = 4;
-    }
-
-    @Override
-    public ObjectType getType() {
-        return ObjectType.MINION;
     }
 
     public int getHealth(){
@@ -78,11 +103,12 @@ public class Minion extends GameObject{
      * handle collisions (which are determined by the CollisionController). It
      * is not intended to interact with other objects in any way at all.
      *
+
      * @param controlCode value indicating minion movement direction
      */
     public void update(int controlCode){
         // If we are dead do nothing.
-        if (isDestroyed()) {
+        if ((!obstacle.isActive())) {
             return;
         }
 
@@ -95,6 +121,7 @@ public class Minion extends GameObject{
 
         //System.out.println(controlCode == InputController.CONTROL_MOVE_LEFT);
         int s = 1;
+        Vector2 velocity = obstacle.getLinearVelocity();
         // Process movement command.
         if (movingLeft) {
             velocity.x = -s;
@@ -113,7 +140,7 @@ public class Minion extends GameObject{
             velocity.y = 0;
         }
         //System.out.println(velocity);
-        position.add(velocity);
+        obstacle.setLinearVelocity(velocity);
         //System.out.println(position);
 
 
@@ -132,9 +159,10 @@ public class Minion extends GameObject{
      * @param batch The sprite batch
      */
     public void draw(SpriteBatch batch, float delta){
-        SpriteBatch.computeTransform(transform, origin.x, origin.y,
-            position.x, position.y, 0.0f, size
-            , size);
+//         SpriteBatch.computeTransform(transform, origin.x, origin.y,
+//             position.x, position.y, 0.0f, size
+//             , size);
+        SpriteBatch.computeTransform(transform, sprite.getRegionWidth()/2.0f, sprite.getRegionHeight()/2.0f, obstacle.getPosition().x * units, obstacle.getPosition().y * units, 0.0f, size/units, size/units);
         if (isDestroyed()){ // if destroyed...
             animator.setFrame(0);
             if (deathExpirationTimer > 0.0f) { // and within recent death timer

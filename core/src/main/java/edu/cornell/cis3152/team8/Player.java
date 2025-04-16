@@ -2,13 +2,16 @@ package edu.cornell.cis3152.team8;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.*;
+import com.badlogic.gdx.physics.box2d.Filter;
+import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.JsonValue;
 import edu.cornell.cis3152.team8.companions.Strawberry;
 import edu.cornell.gdiac.graphics.*;
+import edu.cornell.gdiac.physics2.ObstacleSprite;
 
 import java.util.LinkedList;
 
-public class Player extends GameObject{
+public class Player {
 
     private class CircularBuffer {
         private class PositionAndDirection {
@@ -89,22 +92,27 @@ public class Player extends GameObject{
     /** The direction the player is facing */
     protected int forwardDirection;
 
+    private static final float units = 64f;
 
     private long ticks;
 
-    public Player(int x, int y){
-        super(x, y);
+    public Player(int x, int y, World world){
         this.companions = new LinkedList<>();
         this.coins = 0;
         this.attacking = false;
         this.shield = false;
-        Companion head = new Strawberry(x,y,0);
+        Companion head = new Strawberry(x,y,0,world);
+        head.getObstacle().setName("player");
         companions.add(head);
         head.setCollected(true);
         radius = 2;
         ticks = 0;
         DELAY = MOVE_SPEED * 7;
 
+        Filter filter = head.getObstacle().getFilterData();
+        filter.categoryBits = CollisionController.PLAYER_CATEGORY;
+        filter.maskBits = CollisionController.MINION_CATEGORY | CollisionController.COMPANION_CATEGORY | CollisionController.COIN_CATEGORY | CollisionController.BOSS_CATEGORY | CollisionController.BORDER_CATEGORY;
+        head.getObstacle().setFilterData(filter);
 
         this.controlBuffer = new CircularBuffer(MAX_COMPANIONS * DELAY);
     }
@@ -122,10 +130,21 @@ public class Player extends GameObject{
      * @param controlCode direction of player input
      */
     public void update(int controlCode){
-        if (this.isAlive()){
-            Companion head = this.getPlayerHead();
-            controlBuffer.add(head.getX(), head.getY(), head.getDirection());
+        // automatically removes "dead" companions --> don't have to individually find in collision
+        // can do deadCompanions instead?
+        for (int i = 0; i < companions.size(); i ++) {
+            Companion c = companions.get(i);
+            if (!c.getObstacle().isActive()) {
+                deleteCompanion(c);
+            }
         }
+
+        if (!isAlive()) {
+            return;
+        }
+
+        Companion head = this.getPlayerHead();
+        controlBuffer.add(head.getObstacle().getX(), head.getObstacle().getY(), head.getDirection());
 
         for (int i = 0; i < companions.size(); i++){
             Companion c = companions.get(i);
@@ -250,10 +269,18 @@ public class Player extends GameObject{
         if (companions.size() == MAX_COMPANIONS){
             return;
         }
+      
+        companion.getObstacle().setName("player");
+
+        Filter filter = companion.getObstacle().getFilterData();
+        filter.categoryBits = CollisionController.PLAYER_CATEGORY;
+        filter.maskBits = CollisionController.MINION_CATEGORY | CollisionController.COMPANION_CATEGORY | CollisionController.COIN_CATEGORY | CollisionController.BOSS_CATEGORY | CollisionController.BORDER_CATEGORY;
+        companion.getObstacle().setFilterData(filter);
+      
         CircularBuffer.PositionAndDirection tail = controlBuffer.getSnapshot(companions.size());
         if (tail != null) {
-            companion.setX(tail.x);
-            companion.setY(tail.y);
+            companion.getObstacle().setX(tail.x);
+            companion.getObstacle().setY(tail.y);
         }
         companions.add(companion);
     }
@@ -277,7 +304,6 @@ public class Player extends GameObject{
                 c.setY(data.y);
             }
         }
-
         companions.remove(index);
     }
 

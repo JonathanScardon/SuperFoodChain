@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.JsonValue;
@@ -20,6 +21,7 @@ import edu.cornell.gdiac.assets.AssetDirectory;
 import edu.cornell.gdiac.graphics.SpriteBatch;
 import edu.cornell.gdiac.graphics.SpriteBatch.BlendMode;
 import edu.cornell.gdiac.graphics.TextLayout;
+import edu.cornell.gdiac.physics2.ObstacleSprite;
 import edu.cornell.gdiac.util.ScreenListener;
 
 import edu.cornell.cis3152.team8.companions.Strawberry;
@@ -76,7 +78,7 @@ private Vector2[] companionSpawns;
      * Companions in the chain
      */
     private Player player;
-
+  
     /**
      * Minions in the level
      */
@@ -94,6 +96,7 @@ private Vector2[] companionSpawns;
 
     private LinkedList<Coin> coins;
     private Array<Projectile> projectiles;
+    protected World world;
 
     /**
      * List of all the input controllers
@@ -102,9 +105,10 @@ private Vector2[] companionSpawns;
     protected Array<MinionController> minionControls;
     protected Array<BossController> bossControls;
 
-    private CollisionController collision;
     private boolean start;
     private boolean reset;
+    private boolean debug;
+
 
     private boolean background;
     // Loaded assets
@@ -223,8 +227,8 @@ private Vector2[] companionSpawns;
         float px = 15;
         float py = 10;
         Companion head = player.companions.get(0);
-        head.setX(px);
-        head.setY(py);
+        head.getObstacle().setX(px);
+        head.getObstacle().setY(py);
     }
 
 
@@ -262,6 +266,7 @@ private Vector2[] companionSpawns;
      */
     private void addCompanions() {
         Random rand = new Random();
+
         boolean r = true;
         for (boolean b :companionSpawnTaken){
             if (!b) {
@@ -279,7 +284,7 @@ private Vector2[] companionSpawns;
                 float x = companionSpawns[spawn].x;
                 float y = companionSpawns[spawn].y;
             for (Companion c: companions) {
-                r = c.getX() == x && c.getY() == y;
+                r = c.getX( x && c.getY() == y;
             }
             if (!r)  {
                 Companion c;
@@ -312,6 +317,9 @@ private Vector2[] companionSpawns;
      * but photon collisions are not.
      */
     public void update(float delta) {
+        float frameTime = Math.min(delta, 0.25f);
+        state.getWorld().step(frameTime, 6, 2);
+
 //        if (Gdx.input.isKeyPressed(Keys.R) && !reset) {
 //            reset();
 //        }
@@ -343,9 +351,12 @@ private Vector2[] companionSpawns;
                 settingsOn = false;
             }
         }
+        if (Gdx.input.isKeyPressed(Keys.D)) {
+            debug = true;
+        }
 
-
-        if (start && player.isAlive() && !bosses.get(0).isDestroyed() && !paused) {
+        if (start && player.isAlive() && bosses.get(0).getObstacle().isActive() && !paused) {
+//        if (start && player.isAlive()) {
             // iterate through all companions in the chain
             state.update();
             addMinions();
@@ -374,9 +385,6 @@ private Vector2[] companionSpawns;
                 companions.get(i).setId(i);
             }
 
-
-
-
             for (Companion c : player.companions) {
                 if (!c.isDestroyed()){
                     if (c.canUse()) {
@@ -385,41 +393,33 @@ private Vector2[] companionSpawns;
                         c.coolDown(true, delta);
                     }
                 }
+//                System.out.println(c.getObstacle().getName());
             }
 
             for (Projectile p : state.getActiveProjectiles()) {
                 p.update(delta);
+//                 System.out.println(p.getObstacle().getPosition());
             }
-
-            // Remove dead projectiles and return them to their pools
-            for (int i = state.getActiveProjectiles().size - 1; i >= 0; i--) {
-                Projectile p = state.getActiveProjectiles().get(i);
-                if (p.isDestroyed() || p.getLife() <= 0) {
-                    state.getActiveProjectiles().removeIndex(i);
-                    if (p instanceof StrawberryProjectile) {
-                        ProjectilePools.strawberryPool.free((StrawberryProjectile) p);
-                    }
-                }
-            }
+//             System.out.println();
 
             // System.out.println(player.position);
             // moves enemies - assume always moving (no CONTROL_NO_ACTION)
-            for (int i = 0; i < minions.size; i++) {
-                Minion m = minions.get(i);
-                if (!m.isDestroyed()) {
+            for (int i = 0; i < minions.size(); i++) {
+                if (minions.get(i).getObstacle().isActive()) {
                     // System.out.println("CONTROL " + i);
                     int action = minionControls.get(i).getAction();
                     // System.out.println("Id: " + i + " (" + action + ")");
-                    m.update(action);
-                    m.setDamage(false);
-                } else {
-                    if (m.shouldRemove()){
-                        minions.removeIndex(m.getId());
-                        minionControls.removeIndex(m.getId());
-                    }
+                    minions.get(i).update(action);
+                    minions.get(i).setDamage(false);
                 }
+              else {
+                if (minions.get(i).shouldRemove()){
+                  // used to be m.getID but minionControls above needs i
+                        minions.removeIndex(i);
+                        minionControls.removeIndex(i);
+                    }
             }
-            //
+                        
             // boss moves and acts
             for (int i = 0; i < bosses.size; i++) {
                 bossControls.get(i).update(delta);
@@ -430,15 +430,13 @@ private Vector2[] companionSpawns;
             int a = playerControls.getAction();
             // System.out.println(a);
             player.update(a);
+              
             //
             // // if board isn't updating then no point
             // state.getLevel().update();
             //
             // // projectiles update
             // //state.getProjectiles().update();
-            if (player.isAlive()) {
-                collision.update();
-            }
 
             for (Coin c : coins) {
                 c.update(delta);
@@ -453,6 +451,8 @@ private Vector2[] companionSpawns;
 //            addMinions();
 //            addCompanions();
         }
+
+        state.getCollisionController().postUpdate();
     }
 
 
@@ -493,12 +493,19 @@ private Vector2[] companionSpawns;
             TextLayout pressE = new TextLayout("E", font);
             c.draw(game.batch, delta);
             //temp UI
-            if (!c.isCollected()) {
-                game.batch.drawText(compCost, c.getX() + 35, c.getY());
+
+          if(!player.companions.contains(c)) {
+                game.batch.drawText(compCost, c.getObstacle().getX() * 64f + 35f, c.getObstacle().getY() * 64f);
                 if (c.highlight){
-                game.batch.drawText(pressE,c.getX(),c.getY()+35);
+                  game.batch.drawText(pressE, c.getObstacle().getX() * 64f, c.getObstacle().getY() * 64f + 35f);
                 }
-            }
+
+//             if (!c.isCollected()) {
+//                 game.batch.drawText(compCost, c.getX() + 35, c.getY());
+//                 if (c.highlight){
+//                 game.batch.drawText(pressE,c.getX(),c.getY()+35);
+//                 }
+//             }
 
         }
 
@@ -508,6 +515,19 @@ private Vector2[] companionSpawns;
 
         for (Coin c : coins) {
             c.draw(game.batch);
+        }
+
+        if (debug) {
+            // Draw the outlines
+            LinkedList<ObstacleSprite> sprites = new LinkedList<>();
+            sprites.addAll(player.companions);
+            sprites.addAll(minions);
+            sprites.addAll(coins);
+            sprites.addAll(companions);
+            sprites.add(bosses[0]);
+            for (ObstacleSprite obj : sprites) {
+                obj.drawDebug( game.batch );
+            }
         }
 
         String coins = "X" + player.getCoins();
@@ -536,7 +556,8 @@ private Vector2[] companionSpawns;
             drawLose();
         }
 
-        if (bosses.get(0).isDestroyed()) {
+          
+        if (!bosses.get(0).getObstacle().isActive) {
             drawWin();
         }
         if (paused && !settingsOn) {
@@ -622,6 +643,39 @@ private Vector2[] companionSpawns;
 
     @Override
     public void dispose() {
-
+        if (state.getWorld() != null) {
+            state.getWorld().dispose();
+        }
     }
+
+//     private void reset(){
+//         start = false;
+//         reset = true;
+//         state.reset();
+
+//         world = state.getWorld();
+
+//         player = new Player(500, 350, world);
+//         state.setPlayer(player);
+//         initMinions(5);
+//         state.setMinions(minions);
+//         initCompanionPositions(5);
+//         state.setCompanions(companions);
+//         coins = state.getCoins();
+//         coins.clear();
+//         bosses = state.getBosses();
+//         bossControls = new InputController[bosses.length];
+//         bossControls[0] = new MouseController(bosses[0], state);
+//         projectiles = state.getActiveProjectiles();
+
+//         playerControls = new PlayerController(player);
+
+//         // level = state.getLevel();
+
+//         // assuming each level has number of enemies assigned?
+//         minionControls = new InputController[minions.size()];
+//         for (int i = 0; i < minions.size(); i++) {
+//             minionControls[i] = new MinionController(i, minions, player);
+//         }
+//     }
 }

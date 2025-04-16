@@ -1,10 +1,17 @@
 package edu.cornell.cis3152.team8;
 
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.Filter;
+import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.JsonValue;
 import edu.cornell.gdiac.graphics.*;
+import edu.cornell.gdiac.physics2.CapsuleObstacle;
+import edu.cornell.gdiac.physics2.ObstacleSprite;
 
-public abstract class Projectile extends GameObject {
+public abstract class Projectile extends ObstacleSprite {
     /// CONSTANTS (defined by the JSON file)
     // Scale of the image
     private static float imageScale;
@@ -24,10 +31,11 @@ public abstract class Projectile extends GameObject {
     private float animeFrame;
     // How much "life" left for projectile to persist on screen
     private int life;
-
-    public ObjectType getType() {
-        return ObjectType.PROJECTILE;
-    }
+    /**
+     * Radius of the object (used for collisions)
+     */
+    protected float radius;
+    private static final float units = 64f;
 
     // public static void setConstants (JsonValue constants) {
     // imageScale = constants.getFloat("imageScale");
@@ -42,25 +50,45 @@ public abstract class Projectile extends GameObject {
      * @param x The x-coordinate of the object
      * @param y The y-coordinate of the object
      */
-    public Projectile(float x, float y, float vx, float vy) {
+    public Projectile(float x, float y, float vx, float vy, World world) {
         // Parent constructor
-        super(x, y);
+        super(new CapsuleObstacle(x/units, y/units, 0.5f, 0.5f), true);
 
         // Attributes below are placeholder values since setConstants isn't implemented
         // yet
+        radius = 1;
         speed = 750;
         maxLife = 150;
         imageScale = 1;
         animationSpeed = 4;
 
         // Update the velocities to be the associated x-velocity and y-velocity
-        velocity.x = vx * speed;
-        velocity.y = vy * speed;
+        obstacle.setLinearVelocity(new Vector2(vx, vy));
 
         // Set initial animation frame to 0
         animeFrame = 0.0f;
         // Set current life to max allowable at initialization
         life = maxLife;
+
+
+        obstacle = getObstacle();
+        obstacle.setName("projectile");
+        obstacle.setFixedRotation(true);
+        obstacle.setBodyType(BodyDef.BodyType.KinematicBody);
+
+        obstacle.setPhysicsUnits(units);
+        obstacle.setBullet(true);
+
+        obstacle.activatePhysics(world);
+        obstacle.setUserData(this);
+
+        Filter filter = obstacle.getFilterData();
+        filter.categoryBits = CollisionController.PROJECTILE_CATEGORY;
+        filter.maskBits = CollisionController.MINION_CATEGORY | CollisionController.BOSS_CATEGORY;
+        obstacle.setFilterData(filter);
+
+        float size = radius * units;
+        mesh.set(-size/2.0f,-size/2.0f,size,size);
     }
 
     /**
@@ -86,8 +114,15 @@ public abstract class Projectile extends GameObject {
     /**
      * Resets the projectile's life count to its max life
      */
-    public void resetLife() {
+    public void reset() {
         life = maxLife;
+        animeFrame = 0.0f;
+        // Reset physics state without destroying
+        getObstacle().getBody().setLinearVelocity(0, 0);
+        getObstacle().getBody().setTransform(0, 0, 0);
+        getObstacle().setActive(false);
+        getObstacle().getBody().setActive(false);
+        getObstacle().markRemoved(true);
     }
 
     /**
@@ -96,15 +131,15 @@ public abstract class Projectile extends GameObject {
      * @param delta Number of seconds since last animation frame
      */
     public void update(float delta) {
-        position.add(velocity.x * speed, velocity.y * speed);
+//        obstacle.setLinearVelocity(new Vector2(obstacle.getVX() * speed, obstacle.getVY() * speed));
 
         // Increase animation frame
-        if (animator != null) {
+        if (sprite != null) {
             // Increment animation frame
             animeFrame += animationSpeed;
             // If reaching end of animation frame, wrap around to beginning
-            if (animeFrame >= animator.getSize()) {
-                animeFrame -= animator.getSize();
+            if (animeFrame >= sprite.getSize()) {
+                animeFrame -= sprite.getSize();
             }
         }
         // Decrement projectile life to make progress towards it being on screen/not
@@ -118,12 +153,11 @@ public abstract class Projectile extends GameObject {
      * @param batch The sprite batch
      */
     public void draw(SpriteBatch batch) {
-        animator.setFrame((int) animeFrame);
-        // need to override because we pass in imageScale instead of 1.0f in
-        // computeTransform
-        SpriteBatch.computeTransform(transform, origin.x, origin.y,
-                position.x, position.y, 0.0f, imageScale, imageScale);
+        sprite.setFrame((int) animeFrame);
+        // need to override because we pass in imageScale instead of 1.0f - need to put in size/radius instead?
+        SpriteBatch.computeTransform(transform, sprite.getRegionWidth()/2.0f, sprite.getRegionHeight()/2.0f,
+                obstacle.getX() * units, obstacle.getY() * units, 0.0f, radius/units, radius/units);
         batch.setColor(Color.WHITE);
-        batch.draw(animator, transform);
+        batch.draw(sprite, transform);
     }
 }
