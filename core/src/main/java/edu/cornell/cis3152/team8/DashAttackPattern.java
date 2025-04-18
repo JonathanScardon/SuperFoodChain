@@ -20,15 +20,17 @@ public class DashAttackPattern implements BossAttackPattern {
 
     private float warnTime;
     private AttackState state;
+    private SpriteSheet attackSprite;
 
     public DashAttackPattern(BossController controller, float x, float y, String dir,
-        float warnDuration, SpriteSheet warnSprite) {
+        float warnDuration, SpriteSheet warnSprite, SpriteSheet attackSprite) {
         this.controller = controller;
-        this.boss = controller.boss;
-
+        boss = controller.boss;
+        boss.setSpriteSheet(attackSprite);
         this.startX = x;
         this.startY = y;
         this.warnDuration = warnDuration;
+        this.attackSprite = attackSprite;
 
         switch (dir) {
             case "up":
@@ -53,11 +55,14 @@ public class DashAttackPattern implements BossAttackPattern {
         this.warnPattern.setSpriteSheet(warnSprite);
 
         this.state = AttackState.INACTIVE;
+        boss.setState("inactive");
     }
 
     @Override
     public void start() {
+        boss.setAttack("dash");
         state = AttackState.WARN;
+        boss.setAttack("warn");
         controller.setAction(CONTROL_NO_ACTION);
 
         boss.setX(startX);
@@ -93,6 +98,7 @@ public class DashAttackPattern implements BossAttackPattern {
 
     public void attack() {
         state = AttackState.ATTACK;
+        boss.setState("attack");
         controller.setAction(controlCode);
 
         warnPattern.active = false;
@@ -102,16 +108,16 @@ public class DashAttackPattern implements BossAttackPattern {
     @Override
     public void update(float delta) {
         switch (state) {
-            case INACTIVE:
-                break;
-            case WARN:
+            case INACTIVE, ATTACK -> {
+            }
+            case WARN -> {
                 if (warnTime > 0) {
                     warnTime -= delta;
                 } else {
                     attack();
                 }
-            case ATTACK:
-                break;
+                boss.setSpriteSheet(attackSprite);
+            }
         }
 
     }

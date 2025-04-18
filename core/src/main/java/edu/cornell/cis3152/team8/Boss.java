@@ -36,6 +36,7 @@ public abstract class Boss extends GameObject {
      * The warn pattern that the boss is currently drawing
      */
     protected BossWarnPattern curWarn;
+    private String attack;
 
     private boolean damage;
 
@@ -82,10 +83,14 @@ public abstract class Boss extends GameObject {
 
     public void update(float delta, int controlCode) {
         // Determine how we are moving.
-        boolean movingLeft = (controlCode & InputController.CONTROL_MOVE_LEFT) != 0;
-        boolean movingRight = (controlCode & InputController.CONTROL_MOVE_RIGHT) != 0;
-        boolean movingUp = (controlCode & InputController.CONTROL_MOVE_UP) != 0;
-        boolean movingDown = (controlCode & InputController.CONTROL_MOVE_DOWN) != 0;
+        boolean movingLeft = controlCode == InputController.CONTROL_MOVE_LEFT;
+        boolean movingRight = controlCode == InputController.CONTROL_MOVE_RIGHT;
+        boolean movingUp = controlCode == InputController.CONTROL_MOVE_UP;
+        boolean movingDown = controlCode == InputController.CONTROL_MOVE_DOWN;
+        boolean movingLeftDown = controlCode == InputController.CONTROL_MOVE_LEFT_DOWN;
+        boolean movingLeftUp = (controlCode == InputController.CONTROL_MOVE_LEFT_UP);
+        boolean movingRightUp = (controlCode == InputController.CONTROL_MOVE_RIGHT_UP);
+        boolean movingRightDown = (controlCode == InputController.CONTROL_MOVE_RIGHT_DOWN);
 
         // Process movement command.
         if (movingLeft) {
@@ -104,6 +109,18 @@ public abstract class Boss extends GameObject {
             velocity.y = -MOVE_SPEED;
             velocity.x = 0;
             //angle = 270f;
+        } else if (movingLeftDown) {
+            velocity.y = -MOVE_SPEED;
+            velocity.x = -MOVE_SPEED;
+        } else if (movingLeftUp) {
+            velocity.y = MOVE_SPEED;
+            velocity.x = -MOVE_SPEED;
+        } else if (movingRightUp) {
+            velocity.y = MOVE_SPEED;
+            velocity.x = MOVE_SPEED;
+        } else if (movingRightDown) {
+            velocity.y = -MOVE_SPEED;
+            velocity.x = MOVE_SPEED;
         } else {
             // NOT MOVING, SO SLOW DOWN
             velocity.x *= SPEED_DAMP;
@@ -116,7 +133,8 @@ public abstract class Boss extends GameObject {
             }
         }
 
-        if ((movingDown || movingLeft || movingRight || movingUp) && animator != null) {
+        if ((movingDown || movingLeft || movingRight || movingUp || movingLeftDown || movingLeftUp
+            || movingRightDown || movingRightUp) && animator != null) {
             animeframe += animationSpeed;
             if (animeframe >= animator.getSize()) {
                 animeframe -= animator.getSize();
@@ -155,7 +173,6 @@ public abstract class Boss extends GameObject {
         if (isDestroyed()) {
             batch.setColor(Color.BLACK);
         }
-        //System.out.println(damage);
         batch.draw(animator, transform);
         batch.setColor(Color.WHITE);
         if (curWarn != null) {
@@ -183,5 +200,13 @@ public abstract class Boss extends GameObject {
 
     public float getStartHealth() {
         return startHealth;
+    }
+
+    public String getAttack() {
+        return attack;
+    }
+
+    public void setAttack(String attack) {
+        this.attack = attack;
     }
 }

@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.Color;
 import edu.cornell.gdiac.graphics.SpriteBatch;
 
 public class BossWarnPattern extends GameObject {
+
     /**
      * Whether this pattern is currently displayed
      */
@@ -19,9 +20,12 @@ public class BossWarnPattern extends GameObject {
      */
     private static float animationSpeed = 0.05f;
 
+    private float angle;
+
     public BossWarnPattern(float x, float y) {
         super(x, y);
         this.active = false;
+        angle = 0;
     }
 
     @Override
@@ -52,9 +56,14 @@ public class BossWarnPattern extends GameObject {
             return;
         }
 
-        SpriteBatch.computeTransform(transform, origin.x, origin.y, position.x, position.y, 0, 1, 1);
+        SpriteBatch.computeTransform(transform, origin.x, origin.y, position.x, position.y, angle,
+            1, 1);
         animator.setFrame((int) animeframe);
         batch.setColor(Color.WHITE);
         batch.draw(animator, transform);
+    }
+
+    public void setAngle(float angle) {
+        this.angle = angle;
     }
 }

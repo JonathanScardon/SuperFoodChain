@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
@@ -13,10 +14,12 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.JsonValue;
+import edu.cornell.cis3152.team8.BossAttackPattern.AttackState;
 import edu.cornell.cis3152.team8.Companion.CompanionType;
 import edu.cornell.cis3152.team8.companions.Garlic;
 import edu.cornell.cis3152.team8.companions.Pineapple;
 import edu.cornell.gdiac.assets.AssetDirectory;
+import edu.cornell.gdiac.audio.*;
 import edu.cornell.gdiac.audio.AudioEngine;
 import edu.cornell.gdiac.audio.AudioSource;
 import edu.cornell.gdiac.audio.MusicQueue;
@@ -25,6 +28,8 @@ import edu.cornell.gdiac.graphics.SpriteBatch;
 import edu.cornell.gdiac.graphics.SpriteBatch.BlendMode;
 import edu.cornell.gdiac.graphics.TextLayout;
 import edu.cornell.gdiac.util.ScreenListener;
+import com.badlogic.gdx.*;
+import com.badlogic.gdx.audio.Music;
 
 import edu.cornell.cis3152.team8.companions.Strawberry;
 import edu.cornell.cis3152.team8.companions.Durian;
@@ -130,6 +135,7 @@ public class GameScene implements Screen {
 
     private MusicQueue music;
     private AssetDirectory assets;
+    private boolean win;
 
     /**
      * Creates a GameScene
@@ -144,20 +150,12 @@ public class GameScene implements Screen {
         constants = assets.getEntry("level" + level, JsonValue.class);
         //System.out.println(constants);
         font = assets.getEntry("lpc", BitmapFont.class);
-//        hit = assets.getEntry( "pop", SoundEffect.class );
-//        backgroundMusic = assets.getEntry( "dodge", AudioSource.class );
-//        AudioEngine engine = (AudioEngine)Gdx.audio;
-//        music = engine.newMusicQueue( false, 44100 );
-//        music.addSource( backgroundMusic );
+//        hit = assets.getEntry("pop", SoundEffect.class);
+//        backgroundMusic = assets.getEntry("dodge", AudioSource.class);
+//        AudioEngine engine = (AudioEngine) Gdx.audio;
+//        music = engine.newMusicQueue(false, 44100);
+//        music.addSource(backgroundMusic);
 //        music.play();
-//        "soundfx": {
-//            "pop": "sounds/Pop.wav",
-//                "pew": "sounds/Pew.wav"
-//        },
-//        "samples": {
-//            "dodge": "sounds/Dodge.ogg",
-//                "win": "sounds/Victory.ogg"
-//        }
 
         this.state = new GameState(constants, assets);
 
@@ -196,10 +194,9 @@ public class GameScene implements Screen {
         start = false;
         reset = true;
         paused = false;
+        win = false;
         state.reset();
 
-        player = new Player(500, 350);
-        state.setPlayer(player);
         state.setMinions(minions);
 
         curStrawberry = 0;
@@ -210,6 +207,11 @@ public class GameScene implements Screen {
         bosses = state.getBosses();
         bossControls = state.getBossControls();
         minionControls = state.getMinionControls();
+
+        LevelLoader.getInstance().load(this, "tiled/level_" + level + ".tmx");
+
+        player = state.getPlayer();
+        playerControls = new PlayerController(player);
 
         Arrays.fill(minionSpawnTaken, false);
         Arrays.fill(companionSpawnTaken, false);
@@ -225,7 +227,6 @@ public class GameScene implements Screen {
 
         // assuming player is a list of Companions btw
         // player = state.getPlayer();
-        playerControls = new PlayerController(player);
 
         // level = state.getLevel();
 
@@ -235,7 +236,6 @@ public class GameScene implements Screen {
         //     minionControls[i] = new MinionController(i, minions, player);
         // }
 
-        LevelLoader.getInstance().load(this, "tiled/level_" + level + ".tmx");
         // start all the bosses
         for (BossController bc : bossControls) {
             bc.startAttack();
@@ -371,12 +371,15 @@ public class GameScene implements Screen {
             }
         }
 
-        if (start && player.isAlive() && !bosses.get(0).isDestroyed() && !paused) {
+        if (start && player.isAlive() && !win && !paused) {
             // iterate through all companions in the chain
             state.update();
             addMinions();
             addCompanions();
-            bosses.get(0).setDamage(false);
+            for (Boss b : bosses) {
+                b.setDamage(false);
+            }
+//            System.out.println(bosses.get(1).getPosition());
 
             for (Companion c : companions) {
                 if (c.isCollected()) {
@@ -445,10 +448,19 @@ public class GameScene implements Screen {
             //
             // boss moves and acts
             for (int i = 0; i < bosses.size; i++) {
-                if (!bosses.get(i).isDestroyed()) {
+                Boss b = bosses.get(i);
+                if (!b.isDestroyed()) {
+                    if (b.getAttack().equals("spin") && b.getState().equals("warn")) {
+                        bosses.get(0).setX(bosses.get(1).getX());
+                        bosses.get(0).setY(bosses.get(1).getY());
+
+
+                    }
+                    System.out.println("" + b.getAttack() + b.getState());
                     bossControls.get(i).update(delta);
+                    b.update(delta, bossControls.get(i).getAction());
                 }
-                bosses.get(i).update(delta, bossControls.get(i).getAction());
+
             }
             //
             // // player chain moves
@@ -473,6 +485,13 @@ public class GameScene implements Screen {
                 deadCompanions.get(i).decreaseDeathExpirationTimer(delta);
                 if (deadCompanions.get(i).getTrash()) {
                     deadCompanions.removeIndex(i);
+                }
+            }
+
+            win = true;
+            for (Boss b : bosses) {
+                if (!b.isDestroyed()) {
+                    win = false;
                 }
             }
 //            addMinions();
@@ -536,10 +555,7 @@ public class GameScene implements Screen {
         }
 
         String coins = "X" + player.getCoins();
-        String HP = "Boss HP: " + bosses.get(0).getHealth();
-//        TextLayout shield;
         TextLayout coinCount = new TextLayout(coins, font, 128);
-        TextLayout bossHP = new TextLayout(HP, font, 128);
         //Temp UI
         game.batch.draw(coinTexture, 1140, 65, 45, 45);
         game.batch.drawText(coinCount, 1200f, 80f);
@@ -560,7 +576,7 @@ public class GameScene implements Screen {
             drawLose();
         }
 
-        if (bosses.get(0).isDestroyed()) {
+        if (win) {
             drawWin();
         }
         if (paused && !settingsOn) {
@@ -615,24 +631,22 @@ public class GameScene implements Screen {
 
     private void drawHPBars() {
         float w = 520;
-        float cx, ratio;
+        float cx;
         float cy = 650;
 
         for (int i = 0; i < bosses.size; i++) {
             if (bosses.size == 1) {
                 cx = 367;
-                ratio = bosses.get(0).health / bosses.get(0).getStartHealth();
             } else {
                 if (i == 0) {
                     cx = 71;
-                    ratio = bosses.get(0).health / bosses.get(0).getStartHealth();
                 } else {
                     cx = 662;
-                    ratio = bosses.get(1).health / bosses.get(1).getStartHealth();
                 }
             }
+            float ratio = bosses.get(i).health / bosses.get(i).getStartHealth();
             TextureRegion region1, region2, region3;
-            TextLayout bossName = new TextLayout((bosses.get(0).getBossType().name()), font);
+            TextLayout bossName = new TextLayout((bosses.get(i).getBossType().name()), font);
             game.batch.drawText(bossName, cx + (w / 2 - (bossName.getWidth() / 2)),
                 cy + 50);
 

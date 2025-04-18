@@ -39,7 +39,6 @@ public class GDXRoot extends Game implements ScreenListener {
 
         loadingScene = new LoadingScene("assets.json", batch, 1);
         loadingScene.setScreenListener(this);
-        menuScene = new MainMenuScene(this);
 
         this.setScreen(loadingScene);
     }
@@ -93,7 +92,7 @@ public class GDXRoot extends Game implements ScreenListener {
             loadingScene.dispose();
             loadingScene = null;
 
-            menuScene = new MainMenuScene(this);
+            menuScene = new MainMenuScene(this, directory);
             setScreen(menuScene);
         } else if (screen == menuScene) {
             menuScene.dispose();
@@ -103,7 +102,7 @@ public class GDXRoot extends Game implements ScreenListener {
             } else {
                 Gdx.app.exit();
             }
-
+            levelSelectScene.resetWait();
             setScreen(levelSelectScene);
         } else if (screen == levelSelectScene) {
             levelSelectScene.dispose();

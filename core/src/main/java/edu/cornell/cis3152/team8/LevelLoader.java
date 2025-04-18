@@ -22,12 +22,16 @@ public class LevelLoader {
     private AssetDirectory assets = null;
 
     // boss sprites
-    private SpriteSheet mouseSprite;
+    private SpriteSheet mouseIdleSprite;
+    private SpriteSheet mouseDashSprite;
+    private SpriteSheet mouseSpinSprite;
 
     // warning sprites
     private SpriteSheet idleWarnSprite;
     private SpriteSheet dashWarnVerticalSprite;
     private SpriteSheet dashWarnHorizontalSprite;
+    private SpriteSheet spinWarnSprite;
+    private Player player;
 
     /**
      * @return The single instance of the LevelLoader class
@@ -57,15 +61,25 @@ public class LevelLoader {
         }
 
         // load assets
-        mouseSprite = assets.getEntry("dashMouse.animation", SpriteSheet.class);
+        mouseIdleSprite = assets.getEntry("mouseIdle.animation", SpriteSheet.class);
+        mouseDashSprite = assets.getEntry("mouseDash.animation", SpriteSheet.class);
+        mouseSpinSprite = assets.getEntry("mouseSpin.animation", SpriteSheet.class);
         idleWarnSprite = assets.getEntry("idleWarn.animation", SpriteSheet.class);
         dashWarnVerticalSprite = assets.getEntry("dashWarnVertical.animation", SpriteSheet.class);
         dashWarnHorizontalSprite = assets.getEntry("dashWarnHorizontal.animation",
+            SpriteSheet.class);
+        spinWarnSprite = assets.getEntry("spinWarn.animation",
             SpriteSheet.class);
 
         TiledMap map = this.mapLoader.load(path);
 
         MapLayer objects = map.getLayers().get("objects");
+        for (MapObject obj : objects.getObjects()) {
+            if ("player".equals(obj.getProperties().get("type", String.class))) {
+                player = createPlayer(obj);
+                scene.getState().setPlayer(player);
+            }
+        }
 
         // create bosses and attach attacks to them
         for (MapObject obj : objects.getObjects()) {
@@ -96,7 +110,7 @@ public class LevelLoader {
         switch (bossType) {
             case "mouse":
                 boss = new Mouse(x, y, health);
-                boss.setSpriteSheet(mouseSprite);
+                boss.setSpriteSheet(mouseIdleSprite);
                 bossController = new MouseController(boss, state);
                 break;
             case "chef":
@@ -115,7 +129,7 @@ public class LevelLoader {
         BossAttackPattern attack;
         while (props.containsKey("attack" + attackIdx)) {
             attackObj = props.get("attack" + attackIdx, TiledMapTileMapObject.class);
-            attack = createAttack(attackObj, bossController);
+            attack = createAttack(attackObj, bossController, state);
             bossController.addAttackPattern(attack);
 
             attackIdx++;
@@ -131,7 +145,8 @@ public class LevelLoader {
      * @param obj        the attack object
      * @param controller the boss that will execute the attack
      */
-    private BossAttackPattern createAttack(MapObject obj, BossController controller) {
+    private BossAttackPattern createAttack(MapObject obj, BossController controller,
+        GameState gamestate) {
         String attackType = obj.getProperties().get("attackType", String.class);
         MapProperties props = obj.getProperties();
 
@@ -142,21 +157,25 @@ public class LevelLoader {
         float warnDuration = props.get("warnDuration", Float.class);
 
         switch (attackType) {
-            case "idle":
+            case "idle" -> {
                 float attackDuration = props.get("attackDuration", Float.class);
                 attack = new IdleAttackPattern(controller, x, y, warnDuration, attackDuration,
-                    idleWarnSprite);
-                break;
-            case "dash":
+                    idleWarnSprite, mouseIdleSprite);
+            }
+            case "dash" -> {
                 String dir = props.get("dir", String.class);
                 if (dir.equals("up") || dir.equals("down")) {
                     attack = new DashAttackPattern(controller, x, y, dir, warnDuration,
-                        dashWarnVerticalSprite);
+                        dashWarnVerticalSprite, mouseDashSprite);
                 } else if (dir.equals("left") || dir.equals("right")) {
                     attack = new DashAttackPattern(controller, x, y, dir, warnDuration,
-                        dashWarnHorizontalSprite);
+                        dashWarnHorizontalSprite, mouseDashSprite);
                 }
-                break;
+            }
+            case "spin" -> {
+                attack = new SpinAttackPattern(controller, warnDuration, spinWarnSprite, player,
+                    mouseSpinSprite, gamestate);
+            }
         }
 
         if (attack == null) {
@@ -164,5 +183,12 @@ public class LevelLoader {
         }
 
         return attack;
+    }
+
+    private Player createPlayer(MapObject obj) {
+        MapProperties props = obj.getProperties();
+        float x = props.get("x", Float.class);
+        float y = props.get("y", Float.class);
+        return new Player(x, y);
     }
 }

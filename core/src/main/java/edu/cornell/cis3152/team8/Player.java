@@ -8,10 +8,12 @@ import edu.cornell.gdiac.graphics.*;
 
 import java.util.LinkedList;
 
-public class Player extends GameObject{
+public class Player extends GameObject {
 
     private class CircularBuffer {
+
         private class PositionAndDirection {
+
             protected float x;
             protected float y;
             protected int dir;
@@ -65,52 +67,61 @@ public class Player extends GameObject{
         }
     }
 
-    /** Number of instructions to wait before following
-     * Also the number of instructions stored per companion
-     * */
+    /**
+     * Number of instructions to wait before following Also the number of instructions stored per
+     * companion
+     */
     private static int DELAY;
     private final static int MAX_COMPANIONS = 15;
     private static int MOVE_SPEED = 3;
 
     private CircularBuffer controlBuffer;
 
-    /** All companions in the player's current chain */
+    /**
+     * All companions in the player's current chain
+     */
     protected LinkedList<Companion> companions;
 
-    /** The players coin count, used to purchase companions */
+    /**
+     * The players coin count, used to purchase companions
+     */
     protected int coins;
 
-    /** Indicates whether the player is attacking */
+    /**
+     * Indicates whether the player is attacking
+     */
     protected boolean attacking;
 
-    /** Indicates whether the player has a shield */
+    /**
+     * Indicates whether the player has a shield
+     */
     protected boolean shield;
 
-    /** The direction the player is facing */
+    /**
+     * The direction the player is facing
+     */
     protected int forwardDirection;
 
 
     private long ticks;
 
-    public Player(int x, int y){
+    public Player(float x, float y) {
         super(x, y);
         this.companions = new LinkedList<>();
         this.coins = 0;
         this.attacking = false;
         this.shield = false;
-        Companion head = new Strawberry(x,y,0);
+        Companion head = new Strawberry(x, y, 0);
         companions.add(head);
         head.setCollected(true);
         radius = 2;
         ticks = 0;
         DELAY = MOVE_SPEED * 7;
 
-
         this.controlBuffer = new CircularBuffer(MAX_COMPANIONS * DELAY);
     }
 
     /**
-     *
      * @return head of player chain
      */
     public Companion getPlayerHead() {
@@ -119,32 +130,32 @@ public class Player extends GameObject{
 
     /**
      * Updates movement of the chain
+     *
      * @param controlCode direction of player input
      */
-    public void update(int controlCode){
-        if (this.isAlive()){
+    public void update(int controlCode) {
+        if (this.isAlive()) {
             Companion head = this.getPlayerHead();
             controlBuffer.add(head.getX(), head.getY(), head.getDirection());
         }
 
-        for (int i = 0; i < companions.size(); i++){
+        for (int i = 0; i < companions.size(); i++) {
             Companion c = companions.get(i);
-            if (c == getPlayerHead()){
+            if (c == getPlayerHead()) {
                 c.update(controlCode);
-            }
-            else {
+            } else {
                 CircularBuffer.PositionAndDirection prev = controlBuffer.getSnapshot(i);
                 c.update(prev.dir);
             }
         }
 
-        for (Companion c: companions){
+        for (Companion c : companions) {
             c.animationFrame = getPlayerHead().animationFrame;
             if (c.animator != null) {
                 c.animationFrame += c.animationSpeed;
                 //System.out.println(animationFrame);
                 if (c.animationFrame >= c.animator.getSize()) {
-                    c.animationFrame -= c.animator.getSize()-1;
+                    c.animationFrame -= c.animator.getSize() - 1;
                 }
             }
         }
@@ -152,12 +163,11 @@ public class Player extends GameObject{
     }
 
     /**
-     *
      * @param batch The sprite batch
      */
     public void draw(SpriteBatch batch, float delta) {
-        if (forwardDirection == 8){
-            for (int i = companions.size() - 1; i >= 0; i--){
+        if (forwardDirection == 8) {
+            for (int i = companions.size() - 1; i >= 0; i--) {
                 companions.get(i).draw(batch, delta);
             }
         } else {
@@ -169,85 +179,94 @@ public class Player extends GameObject{
 
     /**
      * Sets the player's attacking status
+     *
      * @param x the player's new attacking status
      */
-    public void setAttacking(boolean x){
+    public void setAttacking(boolean x) {
         this.attacking = x;
     }
 
     /**
      * Retrieves the player's attacking status
+     *
      * @return true if the player is attacking, false otherwise
      */
-    public boolean isAttacking(){
+    public boolean isAttacking() {
         return this.attacking;
     }
 
     /**
      * Checks it the player is alive.
-     * @return true when the player has at least one companion,
-     * false otherwise
+     *
+     * @return true when the player has at least one companion, false otherwise
      */
-    public boolean isAlive(){
+    public boolean isAlive() {
         return !companions.isEmpty();
     }
 
     /**
      * Retrieves the current number of coins the player has
+     *
      * @return the number of coins the player has
      */
-    public int getCoins(){
+    public int getCoins() {
         return this.coins;
     }
 
     /**
      * Sets the player's coin count to a specified value
+     *
      * @param coins the new number of coins the player has
      */
-    public void setCoins(int coins){
+    public void setCoins(int coins) {
         this.coins = coins;
     }
 
 
     /**
      * Returns whether the player has a shield
+     *
      * @return whether the player has a shield
      */
-    public boolean hasShield(){
+    public boolean hasShield() {
         return this.shield;
     }
 
     /**
      * Sets whether the player has a shield
+     *
      * @param shield true if the player has a shield, false otherwise
      */
-    public void setShield(boolean shield){
+    public void setShield(boolean shield) {
         this.shield = shield;
     }
 
     /**
      * Returning the direction the player is facing
+     *
      * @return the direction the player is facing
      */
-    public int getForwardDirection(){
+    public int getForwardDirection() {
         return this.forwardDirection;
     }
 
     /**
      * Sets the direction the player is facing
+     *
      * @param forwardDirection the new number of coins the player has
      */
-    public void setForwardDirection(int forwardDirection){
+    public void setForwardDirection(int forwardDirection) {
         this.forwardDirection = forwardDirection;
     }
 
     /**
      * Appends a companion to the player's chain
+     *
      * @param companion the companion to add
      */
-    public void addCompanion(Companion companion){
+    public void addCompanion(Companion companion) {
         //limited num of companions
-        if (companions.size() == MAX_COMPANIONS){
+        if (companions.size() == MAX_COMPANIONS) {
             return;
         }
         CircularBuffer.PositionAndDirection tail = controlBuffer.getSnapshot(companions.size());
@@ -257,22 +276,24 @@ public class Player extends GameObject{
         }
         companions.add(companion);
     }
+
     /**
      * Removes the companion from the player's chain
+     *
      * @param companion the companion to remove
      */
-    public void deleteCompanion(Companion companion){
+    public void deleteCompanion(Companion companion) {
         int index = companions.indexOf(companion);
         //companion out of range
-        if (index < 0 || index > companions.size()-1){
+        if (index < 0 || index > companions.size() - 1) {
             throw new IndexOutOfBoundsException();
         }
 
         //update positions to fill deleted companion
-        for (int i = index+1; i < companions.size(); i++){
+        for (int i = index + 1; i < companions.size(); i++) {
             Companion c = companions.get(i);
-            CircularBuffer.PositionAndDirection data = controlBuffer.getSnapshot(i-1);
-            if (data != null){
+            CircularBuffer.PositionAndDirection data = controlBuffer.getSnapshot(i - 1);
+            if (data != null) {
                 c.setX(data.x);
                 c.setY(data.y);
             }
@@ -284,20 +305,22 @@ public class Player extends GameObject{
     /**
      * @return player speed
      */
-    public static int getSpeed(){
+    public static int getSpeed() {
         return MOVE_SPEED;
     }
 
     /**
      * Sets the player's speed
+     *
      * @param speed new speed
      */
     public static void setSpeed(int speed) {
         MOVE_SPEED = speed;
     }
+
     /**
      * Returns GameObject type Player
-     * */
+     */
     @Override
     public ObjectType getType() {
         return ObjectType.PLAYER;

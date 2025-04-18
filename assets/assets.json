@@ -10,7 +10,7 @@
         }
       }
     },
-    "idleMouse": {
+    "mouseIdle": {
       "file": "images/MouseIdle.png",
       "sprites": {
         "animation": {
@@ -20,17 +20,17 @@
         }
       }
     },
-    "dashMouse": {
+    "mouseDash": {
       "file": "images/MouseDash.png",
       "sprites": {
         "animation": {
           "rows": 1,
-          "cols": 4,
-          "size": 4
+          "cols": 5,
+          "size": 5
         }
       }
     },
-    "spinMouse": {
+    "mouseSpin": {
       "file": "images/MouseSpin.png",
       "sprites": {
         "animation": {
@@ -120,6 +120,13 @@
     "constants": "jsons/constants.json",
     "save": "jsons/savedGame.json",
     "level1": "jsons/level1.json",
-    "level2": "jsons/level2.json"
+    "level2": "jsons/level2.json",
+    "level3": "jsons/level3.json"
+  },
+  "xcnmkjhg": {
+    "pop": "sounds/Pop.wav"
+  },
+  "hkgnjk": {
+    "dodge": "sounds/Dodge.ogg"
   }
 }

@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="40" height="22" tilewidth="32" tileheight="32" infinite="0" nextlayerid="8" nextobjectid="58">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="40" height="22" tilewidth="32" tileheight="32" infinite="0" nextlayerid="8" nextobjectid="61">
  <tileset firstgid="1" source="cutting_board.tsx"/>
  <tileset firstgid="2" source="mouse.tsx"/>
+ <tileset firstgid="5" source="player.tsx"/>
  <objectgroup id="4" name="background" visible="0" locked="1">
   <object id="2" name="wood" gid="1" x="0" y="1000" width="1280" height="1280"/>
  </objectgroup>
@@ -11,13 +12,19 @@
     <property name="attack0" type="object" value="7"/>
     <property name="attack1" type="object" value="14"/>
     <property name="attack10" type="object" value="7"/>
-    <property name="attack11" type="object" value="28"/>
-    <property name="attack12" type="object" value="32"/>
-    <property name="attack13" type="object" value="29"/>
-    <property name="attack14" type="object" value="31"/>
-    <property name="attack15" type="object" value="30"/>
-    <property name="attack16" type="object" value="33"/>
+    <property name="attack11" type="object" value="60"/>
+    <property name="attack12" type="object" value="60"/>
+    <property name="attack13" type="object" value="60"/>
+    <property name="attack14" type="object" value="60"/>
+    <property name="attack15" type="object" value="60"/>
+    <property name="attack16" type="object" value="7"/>
+    <property name="attack17" type="object" value="28"/>
+    <property name="attack18" type="object" value="32"/>
+    <property name="attack19" type="object" value="29"/>
     <property name="attack2" type="object" value="9"/>
+    <property name="attack20" type="object" value="31"/>
+    <property name="attack21" type="object" value="30"/>
+    <property name="attack22" type="object" value="33"/>
     <property name="attack3" type="object" value="15"/>
     <property name="attack4" type="object" value="16"/>
     <property name="attack5" type="object" value="17"/>
@@ -34,13 +41,19 @@
     <property name="attack0" type="object" value="36"/>
     <property name="attack1" type="object" value="21"/>
     <property name="attack10" type="object" value="36"/>
-    <property name="attack11" type="object" value="33"/>
-    <property name="attack12" type="object" value="30"/>
-    <property name="attack13" type="object" value="31"/>
-    <property name="attack14" type="object" value="29"/>
-    <property name="attack15" type="object" value="32"/>
-    <property name="attack16" type="object" value="28"/>
+    <property name="attack11" type="object" value="60"/>
+    <property name="attack12" type="object" value="60"/>
+    <property name="attack13" type="object" value="60"/>
+    <property name="attack14" type="object" value="60"/>
+    <property name="attack15" type="object" value="60"/>
+    <property name="attack16" type="object" value="36"/>
+    <property name="attack17" type="object" value="33"/>
+    <property name="attack18" type="object" value="30"/>
+    <property name="attack19" type="object" value="31"/>
     <property name="attack2" type="object" value="20"/>
+    <property name="attack20" type="object" value="29"/>
+    <property name="attack21" type="object" value="32"/>
+    <property name="attack22" type="object" value="28"/>
     <property name="attack3" type="object" value="19"/>
     <property name="attack4" type="object" value="18"/>
     <property name="attack5" type="object" value="17"/>
@@ -136,6 +149,12 @@
     <property name="warnDuration" type="float" value="2"/>
    </properties>
   </object>
+  <object id="60" name="spin" type="attack" x="640" y="-128">
+   <properties>
+    <property name="attackType" value="spin"/>
+    <property name="warnDuration" type="float" value="2"/>
+   </properties>
+  </object>
   <object id="17" name="a5" type="attack" x="640" y="780">
    <properties>
     <property name="attackType" value="dash"/>
@@ -171,5 +190,6 @@
     <property name="warnDuration" type="float" value="2"/>
    </properties>
   </object>
+  <object id="58" name="player" type="player" gid="5" x="256" y="480" width="96" height="96"/>
  </objectgroup>
 </map>

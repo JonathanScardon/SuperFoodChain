@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="40" height="22" tilewidth="32" tileheight="32" infinite="0" nextlayerid="8" nextobjectid="35">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="40" height="22" tilewidth="32" tileheight="32" infinite="0" nextlayerid="9" nextobjectid="36">
  <tileset firstgid="1" source="cutting_board.tsx"/>
  <tileset firstgid="2" source="mouse.tsx"/>
+ <tileset firstgid="5" source="player.tsx"/>
  <objectgroup id="4" name="background" visible="0" locked="1">
   <object id="2" name="wood" gid="1" x="0" y="1000" width="1280" height="1280"/>
  </objectgroup>
@@ -148,5 +149,6 @@
     <property name="warnDuration" type="float" value="2"/>
    </properties>
   </object>
+  <object id="35" name="player" type="player" gid="5" x="256" y="416" width="96" height="96"/>
  </objectgroup>
 </map>
