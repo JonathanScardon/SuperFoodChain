@@ -316,26 +316,26 @@ public class CollisionController implements ContactListener {
                 }
             }
 
-            // Player and Boss
-            else if ((c1 == PLAYER_CATEGORY && c2 == BOSS_CATEGORY) || (c2 == PLAYER_CATEGORY && c1 == BOSS_CATEGORY)) {
-                System.out.println("P-B CONTACT IS HAPPENING");
-                if (state.getPlayer().hasShield()) {
-                    state.getPlayer().setShield(false);
-                    System.out.println("BOSS HIT");
-                    if (c1 == BOSS_CATEGORY) {
-                        bossHit(b1);
-                    } else {
-                        bossHit(b2);
-                    }
-                } else {
-                    System.out.println("DEATH");
-                    if (c1 == PLAYER_CATEGORY) {
-                        removed.add(s1);
-                    } else {
-                        removed.add(s2);
-                    }
-                }
-            }
+//            // Player and Boss
+//            else if ((c1 == PLAYER_CATEGORY && c2 == BOSS_CATEGORY) || (c2 == PLAYER_CATEGORY && c1 == BOSS_CATEGORY)) {
+//                System.out.println("P-B CONTACT IS HAPPENING");
+//                if (state.getPlayer().hasShield()) {
+//                    state.getPlayer().setShield(false);
+//                    System.out.println("BOSS HIT");
+//                    if (c1 == BOSS_CATEGORY) {
+//                        bossHit(b1);
+//                    } else {
+//                        bossHit(b2);
+//                    }
+//                } else {
+//                    System.out.println("DEATH");
+//                    if (c1 == PLAYER_CATEGORY) {
+//                        removed.add(s1);
+//                    } else {
+//                        removed.add(s2);
+//                    }
+//                }
+//            }
 
             // Player and Coin
             else if ((c1 == PLAYER_CATEGORY && c2 == COIN_CATEGORY) || (c2 == PLAYER_CATEGORY && c1 == COIN_CATEGORY)) {
@@ -371,21 +371,21 @@ public class CollisionController implements ContactListener {
             }
 
             // Projectile Collisions
-//            // Projectile and Minion
-//            else if ((c1 == PROJECTILE_CATEGORY && c2 == MINION_CATEGORY) || (c2 == PROJECTILE_CATEGORY && c1 == MINION_CATEGORY)) {
-//                System.out.println("PR-M CONTACT IS HAPPENING");
-//                if (c1 == PROJECTILE_CATEGORY) {
-//                    System.out.println("KILL MINION");
-//                    removedProjectiles.add(b1);
-//                    removed.add(s2);
-//                    coinsAdded.add(s2);
-//                } else {
-//                    System.out.println("KILL MINION");
-//                    removedProjectiles.add(b2);
-//                    removed.add(s1);
-//                    coinsAdded.add(s1);
-//                }
-//            }
+            // Projectile and Minion
+            else if ((c1 == PROJECTILE_CATEGORY && c2 == MINION_CATEGORY) || (c2 == PROJECTILE_CATEGORY && c1 == MINION_CATEGORY)) {
+                System.out.println("PR-M CONTACT IS HAPPENING");
+                if (c1 == PROJECTILE_CATEGORY) {
+                    System.out.println("KILL MINION");
+                    removedProjectiles.add(b1);
+                    removed.add(s2);
+                    coinsAdded.add(s2);
+                } else {
+                    System.out.println("KILL MINION");
+                    removedProjectiles.add(b2);
+                    removed.add(s1);
+                    coinsAdded.add(s1);
+                }
+            }
 //            // Projectile and Boss
 //            else if ((c1 == PROJECTILE_CATEGORY && c2 == BOSS_CATEGORY) || (c2 == PROJECTILE_CATEGORY && c1 == BOSS_CATEGORY)) {
 //                System.out.println("PR-B CONTACT IS HAPPENING");
@@ -447,11 +447,16 @@ public class CollisionController implements ContactListener {
         }
         companionAdded = null;
 
-        // Remove dead companions/minions from lists
+        // Remove dead companions/minions/coins from lists
         state.getPlayer().companions.removeIf(c -> !c.getObstacle().isActive());
         for (Minion m : state.getMinions()) {
             if (!m.getObstacle().isActive()) {
                 state.getMinions().removeValue(m, false);
+            }
+        }
+        for (Coin c : state.getCoins()) {
+            if (!c.getObstacle().isActive()) {
+                state.getCoins().removeValue(c, false);
             }
         }
 
@@ -459,11 +464,21 @@ public class CollisionController implements ContactListener {
         for (int i = state.getActiveProjectiles().size - 1; i >= 0; i--) {
             Projectile p = state.getActiveProjectiles().get(i);
             if (removedProjectiles.contains(p.getObstacle().getBody()) || p.getLife() <= 0) {
-                state.getActiveProjectiles().removeIndex(i);
-                p.reset();
+                // Reset physics state without destroying
+                state.getActiveProjectiles().get(i).getObstacle().getBody().setLinearVelocity(0, 0);
+                state.getActiveProjectiles().get(i).getObstacle().getBody().setTransform(0, 0, 0);
+                state.getActiveProjectiles().get(i).getObstacle().setActive(false);
+                state.getActiveProjectiles().get(i).getObstacle().getBody().setActive(false);
+                state.getActiveProjectiles().get(i).getObstacle().markRemoved(true);
+
                 if (p instanceof StrawberryProjectile) {
                     ProjectilePools.strawberryPool.free((StrawberryProjectile) p);
                 }
+            }
+        }
+        for (Projectile p : state.getActiveProjectiles()) {
+            if (!p.getObstacle().isActive()) {
+                state.getActiveProjectiles().removeValue(p, false);
             }
         }
     }
