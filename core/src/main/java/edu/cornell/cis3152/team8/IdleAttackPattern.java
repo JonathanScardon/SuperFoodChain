@@ -51,8 +51,8 @@ public class IdleAttackPattern implements BossAttackPattern {
         state = AttackState.ATTACK;
         controller.setAction(CONTROL_NO_ACTION);
 
-        boss.setX(this.idleX);
-        boss.setY(this.idleY);
+        boss.getObstacle().setX(this.idleX);
+        boss.getObstacle().setY(this.idleY);
         attackTime = attackDuration;
         boss.angle = 90f; // make the boss face upwards
 

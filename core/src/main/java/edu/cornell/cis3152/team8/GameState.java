@@ -55,7 +55,7 @@ public class GameState {
     /**
      * The coins on the map
      */
-    private Coin[] coins;
+    private Array<Coin> coins;
     /**
      * The companions on the map
      */
@@ -183,7 +183,7 @@ public class GameState {
         // minions[i] = new Minion(0,0);
         // // minion texture
         // }
-      
+
         // Boss
 //         bosses = new Boss[1];
 //         bosses[0] = new Mouse(100f, 100f, world);
@@ -203,7 +203,7 @@ public class GameState {
         deadCompanions.clear();
 
         // Coins - none at the beginning
-        coins = new LinkedList<>();
+        coins = new Array<>();
 
         // Projectiles
         projectiles = new Array<>();
@@ -249,16 +249,12 @@ public class GameState {
         return minions;
     }
 
-    public void setMinions(Array<Minion> m) {
-        minions = m;
-    }
-
     /**
      * Sets the minions in the level
      *
      * @param minions The minions to set
      */
-    public void setMinions(LinkedList<Minion> minions) {this.minions = minions; }
+    public void setMinions(Array<Minion> minions) {this.minions = minions; }
 
     /**
      * @return the array of bosses in the level
@@ -273,7 +269,7 @@ public class GameState {
     /**
      * @return the array of coins in the level
      */
-    public LinkedList<Coin> getCoins() {
+    public Array<Coin> getCoins() {
         return coins;
     }
 
@@ -289,7 +285,7 @@ public class GameState {
      *
      * @param companions The companions to set
      */
-    public void setCompanions(LinkedList<Companion> companions) {
+    public void setCompanions(Array<Companion> companions) {
         this.companions = companions;
     }
 

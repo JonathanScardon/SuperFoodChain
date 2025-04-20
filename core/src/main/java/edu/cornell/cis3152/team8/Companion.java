@@ -7,6 +7,7 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Filter;
 import com.badlogic.gdx.physics.box2d.World;
 import edu.cornell.gdiac.graphics.SpriteBatch;
+import edu.cornell.gdiac.graphics.SpriteSheet;
 import edu.cornell.gdiac.physics2.BoxObstacle;
 import edu.cornell.gdiac.physics2.CapsuleObstacle;
 import edu.cornell.gdiac.physics2.ObstacleSprite;
@@ -55,6 +56,7 @@ public abstract class Companion extends ObstacleSprite {
     protected Texture glow;
     protected Boolean highlight;
     private int id;
+    private float size;
 
     private boolean remove;
 
@@ -64,7 +66,6 @@ public abstract class Companion extends ObstacleSprite {
         super(new CapsuleObstacle(x/units, y/units, 0.5f, 0.5f), true);
         ((CapsuleObstacle)obstacle).setTolerance( 0.5f );
 
-        isAlive = true;
         cost = 0;
         cooldown = 5;
         abilityCool = 0;
@@ -95,7 +96,7 @@ public abstract class Companion extends ObstacleSprite {
         obstacle.setFilterData(filter);
 
   // TODO: was this different?
-        float size = 1 * units;
+        size = 0.4f * units;
         mesh.set(-size/2.0f,-size/2.0f,size,size);
     }
 
@@ -293,6 +294,8 @@ public abstract class Companion extends ObstacleSprite {
     public boolean shouldRemove(){
         return remove;
     }
+
+    public SpriteSheet getAnimator() {return sprite;}
 
     public void decreaseDeathExpirationTimer(float delta){
         deathExpirationTimer -= delta;

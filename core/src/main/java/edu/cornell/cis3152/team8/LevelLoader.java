@@ -93,7 +93,7 @@ public class LevelLoader {
 
         switch (bossType) {
             case "mouse":
-                boss = new Mouse(x, y);
+                boss = new Mouse(x, y,state.getWorld());
                 boss.setSpriteSheet(mouseSprite);
                 bossController = new MouseController(boss, state);
                 break;
