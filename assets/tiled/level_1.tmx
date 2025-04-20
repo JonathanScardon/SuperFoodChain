@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="40" height="22" tilewidth="32" tileheight="32" infinite="0" nextlayerid="9" nextobjectid="40">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="40" height="22" tilewidth="32" tileheight="32" infinite="0" nextlayerid="9" nextobjectid="47">
  <tileset firstgid="1" source="cutting_board.tsx"/>
  <tileset firstgid="2" source="mouse.tsx"/>
  <objectgroup id="4" name="background" visible="0" locked="1">
@@ -148,6 +148,19 @@
    </properties>
   </object>
   <object id="38" name="p" type="player" x="952.516" y="231.769"/>
-  <object id="39" x="1896.55" y="-378.745" width="2.82646"/>
+  <object id="40" name="chopsticks" type="boss" x="794.286" y="1048.57">
+   <properties>
+    <property name="attack0" type="object" value="26"/>
+    <property name="attack1" type="object" value="43"/>
+    <property name="bossType" propertytype="bossType" value="chopsticks"/>
+   </properties>
+  </object>
+  <object id="43" name="snatch" type="attack" x="968.571" y="965.714">
+   <properties>
+    <property name="attackDuration" type="float" value="0"/>
+    <property name="attackType" propertytype="attackType" value="snatch"/>
+    <property name="warnDuration" type="float" value="0.5"/>
+   </properties>
+  </object>
  </objectgroup>
 </map>

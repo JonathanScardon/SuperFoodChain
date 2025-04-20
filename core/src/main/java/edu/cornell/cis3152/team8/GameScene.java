@@ -651,9 +651,6 @@ private Vector2[] companionSpawns;
 //         state.setCompanions(companions);
 //         coins = state.getCoins();
 //         coins.clear();
-//         bosses = state.getBosses();
-//         bossControls = new InputController[bosses.length];
-//         bossControls[0] = new MouseController(bosses[0], state);
 //         projectiles = state.getActiveProjectiles();
 
 //         playerControls = new PlayerController(player);

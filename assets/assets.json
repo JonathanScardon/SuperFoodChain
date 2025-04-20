@@ -79,6 +79,16 @@
                     "size": 2
                 }
             }
+        },
+        "chopsticks": {
+            "file": "images/chopsticks.png",
+            "sprites": {
+                "animation": {
+                    "rows": 1,
+                    "cols": 1,
+                    "size": 1
+                }
+            }
         }
     },
     "jsons": {
