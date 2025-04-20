@@ -1,5 +1,6 @@
 package edu.cornell.cis3152.team8;
 
+import com.badlogic.gdx.math.Vector2;
 import edu.cornell.gdiac.graphics.SpriteSheet;
 
 import static edu.cornell.cis3152.team8.InputController.*;
@@ -20,6 +21,8 @@ public class DashAttackPattern implements BossAttackPattern {
     private float warnTime;
     private AttackState state;
 
+    private static final float PHYSICS_UNITS = 64f;
+
     public DashAttackPattern(BossController controller, float x, float y, String dir, float warnDuration, SpriteSheet warnSprite) {
         this.controller = controller;
         this.boss = controller.boss;
@@ -31,19 +34,19 @@ public class DashAttackPattern implements BossAttackPattern {
         switch (dir) {
             case "up":
                 this.controlCode = CONTROL_MOVE_UP;
-                this.warnPattern = new BossWarnPattern(startX, 720f / 2f);
+                this.warnPattern = new BossWarnPattern(startX, 720f / PHYSICS_UNITS / 2f);
                 break;
             case "down":
                 this.controlCode = CONTROL_MOVE_DOWN;
-                this.warnPattern = new BossWarnPattern(startX, 720f / 2f);
+                this.warnPattern = new BossWarnPattern(startX, 720f / PHYSICS_UNITS / 2f);
                 break;
             case "left":
                 this.controlCode = CONTROL_MOVE_LEFT;
-                this.warnPattern = new BossWarnPattern(1280f / 2f, startY);
+                this.warnPattern = new BossWarnPattern(1280f / PHYSICS_UNITS / 2f, startY);
                 break;
             case "right":
                 this.controlCode = CONTROL_MOVE_RIGHT;
-                this.warnPattern = new BossWarnPattern(1280f / 2f, startY);
+                this.warnPattern = new BossWarnPattern(1280f / PHYSICS_UNITS / 2f, startY);
                 break;
             default:
                 throw new IllegalArgumentException("Unknown direction: " + dir);
@@ -63,23 +66,23 @@ public class DashAttackPattern implements BossAttackPattern {
 
         switch (controlCode) {
             case CONTROL_MOVE_UP:
-                boss.getObstacle().setVX(0);
-                boss.getObstacle().setVY(15f); // make the boss slide up a little bit
+                // make the boss slide up a little bit
+                boss.getObstacle().setLinearVelocity(new Vector2(0, 15f));
                 boss.angle = 90f;
                 break;
             case CONTROL_MOVE_DOWN:
-                boss.getObstacle().setVX(0);
-                boss.getObstacle().setVY(-15f); // make the boss slide down a little bit
+                // make the boss slide down a little bit
+                boss.getObstacle().setLinearVelocity(new Vector2(0, -15f));
                 boss.angle = 270f;
                 break;
             case CONTROL_MOVE_LEFT:
-                boss.getObstacle().setVX(-15f); // make the boss slide left a little bit
-                boss.getObstacle().setVY(0);
+                // make the boss slide left a little bit
+                boss.getObstacle().setLinearVelocity(new Vector2(-15f, 0));
                 boss.angle = 180f;
                 break;
             case CONTROL_MOVE_RIGHT:
-                boss.getObstacle().setVX(15f); // make the boss slide right a little bit
-                boss.getObstacle().setVY(0);
+                // make the boss slide right a little bit
+                boss.getObstacle().setLinearVelocity(new Vector2(15f, 0));
                 boss.angle = 0f;
                 break;
         }
@@ -115,16 +118,12 @@ public class DashAttackPattern implements BossAttackPattern {
     }
 
     @Override
-    public boolean ended() {
+    public boolean isEnded() {
         return switch (controlCode) {
-//            case CONTROL_MOVE_UP -> boss.getObstacle().getY() - boss.getRadius() * 2 > 720;
-//            case CONTROL_MOVE_DOWN -> boss.getObstacle().getY() + boss.getRadius() * 2 < 0;
-//            case CONTROL_MOVE_LEFT -> boss.getObstacle().getX() - boss.getRadius() * 2 < 0;
-//            case CONTROL_MOVE_RIGHT -> boss.getObstacle().getX() - boss.getRadius() * 2 > 1280;
-            case CONTROL_MOVE_UP -> boss.getObstacle().getY() - 2 * 2 > 720;
-            case CONTROL_MOVE_DOWN -> boss.getObstacle().getY() + 2 * 2 < 0;
-            case CONTROL_MOVE_LEFT -> boss.getObstacle().getX() - 2 * 2 < 0;
-            case CONTROL_MOVE_RIGHT -> boss.getObstacle().getX() - 2 * 2 > 1280;
+            case CONTROL_MOVE_UP -> (boss.getObstacle().getY() + 4) * PHYSICS_UNITS > 720;
+            case CONTROL_MOVE_DOWN -> (boss.getObstacle().getY() + 4) * PHYSICS_UNITS < 0;
+            case CONTROL_MOVE_LEFT -> (boss.getObstacle().getX() + 4) * PHYSICS_UNITS < 0;
+            case CONTROL_MOVE_RIGHT -> (boss.getObstacle().getX() + 4) * PHYSICS_UNITS > 1280;
             default -> true;
         };
     }

@@ -8,11 +8,6 @@ public class Mouse extends Boss {
         super(x, y, world);
     }
 
-//    @Override
-//    public BossType getBossType() {
-//        return BossType.MOUSE;
-//    }
-
     public String getState(){
         return state;
     }

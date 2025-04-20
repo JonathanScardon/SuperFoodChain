@@ -26,5 +26,5 @@ public interface BossAttackPattern {
     /**
      * @return Whether the warning and attack have both ended
      */
-    boolean ended();
+    boolean isEnded();
 }

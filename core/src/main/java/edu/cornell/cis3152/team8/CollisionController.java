@@ -4,21 +4,12 @@ package edu.cornell.cis3152.team8;
 import com.badlogic.gdx.physics.box2d.*;
 import edu.cornell.gdiac.physics2.ObstacleSprite;
 import com.badlogic.gdx.utils.Array;
-import edu.cornell.cis3152.team8.GameObject.ObjectType;
 
 import java.util.*;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input.Keys;
-
-import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Random;
 
 import com.badlogic.gdx.math.*;
-import edu.cornell.gdiac.audio.SoundEffect;
-import edu.cornell.gdiac.audio.SoundEffectManager;
 
 /**
  * Class to handle basic collisions in the game.
