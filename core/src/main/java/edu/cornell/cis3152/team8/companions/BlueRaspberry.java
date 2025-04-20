@@ -28,7 +28,7 @@ public class BlueRaspberry extends Companion {
         setCooldown(7);
 //        radius = 1;
         texture = new Texture("images/Companion_Raspberry_Static.PNG");
-        SpriteSheet blueRaspberry = new SpriteSheet(texture, 1, 7);
+        SpriteSheet blueRaspberry = new SpriteSheet(texture, 1, 1);
         setSpriteSheet(blueRaspberry);
         animationSpeed = 0.25f;
 //        size = 0.4f;

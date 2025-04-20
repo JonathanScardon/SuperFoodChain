@@ -18,9 +18,10 @@
     "Spawn 4": [400,600]
   },
   "Companion Spawns":{
-    "Max Strawberry": 1,
+    "Max Strawberry": 2,
     "Max Pineapple": 1,
-    "Max Avocado": 0,
+    "Max Avocado": 1,
+    "Max Blue Raspberry": 1,
     "Number of Spawns" : 5,
     "Spawn 0": [379,439],
     "Spawn 1": [509,54],
