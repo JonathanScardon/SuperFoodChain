@@ -440,7 +440,7 @@ public class CollisionController implements ContactListener {
         }
         companionAdded = null;
 
-        // Remove dead companions/minions/coins from lists
+        // Remove dead companions/minions/coins/boss from lists
         state.getPlayer().companions.removeIf(c -> !c.getObstacle().isActive());
         for (Minion m : state.getMinions()) {
             if (!m.getObstacle().isActive()) {
@@ -450,6 +450,11 @@ public class CollisionController implements ContactListener {
         for (Coin c : state.getCoins()) {
             if (!c.getObstacle().isActive()) {
                 state.getCoins().removeValue(c, false);
+            }
+        }
+        for (Boss b : state.getBosses()) {
+            if (!b.getObstacle().isActive()) {
+                state.getBosses().removeValue(b, false);
             }
         }
 
@@ -485,7 +490,6 @@ public class CollisionController implements ContactListener {
                 if (boss.getHealth() <= 0) {
                     removed.add((ObstacleSprite) b.getUserData());
                 }
-
             }
         }
     }

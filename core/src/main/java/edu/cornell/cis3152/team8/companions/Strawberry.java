@@ -34,7 +34,7 @@ public class Strawberry extends Companion {
         super(x, y, id, world);
         setCompanionType(CompanionType.STRAWBERRY);
         //temp cost (was 3)
-        setCost(1);
+        setCost(2);
         setCooldown(3);
 //        radius = 1;
         texture = new Texture("images/Strawberry.png");
