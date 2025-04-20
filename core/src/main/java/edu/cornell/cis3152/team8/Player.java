@@ -5,6 +5,7 @@ import com.badlogic.gdx.math.*;
 import com.badlogic.gdx.physics.box2d.Filter;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.JsonValue;
+import edu.cornell.cis3152.team8.companions.Durian;
 import edu.cornell.cis3152.team8.companions.Strawberry;
 import edu.cornell.gdiac.graphics.*;
 import edu.cornell.gdiac.physics2.ObstacleSprite;

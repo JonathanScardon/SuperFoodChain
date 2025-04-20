@@ -2,15 +2,18 @@ package edu.cornell.cis3152.team8.companions;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
+import edu.cornell.cis3152.team8.Boss;
 import edu.cornell.cis3152.team8.Companion;
 import edu.cornell.cis3152.team8.GameState;
+import edu.cornell.cis3152.team8.Minion;
 import edu.cornell.gdiac.graphics.SpriteBatch;
 import edu.cornell.gdiac.graphics.SpriteSheet;
 import java.util.Random;
 
 public class Durian extends Companion {
-
+    private int units = 64;
     Texture texture;
     /**
      * Constructs a Durian at the given position
@@ -20,34 +23,41 @@ public class Durian extends Companion {
      */
     public Durian(float x, float y, int id, World world) {
         super(x, y, id, world);
-        //System.out.println(animator);
-        //System.out.println(origin);
         setCompanionType(CompanionType.DURIAN);
-        //temp cost (was 10)
         setCost(1);
-        setCooldown(10);
+        setCooldown(1);
 
-        texture = new Texture("images/Pineapple.png");
+        texture = new Texture("images/Durian.png");
         SpriteSheet pineapple = new SpriteSheet(texture, 1, 7);
         setSpriteSheet(pineapple);
         animationSpeed = 0.25f;
-//        size = 0.4f;
     }
-
-//    public void draw(SpriteBatch batch) {
-//        if (isDestroyed()) {
-//            batch.setColor(Color.BLACK);
-//        }
-//        batch.draw(texture, position.x, position.y, 64, 64);
-//        batch.setColor(Color.WHITE);
-//    }
 
     @Override
     /**
-     * A Durian creates a shield for the player
+     * TODO: THIS NEEDS TO BE CHANGED --> WILL CAUSE COIN TO NOT SPAWN UPON MINION DEATH
      */
     public void useAbility(GameState state) {
-        state.getPlayer().setShield(true);
+        Vector2 durianPos = obstacle.getPosition();
+
+        float radius = 3f;
+        int damage = 1;
+
+        for (Minion m : state.getMinions()) {
+            Vector2 enemyPos = m.getObstacle().getPosition();
+            if (enemyPos.dst(durianPos) <= radius) {
+                m.removeHealth(damage);
+                System.out.println("Minion killed via durian radius");
+            }
+        }
+
+        for (Boss b : state.getBosses()) {
+            Vector2 enemyPos = b.getObstacle().getPosition();
+            if (enemyPos.dst(durianPos) <= radius) {
+                b.removeHealth(damage);
+                System.out.println("Boss damaged via durian radius");
+            }
+        }
         coolDown(false, 0);
     }
 }
