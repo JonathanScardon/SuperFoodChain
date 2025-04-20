@@ -56,6 +56,6 @@ public class BlueRaspberry extends Companion {
     public void useAbility(GameState state) {
         usedBoost = true;
         //increase the player speed
-        Player.setSpeed(Player.getSpeed() + 1);
+        Companion.setSpeed(Companion.getSpeed() + 1);
     }
 }

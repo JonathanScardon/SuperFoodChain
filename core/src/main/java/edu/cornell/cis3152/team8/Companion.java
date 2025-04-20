@@ -60,6 +60,8 @@ public abstract class Companion extends ObstacleSprite {
 
     private boolean remove;
 
+    private static int MOVE_SPEED = 3;
+
   private static final float units = 64f;
 
     public Companion(float x, float y, int id, World world) {
@@ -200,8 +202,6 @@ public abstract class Companion extends ObstacleSprite {
         boolean movingDown = controlCode == 8;
 
         // Process movement command.
-        int MOVE_SPEED = Player.getSpeed();
-        // int s = 2;
         Vector2 velocity = obstacle.getLinearVelocity();
         if (movingLeft) {
             this.direction = InputController.CONTROL_MOVE_LEFT;
@@ -266,6 +266,22 @@ public abstract class Companion extends ObstacleSprite {
         //batch.draw(texture, position.x, position.y, 64, 64);
         batch.setColor(Color.WHITE);
     }
+
+    /**
+     * @return companion speed MOVE_SPEED
+     */
+    public static int getSpeed(){
+        return MOVE_SPEED;
+    }
+
+    /**
+     * Sets companion speed MOVE_SPEED
+     * @param speed new speed
+     */
+    public static void setSpeed(int speed){
+        MOVE_SPEED = speed;
+    }
+
 
     /**
      *

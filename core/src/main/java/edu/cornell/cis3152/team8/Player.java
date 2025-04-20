@@ -73,7 +73,6 @@ public class Player {
      * */
     private static int DELAY;
     private final static int MAX_COMPANIONS = 15;
-    private static int MOVE_SPEED = 3;
 
     private CircularBuffer controlBuffer;
 
@@ -308,20 +307,6 @@ public class Player {
         companions.remove(index);
     }
 
-    /**
-     * @return player speed
-     */
-    public static int getSpeed(){
-        return MOVE_SPEED;
-    }
-
-    /**
-     * Sets the player's speed
-     * @param speed new speed
-     */
-    public static void setSpeed(int speed) {
-        MOVE_SPEED = speed;
-    }
 
     /**
      * Returns the LinkedList of companions in the chain
