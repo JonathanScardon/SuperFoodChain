@@ -1,34 +1,35 @@
 package edu.cornell.cis3152.team8;
 
 import edu.cornell.gdiac.graphics.SpriteSheet;
+
 import static edu.cornell.cis3152.team8.InputController.*;
 
 /**
- * The boss will idle in the center of the screen
+ * The boss will target the head of the player
  */
-public class IdleAttackPattern implements BossAttackPattern {
+public class SnatchAttackPattern implements BossAttackPattern {
     private final BossController controller;
     private final Boss boss;
+    private final Player player;
     private final BossWarnPattern warnPattern;
 
-    private final float idleX, idleY;
     private final float warnDuration;
     private final float attackDuration;
 
+    private float attackX, attackY;
     private float warnTime;
     private float attackTime;
     private AttackState state;
 
-    public IdleAttackPattern(BossController controller, float x, float y, float warnDuration, float attackDuration, SpriteSheet warnSprite) {
+    public SnatchAttackPattern(BossController controller, float warnDuration, float attackDuration, SpriteSheet warnSprite, Player player) {
         this.controller = controller;
         this.boss = controller.boss;
+        this.player = player;
 
-        this.idleX = x;
-        this.idleY = y;
         this.warnDuration = warnDuration;
         this.attackDuration = attackDuration;
 
-        this.warnPattern = new BossWarnPattern(this.idleX, this.idleY);
+        this.warnPattern = new BossWarnPattern(0, 0);
         this.warnPattern.setSpriteSheet(warnSprite);
 
         this.state = AttackState.INACTIVE;
@@ -37,8 +38,11 @@ public class IdleAttackPattern implements BossAttackPattern {
     @Override
     public void start() {
         state = AttackState.WARN;
-        controller.setAction(CONTROL_NO_ACTION);
+        controller.setAction(InputController.CONTROL_NO_ACTION);
 
+        attackX = player.getPlayerHead().getObstacle().getPosition().x;
+        attackY = player.getPlayerHead().getObstacle().getPosition().y;
+        warnPattern.setPosition(attackX, attackY);
         warnTime = warnDuration;
         attackTime = attackDuration;
 
@@ -48,12 +52,11 @@ public class IdleAttackPattern implements BossAttackPattern {
 
     public void attack() {
         state = AttackState.ATTACK;
-        controller.setAction(CONTROL_NO_ACTION);
+        controller.setAction(InputController.CONTROL_NO_ACTION);
 
-        boss.getObstacle().setX(this.idleX);
-        boss.getObstacle().setY(this.idleY);
+        boss.getObstacle().setX(this.attackX);
+        boss.getObstacle().setY(this.attackY);
         attackTime = attackDuration;
-        boss.angle = 90f; // make the boss face upwards
 
         warnPattern.active = false;
         boss.curWarn = null;
@@ -67,8 +70,7 @@ public class IdleAttackPattern implements BossAttackPattern {
             case WARN:
                 if (warnTime > 0) {
                     warnTime -= delta;
-                }
-                else {
+                } else {
                     attack();
                 }
                 break;

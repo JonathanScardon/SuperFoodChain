@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="40" height="22" tilewidth="32" tileheight="32" infinite="0" nextlayerid="8" nextobjectid="35">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="40" height="22" tilewidth="32" tileheight="32" infinite="0" nextlayerid="9" nextobjectid="40">
  <tileset firstgid="1" source="cutting_board.tsx"/>
  <tileset firstgid="2" source="mouse.tsx"/>
  <objectgroup id="4" name="background" visible="0" locked="1">
@@ -45,107 +45,109 @@
   <object id="9" name="a2" type="attack" x="220" y="-60">
    <properties>
     <property name="attackType" value="dash"/>
-    <property name="dir" propertytype="direction" value="down"/>
+    <property name="dir" value="down"/>
     <property name="warnDuration" type="float" value="2"/>
    </properties>
   </object>
   <object id="14" name="a1" type="attack" x="80" y="780">
    <properties>
     <property name="attackType" value="dash"/>
-    <property name="dir" propertytype="direction" value="up"/>
+    <property name="dir" value="up"/>
     <property name="warnDuration" type="float" value="2"/>
    </properties>
   </object>
   <object id="28" name="a11" type="attack" x="-80" y="608">
    <properties>
     <property name="attackType" value="dash"/>
-    <property name="dir" propertytype="direction" value="right"/>
+    <property name="dir" value="right"/>
     <property name="warnDuration" type="float" value="2"/>
    </properties>
   </object>
   <object id="31" name="a14" type="attack" x="1360" y="256">
    <properties>
     <property name="attackType" value="dash"/>
-    <property name="dir" propertytype="direction" value="left"/>
+    <property name="dir" value="left"/>
     <property name="warnDuration" type="float" value="2"/>
    </properties>
   </object>
   <object id="33" name="a16" type="attack" x="1360" y="96">
    <properties>
     <property name="attackType" value="dash"/>
-    <property name="dir" propertytype="direction" value="left"/>
+    <property name="dir" value="left"/>
     <property name="warnDuration" type="float" value="2"/>
    </properties>
   </object>
   <object id="32" name="a12" type="attack" x="1360" y="480">
    <properties>
     <property name="attackType" value="dash"/>
-    <property name="dir" propertytype="direction" value="left"/>
+    <property name="dir" value="left"/>
     <property name="warnDuration" type="float" value="2"/>
    </properties>
   </object>
   <object id="29" name="a13" type="attack" x="-80" y="384">
    <properties>
     <property name="attackType" value="dash"/>
-    <property name="dir" propertytype="direction" value="right"/>
+    <property name="dir" value="right"/>
     <property name="warnDuration" type="float" value="2"/>
    </properties>
   </object>
   <object id="30" name="a15" type="attack" x="-80" y="160">
    <properties>
     <property name="attackType" value="dash"/>
-    <property name="dir" propertytype="direction" value="right"/>
+    <property name="dir" value="right"/>
     <property name="warnDuration" type="float" value="2"/>
    </properties>
   </object>
   <object id="15" name="a3" type="attack" x="360" y="780">
    <properties>
     <property name="attackType" value="dash"/>
-    <property name="dir" propertytype="direction" value="up"/>
+    <property name="dir" value="up"/>
     <property name="warnDuration" type="float" value="2"/>
    </properties>
   </object>
   <object id="16" name="a4" type="attack" x="500" y="-60">
    <properties>
     <property name="attackType" value="dash"/>
-    <property name="dir" propertytype="direction" value="down"/>
+    <property name="dir" value="down"/>
     <property name="warnDuration" type="float" value="2"/>
    </properties>
   </object>
   <object id="17" name="a5" type="attack" x="640" y="780">
    <properties>
     <property name="attackType" value="dash"/>
-    <property name="dir" propertytype="direction" value="up"/>
+    <property name="dir" value="up"/>
     <property name="warnDuration" type="float" value="2"/>
    </properties>
   </object>
   <object id="18" name="a6" type="attack" x="780" y="-60">
    <properties>
     <property name="attackType" value="dash"/>
-    <property name="dir" propertytype="direction" value="down"/>
+    <property name="dir" value="down"/>
     <property name="warnDuration" type="float" value="2"/>
    </properties>
   </object>
   <object id="19" name="a7" type="attack" x="920" y="780">
    <properties>
     <property name="attackType" value="dash"/>
-    <property name="dir" propertytype="direction" value="up"/>
+    <property name="dir" value="up"/>
     <property name="warnDuration" type="float" value="2"/>
    </properties>
   </object>
   <object id="20" name="a8" type="attack" x="1060" y="-60">
    <properties>
     <property name="attackType" value="dash"/>
-    <property name="dir" propertytype="direction" value="down"/>
+    <property name="dir" value="down"/>
     <property name="warnDuration" type="float" value="2"/>
    </properties>
   </object>
   <object id="21" name="a9" type="attack" x="1200" y="780">
    <properties>
     <property name="attackType" value="dash"/>
-    <property name="dir" propertytype="direction" value="up"/>
+    <property name="dir" value="up"/>
     <property name="warnDuration" type="float" value="2"/>
    </properties>
   </object>
+  <object id="38" name="p" type="player" x="952.516" y="231.769"/>
+  <object id="39" x="1896.55" y="-378.745" width="2.82646"/>
  </objectgroup>
 </map>
