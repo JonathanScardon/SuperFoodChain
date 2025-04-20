@@ -107,7 +107,7 @@ public class Player {
         head.setCollected(true);
 //        radius = 2;
         ticks = 0;
-        DELAY = MOVE_SPEED * 7;
+        DELAY = 10;
 
         Filter filter = head.getObstacle().getFilterData();
         filter.categoryBits = CollisionController.PLAYER_CATEGORY;

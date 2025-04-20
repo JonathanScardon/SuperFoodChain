@@ -16,18 +16,13 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.JsonValue;
 import edu.cornell.cis3152.team8.Companion.CompanionType;
-import edu.cornell.cis3152.team8.companions.Avocado;
-import edu.cornell.cis3152.team8.companions.Garlic;
-import edu.cornell.cis3152.team8.companions.Pineapple;
+import edu.cornell.cis3152.team8.companions.*;
 import edu.cornell.gdiac.assets.AssetDirectory;
 import edu.cornell.gdiac.graphics.SpriteBatch;
 import edu.cornell.gdiac.graphics.SpriteBatch.BlendMode;
 import edu.cornell.gdiac.graphics.TextLayout;
 import edu.cornell.gdiac.physics2.ObstacleSprite;
 import edu.cornell.gdiac.util.ScreenListener;
-
-import edu.cornell.cis3152.team8.companions.Strawberry;
-import edu.cornell.cis3152.team8.companions.Durian;
 
 import java.util.Arrays;
 import java.util.LinkedList;
@@ -56,9 +51,11 @@ public class GameScene implements Screen {
     private int maxStrawberry;
     private int maxPineapple;
     private int maxAvocado;
+    private int maxBlueRaspberry;
     private int curStrawberry;
     private int curPineapple;
     private int curAvocado;
+    private int curBlueRaspberry;
 
     private float companionAddTimer = 3.0f;
 
@@ -137,6 +134,7 @@ private Vector2[] companionSpawns;
         maxStrawberry = state.getMaxStrawberry();
         maxPineapple = state.getMaxPineapple();
         maxAvocado = state.getMaxAvocado();
+        maxBlueRaspberry = state.getMaxBlueRaspberry();
 
         minions = state.getMinions();
         minionSpawns = state.getMinionSpawns();
@@ -178,6 +176,7 @@ private Vector2[] companionSpawns;
         curStrawberry = 0;
         curPineapple = 0;
         curAvocado = 0;
+        curBlueRaspberry = 0;
         coins = state.getCoins();
 
         projectiles = state.getActiveProjectiles();
@@ -284,10 +283,14 @@ private Vector2[] companionSpawns;
                 } else if (curPineapple < maxPineapple) {
                     c = new Pineapple(x, y, companions.size, world);
                     curPineapple++;
+                } else if (curBlueRaspberry < maxBlueRaspberry){
+                    c = new BlueRaspberry(x, y, companions.size, world);
+                    curBlueRaspberry++;
                 } else {
                     c = new Avocado(x, y, companions.size, world);
                     curAvocado++;
                 }
+
                 companions.add(c);
                 companionSpawnTaken[spawn] = true;
             }
