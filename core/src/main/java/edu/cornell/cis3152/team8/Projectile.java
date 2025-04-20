@@ -118,11 +118,11 @@ public abstract class Projectile extends ObstacleSprite {
         life = maxLife;
         animeFrame = 0.0f;
         // Reset physics state without destroying
-        getObstacle().getBody().setLinearVelocity(0, 0);
-        getObstacle().getBody().setTransform(0, 0, 0);
-        getObstacle().setActive(false);
-        getObstacle().getBody().setActive(false);
-        getObstacle().markRemoved(true);
+//        getObstacle().getBody().setLinearVelocity(0, 0);
+//        getObstacle().getBody().setTransform(0, 0, 0);
+//        getObstacle().setActive(false);
+//        getObstacle().getBody().setActive(false);
+//        getObstacle().markRemoved(true);
     }
 
     /**
@@ -156,7 +156,7 @@ public abstract class Projectile extends ObstacleSprite {
         sprite.setFrame((int) animeFrame);
         // need to override because we pass in imageScale instead of 1.0f - need to put in size/radius instead?
         SpriteBatch.computeTransform(transform, sprite.getRegionWidth()/2.0f, sprite.getRegionHeight()/2.0f,
-                obstacle.getX() * units, obstacle.getY() * units, 0.0f, radius/units, radius/units);
+                obstacle.getX() * units, obstacle.getY() * units, 0.0f, radius, radius);
         batch.setColor(Color.WHITE);
         batch.draw(sprite, transform);
     }
