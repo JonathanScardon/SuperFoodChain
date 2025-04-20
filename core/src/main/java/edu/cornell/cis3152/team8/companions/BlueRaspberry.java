@@ -3,12 +3,15 @@ package edu.cornell.cis3152.team8.companions;
 import com.badlogic.gdx.graphics.Texture;
 import edu.cornell.cis3152.team8.Companion;
 import edu.cornell.cis3152.team8.GameState;
+import edu.cornell.cis3152.team8.Player;
 import edu.cornell.gdiac.graphics.SpriteSheet;
 
 public class BlueRaspberry extends Companion {
     Texture texture;
     float dx = 0.0f;
     float dy = 0.0f;
+
+    boolean usedBoost;
 
     /**
      * Constructor for
@@ -28,6 +31,8 @@ public class BlueRaspberry extends Companion {
         setSpriteSheet(blueRaspberry);
         animationSpeed = 0.25f;
         size = 0.4f;
+
+        usedBoost = false;
     }
 
     @Override
@@ -35,8 +40,21 @@ public class BlueRaspberry extends Companion {
         super.update(delta);
     }
 
+    
+    @Override
+    public boolean canUse(){
+        return !usedBoost;
+    }
+
+    /**
+     * The blue raspberry increases the speed of the player.
+     * usedBoost is set to true, preventing the speed increase from being
+     * used more than once
+     */
     @Override
     public void useAbility(GameState state) {
-
+        usedBoost = true;
+        //increase the player speed
+        Player.setSpeed(Player.getSpeed() + 1);
     }
 }
