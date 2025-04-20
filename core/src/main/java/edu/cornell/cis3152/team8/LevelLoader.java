@@ -23,6 +23,7 @@ public class LevelLoader {
 
     // boss sprites
     private SpriteSheet mouseSprite;
+    private SpriteSheet chopsticksSprite;
 
     // warning sprites
     private SpriteSheet idleWarnSprite;
@@ -58,6 +59,8 @@ public class LevelLoader {
 
         // load assets
         mouseSprite = assets.getEntry("dashMouse.animation", SpriteSheet.class);
+        chopsticksSprite = assets.getEntry("chopsticks.animation", SpriteSheet.class);
+
         idleWarnSprite = assets.getEntry("idleWarn.animation", SpriteSheet.class);
         dashWarnVerticalSprite = assets.getEntry("dashWarnVertical.animation", SpriteSheet.class);
         dashWarnHorizontalSprite = assets.getEntry("dashWarnHorizontal.animation", SpriteSheet.class);
@@ -100,13 +103,16 @@ public class LevelLoader {
 
         switch (bossType) {
             case "mouse":
-                boss = new Mouse(x, y, state.getWorld());
+                boss = new Boss(x, y, state.getWorld());
                 boss.setSpriteSheet(mouseSprite);
-                bossController = new MouseController(boss, state);
+                bossController = new BossController(boss, state);
                 break;
             case "chef":
                 break;
             case "chopsticks":
+                boss = new Boss(x, y, state.getWorld());
+                boss.setSpriteSheet(chopsticksSprite);
+                bossController = new BossController(boss, state);
                 break;
         }
 
