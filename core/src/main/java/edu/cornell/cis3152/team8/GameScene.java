@@ -61,7 +61,7 @@ public class GameScene implements Screen {
 
 
     private Vector2[] minionSpawns;
-private Vector2[] companionSpawns;
+    private Vector2[] companionSpawns;
 
     /**
      * Reference to the game session
@@ -348,7 +348,11 @@ private Vector2[] companionSpawns;
             debug = true;
         }
 
-        if (start && player.isAlive() && bosses.get(0).getObstacle().isActive() && !paused) {
+        if (!player.isAlive() || bosses.isEmpty()) {
+            return;
+        }
+
+        if (start && !paused) {
 //        if (start && player.isAlive()) {
             // iterate through all companions in the chain
             state.update();
@@ -529,7 +533,10 @@ private Vector2[] companionSpawns;
         }
 
         String coins = "X" + player.getCoins();
-        String HP = "Boss HP: " + bosses.get(0).getHealth();
+        String HP = "";
+        for (Boss b : bosses) {
+            HP = "Boss HP: " + b.getHealth();
+        }
 //        TextLayout shield;
         TextLayout coinCount = new TextLayout(coins, font, 128);
         TextLayout bossHP = new TextLayout(HP, font, 128);
@@ -555,7 +562,7 @@ private Vector2[] companionSpawns;
         }
 
 
-        if (!bosses.get(0).getObstacle().isActive()) {
+        if (bosses.isEmpty()) {
             drawWin();
         }
         if (paused && !settingsOn) {

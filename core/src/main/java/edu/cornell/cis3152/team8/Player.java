@@ -283,6 +283,7 @@ public class Player {
             companion.getObstacle().setY(tail.y);
         }
         companions.add(companion);
+        companion.setCollected(true);
     }
     /**
      * Removes the companion from the player's chain

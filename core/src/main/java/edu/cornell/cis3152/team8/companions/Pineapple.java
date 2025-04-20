@@ -4,10 +4,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
-import edu.cornell.cis3152.team8.Companion;
-import edu.cornell.cis3152.team8.GameState;
-import edu.cornell.cis3152.team8.PineappleProjectile;
-import edu.cornell.cis3152.team8.ProjectilePools;
+import edu.cornell.cis3152.team8.*;
 import edu.cornell.gdiac.graphics.SpriteBatch;
 import edu.cornell.gdiac.graphics.SpriteSheet;
 
@@ -40,14 +37,15 @@ public class Pineapple extends Companion {
         dy = directionalVector.y;
 
         if (dx != 0.0f || dy != 0.0f) {
-            PineappleProjectile projectile = ProjectilePools.pineapplePool.obtain();
-            projectile.getObstacle().setActive(true);
-            projectile.reset();
+//            PineappleProjectile projectile = ProjectilePools.pineapplePool.obtain();
+//            projectile.getObstacle().setActive(true);
+//            projectile.reset();
+            PineappleProjectile projectile = new PineappleProjectile(0,0,0, 0, state.getWorld());
             projectile.getObstacle().setX(obstacle.getX());
             projectile.getObstacle().setY(obstacle.getY());
-            float vx = (float) Math.toRadians(dx);
-            float vy = (float) Math.toRadians(dy);
-            projectile.getObstacle().setLinearVelocity(new Vector2(vx, vy));
+//            float vx = (float) Math.toRadians(dx);
+//            float vy = (float) Math.toRadians(dy);
+            projectile.getObstacle().setLinearVelocity(new Vector2(dx, dy));
             state.getActiveProjectiles().add(projectile);
         }
         coolDown(false, 0);
