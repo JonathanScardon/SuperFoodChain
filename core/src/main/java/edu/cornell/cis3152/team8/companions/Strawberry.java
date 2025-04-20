@@ -75,8 +75,6 @@ public class Strawberry extends Companion {
      * A Strawberry shoots 5 small and quick projectiles in a radius around it
      */
     public void useAbility(GameState state) {
-        ProjectilePools.initialize(state.getWorld());
-
 //             // need to add this because previous projectiles from pool that were used would be setDestroyed
 //             projectile.getObstacle().setActive(true);
 //             projectile.getObstacle().getBody().setActive(true);
@@ -98,15 +96,18 @@ public class Strawberry extends Companion {
                     @Override
                     public void run() { // override 'run' function inside Timer so that this block runs according to the time
                         StrawberryProjectile projectile = ProjectilePools.strawberryPool.obtain();
-                        projectile.getObstacle().setActive(true);
                         // resetLife --> reset
                         projectile.reset();
+                        projectile.getObstacle().setActive(true);
+                        projectile.getObstacle().getBody().setActive(true);
+                        projectile.getObstacle().markRemoved(false);
+
                         projectile.getObstacle().setX(obstacle.getX());
                         projectile.getObstacle().setY(obstacle.getY());
-                        float vx = (float) Math.toRadians(dx);
-                        float vy = (float) Math.toRadians(dy);
-                        projectile.getObstacle().setLinearVelocity(new Vector2(vx, vy));
+
+                        projectile.getObstacle().setLinearVelocity(new Vector2(dx * 5, dy * 5));
                         state.getActiveProjectiles().add(projectile);
+                        System.out.println(state.getActiveProjectiles().size);
                     }
                 }, delay / 1000f);
             }

@@ -114,6 +114,8 @@ public class GameState {
         numMinionSpawns = minionConstants.getInt("Number of Spawns");
         numCompanionSpawns = companionConstants.getInt("Number of Spawns");
 
+        coins = new Array<>();
+
         initMinionSpawns(this.constants.get("Minion Spawns"));
         initCompanionSpawns(this.constants.get("Companion Spawns"));
         Boss.setConstants(bossConstants);
@@ -202,11 +204,11 @@ public class GameState {
         projectiles.clear();
         deadCompanions.clear();
 
-        // Coins - none at the beginning
-        coins = new Array<>();
+        coins.clear();
 
         // Projectiles
         projectiles = new Array<>();
+        ProjectilePools.initialize(world);
 
         // Companions - requires information of number of companions
         // for (int i = 0; i < num_companions; i++) {
