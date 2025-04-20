@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="1" height="1" tilewidth="1280" tileheight="720" infinite="0" nextlayerid="3" nextobjectid="6">
+ <objectgroup id="2" name="objects">
+  <object id="1" name="player" type="player" x="808.562" y="292.167"/>
+  <object id="2" name="chopsticks" type="boss" x="112.703" y="892.073">
+   <properties>
+    <property name="attack0" type="object" value="5"/>
+    <property name="attack1" type="object" value="3"/>
+    <property name="bossType" propertytype="bossType" value="chopsticks"/>
+   </properties>
+  </object>
+  <object id="3" name="snatch" type="attack" x="276.982" y="893.983">
+   <properties>
+    <property name="attackDuration" type="float" value="1"/>
+    <property name="attackType" propertytype="attackType" value="snatch"/>
+    <property name="warnDuration" type="float" value="1"/>
+   </properties>
+  </object>
+  <object id="5" name="idle" type="attack" x="640" y="360">
+   <properties>
+    <property name="attackDuration" type="float" value="3"/>
+    <property name="attackType" propertytype="attackType" value="idle"/>
+    <property name="warnDuration" type="float" value="2"/>
+   </properties>
+  </object>
+ </objectgroup>
+</map>
