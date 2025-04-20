@@ -75,7 +75,7 @@ public abstract class Companion extends ObstacleSprite {
         animationFrame = 1;
         this.id = id;
         remove = false;
-    }
+
         // change?
         obstacle = getObstacle();
         obstacle.setName("companion");
@@ -216,7 +216,7 @@ public abstract class Companion extends ObstacleSprite {
             velocity.x = 0;
             velocity.y = 0;
         }
-      
+
         obstacle.setLinearVelocity(velocity);
 
 //        if (animator != null) {
