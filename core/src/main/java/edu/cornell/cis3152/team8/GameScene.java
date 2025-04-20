@@ -16,6 +16,7 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.JsonValue;
 import edu.cornell.cis3152.team8.Companion.CompanionType;
+import edu.cornell.cis3152.team8.companions.Avocado;
 import edu.cornell.cis3152.team8.companions.Garlic;
 import edu.cornell.cis3152.team8.companions.Pineapple;
 import edu.cornell.gdiac.assets.AssetDirectory;
@@ -279,7 +280,7 @@ private Vector2[] companionSpawns;
         if (r){
             Arrays.fill(companionSpawnTaken, false);
         }
-        while (companions.size < maxStrawberry+maxPineapple+maxAvocado) {
+        while (companions.size < maxStrawberry+maxPineapple+maxAvocado+1) {
             int spawn = rand.nextInt(companionSpawns.length);
             if (!companionSpawnTaken[spawn]) {
 
@@ -297,7 +298,7 @@ private Vector2[] companionSpawns;
                     c = new Pineapple(x, y, companions.size, world);
                     curPineapple++;
                 } else {
-                    c = new Garlic(x, y, companions.size, world);
+                    c = new Avocado(x, y, companions.size, world);
                     curAvocado++;
                 }
                 companions.add(c);

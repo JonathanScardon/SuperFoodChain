@@ -321,7 +321,12 @@ public class Player {
     public static void setSpeed(int speed) {
         MOVE_SPEED = speed;
     }
+
     /**
-     * Returns GameObject type Player
-     * */
+     * Returns the LinkedList of companions in the chain
+     *
+     */
+    public LinkedList<Companion> getCompanions() {
+        return companions;
+    }
 }

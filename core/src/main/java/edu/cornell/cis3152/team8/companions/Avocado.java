@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.physics.box2d.World;
 import edu.cornell.cis3152.team8.Companion;
 import edu.cornell.cis3152.team8.GameState;
+import edu.cornell.cis3152.team8.Player;
 import edu.cornell.gdiac.graphics.SpriteSheet;
 
 public class Avocado extends Companion {
@@ -20,11 +21,11 @@ public class Avocado extends Companion {
     public Avocado(float x, float y, int id, World world) {
         super(x, y, id, world);
         setCompanionType(CompanionType.AVOCADO);
-        setCost(2);
+        setCost(0);
         // need to think about how CD will work with support characters
         setCooldown(7);
 //        radius = 1;
-        texture = new Texture("images/Avocado.PNG");
+        texture = new Texture("images/Avocado.png");
         SpriteSheet avocado = new SpriteSheet(texture, 1, 7);
         setSpriteSheet(avocado);
         animationSpeed = 0.25f;
@@ -38,6 +39,18 @@ public class Avocado extends Companion {
 
     @Override
     public void useAbility(GameState state) {
-
+        Player player = state.getPlayer();
+        final float cooldownReduceValue = 2.0f; // number of seconds to reduce in the companion cooldowns in chain
+        for (Companion c : player.getCompanions()) {
+            if (c == this) { // if check for itself in the chain
+                continue; // you don't want to reduce your own ability cooldown
+            }
+            if (!c.canUse()) { // only reduce cooldowns for companions that have abilities on cooldown
+                c.coolDown(true, cooldownReduceValue); // will reduce the ACTIVE cooldown value
+                if (c.getActiveCooldown() < 0) { // need to clamp the active cooldown value to 0 in case reduction goes below
+                    c.setActiveCooldown(0);
+                }
+            }
+        }
     }
 }

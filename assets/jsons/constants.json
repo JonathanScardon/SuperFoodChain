@@ -19,7 +19,7 @@
   "Companion Spawns":{
         "Max Strawberry": 1,
         "Max Pineapple": 1,
-        "Max Avocado": 0,
+        "Max Avocado": 1,
         "Number of Spawns" : 5,
         "Spawn 0": [379,439],
         "Spawn 1": [509,54],

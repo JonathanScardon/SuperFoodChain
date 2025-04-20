@@ -20,7 +20,7 @@ public class Pineapple extends Companion {
         super(x, y, id, world);
         setCompanionType(CompanionType.PINEAPPLE);
         setCost(4);
-        setCooldown(2);
+        setCooldown(7);
 //        radius = 1;
         texture = new Texture("images/Pineapple.png");
         SpriteSheet pineapple = new SpriteSheet(texture, 1, 8);
