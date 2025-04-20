@@ -100,12 +100,12 @@ public class Player {
         this.companions = new LinkedList<>();
         this.coins = 0;
         this.attacking = false;
-        this.shield = false;
+        this.shield = true;
         Companion head = new Strawberry(x,y,0,world);
         head.getObstacle().setName("player");
         companions.add(head);
         head.setCollected(true);
-        radius = 2;
+//        radius = 2;
         ticks = 0;
         DELAY = MOVE_SPEED * 7;
 
@@ -159,11 +159,11 @@ public class Player {
 
         for (Companion c: companions){
             c.animationFrame = getPlayerHead().animationFrame;
-            if (c.animator != null) {
+            if (c.getAnimator() != null) {
                 c.animationFrame += c.animationSpeed;
                 //System.out.println(animationFrame);
-                if (c.animationFrame >= c.animator.getSize()) {
-                    c.animationFrame -= c.animator.getSize()-1;
+                if (c.animationFrame >= c.getAnimator().getSize()) {
+                    c.animationFrame -= c.getAnimator().getSize()-1;
                 }
             }
         }
@@ -269,14 +269,14 @@ public class Player {
         if (companions.size() == MAX_COMPANIONS){
             return;
         }
-      
+
         companion.getObstacle().setName("player");
 
         Filter filter = companion.getObstacle().getFilterData();
         filter.categoryBits = CollisionController.PLAYER_CATEGORY;
         filter.maskBits = CollisionController.MINION_CATEGORY | CollisionController.COMPANION_CATEGORY | CollisionController.COIN_CATEGORY | CollisionController.BOSS_CATEGORY | CollisionController.BORDER_CATEGORY;
         companion.getObstacle().setFilterData(filter);
-      
+
         CircularBuffer.PositionAndDirection tail = controlBuffer.getSnapshot(companions.size());
         if (tail != null) {
             companion.getObstacle().setX(tail.x);
@@ -300,8 +300,8 @@ public class Player {
             Companion c = companions.get(i);
             CircularBuffer.PositionAndDirection data = controlBuffer.getSnapshot(i-1);
             if (data != null){
-                c.setX(data.x);
-                c.setY(data.y);
+                c.getObstacle().setX(data.x);
+                c.getObstacle().setY(data.y);
             }
         }
         companions.remove(index);
@@ -324,8 +324,4 @@ public class Player {
     /**
      * Returns GameObject type Player
      * */
-    @Override
-    public ObjectType getType() {
-        return ObjectType.PLAYER;
-    }
 }
