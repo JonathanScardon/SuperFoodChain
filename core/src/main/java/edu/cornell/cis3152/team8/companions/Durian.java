@@ -11,7 +11,7 @@ import java.util.Random;
 
 public class Durian extends Companion {
 
-
+    Texture texture;
     /**
      * Constructs a Durian at the given position
      *
@@ -26,12 +26,12 @@ public class Durian extends Companion {
         //temp cost (was 10)
         setCost(1);
         setCooldown(10);
-      
+
         texture = new Texture("images/Pineapple.png");
         SpriteSheet pineapple = new SpriteSheet(texture, 1, 7);
         setSpriteSheet(pineapple);
         animationSpeed = 0.25f;
-        size = 0.4f;
+//        size = 0.4f;
     }
 
 //    public void draw(SpriteBatch batch) {

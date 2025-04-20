@@ -8,8 +8,9 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.*;
 import com.badlogic.gdx.utils.JsonValue;
 import edu.cornell.gdiac.graphics.*;
+import edu.cornell.gdiac.physics2.ObstacleSprite;
 
-public abstract class GameObject {
+public abstract class GameObject extends ObstacleSprite {
     public enum ObjectType {
         PLAYER,
         COMPANION,

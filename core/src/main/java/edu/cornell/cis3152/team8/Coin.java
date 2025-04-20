@@ -17,6 +17,7 @@ public class Coin extends ObstacleSprite {
     private float animationFrame;
     /** How fast we change frames */
     private static float animationSpeed;
+    private float size;
 
     private Texture texture;
     private static final float units = 64f;
@@ -54,7 +55,7 @@ public class Coin extends ObstacleSprite {
         filter.maskBits = CollisionController.PLAYER_CATEGORY;
         obstacle.setFilterData(filter);
 
-        float size = 0.3f * units;
+        size = 0.3f * units;
         mesh.set(-size/2.0f,-size/2.0f,size,size);
     }
 
@@ -110,7 +111,7 @@ public class Coin extends ObstacleSprite {
 //        if (!isDestroyed()) {
 //            batch.draw(texture, position.x, position.y, 64, 64);
 //        }
-      
+
         if (!obstacle.isActive()) {
             sprite.setFrame(0);
             batch.setColor(Color.BLACK);
@@ -124,7 +125,7 @@ public class Coin extends ObstacleSprite {
 //             , size);
         SpriteBatch.computeTransform(transform, sprite.getRegionWidth()/2.0f, sprite.getRegionHeight()/2.0f, obstacle.getPosition().x * units, obstacle.getPosition().y * units, 0.0f, size/units, size/units);
 
-      
+
         batch.draw( sprite, transform );
         //batch.draw(texture, position.x, position.y, 64, 64);
         //batch.draw(texture, position.x, position.y, 64, 64);

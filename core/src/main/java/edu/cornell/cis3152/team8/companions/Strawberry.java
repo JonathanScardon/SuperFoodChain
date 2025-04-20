@@ -34,14 +34,14 @@ public class Strawberry extends Companion {
         super(x, y, id, world);
         setCompanionType(CompanionType.STRAWBERRY);
         //temp cost (was 3)
-        setCost(2);
+        setCost(1);
         setCooldown(3);
-        radius = 1;
+//        radius = 1;
         texture = new Texture("images/Strawberry.png");
         SpriteSheet strawberry = new SpriteSheet(texture, 1, 8);
         setSpriteSheet(strawberry);
         animationSpeed = 0.25f;
-        size = 0.4f;
+//        size = 0.4f;
         glow = new Texture("images/StrawberryGlow.png");
     }
 
@@ -87,7 +87,7 @@ public class Strawberry extends Companion {
 
 //             projectile.getObstacle().setLinearVelocity(new Vector2(vx, vy));
 
-        Vector2 directionalVector = utilities.autoshoot(state, getPosition());
+        Vector2 directionalVector = utilities.autoshoot(state, obstacle.getPosition());
         dx = directionalVector.x;
         dy = directionalVector.y;
 
@@ -98,12 +98,14 @@ public class Strawberry extends Companion {
                     @Override
                     public void run() { // override 'run' function inside Timer so that this block runs according to the time
                         StrawberryProjectile projectile = ProjectilePools.strawberryPool.obtain();
-                        projectile.setDestroyed(false);
-                        projectile.resetLife();
+                        projectile.getObstacle().setActive(true);
+                        // resetLife --> reset
+                        projectile.reset();
                         projectile.getObstacle().setX(obstacle.getX());
                         projectile.getObstacle().setY(obstacle.getY());
-                        projectile.setVX((float) Math.toRadians(dx));
-                        projectile.setVY((float) Math.toRadians(dy));
+                        float vx = (float) Math.toRadians(dx);
+                        float vy = (float) Math.toRadians(dy);
+                        projectile.getObstacle().setLinearVelocity(new Vector2(vx, vy));
                         state.getActiveProjectiles().add(projectile);
                     }
                 }, delay / 1000f);

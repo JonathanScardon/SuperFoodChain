@@ -1,6 +1,7 @@
 package edu.cornell.cis3152.team8;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.physics.box2d.World;
 import edu.cornell.gdiac.graphics.SpriteBatch;
 
 /**
@@ -12,8 +13,8 @@ import edu.cornell.gdiac.graphics.SpriteBatch;
 public class PineappleProjectile extends Projectile {
     private static Texture texture; // art asset to be associated with the projectile
 
-    public PineappleProjectile(float x, float y, float vx, float vy) {
-        super(x,y,vx,vy);
+    public PineappleProjectile(float x, float y, float vx, float vy, World world) {
+        super(x,y,vx,vy,world);
 
         if (texture == null) {
             texture = new Texture("images/Projectile_Pineapple.png");
@@ -22,8 +23,9 @@ public class PineappleProjectile extends Projectile {
 
     @Override
     public void draw(SpriteBatch batch) {
-        if (!isDestroyed()) {
-            batch.draw(texture, position.x, position.y, 32, 32);
+        if (obstacle.isActive()) {
+            // TODO: change for physics units
+            batch.draw(texture, obstacle.getPosition().x, obstacle.getPosition().y, 32, 32);
         }
     }
 
