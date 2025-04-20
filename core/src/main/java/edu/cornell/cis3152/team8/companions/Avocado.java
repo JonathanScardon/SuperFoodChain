@@ -1,5 +1,6 @@
 package edu.cornell.cis3152.team8.companions;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.physics.box2d.World;
 import edu.cornell.cis3152.team8.Companion;
@@ -40,12 +41,13 @@ public class Avocado extends Companion {
     @Override
     public void useAbility(GameState state) {
         Player player = state.getPlayer();
+        float delta = Gdx.graphics.getDeltaTime();
         for (Companion c : player.getCompanions()) {
             if (c == this) { // if check for itself in the chain
                 continue; // you don't want to reduce your own ability cooldown
             }
             if (!c.canUse()) { // only reduce cooldowns for companions that have abilities on cooldown
-                c.coolDown(true, c.getActiveCooldown() / 2); // will reduce the ACTIVE cooldown value
+                c.coolDown(true, delta/5); // will reduce the ACTIVE cooldown value
             }
         }
     }
