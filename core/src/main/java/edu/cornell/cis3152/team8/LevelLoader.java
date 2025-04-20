@@ -66,6 +66,13 @@ public class LevelLoader {
 
         MapLayer objects = map.getLayers().get("objects");
 
+        // create player
+        for (MapObject obj : objects.getObjects()) {
+            if ("player".equals(obj.getProperties().get("type", String.class))) {
+                createPlayer(obj, scene);
+            }
+        }
+
         // create bosses and attach attacks to them
         for (MapObject obj : objects.getObjects()) {
             if ("boss".equals(obj.getProperties().get("type", String.class))) {
@@ -113,7 +120,7 @@ public class LevelLoader {
         BossAttackPattern attack;
         while (props.containsKey("attack" + attackIdx)) {
             attackObj = props.get("attack" + attackIdx, TiledMapTileMapObject.class);
-            attack = createAttack(attackObj, bossController);
+            attack = createAttack(attackObj, bossController, state.getPlayer());
             bossController.addAttackPattern(attack);
 
             attackIdx++;
@@ -129,7 +136,7 @@ public class LevelLoader {
      * @param obj        the attack object
      * @param controller the boss that will execute the attack
      */
-    private BossAttackPattern createAttack(MapObject obj, BossController controller) {
+    private BossAttackPattern createAttack(MapObject obj, BossController controller, Player player) {
         String attackType = obj.getProperties().get("attackType", String.class);
         MapProperties props = obj.getProperties();
 
@@ -138,10 +145,11 @@ public class LevelLoader {
         float x = props.get("x", Float.class) / PHYSICS_UNITS;
         float y = props.get("y", Float.class) / PHYSICS_UNITS;
         float warnDuration = props.get("warnDuration", Float.class);
+        float attackDuration;
 
         switch (attackType) {
             case "idle":
-                float attackDuration = props.get("attackDuration", Float.class);
+                attackDuration = props.get("attackDuration", Float.class);
                 attack = new IdleAttackPattern(controller, x, y, warnDuration, attackDuration, idleWarnSprite);
                 break;
             case "dash":
@@ -152,6 +160,10 @@ public class LevelLoader {
                     attack = new DashAttackPattern(controller, x, y, dir, warnDuration, dashWarnHorizontalSprite);
                 }
                 break;
+            case "snatch":
+                attackDuration = props.get("attackDuration", Float.class);
+                attack = new SnatchAttackPattern(controller, warnDuration, attackDuration, idleWarnSprite, player);
+                break;
         }
 
         if (attack == null) {
@@ -159,5 +171,23 @@ public class LevelLoader {
         }
 
         return attack;
+    }
+
+    /**
+     * Create a player and put it in the game scene
+     *
+     * @param obj   the player object
+     * @param scene the game scene
+     */
+    private void createPlayer(MapObject obj, GameScene scene) {
+        GameState state = scene.getState();
+        MapProperties props = obj.getProperties();
+
+        int id = props.get("id", Integer.class);
+        float x = props.get("x", Float.class);
+        float y = props.get("y", Float.class);
+
+        Player player = new Player(x, y, state.getWorld());
+        state.setPlayer(player);
     }
 }

@@ -96,7 +96,7 @@ public class Player {
 
     private long ticks;
 
-    public Player(int x, int y, World world){
+    public Player(float x, float y, World world){
         this.companions = new LinkedList<>();
         this.coins = 0;
         this.attacking = false;
