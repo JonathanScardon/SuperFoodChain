@@ -33,11 +33,6 @@ public class GameState {
     public SpriteSheet idleWarnSprite;
 
     private Array<Companion> deadCompanions;
-
-    /**
-     * The grid of tiles
-     */
-    private Level level;
     /**
      * The party of companions controlled by the player
      */
@@ -94,8 +89,6 @@ public class GameState {
      */
     public GameState(JsonValue constants, AssetDirectory assets) {
         this.constants = constants;
-
-
 
         JsonValue minionConstants = this.constants.get("Minion Spawns");
         JsonValue companionConstants = this.constants.get("Companion Spawns");
@@ -171,29 +164,6 @@ public class GameState {
         collision = new CollisionController(this);
         world.setContactListener(collision);
 
-        // // are we using json?
-        // level = new Level(25,25);
-        // // tile information
-        //
-        // // Player --> first companion (not a list yet?)
-        // player = new Player(13,13);
-        // // player texture
-        //
-        // // Minions - requires information of number of minions
-        // num_enemies = 0;
-        // for (int i = 0; i < num_enemies; i++ ) {
-        // minions[i] = new Minion(0,0);
-        // // minion texture
-        // }
-
-        // Boss
-//         bosses = new Boss[1];
-//         bosses[0] = new Mouse(100f, 100f, world);
-//         bosses[0].setSpriteSheet(mouseSprite);
-//         bosses[0].warnSprites.add(warningSprite);
-
-
-
         // Boss
         bosses = new Array<>();
         bossControls = new Array<>();
@@ -220,14 +190,6 @@ public class GameState {
         // projectiles = new ProjectilePool(assets);
         // // projectile texture
     }
-
-    /**
-     * @return the current level
-     */
-    public Level getLevel() {
-        return level;
-    }
-
     /**
      * @return the player in the level
      */

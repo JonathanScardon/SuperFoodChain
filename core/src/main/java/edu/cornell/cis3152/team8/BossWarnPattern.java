@@ -28,6 +28,10 @@ public class BossWarnPattern extends ObstacleSprite {
         this.active = false;
     }
 
+    public void setPosition(float x, float y) {
+        obstacle.setPosition(x, y);
+    }
+
     @Override
     public void update(float delta) {
         if (!active) {

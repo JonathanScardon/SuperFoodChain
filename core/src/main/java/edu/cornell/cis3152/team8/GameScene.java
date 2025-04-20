@@ -72,11 +72,6 @@ private Vector2[] companionSpawns;
     private GameState state;
 
     /**
-     * The grid of tiles
-     */
-    private Level level;
-
-    /**
      * Companions in the chain
      */
     private Player player;
@@ -176,45 +171,30 @@ private Vector2[] companionSpawns;
         paused = false;
         state.reset();
 
+        bosses = state.getBosses();
+        bossControls = state.getBossControls();
         world = state.getWorld();
-        player = new Player(500, 350, world);
-        state.setPlayer(player);
-        state.setMinions(minions);
 
         curStrawberry = 0;
         curPineapple = 0;
         curAvocado = 0;
         coins = state.getCoins();
 
-        bosses = state.getBosses();
-        bossControls = state.getBossControls();
+        projectiles = state.getActiveProjectiles();
+
+        LevelLoader.getInstance().load(this, "tiled/level_1.tmx");
+
+        player = state.getPlayer();
+        playerControls = new PlayerController(player);
+        state.setMinions(minions);
         minionControls = state.getMinionControls();
 
         Arrays.fill(minionSpawnTaken,false);
         Arrays.fill(companionSpawnTaken,false);
 
-
         addMinions();
         addCompanions();
 
-       // bossControls = new Array<>();
-
-        projectiles = state.getActiveProjectiles();
-//        collision = new CollisionController(minions, player, companions, coins, bosses, projectiles ,minionControls, deadCompanions);
-
-        // assuming player is a list of Companions btw
-        // player = state.getPlayer();
-        playerControls = new PlayerController(player);
-
-        // level = state.getLevel();
-
-        // assuming each level has number of enemies assigned?
-        // minionControls = new InputController[minions.length];
-        // for (int i = 0; i < minions.length; i++) {
-        //     minionControls[i] = new MinionController(i, minions, player);
-        // }
-
-        LevelLoader.getInstance().load(this, "tiled/level_1.tmx");
         // start all the bosses
         for (BossController bc : bossControls) {
             bc.startAttack();
