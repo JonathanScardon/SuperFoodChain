@@ -16,8 +16,8 @@ import java.util.Map;
  * This is a singleton class meant to load levels from the tmx file format
  */
 public class LevelLoader {
-
     private static final LevelLoader instance = new LevelLoader();
+    private static final int PHYSICS_UNITS = 64;
     private final TmxMapLoader mapLoader = new TmxMapLoader(new InternalFileHandleResolver());
     private AssetDirectory assets = null;
 
@@ -88,12 +88,12 @@ public class LevelLoader {
         Boss boss = null;
         BossController bossController = null;
         int id = props.get("id", Integer.class);
-        float x = props.get("x", Float.class);
-        float y = props.get("y", Float.class);
+        float x = props.get("x", Float.class) / PHYSICS_UNITS;
+        float y = props.get("y", Float.class) / PHYSICS_UNITS;
 
         switch (bossType) {
             case "mouse":
-                boss = new Mouse(x, y,state.getWorld());
+                boss = new Mouse(x, y, state.getWorld());
                 boss.setSpriteSheet(mouseSprite);
                 bossController = new MouseController(boss, state);
                 break;
@@ -135,8 +135,8 @@ public class LevelLoader {
 
         BossAttackPattern attack = null;
         int id = props.get("id", Integer.class);
-        float x = props.get("x", Float.class);
-        float y = props.get("y", Float.class);
+        float x = props.get("x", Float.class) / PHYSICS_UNITS;
+        float y = props.get("y", Float.class) / PHYSICS_UNITS;
         float warnDuration = props.get("warnDuration", Float.class);
 
         switch (attackType) {

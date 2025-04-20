@@ -2,8 +2,10 @@ package edu.cornell.cis3152.team8;
 
 import com.badlogic.gdx.graphics.Color;
 import edu.cornell.gdiac.graphics.SpriteBatch;
+import edu.cornell.gdiac.physics2.BoxObstacle;
+import edu.cornell.gdiac.physics2.ObstacleSprite;
 
-public class BossWarnPattern extends GameObject {
+public class BossWarnPattern extends ObstacleSprite {
     /**
      * Whether this pattern is currently displayed
      */
@@ -19,14 +21,11 @@ public class BossWarnPattern extends GameObject {
      */
     private static float animationSpeed = 0.05f;
 
-    public BossWarnPattern(float x, float y) {
-        super(x, y);
-        this.active = false;
-    }
+    private static final float PHYSICS_UNITS = 64f;
 
-    @Override
-    public ObjectType getType() {
-        return ObjectType.WARNING;
+    public BossWarnPattern(float x, float y) {
+        super(new BoxObstacle(x, y, 1f, 1f), false);
+        this.active = false;
     }
 
     @Override
@@ -36,8 +35,8 @@ public class BossWarnPattern extends GameObject {
         }
 
         animeframe += animationSpeed;
-        if (animeframe >= animator.getSize()) {
-            animeframe -= animator.getSize();
+        if (animeframe >= sprite.getSize()) {
+            animeframe -= sprite.getSize();
         }
     }
 
@@ -46,15 +45,17 @@ public class BossWarnPattern extends GameObject {
      *
      * @param batch The sprite batch
      */
-    @Override
     public void draw(SpriteBatch batch, float delta) {
         if (!active) {
             return;
         }
 
-        SpriteBatch.computeTransform(transform, origin.x, origin.y, position.x, position.y, 0, 1, 1);
-        animator.setFrame((int) animeframe);
+        System.out.println(sprite.getRegionWidth() + " " + sprite.getRegionHeight());
+        System.out.println(obstacle.getPosition().x + " " + obstacle.getPosition().y);
+
+        SpriteBatch.computeTransform(transform, sprite.getRegionWidth() / 2.0f, sprite.getRegionHeight() / 2.0f, obstacle.getPosition().x * PHYSICS_UNITS, obstacle.getPosition().y * PHYSICS_UNITS, 0, 1, 1);
+        sprite.setFrame((int) animeframe);
         batch.setColor(Color.WHITE);
-        batch.draw(animator, transform);
+        batch.draw(sprite, transform);
     }
 }

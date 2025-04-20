@@ -62,7 +62,7 @@ public abstract class BossController implements InputController {
 
     public void update(float delta) {
         // if we finished the current attack do the next one in the queue
-        if (this.attackPatterns.get(curAttackIdx).ended()) {
+        if (this.attackPatterns.get(curAttackIdx).isEnded()) {
             curAttackIdx++;
             this.startAttack();
         }

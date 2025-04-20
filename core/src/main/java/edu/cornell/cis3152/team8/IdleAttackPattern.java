@@ -82,7 +82,7 @@ public class IdleAttackPattern implements BossAttackPattern {
     }
 
     @Override
-    public boolean ended() {
+    public boolean isEnded() {
         return state == AttackState.ATTACK && attackTime <= 0;
     }
 }
