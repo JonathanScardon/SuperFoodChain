@@ -1,31 +1,32 @@
 {
-  "boss": {
-    "moveSpeed": 10,
-    "speedDamp": 0.75,
-    "idleDuration": 5,
-    "epsilon": 0.01,
-    "animationSpeed": 0.1,
-    "attack" : "Spin",
-    "num" : "Two"
-  },
-  "Minion Spawns":{
-    "Max Enemies": 4,
-    "Number of Spawns" : 5,
-    "Spawn 0": [100,100],
-    "Spawn 1": [100,600],
-    "Spawn 2": [800,100],
-    "Spawn 3": [500,500],
-    "Spawn 4": [200,600]
-  },
-  "Companion Spawns":{
-    "Max Strawberry": 1,
-    "Max Pineapple": 1,
-    "Max Avocado": 0,
-    "Number of Spawns" : 5,
-    "Spawn 0": [379,439],
-    "Spawn 1": [509,54],
-    "Spawn 2": [473,129],
-    "Spawn 3": [839,500],
-    "Spawn 4": [30,600]
-  }
+    "boss": {
+        "moveSpeed": 10,
+        "speedDamp": 0.75,
+        "idleDuration": 5,
+        "epsilon": 0.01,
+        "animationSpeed": 0.1,
+        "attack" : "Spin",
+        "num" : "Two"
+    },
+    "Minion Spawns": {
+        "Max Enemies": 4,
+        "Number of Spawns" : 5,
+        "Spawn 0": [100,100],
+        "Spawn 1": [100,600],
+        "Spawn 2": [800,100],
+        "Spawn 3": [500,500],
+        "Spawn 4": [200,600]
+    },
+    "Companion Spawns": {
+        "Max Strawberry": 1,
+        "Max Pineapple": 1,
+        "Max Avocado": 0,
+        "Max Blue Raspberry": 0,
+        "Number of Spawns" : 5,
+        "Spawn 0": [379,439],
+        "Spawn 1": [509,54],
+        "Spawn 2": [473,129],
+        "Spawn 3": [839,500],
+        "Spawn 4": [30,600]
+    }
 }

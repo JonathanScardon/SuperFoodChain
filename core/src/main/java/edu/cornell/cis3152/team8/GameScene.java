@@ -652,32 +652,4 @@ public class GameScene implements Screen {
             state.getWorld().dispose();
         }
     }
-
-//     private void reset(){
-//         start = false;
-//         reset = true;
-//         state.reset();
-
-//         world = state.getWorld();
-
-//         player = new Player(500, 350, world);
-//         state.setPlayer(player);
-//         initMinions(5);
-//         state.setMinions(minions);
-//         initCompanionPositions(5);
-//         state.setCompanions(companions);
-//         coins = state.getCoins();
-//         coins.clear();
-//         projectiles = state.getActiveProjectiles();
-
-//         playerControls = new PlayerController(player);
-
-//         // level = state.getLevel();
-
-//         // assuming each level has number of enemies assigned?
-//         minionControls = new InputController[minions.size()];
-//         for (int i = 0; i < minions.size(); i++) {
-//             minionControls[i] = new MinionController(i, minions, player);
-//         }
-//     }
 }
