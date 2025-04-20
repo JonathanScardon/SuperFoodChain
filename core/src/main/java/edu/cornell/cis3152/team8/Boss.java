@@ -83,6 +83,7 @@ public abstract class Boss extends ObstacleSprite {
         obstacle.setBullet(true);
         obstacle.activatePhysics(world);
         obstacle.setUserData(this);
+        obstacle.setSensor(true);
 
         Filter filter = obstacle.getFilterData();
         filter.categoryBits = CollisionController.BOSS_CATEGORY;

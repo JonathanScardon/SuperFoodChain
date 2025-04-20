@@ -81,6 +81,7 @@ public abstract class Projectile extends ObstacleSprite {
 
         obstacle.activatePhysics(world);
         obstacle.setUserData(this);
+        obstacle.setSensor(true);
 
         Filter filter = obstacle.getFilterData();
         filter.categoryBits = CollisionController.PROJECTILE_CATEGORY;
@@ -112,17 +113,17 @@ public abstract class Projectile extends ObstacleSprite {
     }
 
     /**
-     * Resets the projectile's life count to its max life
+     * Resets the projectile and returns to pool
      */
     public void reset() {
         life = maxLife;
         animeFrame = 0.0f;
+        getObstacle().setActive(false);
+        getObstacle().getBody().setActive(false);
         // Reset physics state without destroying
-//        getObstacle().getBody().setLinearVelocity(0, 0);
-//        getObstacle().getBody().setTransform(0, 0, 0);
-//        getObstacle().setActive(false);
-//        getObstacle().getBody().setActive(false);
-//        getObstacle().markRemoved(true);
+        getObstacle().getBody().setLinearVelocity(0, 0);
+        getObstacle().getBody().setTransform(0, 0, 0);
+        getObstacle().markRemoved(true);
     }
 
     /**

@@ -100,7 +100,7 @@ public class Player {
         this.companions = new LinkedList<>();
         this.coins = 0;
         this.attacking = false;
-        this.shield = true;
+        this.shield = false;
         Companion head = new Strawberry(x,y,0,world);
         head.getObstacle().setName("player");
         companions.add(head);
