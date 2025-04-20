@@ -40,16 +40,12 @@ public class Avocado extends Companion {
     @Override
     public void useAbility(GameState state) {
         Player player = state.getPlayer();
-        final float cooldownReduceValue = 2.0f; // number of seconds to reduce in the companion cooldowns in chain
         for (Companion c : player.getCompanions()) {
             if (c == this) { // if check for itself in the chain
                 continue; // you don't want to reduce your own ability cooldown
             }
             if (!c.canUse()) { // only reduce cooldowns for companions that have abilities on cooldown
-                c.coolDown(true, cooldownReduceValue); // will reduce the ACTIVE cooldown value
-                if (c.getActiveCooldown() < 0) { // need to clamp the active cooldown value to 0 in case reduction goes below
-                    c.setActiveCooldown(0);
-                }
+                c.coolDown(true, c.getActiveCooldown() / 2); // will reduce the ACTIVE cooldown value
             }
         }
     }
