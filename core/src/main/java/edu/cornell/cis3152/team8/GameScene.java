@@ -255,10 +255,17 @@ private Vector2[] companionSpawns;
             if (!minionSpawnTaken[spawn]) {
                 float x = minionSpawns[spawn].x;
                 float y = minionSpawns[spawn].y;
-                Minion m = new Minion(x, y, minions.size, world);
-                minions.add(m);
-                minionControls.add(new MinionController(m.getId(), minions, player));
-                minionSpawnTaken[spawn] = true;
+                if (rand.nextDouble() < 0.5) {
+                    Minion m = new Minion(x, y, minions.size, world);
+                    minions.add(m);
+                    minionControls.add(new MinionController(m.getId(), minions, player));
+                    minionSpawnTaken[spawn] = true;
+                } else {
+                    Minion m = new Cricket(x,y,minions.size, world, player);
+                    minions.add(m);
+                    minionControls.add(new MinionController(m.getId(), minions, player));
+                    minionSpawnTaken[spawn] = true;
+                }
             }
         }
     }
