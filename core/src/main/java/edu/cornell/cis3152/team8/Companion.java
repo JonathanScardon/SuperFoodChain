@@ -132,6 +132,12 @@ public abstract class Companion extends ObstacleSprite {
         this.cooldown = cooldown;
     }
 
+    /** Get active cooldown of ability */
+    public float getActiveCooldown() { return abilityCool; }
+
+    /** Set active cooldown of ability */
+    public void setActiveCooldown(float cd) { abilityCool = cd; }
+
     /** Returns whether companion can use ability */
     public boolean canUse() {
         return abilityCool <= 0;
