@@ -31,7 +31,7 @@ public class BlueRaspberry extends Companion {
         SpriteSheet blueRaspberry = new SpriteSheet(texture, 1, 7);
         setSpriteSheet(blueRaspberry);
         animationSpeed = 0.25f;
-        size = 0.4f;
+//        size = 0.4f;
 
         usedBoost = false;
     }

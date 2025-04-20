@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
@@ -94,7 +95,7 @@ private Vector2[] companionSpawns;
      */
     private Array<Companion> companions;
 
-    private LinkedList<Coin> coins;
+    private Array<Coin> coins;
     private Array<Projectile> projectiles;
     protected World world;
 
@@ -182,7 +183,7 @@ private Vector2[] companionSpawns;
         curStrawberry = 0;
         curPineapple = 0;
         curAvocado = 0;
-        coins = new LinkedList<>();
+        coins = state.getCoins();
 
         bosses = state.getBosses();
         bossControls = state.getBossControls();
@@ -514,7 +515,9 @@ private Vector2[] companionSpawns;
 
         for (Projectile p : state.getActiveProjectiles()) {
             p.draw(game.batch);
+//            System.out.println(p.getObstacle().getPosition());
         }
+//        System.out.println();
 
         for (Coin c : coins) {
             c.draw(game.batch);
@@ -525,7 +528,7 @@ private Vector2[] companionSpawns;
             Array<ObstacleSprite> sprites = new Array<>();
 //                sprites.addAll(player.companions);
             sprites.addAll(minions);
-//                sprites.addAll(coins);
+            sprites.addAll(coins);
             sprites.addAll(companions);
             sprites.addAll(bosses);
             for (ObstacleSprite obj : sprites) {

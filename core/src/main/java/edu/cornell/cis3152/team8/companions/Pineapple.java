@@ -35,7 +35,6 @@ public class Pineapple extends Companion {
      * Shoots a projectile that explodes, damaging enemies within an explosion radius
      */
     public void useAbility(GameState state) {
-        ProjectilePools.initialize(state.getWorld());
         Vector2 directionalVector = utilities.autoshoot(state, obstacle.getPosition());
         dx = directionalVector.x;
         dy = directionalVector.y;

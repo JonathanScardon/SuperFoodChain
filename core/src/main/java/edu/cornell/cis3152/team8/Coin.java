@@ -83,7 +83,11 @@ public class Coin extends ObstacleSprite {
      */
     public void update(float delta) {
         // Call superclass's run
-        super.update(delta);
+//        super.update(delta);
+
+        if ((!obstacle.isActive())) {
+            return;
+        }
 
         // Increase animation frame
         if (sprite != null) {
