@@ -5,10 +5,8 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Filter;
 import com.badlogic.gdx.physics.box2d.World;
-import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.JsonValue;
 import edu.cornell.gdiac.graphics.SpriteBatch;
-import edu.cornell.gdiac.graphics.SpriteSheet;
 import edu.cornell.gdiac.physics2.CapsuleObstacle;
 import edu.cornell.gdiac.physics2.ObstacleSprite;
 
@@ -51,7 +49,7 @@ public abstract class Boss extends ObstacleSprite {
     }
 
     protected float health;
-  
+
     private String state;
 
     /**
@@ -67,11 +65,11 @@ public abstract class Boss extends ObstacleSprite {
     }
 
 
-    private static final float units = 64f;
+    private static final float PHYSICS_UNITS = 64f;
 
 
     public Boss(float x, float y, World world) {
-        super(new CapsuleObstacle(x/units, y/units, 1.5f, 1.5f), true);
+        super(new CapsuleObstacle(x, y, 1.5f, 1.5f), true);
         health = 30;// TODO: move this to constants?
         angle = 90f;
         damage = false;
@@ -80,7 +78,7 @@ public abstract class Boss extends ObstacleSprite {
         obstacle.setName("boss");
         obstacle.setFixedRotation(true);
         obstacle.setBodyType(BodyDef.BodyType.DynamicBody);
-        obstacle.setPhysicsUnits(units);
+        obstacle.setPhysicsUnits(PHYSICS_UNITS);
 
         obstacle.setBullet(true);
         obstacle.activatePhysics(world);
@@ -91,8 +89,8 @@ public abstract class Boss extends ObstacleSprite {
         filter.maskBits = CollisionController.PLAYER_CATEGORY | CollisionController.PROJECTILE_CATEGORY;
         obstacle.setFilterData(filter);
 
-        float size = 4 * units;
-        mesh.set(-size/2.0f,-size/2.0f,size,size);
+        float size = 4 * PHYSICS_UNITS;
+        mesh.set(-size / 2.0f, -size / 2.0f, size, size);
     }
 
 
@@ -160,10 +158,10 @@ public abstract class Boss extends ObstacleSprite {
      * @param batch The sprite batch
      */
     public void draw(SpriteBatch batch, float delta) {
-        SpriteBatch.computeTransform(transform, sprite.getRegionWidth()/2.0f, sprite.getRegionHeight()/2.0f, obstacle.getPosition().x * units, obstacle.getPosition().y * units, -90 + angle, 0.4f, 0.4f);
+        SpriteBatch.computeTransform(transform, sprite.getRegionWidth() / 2.0f, sprite.getRegionHeight() / 2.0f, obstacle.getPosition().x * PHYSICS_UNITS, obstacle.getPosition().y * PHYSICS_UNITS, -90 + angle, 0.4f, 0.4f);
 
         sprite.setFrame((int) animeframe);
-        if (damage){
+        if (damage) {
             batch.setColor(Color.RED);
         }
         batch.draw(sprite, transform);
@@ -172,8 +170,6 @@ public abstract class Boss extends ObstacleSprite {
         if (curWarn != null) {
             curWarn.draw(batch, delta);
         }
-
-//         SpriteBatch.computeTransform(transform, origin.x, origin.y, position.x, position.y, -(-90 + angle), 0.4f, 0.4f);
         damage = false;
 
     }
@@ -182,14 +178,15 @@ public abstract class Boss extends ObstacleSprite {
         damage = hit;
     }
 
-    public String getState(){
+    public String getState() {
         return state;
     }
 
-    public void setState(String s){
+    public void setState(String s) {
         state = s;
     }
-    public void setAnimationSpeed(float speed){
+
+    public void setAnimationSpeed(float speed) {
         animationSpeed = speed;
     }
 }
