@@ -58,28 +58,28 @@ public class DashAttackPattern implements BossAttackPattern {
         state = AttackState.WARN;
         controller.setAction(CONTROL_NO_ACTION);
 
-        boss.setX(startX);
-        boss.setY(startY);
+        boss.getObstacle().setX(startX);
+        boss.getObstacle().setY(startY);
 
         switch (controlCode) {
             case CONTROL_MOVE_UP:
-                boss.setVX(0);
-                boss.setVY(15f); // make the boss slide up a little bit
+                boss.getObstacle().setVX(0);
+                boss.getObstacle().setVY(15f); // make the boss slide up a little bit
                 boss.angle = 90f;
                 break;
             case CONTROL_MOVE_DOWN:
-                boss.setVX(0);
-                boss.setVY(-15f); // make the boss slide down a little bit
+                boss.getObstacle().setVX(0);
+                boss.getObstacle().setVY(-15f); // make the boss slide down a little bit
                 boss.angle = 270f;
                 break;
             case CONTROL_MOVE_LEFT:
-                boss.setVX(-15f); // make the boss slide left a little bit
-                boss.setVY(0);
+                boss.getObstacle().setVX(-15f); // make the boss slide left a little bit
+                boss.getObstacle().setVY(0);
                 boss.angle = 180f;
                 break;
             case CONTROL_MOVE_RIGHT:
-                boss.setVX(15f); // make the boss slide right a little bit
-                boss.setVY(0);
+                boss.getObstacle().setVX(15f); // make the boss slide right a little bit
+                boss.getObstacle().setVY(0);
                 boss.angle = 0f;
                 break;
         }
@@ -117,10 +117,14 @@ public class DashAttackPattern implements BossAttackPattern {
     @Override
     public boolean ended() {
         return switch (controlCode) {
-            case CONTROL_MOVE_UP -> boss.getY() - boss.getRadius() * 2 > 720;
-            case CONTROL_MOVE_DOWN -> boss.getY() + boss.getRadius() * 2 < 0;
-            case CONTROL_MOVE_LEFT -> boss.getX() - boss.getRadius() * 2 < 0;
-            case CONTROL_MOVE_RIGHT -> boss.getX() - boss.getRadius() * 2 > 1280;
+//            case CONTROL_MOVE_UP -> boss.getObstacle().getY() - boss.getRadius() * 2 > 720;
+//            case CONTROL_MOVE_DOWN -> boss.getObstacle().getY() + boss.getRadius() * 2 < 0;
+//            case CONTROL_MOVE_LEFT -> boss.getObstacle().getX() - boss.getRadius() * 2 < 0;
+//            case CONTROL_MOVE_RIGHT -> boss.getObstacle().getX() - boss.getRadius() * 2 > 1280;
+            case CONTROL_MOVE_UP -> boss.getObstacle().getY() - 2 * 2 > 720;
+            case CONTROL_MOVE_DOWN -> boss.getObstacle().getY() + 2 * 2 < 0;
+            case CONTROL_MOVE_LEFT -> boss.getObstacle().getX() - 2 * 2 < 0;
+            case CONTROL_MOVE_RIGHT -> boss.getObstacle().getX() - 2 * 2 > 1280;
             default -> true;
         };
     }

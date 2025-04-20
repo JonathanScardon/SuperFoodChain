@@ -41,10 +41,10 @@ public class Minion extends ObstacleSprite {
         ((CapsuleObstacle)obstacle).setTolerance( 0.5f );
 
         this.id = id;
-        constants = new JsonValue("assets/constants.json");
-        texture = new Texture("images/Minion.png");
-  
-        radius = 2;
+        JsonValue constants = new JsonValue("assets/constants.json");
+        Texture texture = new Texture("images/Minion.png");
+
+//        radius = 2;
         remove = false;
         damage = false;
         health = 3;
@@ -53,7 +53,7 @@ public class Minion extends ObstacleSprite {
         animationSpeed = 0.15f;
         size = 0.3f * units;
         animationFrame = 0;
-  
+
         obstacle = getObstacle();
         obstacle.setName("minion");
         obstacle.setFixedRotation(true);
@@ -78,7 +78,7 @@ public class Minion extends ObstacleSprite {
      * @param constants The JsonValue of the object
      * */
     private void setConstants(JsonValue constants){
-        this.constants = constants;
+//        this.constants = constants;
         health = constants.getInt("health");
         //MOVE_SPEED = constants.getFloat("move speed");
         moveSpeed = 4;
@@ -144,11 +144,11 @@ public class Minion extends ObstacleSprite {
         //System.out.println(position);
 
 
-        if (animator != null) {
+        if (sprite != null) {
             animationFrame += animationSpeed;
             //System.out.println(animationFrame);
-            if (animationFrame >= animator.getSize()) {
-                animationFrame -= animator.getSize();
+            if (animationFrame >= sprite.getSize()) {
+                animationFrame -= sprite.getSize();
             }
         }
     }
@@ -163,11 +163,11 @@ public class Minion extends ObstacleSprite {
 //             position.x, position.y, 0.0f, size
 //             , size);
         SpriteBatch.computeTransform(transform, sprite.getRegionWidth()/2.0f, sprite.getRegionHeight()/2.0f, obstacle.getPosition().x * units, obstacle.getPosition().y * units, 0.0f, size/units, size/units);
-        if (isDestroyed()){ // if destroyed...
-            animator.setFrame(0);
+        if (!obstacle.isActive()){ // if destroyed...
+            sprite.setFrame(0);
             if (deathExpirationTimer > 0.0f) { // and within recent death timer
                 batch.setColor(Color.BLACK); // show black shadow
-                batch.draw(animator, transform); // draw the blackened corpse
+                batch.draw(sprite, transform); // draw the blackened corpse
                 deathExpirationTimer -= delta;
                 // decrement timer with the delta value passed in GameScene
 
@@ -176,12 +176,12 @@ public class Minion extends ObstacleSprite {
             }
             // if it's pass, say 3 seconds, don't draw the dead corpse to free up screen real estate
         } else { // if not destroyed, draw as normal
-            animator.setFrame((int) animationFrame);
+            sprite.setFrame((int) animationFrame);
             if (damage){
                 batch.setColor(Color.RED);
             }
 
-            batch.draw(animator, transform);
+            batch.draw(sprite, transform);
 
         }
         batch.setColor(Color.WHITE);

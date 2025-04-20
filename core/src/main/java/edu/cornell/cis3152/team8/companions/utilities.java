@@ -28,13 +28,13 @@ public class utilities {
             // if there are minions, iterate through and find the closest one
             for (Minion m : minionList) {
                 // consider active/non-destroyed minions only
-                if (!m.isDestroyed()) {
-                    float pairwiseDist = utilities.manhattan(m.getPosition(), pos);
+                if (m.getObstacle().isActive()) {
+                    float pairwiseDist = utilities.manhattan(m.getObstacle().getPosition(), pos);
                     if (pairwiseDist < closestEnemyDist) {
                         closestEnemyDist = pairwiseDist;
-                        dx = (m.getX() - pos.x)
+                        dx = (m.getObstacle().getX() - pos.x)
                         ; //  x-directional vector component
-                        dy = (m.getY() - pos.y)
+                        dy = (m.getObstacle().getY() - pos.y)
                         ; //  y-directional vector component
                         // euclidean distance
                         double length = Math.hypot(dx, dy);
@@ -47,13 +47,13 @@ public class utilities {
             }
 
             for (Boss b : bossList) {
-                if (!b.isDestroyed()) {
-                    float pairwiseDist = utilities.manhattan(b.getPosition(), pos);
+                if (b.getObstacle().isActive()) {
+                    float pairwiseDist = utilities.manhattan(b.getObstacle().getPosition(), pos);
                     if (pairwiseDist < closestEnemyDist) {
                         closestEnemyDist = pairwiseDist;
-                        dx = (b.getX() - pos.x)
+                        dx = (b.getObstacle().getX() - pos.x)
                         ; //  x-directional vector component
-                        dy = (b.getY() - pos.y)
+                        dy = (b.getObstacle().getY() - pos.y)
                         ; //  y-directional vector component
                         // euclidean distance
                         double length = Math.hypot(dx, dy);

@@ -15,14 +15,15 @@ public class ProjectilePools {
     public static final Pool<StrawberryProjectile> strawberryPool = new Pool<StrawberryProjectile>() {
         @Override
         protected StrawberryProjectile newObject() {
-            return new StrawberryProjectile(0,0, 0, 0, world);
+            return new StrawberryProjectile(0, 0, 0, 0, world);
         }
     };
 
     public static final Pool<GarlicProjectile> garlicPool = new Pool<GarlicProjectile>() {
         @Override
         protected GarlicProjectile newObject() {
-            return new GarlicProjectile(0,0, 0, 0, world);
+            return new GarlicProjectile(0, 0, 0, 0, world);
+        }
     };
 
     public static final Pool<PineappleProjectile> pineapplePool = new Pool<PineappleProjectile>() {

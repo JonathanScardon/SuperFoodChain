@@ -48,7 +48,7 @@ public class CollisionController implements ContactListener {
     private Companion companionAdded = null;
 
     private List<Body> removedProjectiles = new ArrayList<>();
-  
+
     private Array<MinionController> minionControls;
     private Array<Companion> deadCompanions;
 
@@ -67,7 +67,7 @@ public class CollisionController implements ContactListener {
     public static final short BOSS_CATEGORY = 0x0010;
     public static final short PROJECTILE_CATEGORY = 0x0020;
     public static final short BORDER_CATEGORY = 0x0040;
- 
+
 
     /**
      * Creates a CollisionController for the given models.
@@ -87,7 +87,7 @@ public class CollisionController implements ContactListener {
     public void update() {
 
     }
-  
+
   // player-minion collision
   // Get the tiles for each creature
 //         float mx = minion.getX();
@@ -107,7 +107,7 @@ public class CollisionController implements ContactListener {
 //                 deadCompanions.add(c);
 //                 //MOVE TO PROJECTILE DEATH - choose between spawn anyway
 //                 coins.add(new Coin(mx, my));
-  
+
   // minion-projectile collision
           // Get the tiles for minion and projectile
 //         float mx = minion.getX();
@@ -124,7 +124,7 @@ public class CollisionController implements ContactListener {
 //                     coins.add(new Coin(mx, my));
 //             }
 //             minion.setDamage(true);
-  
+
   // player-boss collision
   //Get the tiles for boss
 //         float bx = boss.getX();
@@ -162,7 +162,7 @@ public class CollisionController implements ContactListener {
 //             projectile.setDestroyed(true);
 //             boss.setDamage(true);
 //         }
-  
+
   // player-coin collision
   //Get tiles for coin and player
 //         float cx = coin.getX();
@@ -178,7 +178,7 @@ public class CollisionController implements ContactListener {
 //             player.setCoins(player.getCoins() + 1);
 //             coin.setDestroyed(true);
 //             // coins.remove(coin); ERROR! Sometimes coin being removed while for-loop iterating through coins
-  
+
   // player-companion collision
 //   private void checkForCollision(Companion companion, Player player) {
 
@@ -208,7 +208,7 @@ public class CollisionController implements ContactListener {
 //             player.setCoins(player.getCoins() - cost);
 //             player.addCompanion(companion);
 //             companion.setCollected(true);
-  
+
 //    /**
 //     * Processes minion-projectile collisions.
 //     *
@@ -371,34 +371,34 @@ public class CollisionController implements ContactListener {
             }
 
             // Projectile Collisions
-            // Projectile and Minion
-            else if ((c1 == PROJECTILE_CATEGORY && c2 == MINION_CATEGORY) || (c2 == PROJECTILE_CATEGORY && c1 == MINION_CATEGORY)) {
-                System.out.println("PR-M CONTACT IS HAPPENING");
-                if (c1 == PROJECTILE_CATEGORY) {
-                    System.out.println("KILL MINION");
-                    removedProjectiles.add(b1);
-                    removed.add(s2);
-                    coinsAdded.add(s2);
-                } else {
-                    System.out.println("KILL MINION");
-                    removedProjectiles.add(b2);
-                    removed.add(s1);
-                    coinsAdded.add(s1);
-                }
-            }
-            // Projectile and Boss
-            else if ((c1 == PROJECTILE_CATEGORY && c2 == BOSS_CATEGORY) || (c2 == PROJECTILE_CATEGORY && c1 == BOSS_CATEGORY)) {
-                System.out.println("PR-B CONTACT IS HAPPENING");
-                if (c1 == PROJECTILE_CATEGORY) {
-                    System.out.println("BOSS HIT");
-                    removedProjectiles.add(b1);
-                    bossHit(b2);
-                } else {
-                    System.out.println("BOSS HIT");
-                    removedProjectiles.add(b2);
-                    bossHit(b1);
-                }
-            }
+//            // Projectile and Minion
+//            else if ((c1 == PROJECTILE_CATEGORY && c2 == MINION_CATEGORY) || (c2 == PROJECTILE_CATEGORY && c1 == MINION_CATEGORY)) {
+//                System.out.println("PR-M CONTACT IS HAPPENING");
+//                if (c1 == PROJECTILE_CATEGORY) {
+//                    System.out.println("KILL MINION");
+//                    removedProjectiles.add(b1);
+//                    removed.add(s2);
+//                    coinsAdded.add(s2);
+//                } else {
+//                    System.out.println("KILL MINION");
+//                    removedProjectiles.add(b2);
+//                    removed.add(s1);
+//                    coinsAdded.add(s1);
+//                }
+//            }
+//            // Projectile and Boss
+//            else if ((c1 == PROJECTILE_CATEGORY && c2 == BOSS_CATEGORY) || (c2 == PROJECTILE_CATEGORY && c1 == BOSS_CATEGORY)) {
+//                System.out.println("PR-B CONTACT IS HAPPENING");
+//                if (c1 == PROJECTILE_CATEGORY) {
+//                    System.out.println("BOSS HIT");
+//                    removedProjectiles.add(b1);
+//                    bossHit(b2);
+//                } else {
+//                    System.out.println("BOSS HIT");
+//                    removedProjectiles.add(b2);
+//                    bossHit(b1);
+//                }
+//            }
 
             System.out.println();
         } catch (Exception e) {
@@ -443,13 +443,17 @@ public class CollisionController implements ContactListener {
         // Add companions
         if (companionAdded != null) {
             state.getPlayer().addCompanion(companionAdded);
-            state.getCompanions().remove(companionAdded);
+            state.getCompanions().removeValue(companionAdded, false);
         }
         companionAdded = null;
 
         // Remove dead companions/minions from lists
         state.getPlayer().companions.removeIf(c -> !c.getObstacle().isActive());
-        state.getMinions().removeIf(m -> !m.getObstacle().isActive());
+        for (Minion m : state.getMinions()) {
+            if (!m.getObstacle().isActive()) {
+                state.getMinions().removeValue(m, false);
+            }
+        }
 
         // Remove dead projectiles and return them to their pools
         for (int i = state.getActiveProjectiles().size - 1; i >= 0; i--) {
@@ -474,7 +478,7 @@ public class CollisionController implements ContactListener {
                 if (boss.getHealth() <= 0) {
                     removed.add((ObstacleSprite) b.getUserData());
                 }
-    
+
             }
         }
     }
