@@ -120,10 +120,10 @@ public class DashAttackPattern implements BossAttackPattern {
     @Override
     public boolean isEnded() {
         return switch (controlCode) {
-            case CONTROL_MOVE_UP -> (boss.getObstacle().getY() + 4) * PHYSICS_UNITS > 720;
+            case CONTROL_MOVE_UP -> (boss.getObstacle().getY() - 4) * PHYSICS_UNITS > 720;
             case CONTROL_MOVE_DOWN -> (boss.getObstacle().getY() + 4) * PHYSICS_UNITS < 0;
             case CONTROL_MOVE_LEFT -> (boss.getObstacle().getX() + 4) * PHYSICS_UNITS < 0;
-            case CONTROL_MOVE_RIGHT -> (boss.getObstacle().getX() + 4) * PHYSICS_UNITS > 1280;
+            case CONTROL_MOVE_RIGHT -> (boss.getObstacle().getX() - 4) * PHYSICS_UNITS > 1280;
             default -> true;
         };
     }
