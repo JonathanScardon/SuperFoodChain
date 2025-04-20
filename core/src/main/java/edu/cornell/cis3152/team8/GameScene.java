@@ -52,10 +52,12 @@ public class GameScene implements Screen {
     private int maxPineapple;
     private int maxAvocado;
     private int maxBlueRaspberry;
+    private int maxDurian;
     private int curStrawberry;
     private int curPineapple;
     private int curAvocado;
     private int curBlueRaspberry;
+    private int curDurian;
 
     private float companionAddTimer = 3.0f;
 
@@ -138,6 +140,7 @@ public class GameScene implements Screen {
         maxPineapple = state.getMaxPineapple();
         maxAvocado = state.getMaxAvocado();
         maxBlueRaspberry = state.getMaxBlueRaspberry();
+        maxDurian = state.getMaxDurian();
 
         minions = state.getMinions();
         minionSpawns = state.getMinionSpawns();
@@ -179,6 +182,7 @@ public class GameScene implements Screen {
         curPineapple = 0;
         curAvocado = 0;
         curBlueRaspberry = 0;
+        curDurian = 0;
         coins = state.getCoins();
 
         projectiles = state.getActiveProjectiles();
@@ -268,30 +272,32 @@ public class GameScene implements Screen {
         if (r) {
             Arrays.fill(companionSpawnTaken, false);
         }
-        while (companions.size < maxStrawberry + maxPineapple + maxAvocado + 1) {
+        while (companions.size < maxStrawberry+maxPineapple+maxAvocado+maxBlueRaspberry+maxDurian) {
             int spawn = rand.nextInt(companionSpawns.length);
             if (!companionSpawnTaken[spawn]) {
 
                 float x = companionSpawns[spawn].x;
                 float y = companionSpawns[spawn].y;
-                for (Companion c : companions) {
-                    r = c.getObstacle().getX() == x && c.getObstacle().getY() == y;
+            for (Companion c: companions) {
+                r = c.getObstacle().getX() == x && c.getObstacle().getY() == y;
+            }
+            if (!r)  {
+                Companion c;
+                if (curStrawberry < maxStrawberry) {
+                    c = new Strawberry(x, y, companions.size, world);
+                    curStrawberry++;
+                } else if (curPineapple < maxPineapple) {
+                    c = new Pineapple(x, y, companions.size, world);
+                    curPineapple++;
+                } else if (curBlueRaspberry < maxBlueRaspberry){
+                    c = new BlueRaspberry(x, y, companions.size, world);
+                    curBlueRaspberry++;
+                } else if (curDurian < maxDurian) {
+                    c = new Durian(x,y, companions.size, world);
+                } else {
+                    c = new Avocado(x, y, companions.size, world);
+                    curAvocado++;
                 }
-                if (!r) {
-                    Companion c;
-                    if (curStrawberry < maxStrawberry) {
-                        c = new Strawberry(x, y, companions.size, world);
-                        curStrawberry++;
-                    } else if (curPineapple < maxPineapple) {
-                        c = new Pineapple(x, y, companions.size, world);
-                        curPineapple++;
-                    } else if (curBlueRaspberry < maxBlueRaspberry) {
-                        c = new BlueRaspberry(x, y, companions.size, world);
-                        curBlueRaspberry++;
-                    } else {
-                        c = new Avocado(x, y, companions.size, world);
-                        curAvocado++;
-                    }
 
                     companions.add(c);
                     companionSpawnTaken[spawn] = true;
@@ -369,7 +375,12 @@ public class GameScene implements Screen {
                         curStrawberry--;
                     } else if (type.equals(CompanionType.PINEAPPLE)) {
                         curPineapple--;
-                    } else {
+                    }else if (type.equals(CompanionType.DURIAN)) {
+                        curDurian--;
+                    }else if (type.equals(CompanionType.BLUE_RASPBERRY)) {
+                        curBlueRaspberry--;
+                    }
+                    else{
                         curAvocado--;
                     }
 

@@ -81,6 +81,7 @@ public class GameState {
     private int maxPineapple;
     private int maxAvocado;
     private int maxBlueRaspberry;
+    private int maxDurian;
 
     private String bossAttack;
 
@@ -101,6 +102,7 @@ public class GameState {
         maxPineapple = companionConstants.getInt("Max Pineapple");
         maxAvocado = companionConstants.getInt("Max Avocado");
         maxBlueRaspberry = companionConstants.getInt("Max Blue Raspberry");
+        maxDurian = companionConstants.getInt("Max Durian");
 
         companions = new Array<>();
 
@@ -283,15 +285,21 @@ public class GameState {
     public int getMaxStrawberry(){
         return maxStrawberry;
     }
+
     public int getMaxPineapple(){
         return maxPineapple;
     }
+
     public int getMaxAvocado(){
         return maxAvocado;
     }
 
     public int getMaxBlueRaspberry(){
         return maxBlueRaspberry;
+    }
+
+    public int getMaxDurian() {
+        return maxDurian;
     }
 
     public Array<MinionController> getMinionControls() {
