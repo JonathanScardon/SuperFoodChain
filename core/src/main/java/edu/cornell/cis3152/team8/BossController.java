@@ -2,7 +2,7 @@ package edu.cornell.cis3152.team8;
 
 import com.badlogic.gdx.utils.Array;
 
-public abstract class BossController implements InputController {
+public class BossController implements InputController {
     /**
      * The boss to be controlled
      */

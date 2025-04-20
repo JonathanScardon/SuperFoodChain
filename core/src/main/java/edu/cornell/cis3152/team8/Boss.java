@@ -10,7 +10,7 @@ import edu.cornell.gdiac.graphics.SpriteBatch;
 import edu.cornell.gdiac.physics2.CapsuleObstacle;
 import edu.cornell.gdiac.physics2.ObstacleSprite;
 
-public abstract class Boss extends ObstacleSprite {
+public class Boss extends ObstacleSprite {
     /**
      * How far forward this boss can move in a single turn
      */
