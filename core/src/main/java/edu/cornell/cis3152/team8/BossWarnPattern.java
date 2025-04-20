@@ -50,8 +50,8 @@ public class BossWarnPattern extends ObstacleSprite {
             return;
         }
 
-        System.out.println(sprite.getRegionWidth() + " " + sprite.getRegionHeight());
-        System.out.println(obstacle.getPosition().x + " " + obstacle.getPosition().y);
+//        System.out.println(sprite.getRegionWidth() + " " + sprite.getRegionHeight());
+//        System.out.println(obstacle.getPosition().x + " " + obstacle.getPosition().y);
 
         SpriteBatch.computeTransform(transform, sprite.getRegionWidth() / 2.0f, sprite.getRegionHeight() / 2.0f, obstacle.getPosition().x * PHYSICS_UNITS, obstacle.getPosition().y * PHYSICS_UNITS, 0, 1, 1);
         sprite.setFrame((int) animeframe);

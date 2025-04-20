@@ -95,19 +95,21 @@ public class Strawberry extends Companion {
                 Timer.schedule(new Timer.Task() {
                     @Override
                     public void run() { // override 'run' function inside Timer so that this block runs according to the time
-                        StrawberryProjectile projectile = ProjectilePools.strawberryPool.obtain();
+//                        StrawberryProjectile projectile = ProjectilePools.strawberryPool.obtain();
+                        StrawberryProjectile projectile = new StrawberryProjectile(0,0,0, 0, state.getWorld());
                         // resetLife --> reset
-                        projectile.reset();
-                        projectile.getObstacle().setActive(true);
-                        projectile.getObstacle().getBody().setActive(true);
-                        projectile.getObstacle().markRemoved(false);
+//                        projectile.reset();
+//                        projectile.getObstacle().setActive(true);
+//                        projectile.getObstacle().getBody().setActive(true);
+//                        projectile.getObstacle().markRemoved(false);
+
+                        projectile.getObstacle().setLinearVelocity(new Vector2(dx * 7, dy * 7));
 
                         projectile.getObstacle().setX(obstacle.getX());
                         projectile.getObstacle().setY(obstacle.getY());
 
-                        projectile.getObstacle().setLinearVelocity(new Vector2(dx * 5, dy * 5));
                         state.getActiveProjectiles().add(projectile);
-                        System.out.println(state.getActiveProjectiles().size);
+//                        System.out.println(state.getActiveProjectiles().size);
                     }
                 }, delay / 1000f);
             }

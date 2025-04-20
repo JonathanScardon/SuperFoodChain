@@ -1,6 +1,8 @@
 package edu.cornell.cis3152.team8;
 //Heavily inspired by AILab Collision Controller
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.physics.box2d.*;
 import edu.cornell.gdiac.physics2.ObstacleSprite;
 import com.badlogic.gdx.utils.Array;
@@ -308,25 +310,25 @@ public class CollisionController implements ContactListener {
             }
 
 //            // Player and Boss
-//            else if ((c1 == PLAYER_CATEGORY && c2 == BOSS_CATEGORY) || (c2 == PLAYER_CATEGORY && c1 == BOSS_CATEGORY)) {
-//                System.out.println("P-B CONTACT IS HAPPENING");
-//                if (state.getPlayer().hasShield()) {
-//                    state.getPlayer().setShield(false);
-//                    System.out.println("BOSS HIT");
-//                    if (c1 == BOSS_CATEGORY) {
-//                        bossHit(b1);
-//                    } else {
-//                        bossHit(b2);
-//                    }
-//                } else {
-//                    System.out.println("DEATH");
-//                    if (c1 == PLAYER_CATEGORY) {
-//                        removed.add(s1);
-//                    } else {
-//                        removed.add(s2);
-//                    }
-//                }
-//            }
+            else if ((c1 == PLAYER_CATEGORY && c2 == BOSS_CATEGORY) || (c2 == PLAYER_CATEGORY && c1 == BOSS_CATEGORY)) {
+                System.out.println("P-B CONTACT IS HAPPENING");
+                if (state.getPlayer().hasShield()) {
+                    state.getPlayer().setShield(false);
+                    System.out.println("BOSS HIT");
+                    if (c1 == BOSS_CATEGORY) {
+                        bossHit(b1);
+                    } else {
+                        bossHit(b2);
+                    }
+                } else {
+                    System.out.println("DEATH");
+                    if (c1 == PLAYER_CATEGORY) {
+                        removed.add(s1);
+                    } else {
+                        removed.add(s2);
+                    }
+                }
+            }
 
             // Player and Coin
             else if ((c1 == PLAYER_CATEGORY && c2 == COIN_CATEGORY) || (c2 == PLAYER_CATEGORY && c1 == COIN_CATEGORY)) {
@@ -344,7 +346,7 @@ public class CollisionController implements ContactListener {
                 System.out.println("P-C CONTACT IS HAPPENING");
                 if (c1 == COMPANION_CATEGORY) {
                     for (Companion c : state.getCompanions()) {
-                        if (c.getObstacle().getBody() == b1 && c.getCost() <= state.getPlayer().getCoins()) {
+                        if (Gdx.input.isKeyPressed(Input.Keys.E) && c.getObstacle().getBody() == b1 && c.getCost() <= state.getPlayer().getCoins()) {
                             System.out.println("ADD COMPANION");
                             companionAdded = c;
                             state.getPlayer().setCoins(state.getPlayer().getCoins() - c.getCost());
@@ -352,7 +354,7 @@ public class CollisionController implements ContactListener {
                     }
                 } else {
                     for (Companion c : state.getCompanions()) {
-                        if (c.getObstacle().getBody() == b2 && c.getCost() <= state.getPlayer().getCoins()) {
+                        if (Gdx.input.isKeyPressed(Input.Keys.E) && c.getObstacle().getBody() == b2 && c.getCost() <= state.getPlayer().getCoins()) {
                             System.out.println("ADD COMPANION");
                             companionAdded = c;
                             state.getPlayer().setCoins(state.getPlayer().getCoins() - c.getCost());
@@ -377,19 +379,19 @@ public class CollisionController implements ContactListener {
                     coinsAdded.add(s1);
                 }
             }
-//            // Projectile and Boss
-//            else if ((c1 == PROJECTILE_CATEGORY && c2 == BOSS_CATEGORY) || (c2 == PROJECTILE_CATEGORY && c1 == BOSS_CATEGORY)) {
-//                System.out.println("PR-B CONTACT IS HAPPENING");
-//                if (c1 == PROJECTILE_CATEGORY) {
-//                    System.out.println("BOSS HIT");
-//                    removedProjectiles.add(b1);
-//                    bossHit(b2);
-//                } else {
-//                    System.out.println("BOSS HIT");
-//                    removedProjectiles.add(b2);
-//                    bossHit(b1);
-//                }
-//            }
+            // Projectile and Boss
+            else if ((c1 == PROJECTILE_CATEGORY && c2 == BOSS_CATEGORY) || (c2 == PROJECTILE_CATEGORY && c1 == BOSS_CATEGORY)) {
+                System.out.println("PR-B CONTACT IS HAPPENING");
+                if (c1 == PROJECTILE_CATEGORY) {
+                    System.out.println("BOSS HIT");
+                    removedProjectiles.add(b1);
+                    bossHit(b2);
+                } else {
+                    System.out.println("BOSS HIT");
+                    removedProjectiles.add(b2);
+                    bossHit(b1);
+                }
+            }
 
             System.out.println();
         } catch (Exception e) {
@@ -456,17 +458,16 @@ public class CollisionController implements ContactListener {
             Projectile p = state.getActiveProjectiles().get(i);
             if (removedProjectiles.contains(p.getObstacle().getBody()) || p.getLife() <= 0) {
                 // Reset physics state without destroying
-                state.getActiveProjectiles().get(i).getObstacle().getBody().setLinearVelocity(0, 0);
-                state.getActiveProjectiles().get(i).getObstacle().getBody().setTransform(0, 0, 0);
-                state.getActiveProjectiles().get(i).getObstacle().setActive(false);
-                state.getActiveProjectiles().get(i).getObstacle().getBody().setActive(false);
-                state.getActiveProjectiles().get(i).getObstacle().markRemoved(true);
-
-                if (p instanceof StrawberryProjectile) {
-                    ProjectilePools.strawberryPool.free((StrawberryProjectile) p);
-                }
+//                p.reset();
+//                if (p instanceof StrawberryProjectile) {
+//                    ProjectilePools.strawberryPool.free((StrawberryProjectile) p);
+//                }
+                p.getObstacle().setActive(false);
+                p.getObstacle().markRemoved(true);
+                p.getObstacle().deactivatePhysics(world);
             }
         }
+        removedProjectiles.clear();
         for (Projectile p : state.getActiveProjectiles()) {
             if (!p.getObstacle().isActive()) {
                 state.getActiveProjectiles().removeValue(p, false);

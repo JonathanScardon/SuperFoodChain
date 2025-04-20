@@ -63,6 +63,7 @@ public class Minion extends ObstacleSprite {
 
         obstacle.activatePhysics(world);
         obstacle.setUserData(this);
+        obstacle.setSensor(true);
 
         Filter filter = obstacle.getFilterData();
         filter.categoryBits = CollisionController.MINION_CATEGORY;

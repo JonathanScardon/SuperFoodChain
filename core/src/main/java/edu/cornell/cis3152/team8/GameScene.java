@@ -532,6 +532,7 @@ private Vector2[] companionSpawns;
             sprites.addAll(coins);
             sprites.addAll(companions);
             sprites.addAll(bosses);
+            sprites.addAll(projectiles);
             for (ObstacleSprite obj : sprites) {
                 obj.drawDebug(game.batch);
             }
