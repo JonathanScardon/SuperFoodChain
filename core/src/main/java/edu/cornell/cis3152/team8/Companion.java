@@ -307,7 +307,7 @@ public abstract class Companion extends ObstacleSprite {
 
         SpriteBatch.computeTransform(transform, sprite.getRegionWidth() / 2.0f,
             sprite.getRegionHeight() / 2.0f, obstacle.getPosition().x * units,
-            obstacle.getPosition().y * units, 0.0f, size / units, size / units);
+            obstacle.getPosition().y * units + 16f, 0.0f, size / units, size / units);
 
         batch.draw(sprite, transform);
         batch.setColor(Color.WHITE);
