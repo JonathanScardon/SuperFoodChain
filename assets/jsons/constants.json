@@ -1,6 +1,5 @@
 {
     "boss": {
-        "moveSpeed": 10,
         "speedDamp": 0.75,
         "idleDuration": 5,
         "epsilon": 0.01,

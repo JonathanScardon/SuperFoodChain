@@ -17,19 +17,21 @@ public class DashAttackPattern implements BossAttackPattern {
     private final float startX, startY;
     private final int controlCode;
     private final float warnDuration;
+    private final float moveSpeed;
 
     private float warnTime;
     private AttackState state;
 
     private static final float PHYSICS_UNITS = 64f;
 
-    public DashAttackPattern(BossController controller, float x, float y, String dir, float warnDuration, SpriteSheet warnSprite) {
+    public DashAttackPattern(BossController controller, float x, float y, String dir, float warnDuration, float moveSpeed, SpriteSheet warnSprite) {
         this.controller = controller;
         this.boss = controller.boss;
 
         this.startX = x;
         this.startY = y;
         this.warnDuration = warnDuration;
+        this.moveSpeed = moveSpeed;
 
         switch (dir) {
             case "up":
@@ -95,6 +97,7 @@ public class DashAttackPattern implements BossAttackPattern {
     public void attack() {
         state = AttackState.ATTACK;
         controller.setAction(controlCode);
+        boss.setMoveSpeed(moveSpeed);
 
         warnPattern.active = false;
         boss.curWarn = null;
