@@ -82,11 +82,11 @@ public class LevelLoader {
 
         // create player and companions
         state.maxCompanions = companionLayerProps.get("maxCompanions", Integer.class);
-        state.maxAvocado = companionLayerProps.get("maxAvocado", Integer.class);
-        state.maxDurian = companionLayerProps.get("maxDurian", Integer.class);
-        state.maxPineapple = companionLayerProps.get("maxPineapple", Integer.class);
-        state.maxStrawberry = companionLayerProps.get("maxStrawberry", Integer.class);
-        state.maxBlueRaspberry = companionLayerProps.get("maxBlueRaspberry", Integer.class);
+        state.maxAvocados = companionLayerProps.get("maxAvocado", Integer.class);
+        state.maxDurians = companionLayerProps.get("maxDurian", Integer.class);
+        state.maxPineapples = companionLayerProps.get("maxPineapple", Integer.class);
+        state.maxStrawberries = companionLayerProps.get("maxStrawberry", Integer.class);
+        state.maxBlueRaspberries = companionLayerProps.get("maxBlueRaspberry", Integer.class);
         for (MapObject obj : companionLayer.getObjects()) {
             if ("player".equals(obj.getProperties().get("type", String.class))) {
                 createPlayer(obj, scene);
