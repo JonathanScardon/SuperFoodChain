@@ -185,6 +185,15 @@ public class GameState {
         // // projectile texture
     }
 
+
+    /**
+     * Returns whether an object is in the bounds
+     */
+    public boolean inBounds(ObstacleSprite o) {
+        //TODO: might have to consider radius but idk how to get it from obstacle
+        return o.getObstacle().getX() > 0.25 && o.getObstacle().getX() < 1280/64-0.25 && o.getObstacle().getY() > 0.25 && o.getObstacle().getY() < 720/64-0.25;
+    }
+
     /**
      * @return the player in the level
      */

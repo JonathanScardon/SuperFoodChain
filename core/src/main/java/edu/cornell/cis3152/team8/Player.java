@@ -111,7 +111,7 @@ public class Player {
 
         Filter filter = head.getObstacle().getFilterData();
         filter.categoryBits = CollisionController.PLAYER_CATEGORY;
-        filter.maskBits = CollisionController.MINION_CATEGORY | CollisionController.COMPANION_CATEGORY | CollisionController.COIN_CATEGORY | CollisionController.BOSS_CATEGORY | CollisionController.BORDER_CATEGORY;
+        filter.maskBits = CollisionController.MINION_CATEGORY | CollisionController.COMPANION_CATEGORY | CollisionController.COIN_CATEGORY | CollisionController.BOSS_CATEGORY;
         head.getObstacle().setFilterData(filter);
 
         this.controlBuffer = new CircularBuffer(MAX_COMPANIONS * DELAY);
@@ -274,7 +274,7 @@ public class Player {
 
         Filter filter = companion.getObstacle().getFilterData();
         filter.categoryBits = CollisionController.PLAYER_CATEGORY;
-        filter.maskBits = CollisionController.MINION_CATEGORY | CollisionController.COMPANION_CATEGORY | CollisionController.COIN_CATEGORY | CollisionController.BOSS_CATEGORY | CollisionController.BORDER_CATEGORY;
+        filter.maskBits = CollisionController.MINION_CATEGORY | CollisionController.COMPANION_CATEGORY | CollisionController.COIN_CATEGORY | CollisionController.BOSS_CATEGORY;
         companion.getObstacle().setFilterData(filter);
 
         CircularBuffer.PositionAndDirection tail = controlBuffer.getSnapshot(companions.size());
