@@ -109,7 +109,7 @@ public class Minion extends ObstacleSprite {
      * like position or a cooldown value. It does not handle collisions (which are determined by the
      * CollisionController). It is not intended to interact with other objects in any way at all.
      *
-     * @param controlCode value indicating minion movement direction
+     * @param u
      */
     public void update(boolean u) {
         if (u) {
