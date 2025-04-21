@@ -1,6 +1,7 @@
 package edu.cornell.cis3152.team8;
 
 import edu.cornell.gdiac.graphics.SpriteSheet;
+
 import static edu.cornell.cis3152.team8.InputController.*;
 
 /**
@@ -62,19 +63,18 @@ public class IdleAttackPattern implements BossAttackPattern {
     @Override
     public void update(float delta) {
         switch (state) {
-            case INACTIVE:
-                break;
             case WARN:
                 if (warnTime > 0) {
                     warnTime -= delta;
-                }
-                else {
+                } else {
                     attack();
                 }
                 break;
             case ATTACK:
                 if (attackTime > 0) {
                     attackTime -= delta;
+                } else {
+                    state = AttackState.ENDED;
                 }
                 break;
         }
@@ -82,6 +82,6 @@ public class IdleAttackPattern implements BossAttackPattern {
 
     @Override
     public boolean isEnded() {
-        return state == AttackState.ATTACK && attackTime <= 0;
+        return state == AttackState.ENDED;
     }
 }
