@@ -451,8 +451,8 @@ public class GameScene implements Screen {
             //temp UI
 
             if (!player.companions.contains(c)) {
-                game.batch.drawText(compCost, c.getObstacle().getX() * 64f + 35f,
-                    c.getObstacle().getY() * 64f);
+                game.batch.drawText(compCost, c.getObstacle().getX() * 64f,
+                    c.getObstacle().getY() * 64f - 32f);
                 if (c.highlight) {
                     game.batch.drawText(pressE, c.getObstacle().getX() * 64f,
                         c.getObstacle().getY() * 64f + 35f);
