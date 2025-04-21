@@ -167,6 +167,9 @@ public class GameState {
 
         coins.clear();
 
+        minionSpawns.clear();
+        companionSpawns.clear();
+
         // Projectiles
         projectiles = new Array<>();
         ProjectilePools.initialize(world);
