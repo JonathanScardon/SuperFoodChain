@@ -121,17 +121,18 @@ public class LevelLoader {
         int id = props.get("id", Integer.class);
         float x = props.get("x", Float.class) / PHYSICS_UNITS;
         float y = props.get("y", Float.class) / PHYSICS_UNITS;
+        int health = props.get("health", Integer.class) / PHYSICS_UNITS;
 
         switch (bossType) {
             case "mouse":
-                boss = new Boss(x, y, state.getWorld());
+                boss = new Boss(x, y, health, state.getWorld());
                 boss.setSpriteSheet(mouseSprite);
                 bossController = new BossController(boss, state);
                 break;
             case "chef":
                 break;
             case "chopsticks":
-                boss = new Boss(x, y, state.getWorld());
+                boss = new Boss(x, y, health, state.getWorld());
                 boss.setSpriteSheet(chopsticksSprite);
                 bossController = new BossController(boss, state);
                 break;

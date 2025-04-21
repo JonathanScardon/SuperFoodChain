@@ -58,6 +58,11 @@
                     "propertyType": "bossType",
                     "type": "string",
                     "value": "mouse"
+                },
+                {
+                    "name": "health",
+                    "type": "int",
+                    "value": 10
                 }
             ],
             "name": "boss",
@@ -85,6 +90,26 @@
                 "chopsticks"
             ],
             "valuesAsFlags": false
+        },
+        {
+            "color": "#ffa0a0a4",
+            "drawFill": true,
+            "id": 8,
+            "members": [
+            ],
+            "name": "companion",
+            "type": "class",
+            "useAs": [
+                "property",
+                "map",
+                "layer",
+                "object",
+                "tile",
+                "tileset",
+                "wangcolor",
+                "wangset",
+                "project"
+            ]
         },
         {
             "id": 5,
@@ -126,26 +151,6 @@
             "members": [
             ],
             "name": "player",
-            "type": "class",
-            "useAs": [
-                "property",
-                "map",
-                "layer",
-                "object",
-                "tile",
-                "tileset",
-                "wangcolor",
-                "wangset",
-                "project"
-            ]
-        },
-        {
-            "color": "#ffa0a0a4",
-            "drawFill": true,
-            "id": 8,
-            "members": [
-            ],
-            "name": "companion",
             "type": "class",
             "useAs": [
                 "property",
