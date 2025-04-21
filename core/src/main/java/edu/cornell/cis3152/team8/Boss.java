@@ -153,6 +153,8 @@ public class Boss extends ObstacleSprite {
         this.health = health;
     }
 
+    public void removeHealth(int dmg) { health -= dmg; }
+
     /**
      * Draws this object to the sprite batch
      *

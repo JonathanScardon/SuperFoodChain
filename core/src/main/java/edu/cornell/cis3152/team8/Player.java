@@ -5,6 +5,7 @@ import com.badlogic.gdx.math.*;
 import com.badlogic.gdx.physics.box2d.Filter;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.JsonValue;
+import edu.cornell.cis3152.team8.companions.Durian;
 import edu.cornell.cis3152.team8.companions.Strawberry;
 import edu.cornell.gdiac.graphics.*;
 import edu.cornell.gdiac.physics2.ObstacleSprite;
@@ -106,7 +107,7 @@ public class Player {
         head.setCollected(true);
 //        radius = 2;
         ticks = 0;
-        DELAY = 10;
+        calculateDelay();
 
         Filter filter = head.getObstacle().getFilterData();
         filter.categoryBits = CollisionController.PLAYER_CATEGORY;
@@ -306,6 +307,19 @@ public class Player {
         }
         companions.remove(index);
     }
+
+    /**
+     * Calculates and sets buffer read delay (used for chaining behavior)
+     * based on the speed of the chain
+     */
+    public static void calculateDelay() {
+        int baseSpeed = 3;
+        int baseDelay = 7;
+
+        float rawDelay = (baseDelay * baseSpeed) / Companion.getSpeed();
+        DELAY = Math.max(1, Math.round(rawDelay));
+    }
+
 
 
     /**

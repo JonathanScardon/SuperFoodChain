@@ -425,6 +425,16 @@ public class CollisionController implements ContactListener {
      * Adds or Removes objects from the world.
      */
     public void postUpdate() {
+        for (Minion m : state.getMinions()) {
+            if (m.getHealth() <= 0) {
+                removed.add(m);
+            }
+        }
+        for (Boss b : state.getBosses()) {
+            if (b.getHealth() <= 0) {
+                removed.add(b);
+            }
+        }
         // Removes objects
         for (ObstacleSprite o : removed) {
             o.getObstacle().setActive(false);
