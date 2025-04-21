@@ -6,7 +6,7 @@
    <properties>
     <property name="attack0" type="object" value="7"/>
     <property name="attack1" type="object" value="14"/>
-    <property name="attack10" type="object" value="26"/>
+    <property name="attack10" type="object" value="7"/>
     <property name="attack11" type="object" value="28"/>
     <property name="attack12" type="object" value="32"/>
     <property name="attack13" type="object" value="29"/>
@@ -25,21 +25,14 @@
     <property name="health" type="int" value="10"/>
    </properties>
   </object>
-  <object id="7" name="a0" type="attack" x="640" y="360">
+  <object id="7" name="idle" type="attack" x="640" y="360">
    <properties>
     <property name="attackDuration" type="float" value="2"/>
     <property name="attackType" value="idle"/>
     <property name="warnDuration" type="float" value="2"/>
    </properties>
   </object>
-  <object id="26" name="a10" type="attack" x="640" y="360">
-   <properties>
-    <property name="attackDuration" type="float" value="2"/>
-    <property name="attackType" value="idle"/>
-    <property name="warnDuration" type="float" value="2"/>
-   </properties>
-  </object>
-  <object id="9" name="a2" type="attack" x="220" y="-60">
+  <object id="9" name="dash" type="attack" x="220" y="-60">
    <properties>
     <property name="attackType" value="dash"/>
     <property name="dir" value="down"/>
@@ -47,7 +40,7 @@
     <property name="warnDuration" type="float" value="2"/>
    </properties>
   </object>
-  <object id="14" name="a1" type="attack" x="80" y="780">
+  <object id="14" name="dash" type="attack" x="80" y="780">
    <properties>
     <property name="attackType" value="dash"/>
     <property name="dir" value="up"/>
@@ -55,7 +48,7 @@
     <property name="warnDuration" type="float" value="2"/>
    </properties>
   </object>
-  <object id="28" name="a11" type="attack" x="-80" y="608">
+  <object id="28" name="dash" type="attack" x="-80" y="608">
    <properties>
     <property name="attackType" value="dash"/>
     <property name="dir" value="right"/>
@@ -63,7 +56,7 @@
     <property name="warnDuration" type="float" value="2"/>
    </properties>
   </object>
-  <object id="31" name="a14" type="attack" x="1360" y="256">
+  <object id="31" name="dash" type="attack" x="1360" y="256">
    <properties>
     <property name="attackType" value="dash"/>
     <property name="dir" value="left"/>
@@ -71,7 +64,7 @@
     <property name="warnDuration" type="float" value="2"/>
    </properties>
   </object>
-  <object id="33" name="a16" type="attack" x="1360" y="96">
+  <object id="33" name="dash" type="attack" x="1360" y="96">
    <properties>
     <property name="attackType" value="dash"/>
     <property name="dir" value="left"/>
@@ -79,7 +72,7 @@
     <property name="warnDuration" type="float" value="2"/>
    </properties>
   </object>
-  <object id="32" name="a12" type="attack" x="1360" y="480">
+  <object id="32" name="dash" type="attack" x="1360" y="480">
    <properties>
     <property name="attackType" value="dash"/>
     <property name="dir" value="left"/>
@@ -87,7 +80,7 @@
     <property name="warnDuration" type="float" value="2"/>
    </properties>
   </object>
-  <object id="29" name="a13" type="attack" x="-80" y="384">
+  <object id="29" name="dash" type="attack" x="-80" y="384">
    <properties>
     <property name="attackType" value="dash"/>
     <property name="dir" value="right"/>
@@ -95,7 +88,7 @@
     <property name="warnDuration" type="float" value="2"/>
    </properties>
   </object>
-  <object id="30" name="a15" type="attack" x="-80" y="160">
+  <object id="30" name="dash" type="attack" x="-80" y="160">
    <properties>
     <property name="attackType" value="dash"/>
     <property name="dir" value="right"/>
@@ -103,7 +96,7 @@
     <property name="warnDuration" type="float" value="2"/>
    </properties>
   </object>
-  <object id="15" name="a3" type="attack" x="360" y="780">
+  <object id="15" name="dash" type="attack" x="360" y="780">
    <properties>
     <property name="attackType" value="dash"/>
     <property name="dir" value="up"/>
@@ -111,7 +104,7 @@
     <property name="warnDuration" type="float" value="2"/>
    </properties>
   </object>
-  <object id="16" name="a4" type="attack" x="500" y="-60">
+  <object id="16" name="dash" type="attack" x="500" y="-60">
    <properties>
     <property name="attackType" value="dash"/>
     <property name="dir" value="down"/>
@@ -119,7 +112,7 @@
     <property name="warnDuration" type="float" value="2"/>
    </properties>
   </object>
-  <object id="17" name="a5" type="attack" x="640" y="780">
+  <object id="17" name="dash" type="attack" x="640" y="780">
    <properties>
     <property name="attackType" value="dash"/>
     <property name="dir" value="up"/>
@@ -127,7 +120,7 @@
     <property name="warnDuration" type="float" value="2"/>
    </properties>
   </object>
-  <object id="18" name="a6" type="attack" x="780" y="-60">
+  <object id="18" name="dash" type="attack" x="780" y="-60">
    <properties>
     <property name="attackType" value="dash"/>
     <property name="dir" value="down"/>
@@ -135,7 +128,7 @@
     <property name="warnDuration" type="float" value="2"/>
    </properties>
   </object>
-  <object id="19" name="a7" type="attack" x="920" y="780">
+  <object id="19" name="dash" type="attack" x="920" y="780">
    <properties>
     <property name="attackType" value="dash"/>
     <property name="dir" value="up"/>
@@ -143,7 +136,7 @@
     <property name="warnDuration" type="float" value="2"/>
    </properties>
   </object>
-  <object id="20" name="a8" type="attack" x="1060" y="-60">
+  <object id="20" name="dash" type="attack" x="1060" y="-60">
    <properties>
     <property name="attackType" value="dash"/>
     <property name="dir" value="down"/>
@@ -151,7 +144,7 @@
     <property name="warnDuration" type="float" value="2"/>
    </properties>
   </object>
-  <object id="21" name="a9" type="attack" x="1200" y="780">
+  <object id="21" name="dash" type="attack" x="1200" y="780">
    <properties>
     <property name="attackType" value="dash"/>
     <property name="dir" value="up"/>

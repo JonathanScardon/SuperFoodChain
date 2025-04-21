@@ -193,11 +193,14 @@ public class GameScene implements Screen {
         maxDurian = state.getMaxDurian();
         minionSpawns = state.getMinionSpawns();
         companionSpawns = state.getCompanionSpawns();
+        minionSpawns.shuffle();
+        companionSpawns.shuffle();
 
+        // spawn in the first set of minions and companions so that we can see them before we start moving
         addMinions();
         addCompanions();
 
-        // start all the bosses
+        // make the bosses start attacking
         for (BossController bc : bossControls) {
             bc.startAttack();
         }
@@ -232,7 +235,6 @@ public class GameScene implements Screen {
     private void spawnMinion() {
         if (minionSpawnIdx >= minionSpawns.size) {
             minionSpawnIdx = 0;
-            minionSpawns.shuffle();
         }
         Vector2 pos = minionSpawns.get(minionSpawnIdx);
 
@@ -266,7 +268,6 @@ public class GameScene implements Screen {
     private void spawnCompanion() {
         if (companionSpawnIdx >= companionSpawns.size) {
             companionSpawnIdx = 0;
-            companionSpawns.shuffle();
         }
         Vector2 pos = companionSpawns.get(companionSpawnIdx);
 
