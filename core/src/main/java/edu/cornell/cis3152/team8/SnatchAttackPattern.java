@@ -65,8 +65,6 @@ public class SnatchAttackPattern implements BossAttackPattern {
     @Override
     public void update(float delta) {
         switch (state) {
-            case INACTIVE:
-                break;
             case WARN:
                 if (warnTime > 0) {
                     warnTime -= delta;
@@ -77,6 +75,8 @@ public class SnatchAttackPattern implements BossAttackPattern {
             case ATTACK:
                 if (attackTime > 0) {
                     attackTime -= delta;
+                } else {
+                    state = AttackState.ENDED;
                 }
                 break;
         }
@@ -84,6 +84,6 @@ public class SnatchAttackPattern implements BossAttackPattern {
 
     @Override
     public boolean isEnded() {
-        return state == AttackState.ATTACK && attackTime <= 0;
+        return state == AttackState.ENDED;
     }
 }
