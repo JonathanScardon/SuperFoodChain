@@ -28,24 +28,36 @@ public abstract class Companion extends ObstacleSprite {
         PINEAPPLE,
     }
 
-    /** How long the death sprite persists on screen in seconds */
+    /**
+     * How long the death sprite persists on screen in seconds
+     */
     private float deathExpirationTimer = 3.0f;
 
-    /** The type of Companion */
+    /**
+     * The type of Companion
+     */
     private CompanionType type;
 
-    /** Cost of companion */
+    /**
+     * Cost of companion
+     */
     private int cost;
 
-    /** How long companion must wait until use ability again */
+    /**
+     * How long companion must wait until use ability again
+     */
     private int cooldown;
 
-    /** The number of frames until use ability again */
+    /**
+     * The number of frames until use ability again
+     */
     private float abilityCool;
     private boolean collected;
     private Vector2 prevVelocity;
 
-    /** The direction the companion is currently moving in */
+    /**
+     * The direction the companion is currently moving in
+     */
     private int direction;
 
     private float prevX;
@@ -59,14 +71,15 @@ public abstract class Companion extends ObstacleSprite {
     private float size;
 
     private boolean remove;
+    private boolean moving;
 
     private static float MOVE_SPEED = 3;
 
-  private static final float units = 64f;
+    private static final float units = 64f;
 
     public Companion(float x, float y, int id, World world) {
-        super(new CapsuleObstacle(x/units, y/units, 0.5f, 0.5f), true);
-        ((CapsuleObstacle)obstacle).setTolerance( 0.5f );
+        super(new CapsuleObstacle(x / units, y / units, 0.5f, 0.5f), true);
+        ((CapsuleObstacle) obstacle).setTolerance(0.5f);
 
         cost = 0;
         cooldown = 5;
@@ -76,8 +89,10 @@ public abstract class Companion extends ObstacleSprite {
         direction = InputController.CONTROL_NO_ACTION;
         highlight = false;
         animationFrame = 1;
+        sprite.setFrame((int) animationFrame);
         this.id = id;
         remove = false;
+        moving = false;
 
         // change?
         obstacle = getObstacle();
@@ -97,65 +112,97 @@ public abstract class Companion extends ObstacleSprite {
         filter.maskBits = CollisionController.PLAYER_CATEGORY;
         obstacle.setFilterData(filter);
 
-  // TODO: was this different?
+        // TODO: was this different?
         size = 0.4f * units;
-        mesh.set(-size/2.0f,-size/2.0f,size,size);
+        mesh.set(-size / 2.0f, -size / 2.0f, size, size);
     }
 
     // accessors
 
-    /** Get type of Companion */
+    /**
+     * Get type of Companion
+     */
     public CompanionType getCompanionType() {
         return type;
-    };
+    }
 
-    /** Set type of Companion */
+    ;
+
+    /**
+     * Set type of Companion
+     */
     public void setCompanionType(CompanionType type) {
         this.type = type;
     }
 
-    /** Get cost of Companion */
+    /**
+     * Get cost of Companion
+     */
     public int getCost() {
         return cost;
-    };
+    }
 
-    /** Set cost of Companion */
+    ;
+
+    /**
+     * Set cost of Companion
+     */
     public void setCost(int cost) {
         this.cost = cost;
     }
 
-    /** Get cooldown of ability */
+    /**
+     * Get cooldown of ability
+     */
     public int getCooldown() {
         return cooldown;
-    };
+    }
 
-    /** Set cooldown of ability */
+    ;
+
+    /**
+     * Set cooldown of ability
+     */
     public void setCooldown(int cooldown) {
         this.cooldown = cooldown;
     }
 
-    /** Get active cooldown of ability */
-    public float getActiveCooldown() { return abilityCool; }
+    /**
+     * Get active cooldown of ability
+     */
+    public float getActiveCooldown() {
+        return abilityCool;
+    }
 
-    /** Set active cooldown of ability */
-    public void setActiveCooldown(float cd) { abilityCool = cd; }
+    /**
+     * Set active cooldown of ability
+     */
+    public void setActiveCooldown(float cd) {
+        abilityCool = cd;
+    }
 
-    /** Returns whether companion can use ability */
+    /**
+     * Returns whether companion can use ability
+     */
     public boolean canUse() {
         return abilityCool <= 0;
     }
 
-    /** Companion uses ability */
+    /**
+     * Companion uses ability
+     */
     public void useAbility(GameState state) {
 
         // individual abilities depending on type --> overrided by different types
-    };
+    }
+
+    ;
 
     /**
      * Resets the cool down of the companion ability
-     *
-     * If flag is true, the weapon will cool down by one animation frame.
-     * Otherwise it will reset to its maximum cooldown.
+     * <p>
+     * If flag is true, the weapon will cool down by one animation frame. Otherwise it will reset to
+     * its maximum cooldown.
      *
      * @param flag whether to cooldown or reset
      */
@@ -194,6 +241,7 @@ public abstract class Companion extends ObstacleSprite {
         if (!obstacle.isActive()) {
             return;
         }
+        highlight = false;
 
         // Determine how we are moving.
         boolean movingLeft = controlCode == 1;
@@ -207,84 +255,83 @@ public abstract class Companion extends ObstacleSprite {
             this.direction = InputController.CONTROL_MOVE_LEFT;
             velocity.x = -MOVE_SPEED;
             velocity.y = 0;
+            moving = true;
         } else if (movingRight) {
             this.direction = InputController.CONTROL_MOVE_RIGHT;
             velocity.x = MOVE_SPEED;
             velocity.y = 0;
+            moving = true;
         } else if (movingUp) {
             this.direction = InputController.CONTROL_MOVE_UP;
             velocity.y = MOVE_SPEED;
             velocity.x = 0;
+            moving = true;
         } else if (movingDown) {
             this.direction = InputController.CONTROL_MOVE_DOWN;
             velocity.y = -MOVE_SPEED;
             velocity.x = 0;
+            moving = true;
         } else {
+            this.direction = CONTROL_NO_ACTION;
             velocity.x = 0;
             velocity.y = 0;
+            moving = false;
         }
 
         obstacle.setLinearVelocity(velocity);
 
-//        if (animator != null) {
-//            animationFrame += animationSpeed;
-//            //System.out.println(animationFrame);
-//            if (animationFrame >= animator.getSize()) {
-//                animationFrame -= animator.getSize();
-//            }
-//        }
-
     }
 
-    public void draw(SpriteBatch batch, float delta){
+    public void draw(SpriteBatch batch, float delta) {
         if (!obstacle.isActive()) {
             if (deathExpirationTimer > 0.0f) {
                 sprite.setFrame(1);
                 batch.setColor(Color.BLACK);
                 deathExpirationTimer -= delta;
             }
-        }else {
+        } else {
+
             if (collected) {
-                sprite.setFrame((int) animationFrame);
+                if (moving) {
+                    sprite.setFrame((int) animationFrame);
+                }
             } else {
-                //System.out.println(this + " " + highlight );
-                if (highlight){
+                if (highlight) {
                     sprite.setFrame(0);
-                }else {
+                } else {
                     sprite.setFrame(1);
                 }
             }
             batch.setColor(Color.WHITE);
         }
-//         SpriteBatch.computeTransform(transform, origin.x, origin.y,
-//             position.x, position.y, 0.0f, size
-//             , size);
-        SpriteBatch.computeTransform(transform, sprite.getRegionWidth()/2.0f, sprite.getRegionHeight()/2.0f, obstacle.getPosition().x * units, obstacle.getPosition().y * units, 0.0f, size/units, size/units);
 
-        //System.out.println(highlight);
-            batch.draw(sprite, transform);
-        //batch.draw(texture, position.x, position.y, 64, 64);
+        SpriteBatch.computeTransform(transform, sprite.getRegionWidth() / 2.0f,
+            sprite.getRegionHeight() / 2.0f, obstacle.getPosition().x * units,
+            obstacle.getPosition().y * units, 0.0f, size / units, size / units);
+
+        batch.draw(sprite, transform);
         batch.setColor(Color.WHITE);
+        setGlow(false);
     }
 
     /**
      * @return companion speed MOVE_SPEED
      */
-    public static float getSpeed(){
+    public static float getSpeed() {
         return MOVE_SPEED;
     }
 
     /**
      * Sets companion speed MOVE_SPEED
+     *
      * @param speed new speed
      */
-    public static void setSpeed(float speed){
+    public static void setSpeed(float speed) {
         MOVE_SPEED = speed;
     }
 
 
     /**
-     *
      * @return control code of companion's current movement
      */
     public int getDirection() {
@@ -303,26 +350,31 @@ public abstract class Companion extends ObstacleSprite {
         return this.prevY;
     }
 
-    public void setGlow(Boolean g){
+    public void setGlow(Boolean g) {
         highlight = g;
     }
-    public int getId(){
+
+    public int getId() {
         return id;
     }
-    public void setId(int id){
+
+    public void setId(int id) {
         this.id = id;
     }
 
-    public boolean shouldRemove(){
+    public boolean shouldRemove() {
         return remove;
     }
 
-    public SpriteSheet getAnimator() {return sprite;}
+    public SpriteSheet getAnimator() {
+        return sprite;
+    }
 
-    public void decreaseDeathExpirationTimer(float delta){
+    public void decreaseDeathExpirationTimer(float delta) {
         deathExpirationTimer -= delta;
     }
-    public boolean getTrash(){
+
+    public boolean getTrash() {
         return deathExpirationTimer < 0.0;
     }
 

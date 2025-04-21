@@ -4,6 +4,7 @@ package edu.cornell.cis3152.team8;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.physics.box2d.*;
+import edu.cornell.gdiac.physics2.Obstacle;
 import edu.cornell.gdiac.physics2.ObstacleSprite;
 import com.badlogic.gdx.utils.Array;
 
@@ -348,20 +349,28 @@ public class CollisionController implements ContactListener {
                 System.out.println("P-C CONTACT IS HAPPENING");
                 if (c1 == COMPANION_CATEGORY) {
                     for (Companion c : state.getCompanions()) {
-                        if (Gdx.input.isKeyPressed(Input.Keys.E) && c.getObstacle().getBody() == b1
-                            && c.getCost() <= state.getPlayer().getCoins()) {
-                            System.out.println("ADD COMPANION");
-                            companionAdded = c;
-                            state.getPlayer().setCoins(state.getPlayer().getCoins() - c.getCost());
+                        if (c.getCost() <= state.getPlayer().getCoins()
+                            && c.getObstacle().getBody() == b1) {
+                            c.setGlow(true);
+                            if (Gdx.input.isKeyPressed(Input.Keys.E)) {
+                                System.out.println("ADD COMPANION");
+                                companionAdded = c;
+                                state.getPlayer()
+                                    .setCoins(state.getPlayer().getCoins() - c.getCost());
+                            }
                         }
                     }
                 } else {
                     for (Companion c : state.getCompanions()) {
-                        if (Gdx.input.isKeyPressed(Input.Keys.E) && c.getObstacle().getBody() == b2
+                        if (c.getObstacle().getBody() == b2
                             && c.getCost() <= state.getPlayer().getCoins()) {
-                            System.out.println("ADD COMPANION");
-                            companionAdded = c;
-                            state.getPlayer().setCoins(state.getPlayer().getCoins() - c.getCost());
+                            c.setGlow(true);
+                            if (Gdx.input.isKeyPressed(Input.Keys.E)) {
+                                System.out.println("ADD COMPANION");
+                                companionAdded = c;
+                                state.getPlayer()
+                                    .setCoins(state.getPlayer().getCoins() - c.getCost());
+                            }
                         }
                     }
                 }
@@ -440,8 +449,16 @@ public class CollisionController implements ContactListener {
             o.getObstacle().setActive(false);
             o.getObstacle().markRemoved(true);
             o.getObstacle().deactivatePhysics(world);
+            state.getDead().add(o);
         }
         removed.clear();
+
+        Array<ObstacleSprite> dead = state.getDead();
+        for (int i = 0; i < dead.size; i++) {
+            if (0 > 1) {
+                dead.removeIndex(i);
+            }
+        }
 
         // Add coins
         for (ObstacleSprite c : coinsAdded) {

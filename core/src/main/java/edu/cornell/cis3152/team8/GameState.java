@@ -11,13 +11,14 @@ import com.badlogic.gdx.utils.JsonValue;
 import edu.cornell.gdiac.assets.*;
 import edu.cornell.gdiac.graphics.*;
 import com.badlogic.gdx.physics.box2d.World;
+import edu.cornell.gdiac.physics2.ObstacleSprite;
 
 /**
- * This is the base model class for the game which stores all the model objects
- * in it.
+ * This is the base model class for the game which stores all the model objects in it.
  */
 
 public class GameState {
+
     // Graphics assets
     // TODO: these should probably be private, but they are public for the level loader right now
     public SpriteSheet mouseIdleSprite;
@@ -28,7 +29,7 @@ public class GameState {
     public SpriteSheet spinWarnSprite;
     public SpriteSheet idleWarnSprite;
 
-    private Array<Companion> deadCompanions;
+    private Array<ObstacleSprite> dead;
     /**
      * The party of companions controlled by the player
      */
@@ -61,10 +62,14 @@ public class GameState {
      */
     private CollisionController collision;
 
-    /** The Box2D world */
+    /**
+     * The Box2D world
+     */
     protected World world;
 
-    /** Gamestate constants */
+    /**
+     * Gamestate constants
+     */
     private JsonValue constants;
 
     private int maxEnemies;
@@ -82,8 +87,7 @@ public class GameState {
     private String bossAttack;
 
     /**
-     * Creates a new game session. This method will call reset() to set up the
-     * board.
+     * Creates a new game session. This method will call reset() to set up the board.
      */
     public GameState(JsonValue constants, AssetDirectory assets) {
         this.constants = constants;
@@ -91,7 +95,6 @@ public class GameState {
         JsonValue minionConstants = this.constants.get("Minion Spawns");
         JsonValue companionConstants = this.constants.get("Companion Spawns");
         JsonValue bossConstants = this.constants.get("boss");
-
 
         maxEnemies = minionConstants.getInt("Max Enemies");
         maxStrawberry = companionConstants.getInt("Max Strawberry");
@@ -114,7 +117,7 @@ public class GameState {
 
         Boss.setConstants(bossConstants);
 
-        bossAttack =  bossConstants.getString("attack");
+        bossAttack = bossConstants.getString("attack");
 
         mouseIdleSprite = assets.getEntry("IdleMouse.animation", SpriteSheet.class);
         mouseDashSprite = assets.getEntry("DashMouse.animation", SpriteSheet.class);
@@ -122,17 +125,18 @@ public class GameState {
 
         idleWarnSprite = assets.getEntry("idleWarn.animation", SpriteSheet.class);
         dashWarnVerticalSprite = assets.getEntry("dashWarnVertical.animation", SpriteSheet.class);
-        dashWarnHorizontalSprite = assets.getEntry("dashWarnHorizontal.animation", SpriteSheet.class);
+        dashWarnHorizontalSprite = assets.getEntry("dashWarnHorizontal.animation",
+            SpriteSheet.class);
         spinWarnSprite = assets.getEntry("spinWarn.animation", SpriteSheet.class);
 
         projectiles = new Array<Projectile>();
 
-        deadCompanions = new Array<>();
+        dead = new Array<>();
 
         reset();
     }
 
-    public void update(){
+    public void update() {
 //        Boss b = bosses.get(0);
 //        String state = b.getState();
 //        if (state.equals("Idle")){
@@ -147,6 +151,7 @@ public class GameState {
 //        }
 
     }
+
     /**
      * Generates the level and everything in it.
      */
@@ -161,7 +166,7 @@ public class GameState {
         }
 
         // will doSleep cause companions (inactive) to not contactListener
-        world = new World(new Vector2(0,0), true);
+        world = new World(new Vector2(0, 0), true);
         collision = new CollisionController(this);
         world.setContactListener(collision);
 
@@ -173,7 +178,7 @@ public class GameState {
         minionControls.clear();
         companions.clear();
         projectiles.clear();
-        deadCompanions.clear();
+        dead.clear();
 
         coins.clear();
 
@@ -191,6 +196,7 @@ public class GameState {
         // projectiles = new ProjectilePool(assets);
         // // projectile texture
     }
+
     /**
      * @return the player in the level
      */
@@ -219,7 +225,9 @@ public class GameState {
      *
      * @param minions The minions to set
      */
-    public void setMinions(Array<Minion> minions) {this.minions = minions; }
+    public void setMinions(Array<Minion> minions) {
+        this.minions = minions;
+    }
 
     /**
      * @return the array of bosses in the level
@@ -227,6 +235,7 @@ public class GameState {
     public Array<Boss> getBosses() {
         return bosses;
     }
+
     public Array<BossController> getBossControls() {
         return bossControls;
     }
@@ -279,19 +288,19 @@ public class GameState {
         return maxEnemies;
     }
 
-    public int getMaxStrawberry(){
+    public int getMaxStrawberry() {
         return maxStrawberry;
     }
 
-    public int getMaxPineapple(){
+    public int getMaxPineapple() {
         return maxPineapple;
     }
 
-    public int getMaxAvocado(){
+    public int getMaxAvocado() {
         return maxAvocado;
     }
 
-    public int getMaxBlueRaspberry(){
+    public int getMaxBlueRaspberry() {
         return maxBlueRaspberry;
     }
 
@@ -302,14 +311,16 @@ public class GameState {
     public Array<MinionController> getMinionControls() {
         return minionControls;
     }
+
     public Array<Vector2> getMinionSpawns() {
         return minionSpawns;
     }
+
     public Array<Vector2> getCompanionSpawns() {
         return companionSpawns;
     }
 
-    public Array<Companion>  getDeadCompanions(){
-        return deadCompanions;
+    public Array<ObstacleSprite> getDead() {
+        return dead;
     }
 }
