@@ -4,6 +4,7 @@ package edu.cornell.cis3152.team8;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.physics.box2d.*;
+import edu.cornell.gdiac.physics2.Obstacle;
 import edu.cornell.gdiac.physics2.ObstacleSprite;
 import com.badlogic.gdx.utils.Array;
 
@@ -448,8 +449,16 @@ public class CollisionController implements ContactListener {
             o.getObstacle().setActive(false);
             o.getObstacle().markRemoved(true);
             o.getObstacle().deactivatePhysics(world);
+            state.getDead().add(o);
         }
         removed.clear();
+
+        Array<ObstacleSprite> dead = state.getDead();
+        for (int i = 0; i < dead.size; i++) {
+            if (0 > 1) {
+                dead.removeIndex(i);
+            }
+        }
 
         // Add coins
         for (ObstacleSprite c : coinsAdded) {

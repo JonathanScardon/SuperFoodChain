@@ -71,6 +71,7 @@ public abstract class Companion extends ObstacleSprite {
     private float size;
 
     private boolean remove;
+    private boolean moving;
 
     private static float MOVE_SPEED = 3;
 
@@ -88,8 +89,10 @@ public abstract class Companion extends ObstacleSprite {
         direction = InputController.CONTROL_NO_ACTION;
         highlight = false;
         animationFrame = 1;
+        sprite.setFrame((int) animationFrame);
         this.id = id;
         remove = false;
+        moving = false;
 
         // change?
         obstacle = getObstacle();
@@ -252,32 +255,30 @@ public abstract class Companion extends ObstacleSprite {
             this.direction = InputController.CONTROL_MOVE_LEFT;
             velocity.x = -MOVE_SPEED;
             velocity.y = 0;
+            moving = true;
         } else if (movingRight) {
             this.direction = InputController.CONTROL_MOVE_RIGHT;
             velocity.x = MOVE_SPEED;
             velocity.y = 0;
+            moving = true;
         } else if (movingUp) {
             this.direction = InputController.CONTROL_MOVE_UP;
             velocity.y = MOVE_SPEED;
             velocity.x = 0;
+            moving = true;
         } else if (movingDown) {
             this.direction = InputController.CONTROL_MOVE_DOWN;
             velocity.y = -MOVE_SPEED;
             velocity.x = 0;
+            moving = true;
         } else {
+            this.direction = CONTROL_NO_ACTION;
             velocity.x = 0;
             velocity.y = 0;
+            moving = false;
         }
 
         obstacle.setLinearVelocity(velocity);
-
-//        if (animator != null) {
-//            animationFrame += animationSpeed;
-//            //System.out.println(animationFrame);
-//            if (animationFrame >= animator.getSize()) {
-//                animationFrame -= animator.getSize();
-//            }
-//        }
 
     }
 
@@ -289,10 +290,12 @@ public abstract class Companion extends ObstacleSprite {
                 deathExpirationTimer -= delta;
             }
         } else {
+
             if (collected) {
-                sprite.setFrame((int) animationFrame);
+                if (moving) {
+                    sprite.setFrame((int) animationFrame);
+                }
             } else {
-                //System.out.println(this + " " + highlight );
                 if (highlight) {
                     sprite.setFrame(0);
                 } else {
@@ -301,16 +304,12 @@ public abstract class Companion extends ObstacleSprite {
             }
             batch.setColor(Color.WHITE);
         }
-//         SpriteBatch.computeTransform(transform, origin.x, origin.y,
-//             position.x, position.y, 0.0f, size
-//             , size);
+
         SpriteBatch.computeTransform(transform, sprite.getRegionWidth() / 2.0f,
             sprite.getRegionHeight() / 2.0f, obstacle.getPosition().x * units,
             obstacle.getPosition().y * units, 0.0f, size / units, size / units);
 
-        //System.out.println(highlight);
         batch.draw(sprite, transform);
-        //batch.draw(texture, position.x, position.y, 64, 64);
         batch.setColor(Color.WHITE);
         setGlow(false);
     }
