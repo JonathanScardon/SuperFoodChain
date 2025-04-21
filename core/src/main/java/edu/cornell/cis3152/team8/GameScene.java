@@ -11,7 +11,6 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.JsonValue;
-import edu.cornell.cis3152.team8.Companion.CompanionType;
 import edu.cornell.cis3152.team8.companions.*;
 import edu.cornell.gdiac.assets.AssetDirectory;
 import edu.cornell.gdiac.graphics.SpriteBatch.BlendMode;
@@ -35,18 +34,6 @@ public class GameScene implements Screen {
     private final Button settingsButton;
     private final Button exitButton;
     private final Settings settingsScreen;
-
-    private int maxEnemies;
-    private int maxStrawberry;
-    private int maxPineapple;
-    private int maxAvocado;
-    private int maxBlueRaspberry;
-    private int maxDurian;
-    private int curStrawberry;
-    private int curPineapple;
-    private int curAvocado;
-    private int curBlueRaspberry;
-    private int curDurian;
 
     private float companionAddTimer = 3.0f;
     /**
@@ -168,12 +155,6 @@ public class GameScene implements Screen {
         bosses = state.getBosses();
         bossControls = state.getBossControls();
         world = state.getWorld();
-
-        curStrawberry = 0;
-        curPineapple = 0;
-        curAvocado = 0;
-        curBlueRaspberry = 0;
-        curDurian = 0;
         coins = state.getCoins();
 
         projectiles = state.getActiveProjectiles();
@@ -185,12 +166,6 @@ public class GameScene implements Screen {
         state.setMinions(minions);
         minionControls = state.getMinionControls();
 
-        maxEnemies = state.getMaxMinions();
-        maxStrawberry = state.getMaxStrawberry();
-        maxPineapple = state.getMaxPineapple();
-        maxAvocado = state.getMaxAvocado();
-        maxBlueRaspberry = state.getMaxBlueRaspberry();
-        maxDurian = state.getMaxDurian();
         minionSpawns = state.getMinionSpawns();
         companionSpawns = state.getCompanionSpawns();
         minionSpawns.shuffle();
@@ -224,7 +199,7 @@ public class GameScene implements Screen {
      * Spawn minions until we reach the maximum enemy numbers
      */
     private void addMinions() {
-        while (minions.size < maxEnemies) {
+        while (minions.size < state.maxMinions) {
             spawnMinion();
         }
     }
@@ -242,7 +217,7 @@ public class GameScene implements Screen {
         float probability = rand.nextFloat();
         if (probability < 0.5f) {
             m = new Minion(pos.x, pos.y, minions.size, world, player);
-        } else if (probability < 0.65f){
+        } else if (probability < 0.65f) {
             m = new Spider(pos.x, pos.y, minions.size, world, player);
         } else { // can add elif statements to spawn other mobs at certain probabilities
             m = new Cricket(pos.x, pos.y, minions.size, world, player);
@@ -271,26 +246,28 @@ public class GameScene implements Screen {
         }
         Vector2 pos = companionSpawns.get(companionSpawnIdx);
 
-        Companion c;
-        if (curStrawberry < maxStrawberry) {
+        Companion c = null;
+        if (state.numStrawberries < state.maxStrawberries) {
             c = new Strawberry(pos.x, pos.y, companions.size, world);
-            curStrawberry++;
-        } else if (curPineapple < maxPineapple) {
+            state.numStrawberries++;
+        } else if (state.numPineapples < state.maxPineapples) {
             c = new Pineapple(pos.x, pos.y, companions.size, world);
-            curPineapple++;
-        } else if (curBlueRaspberry < maxBlueRaspberry) {
+            state.numPineapples++;
+        } else if (state.numBlueRaspberries < state.maxBlueRaspberries) {
             c = new BlueRaspberry(pos.x, pos.y, companions.size, world);
-            curBlueRaspberry++;
-        } else if (curDurian < maxDurian) {
+            state.numBlueRaspberries++;
+        } else if (state.numDurians < state.maxDurians) {
             c = new Durian(pos.x, pos.y, companions.size, world);
-            curDurian++;
-        } else {
+            state.numDurians++;
+        } else if (state.numAvocados < state.maxAvocados) {
             c = new Avocado(pos.x, pos.y, companions.size, world);
-            curAvocado++;
+            state.numAvocados++;
         }
 
-        companions.add(c);
-        companionSpawnIdx++;
+        if (c != null) {
+            companions.add(c);
+            companionSpawnIdx++;
+        }
     }
 
     public GameState getState() {
@@ -355,31 +332,10 @@ public class GameScene implements Screen {
         }
 
         if (start && !paused) {
-//        if (start && player.isAlive()) {
-            // iterate through all companions in the chain
             state.update();
             addMinions();
             addCompanions();
             bosses.get(0).setDamage(false);
-
-            for (Companion c : companions) {
-                if (c.isCollected()) {
-                    companions.removeIndex(c.getId());
-                    CompanionType type = c.getCompanionType();
-                    if (type.equals(CompanionType.STRAWBERRY)) {
-                        curStrawberry--;
-                    } else if (type.equals(CompanionType.PINEAPPLE)) {
-                        curPineapple--;
-                    } else if (type.equals(CompanionType.DURIAN)) {
-                        curDurian--;
-                    } else if (type.equals(CompanionType.BLUE_RASPBERRY)) {
-                        curBlueRaspberry--;
-                    } else {
-                        curAvocado--;
-                    }
-
-                }
-            }
 
             for (int i = 0; i < minions.size; i++) {
                 minions.get(i).setID(i);

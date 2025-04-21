@@ -290,6 +290,13 @@ public class CollisionController implements ContactListener {
         // Add companions
         if (companionAdded != null) {
             state.getPlayer().addCompanion(companionAdded);
+            switch (companionAdded.getCompanionType()) {
+                case DURIAN -> state.numDurians--;
+                case STRAWBERRY -> state.numStrawberries--;
+                case AVOCADO ->  state.numAvocados--;
+                case BLUE_RASPBERRY -> state.numBlueRaspberries--;
+                case PINEAPPLE -> state.numPineapples--;
+            }
             state.getCompanions().removeValue(companionAdded, false);
         }
         companionAdded = null;

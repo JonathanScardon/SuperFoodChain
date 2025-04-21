@@ -78,11 +78,16 @@ public class GameState {
     private Array<Vector2> companionSpawns;
 
     protected int maxCompanions;
-    protected int maxStrawberry;
-    protected int maxPineapple;
-    protected int maxAvocado;
-    protected int maxBlueRaspberry;
-    protected int maxDurian;
+    protected int maxStrawberries;
+    protected int maxPineapples;
+    protected int maxAvocados;
+    protected int maxBlueRaspberries;
+    protected int maxDurians;
+    protected int numStrawberries;
+    protected int numPineapples;
+    protected int numAvocados;
+    protected int numBlueRaspberries;
+    protected int numDurians;
 
     /**
      * Creates a new game session. This method will call reset() to set up the board.
@@ -169,6 +174,12 @@ public class GameState {
 
         minionSpawns.clear();
         companionSpawns.clear();
+
+        numAvocados = 0;
+        numBlueRaspberries = 0;
+        numDurians = 0;
+        numPineapples = 0;
+        numStrawberries = 0;
 
         // Projectiles
         projectiles = new Array<>();
@@ -279,30 +290,6 @@ public class GameState {
      */
     public World getWorld() {
         return world;
-    }
-
-    public int getMaxMinions() {
-        return maxMinions;
-    }
-
-    public int getMaxStrawberry() {
-        return maxStrawberry;
-    }
-
-    public int getMaxPineapple() {
-        return maxPineapple;
-    }
-
-    public int getMaxAvocado() {
-        return maxAvocado;
-    }
-
-    public int getMaxBlueRaspberry() {
-        return maxBlueRaspberry;
-    }
-
-    public int getMaxDurian() {
-        return maxDurian;
     }
 
     public Array<MinionController> getMinionControls() {
