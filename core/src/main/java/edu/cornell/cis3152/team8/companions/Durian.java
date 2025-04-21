@@ -6,6 +6,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 import edu.cornell.cis3152.team8.Boss;
 import edu.cornell.cis3152.team8.Companion;
+import edu.cornell.cis3152.team8.DurianProjectile;
 import edu.cornell.cis3152.team8.GameState;
 import edu.cornell.cis3152.team8.Minion;
 import edu.cornell.gdiac.graphics.SpriteBatch;
@@ -25,11 +26,11 @@ public class Durian extends Companion {
         super(x, y, id, world);
         setCompanionType(CompanionType.DURIAN);
         setCost(1);
-        setCooldown(1);
+        setCooldown(2);
 
         texture = new Texture("images/Durian.png");
-        SpriteSheet pineapple = new SpriteSheet(texture, 1, 7);
-        setSpriteSheet(pineapple);
+        SpriteSheet durian = new SpriteSheet(texture, 1, 7);
+        setSpriteSheet(durian);
         animationSpeed = 0.25f;
     }
 
@@ -38,25 +39,14 @@ public class Durian extends Companion {
      * TODO: THIS NEEDS TO BE CHANGED --> WILL CAUSE COIN TO NOT SPAWN UPON MINION DEATH
      */
     public void useAbility(GameState state) {
-        Vector2 durianPos = obstacle.getPosition();
-
-        float radius = 3f;
-        int damage = 1;
-
-        for (Minion m : state.getMinions()) {
-            Vector2 enemyPos = m.getObstacle().getPosition();
-            if (enemyPos.dst(durianPos) <= radius) {
-                m.removeHealth(damage);
-                System.out.println("Minion killed via durian radius");
-            }
-        }
-
-        for (Boss b : state.getBosses()) {
-            Vector2 enemyPos = b.getObstacle().getPosition();
-            if (enemyPos.dst(durianPos) <= radius) {
-                b.removeHealth(damage);
-                System.out.println("Boss damaged via durian radius");
-            }
+        int numAttacks = 8;
+        double angle = Math.toRadians(360.0 / numAttacks);
+        for (int i = 0; i < numAttacks; i++) {
+            DurianProjectile projectile = new DurianProjectile(0,0,0,0, state.getWorld());
+            projectile.getObstacle().setLinearVelocity(new Vector2((float) Math.cos(angle*i) * 8, (float) Math.sin(angle*i) * 8));
+            projectile.getObstacle().setX(obstacle.getX());
+            projectile.getObstacle().setY(obstacle.getY());
+            state.getActiveProjectiles().add(projectile);
         }
         coolDown(false, 0);
     }
