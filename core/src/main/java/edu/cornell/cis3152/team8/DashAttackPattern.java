@@ -71,23 +71,28 @@ public class DashAttackPattern implements BossAttackPattern {
             case CONTROL_MOVE_UP:
                 // make the boss slide up a little bit
                 boss.getObstacle().setLinearVelocity(new Vector2(0, 15f));
-                boss.angle = 90f;
+                boss.flipVertical = true;
                 break;
             case CONTROL_MOVE_DOWN:
                 // make the boss slide down a little bit
                 boss.getObstacle().setLinearVelocity(new Vector2(0, -15f));
-                boss.angle = 270f;
                 break;
             case CONTROL_MOVE_LEFT:
                 // make the boss slide left a little bit
                 boss.getObstacle().setLinearVelocity(new Vector2(-15f, 0));
-                boss.angle = 180f;
                 break;
             case CONTROL_MOVE_RIGHT:
                 // make the boss slide right a little bit
                 boss.getObstacle().setLinearVelocity(new Vector2(15f, 0));
-                boss.angle = 0f;
+                boss.flipHorizontal = true;
                 break;
+        }
+
+        // TODO: this should be moved to attack() if we have a separate warn animation
+        if (controlCode == CONTROL_MOVE_UP || controlCode == CONTROL_MOVE_DOWN) {
+            boss.setAnimation("dashVertical");
+        } else if (controlCode == CONTROL_MOVE_LEFT || controlCode == CONTROL_MOVE_RIGHT) {
+            boss.setAnimation("dashHorizontal");
         }
 
         warnTime = warnDuration;
@@ -118,6 +123,8 @@ public class DashAttackPattern implements BossAttackPattern {
                 if (isOutOfBounds()) {
                     state = AttackState.ENDED;
                     boss.moveSpeed = origMoveSpeed;
+                    boss.flipVertical = false;
+                    boss.flipHorizontal = false;
                 }
                 break;
         }

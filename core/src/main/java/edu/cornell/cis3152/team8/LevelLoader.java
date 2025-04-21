@@ -24,8 +24,12 @@ public class LevelLoader {
     private AssetDirectory assets = null;
 
     // boss sprites
-    private SpriteSheet mouseSprite;
-    private SpriteSheet chopsticksSprite;
+    private SpriteSheet mouseIdleSprite;
+    private SpriteSheet mouseDashVerticalSprite;
+    private SpriteSheet mouseDashHorizontalSprite;
+
+    private SpriteSheet chopsticksIdleSprite;
+    private SpriteSheet chopsticksDashSprite;
 
     // warning sprites
     private SpriteSheet idleWarnSprite;
@@ -61,8 +65,12 @@ public class LevelLoader {
         GameState state = scene.getState();
 
         // load assets
-        mouseSprite = assets.getEntry("dashMouse.animation", SpriteSheet.class);
-        chopsticksSprite = assets.getEntry("chopsticks.animation", SpriteSheet.class);
+        mouseIdleSprite = assets.getEntry("idleMouse.animation", SpriteSheet.class);
+        mouseDashVerticalSprite = assets.getEntry("dashMouseVertical.animation", SpriteSheet.class);
+        mouseDashHorizontalSprite = assets.getEntry("dashMouseHorizontal.animation", SpriteSheet.class);
+
+        chopsticksIdleSprite = assets.getEntry("idleChopsticks.animation", SpriteSheet.class);
+        chopsticksDashSprite = assets.getEntry("dashChopsticks.animation", SpriteSheet.class);
 
         idleWarnSprite = assets.getEntry("idleWarn.animation", SpriteSheet.class);
         dashWarnVerticalSprite = assets.getEntry("dashWarnVertical.animation", SpriteSheet.class);
@@ -129,14 +137,19 @@ public class LevelLoader {
         switch (bossType) {
             case "mouse":
                 boss = new Boss(x, y, health, state.getWorld());
-                boss.setSpriteSheet(mouseSprite);
+                boss.addAnimation("default", mouseDashVerticalSprite);
+                boss.addAnimation("idle", mouseIdleSprite);
+                boss.addAnimation("dashVertical", mouseDashVerticalSprite);
+                boss.addAnimation("dashHorizontal", mouseDashHorizontalSprite);
                 bossController = new BossController(boss, state);
                 break;
             case "chef":
                 break;
             case "chopsticks":
                 boss = new Boss(x, y, health, state.getWorld());
-                boss.setSpriteSheet(chopsticksSprite);
+                boss.addAnimation("default", chopsticksIdleSprite);
+                boss.addAnimation("idle", chopsticksIdleSprite);
+                boss.addAnimation("snatch", chopsticksDashSprite);
                 bossController = new BossController(boss, state);
                 break;
         }
@@ -144,6 +157,7 @@ public class LevelLoader {
         if (boss == null) {
             throw new RuntimeException("Boss creation failed");
         }
+        boss.setAnimation("default");
 
         // get all attacks
         int attackIdx = 0;

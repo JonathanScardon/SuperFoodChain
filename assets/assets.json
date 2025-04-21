@@ -11,27 +11,57 @@
             }
         },
         "idleMouse": {
-            "file": "images/MouseIdle.png",
+            "file": "images/Boss_Rat_IdleStatic.png",
             "sprites": {
                 "animation": {
                     "rows": 1,
-                    "cols": 4,
-                    "size": 4
+                    "cols": 1,
+                    "size": 1
                 }
             }
         },
-        "dashMouse": {
-            "file": "images/MouseDash.png",
+        "dashMouseVertical": {
+            "file": "images/Boss_Rat_RunDown.png",
             "sprites": {
                 "animation": {
                     "rows": 1,
-                    "cols": 4,
-                    "size": 4
+                    "cols": 5,
+                    "size": 5
+                }
+            }
+        },
+        "dashMouseHorizontal": {
+            "file": "images/Boss_Rat_RunHorizontal.png",
+            "sprites": {
+                "animation": {
+                    "rows": 1,
+                    "cols": 5,
+                    "size": 5
                 }
             }
         },
         "spinMouse": {
             "file": "images/MouseSpin.png",
+            "sprites": {
+                "animation": {
+                    "rows": 1,
+                    "cols": 4,
+                    "size": 4
+                }
+            }
+        },
+        "idleChopsticks": {
+            "file": "images/Boss_Chopsticks_Static.png",
+            "sprites": {
+                "animation": {
+                    "rows": 1,
+                    "cols": 1,
+                    "size": 1
+                }
+            }
+        },
+        "dashChopsticks": {
+            "file": "images/Boss_Chopstick_Dash.png",
             "sprites": {
                 "animation": {
                     "rows": 1,
@@ -77,16 +107,6 @@
                     "rows": 1,
                     "cols": 2,
                     "size": 2
-                }
-            }
-        },
-        "chopsticks": {
-            "file": "images/chopsticks.png",
-            "sprites": {
-                "animation": {
-                    "rows": 1,
-                    "cols": 1,
-                    "size": 1
                 }
             }
         }

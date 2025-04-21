@@ -40,6 +40,8 @@ public class SnatchAttackPattern implements BossAttackPattern {
         state = AttackState.WARN;
         controller.setAction(InputController.CONTROL_NO_ACTION);
 
+        boss.setAnimation("snatch");
+
         attackX = player.getPlayerHead().getObstacle().getPosition().x;
         attackY = player.getPlayerHead().getObstacle().getPosition().y;
         warnPattern.setPosition(attackX, attackY);
