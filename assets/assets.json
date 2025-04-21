@@ -153,8 +153,6 @@
     },
     "jsons": {
         "constants": "jsons/constants.json",
-        "save": "jsons/savedGame.json",
-        "level1": "jsons/level1.json",
-        "level2": "jsons/level2.json"
+        "save": "jsons/savedGame.json"
     }
 }
