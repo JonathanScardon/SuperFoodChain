@@ -41,7 +41,7 @@ public class Boss extends ObstacleSprite {
     /**
      * How far forward this boss can move in a single turn
      */
-    private float moveSpeed;
+    protected float moveSpeed;
     /**
      * Whether the boss was damaged this frame
      */
@@ -159,8 +159,6 @@ public class Boss extends ObstacleSprite {
     }
 
     public void removeHealth(int dmg) { health -= dmg; }
-
-    public void setMoveSpeed(float speed) { moveSpeed = speed; }
 
     /**
      * Draws this object to the sprite batch

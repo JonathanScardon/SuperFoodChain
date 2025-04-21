@@ -14,6 +14,10 @@ public interface BossAttackPattern {
          * The boss is attacking
          */
         ATTACK,
+        /**
+         * The boss has finished this attack
+         */
+        ENDED,
     }
 
     /**
