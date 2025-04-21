@@ -25,13 +25,24 @@
   </object>
  </objectgroup>
  <objectgroup id="3" name="companion">
-  <object id="6" type="player" x="888.462" y="242.308"/>
+  <properties>
+   <property name="maxAvocado" type="int" value="0"/>
+   <property name="maxBlueRaspberry" type="int" value="0"/>
+   <property name="maxCompanions" type="int" value="2"/>
+   <property name="maxDurian" type="int" value="0"/>
+   <property name="maxPineapple" type="int" value="1"/>
+   <property name="maxStrawberry" type="int" value="1"/>
+  </properties>
+  <object id="6" type="player" x="833.054" y="271.217"/>
   <object id="12" type="companion" x="173.452" y="139.725"/>
   <object id="13" type="companion" x="178.27" y="575.765"/>
   <object id="14" type="companion" x="1084.08" y="580.583"/>
   <object id="15" type="companion" x="1052.76" y="134.907"/>
  </objectgroup>
  <objectgroup id="5" name="minion">
+  <properties>
+   <property name="maxMinions" type="int" value="3"/>
+  </properties>
   <object id="7" type="minion" x="-31.3177" y="-28.9087"/>
   <object id="8" type="minion" x="1300.9" y="-16.8634"/>
   <object id="9" type="minion" x="1296.07" y="741.99"/>

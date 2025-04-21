@@ -1,15 +1,11 @@
 package edu.cornell.cis3152.team8;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
@@ -18,14 +14,9 @@ import com.badlogic.gdx.utils.JsonValue;
 import edu.cornell.cis3152.team8.Companion.CompanionType;
 import edu.cornell.cis3152.team8.companions.*;
 import edu.cornell.gdiac.assets.AssetDirectory;
-import edu.cornell.gdiac.graphics.SpriteBatch;
 import edu.cornell.gdiac.graphics.SpriteBatch.BlendMode;
 import edu.cornell.gdiac.graphics.TextLayout;
-import edu.cornell.gdiac.physics2.Obstacle;
 import edu.cornell.gdiac.physics2.ObstacleSprite;
-import edu.cornell.gdiac.util.ScreenListener;
-
-import org.w3c.dom.Text;
 
 import java.util.Random;
 
@@ -144,22 +135,13 @@ public class GameScene implements Screen {
         this.game = game;
         rand = new Random();
         coinTexture = new Texture("images/CoinUI.png");
-        constants = assets.getEntry("level" + level, JsonValue.class);
+        constants = assets.getEntry("constants", JsonValue.class);
         //System.out.println(constants);
         this.state = new GameState(constants, assets);
         this.level = level;
 
-        maxEnemies = state.getMaxEnemies();
-        maxStrawberry = state.getMaxStrawberry();
-        maxPineapple = state.getMaxPineapple();
-        maxAvocado = state.getMaxAvocado();
-        maxBlueRaspberry = state.getMaxBlueRaspberry();
-        maxDurian = state.getMaxDurian();
-
         minions = state.getMinions();
-        minionSpawns = state.getMinionSpawns();
         companions = state.getCompanions();
-        companionSpawns = state.getCompanionSpawns();
         dead = state.getDead();
 
         pauseBackground = new Texture("images/Paused.png");
@@ -203,6 +185,12 @@ public class GameScene implements Screen {
         state.setMinions(minions);
         minionControls = state.getMinionControls();
 
+        maxEnemies = state.getMaxMinions();
+        maxStrawberry = state.getMaxStrawberry();
+        maxPineapple = state.getMaxPineapple();
+        maxAvocado = state.getMaxAvocado();
+        maxBlueRaspberry = state.getMaxBlueRaspberry();
+        maxDurian = state.getMaxDurian();
         minionSpawns = state.getMinionSpawns();
         companionSpawns = state.getCompanionSpawns();
 
@@ -264,8 +252,7 @@ public class GameScene implements Screen {
      * Spawn companions until we reach the maximum number for each
      */
     private void addCompanions() {
-        while (companions.size
-            < maxStrawberry + maxPineapple + maxAvocado + maxBlueRaspberry + maxDurian) {
+        while (companions.size < state.maxCompanions) {
             spawnCompanion();
         }
     }

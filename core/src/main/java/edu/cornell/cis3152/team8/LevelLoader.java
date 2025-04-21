@@ -1,18 +1,12 @@
 package edu.cornell.cis3152.team8;
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
 import com.badlogic.gdx.maps.tiled.*;
 import com.badlogic.gdx.maps.*;
 import com.badlogic.gdx.maps.tiled.objects.TiledMapTileMapObject;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.utils.Array;
 import edu.cornell.gdiac.assets.AssetDirectory;
 import edu.cornell.gdiac.graphics.SpriteSheet;
-
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * This is a singleton class meant to load levels from the tmx file format
@@ -78,11 +72,21 @@ public class LevelLoader {
 
         TiledMap map = this.mapLoader.load(path);
 
-        MapLayer bossLayer = map.getLayers().get("boss");
         MapLayer companionLayer = map.getLayers().get("companion");
         MapLayer minionLayer = map.getLayers().get("minion");
+        MapLayer bossLayer = map.getLayers().get("boss");
+
+        MapProperties companionLayerProps = companionLayer.getProperties();
+        MapProperties minionLayerProps = minionLayer.getProperties();
+        MapProperties bossLayerProps = bossLayer.getProperties();
 
         // create player and companions
+        state.maxCompanions = companionLayerProps.get("maxCompanions", Integer.class);
+        state.maxAvocado = companionLayerProps.get("maxAvocado", Integer.class);
+        state.maxDurian = companionLayerProps.get("maxDurian", Integer.class);
+        state.maxPineapple = companionLayerProps.get("maxPineapple", Integer.class);
+        state.maxStrawberry = companionLayerProps.get("maxStrawberry", Integer.class);
+        state.maxBlueRaspberry = companionLayerProps.get("maxBlueRaspberry", Integer.class);
         for (MapObject obj : companionLayer.getObjects()) {
             if ("player".equals(obj.getProperties().get("type", String.class))) {
                 createPlayer(obj, scene);
@@ -92,6 +96,7 @@ public class LevelLoader {
         }
 
         // create minions
+        state.maxMinions = minionLayerProps.get("maxMinions", Integer.class);
         for (MapObject obj : minionLayer.getObjects()) {
             if ("minion".equals(obj.getProperties().get("type", String.class))) {
                 createMinionSpawn(obj, scene);

@@ -72,19 +72,17 @@ public class GameState {
      */
     private JsonValue constants;
 
-    private int maxEnemies;
+    protected int maxMinions;
     private int numCompanions;
     private Array<Vector2> minionSpawns;
     private Array<Vector2> companionSpawns;
-    private int numMinionSpawns;
-    private int numCompanionSpawns;
-    private int maxStrawberry;
-    private int maxPineapple;
-    private int maxAvocado;
-    private int maxBlueRaspberry;
-    private int maxDurian;
 
-    private String bossAttack;
+    protected int maxCompanions;
+    protected int maxStrawberry;
+    protected int maxPineapple;
+    protected int maxAvocado;
+    protected int maxBlueRaspberry;
+    protected int maxDurian;
 
     /**
      * Creates a new game session. This method will call reset() to set up the board.
@@ -92,23 +90,12 @@ public class GameState {
     public GameState(JsonValue constants, AssetDirectory assets) {
         this.constants = constants;
 
-        JsonValue minionConstants = this.constants.get("Minion Spawns");
-        JsonValue companionConstants = this.constants.get("Companion Spawns");
         JsonValue bossConstants = this.constants.get("boss");
-
-        maxEnemies = minionConstants.getInt("Max Enemies");
-        maxStrawberry = companionConstants.getInt("Max Strawberry");
-        maxPineapple = companionConstants.getInt("Max Pineapple");
-        maxAvocado = companionConstants.getInt("Max Avocado");
-        maxBlueRaspberry = companionConstants.getInt("Max Blue Raspberry");
-        maxDurian = companionConstants.getInt("Max Durian");
 
         companions = new Array<>();
 
         minions = new Array<>();
         minionControls = new Array<>();
-        numMinionSpawns = minionConstants.getInt("Number of Spawns");
-        numCompanionSpawns = companionConstants.getInt("Number of Spawns");
 
         coins = new Array<>();
 
@@ -116,8 +103,6 @@ public class GameState {
         companionSpawns = new Array<>();
 
         Boss.setConstants(bossConstants);
-
-        bossAttack = bossConstants.getString("attack");
 
         mouseIdleSprite = assets.getEntry("IdleMouse.animation", SpriteSheet.class);
         mouseDashSprite = assets.getEntry("DashMouse.animation", SpriteSheet.class);
@@ -284,8 +269,8 @@ public class GameState {
         return world;
     }
 
-    public int getMaxEnemies() {
-        return maxEnemies;
+    public int getMaxMinions() {
+        return maxMinions;
     }
 
     public int getMaxStrawberry() {
