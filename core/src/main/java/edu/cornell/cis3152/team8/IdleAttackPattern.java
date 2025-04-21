@@ -40,6 +40,9 @@ public class IdleAttackPattern implements BossAttackPattern {
         state = AttackState.WARN;
         controller.setAction(CONTROL_NO_ACTION);
 
+        boss.setAnimation("idle");
+        boss.angle = 0f;
+
         warnTime = warnDuration;
         attackTime = attackDuration;
 
@@ -54,7 +57,6 @@ public class IdleAttackPattern implements BossAttackPattern {
         boss.getObstacle().setX(this.idleX);
         boss.getObstacle().setY(this.idleY);
         attackTime = attackDuration;
-        boss.angle = 90f; // make the boss face upwards
 
         warnPattern.active = false;
         boss.curWarn = null;
