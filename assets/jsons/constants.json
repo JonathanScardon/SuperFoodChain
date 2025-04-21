@@ -4,5 +4,5 @@
         "idleDuration": 5,
         "epsilon": 0.01,
         "animationSpeed": 0.1
-    },
+    }
 }
