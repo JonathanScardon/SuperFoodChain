@@ -109,12 +109,12 @@ public class Minion extends ObstacleSprite {
      * like position or a cooldown value. It does not handle collisions (which are determined by the
      * CollisionController). It is not intended to interact with other objects in any way at all.
      *
-     * @param u
+     * @param u TODO: add param 'u' description since it changed from 'controlCode'
      */
     public void update(boolean u) {
         if (u) {
             Vector2 pos = obstacle.getPosition().scl(units);
-            Vector2 dir = player.getPlayerHead().getObstacle().getPosition().scl(64).sub(pos).nor();
+            Vector2 dir = player.getPlayerHead().getObstacle().getPosition().scl(units).sub(pos).nor();
             obstacle.setLinearVelocity(dir.scl(MOVESPEED));
         } else {
             obstacle.setLinearVelocity(new Vector2());

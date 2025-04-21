@@ -11,7 +11,7 @@ public class Cricket extends Minion {
 
     private State state;
     private float waitTimer, hopTimer;
-    private static final float WAIT_DURATION = 2f, HOP_DURATION = 0.3f, HOP_SPEED = 7f;
+    private static final float WAIT_DURATION = 2f, HOP_DURATION = 0.3f, HOP_SPEED = 5f;
     private Player player;
     private static final float units = 64f;
 
@@ -39,7 +39,7 @@ public class Cricket extends Minion {
                     }
                 }
                 case HOP -> {
-                    Vector2 dir = player.getPlayerHead().getObstacle().getPosition().scl(64)
+                    Vector2 dir = player.getPlayerHead().getObstacle().getPosition().scl(units)
                         .sub(pos)
                         .nor();
                     obstacle.setLinearVelocity(dir.scl(HOP_SPEED));

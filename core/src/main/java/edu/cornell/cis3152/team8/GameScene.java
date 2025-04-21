@@ -237,9 +237,12 @@ public class GameScene implements Screen {
         Vector2 pos = minionSpawns.get(minionSpawnIdx);
 
         Minion m;
-        if (rand.nextFloat() < 0.5f) {
+        float probability = rand.nextFloat();
+        if (probability < 0.5f) {
             m = new Minion(pos.x, pos.y, minions.size, world, player);
-        } else {
+        } else if (probability < 0.65f){
+            m = new Spider(pos.x, pos.y, minions.size, world, player);
+        } else { // can add elif statements to spawn other mobs at certain probabilities
             m = new Cricket(pos.x, pos.y, minions.size, world, player);
         }
 
