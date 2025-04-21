@@ -348,20 +348,28 @@ public class CollisionController implements ContactListener {
                 System.out.println("P-C CONTACT IS HAPPENING");
                 if (c1 == COMPANION_CATEGORY) {
                     for (Companion c : state.getCompanions()) {
-                        if (Gdx.input.isKeyPressed(Input.Keys.E) && c.getObstacle().getBody() == b1
-                            && c.getCost() <= state.getPlayer().getCoins()) {
-                            System.out.println("ADD COMPANION");
-                            companionAdded = c;
-                            state.getPlayer().setCoins(state.getPlayer().getCoins() - c.getCost());
+                        if (c.getCost() <= state.getPlayer().getCoins()
+                            && c.getObstacle().getBody() == b1) {
+                            c.setGlow(true);
+                            if (Gdx.input.isKeyPressed(Input.Keys.E)) {
+                                System.out.println("ADD COMPANION");
+                                companionAdded = c;
+                                state.getPlayer()
+                                    .setCoins(state.getPlayer().getCoins() - c.getCost());
+                            }
                         }
                     }
                 } else {
                     for (Companion c : state.getCompanions()) {
-                        if (Gdx.input.isKeyPressed(Input.Keys.E) && c.getObstacle().getBody() == b2
+                        if (c.getObstacle().getBody() == b2
                             && c.getCost() <= state.getPlayer().getCoins()) {
-                            System.out.println("ADD COMPANION");
-                            companionAdded = c;
-                            state.getPlayer().setCoins(state.getPlayer().getCoins() - c.getCost());
+                            c.setGlow(true);
+                            if (Gdx.input.isKeyPressed(Input.Keys.E)) {
+                                System.out.println("ADD COMPANION");
+                                companionAdded = c;
+                                state.getPlayer()
+                                    .setCoins(state.getPlayer().getCoins() - c.getCost());
+                            }
                         }
                     }
                 }

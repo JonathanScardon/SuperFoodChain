@@ -13,8 +13,10 @@ import edu.cornell.gdiac.graphics.SpriteSheet;
 import java.util.Random;
 
 public class Durian extends Companion {
+
     private int units = 64;
     Texture texture;
+
     /**
      * Constructs a Durian at the given position
      *
@@ -28,7 +30,7 @@ public class Durian extends Companion {
         setCooldown(1);
 
         texture = new Texture("images/Durian.png");
-        SpriteSheet pineapple = new SpriteSheet(texture, 1, 7);
+        SpriteSheet pineapple = new SpriteSheet(texture, 1, 8);
         setSpriteSheet(pineapple);
         animationSpeed = 0.25f;
     }

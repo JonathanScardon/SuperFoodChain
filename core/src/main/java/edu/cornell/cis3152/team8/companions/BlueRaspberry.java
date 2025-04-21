@@ -8,6 +8,7 @@ import edu.cornell.cis3152.team8.Player;
 import edu.cornell.gdiac.graphics.SpriteSheet;
 
 public class BlueRaspberry extends Companion {
+
     Texture texture;
     float dx = 0.0f;
     float dy = 0.0f;
@@ -27,8 +28,8 @@ public class BlueRaspberry extends Companion {
         // need to think about how CD will work with support characters
         setCooldown(7);
 //        radius = 1;
-        texture = new Texture("images/Blue_Raspberry_Placeholder.PNG");
-        SpriteSheet blueRaspberry = new SpriteSheet(texture, 1, 7);
+        texture = new Texture("images/BlueRaspberry.png");
+        SpriteSheet blueRaspberry = new SpriteSheet(texture, 1, 8);
         setSpriteSheet(blueRaspberry);
         animationSpeed = 0.25f;
 //        size = 0.4f;
@@ -43,14 +44,13 @@ public class BlueRaspberry extends Companion {
 
 
     @Override
-    public boolean canUse(){
+    public boolean canUse() {
         return !usedBoost;
     }
 
     /**
-     * The blue raspberry increases the speed of the player.
-     * usedBoost is set to true, preventing the speed increase from being
-     * used more than once
+     * The blue raspberry increases the speed of the player. usedBoost is set to true, preventing
+     * the speed increase from being used more than once
      */
     @Override
     public void useAbility(GameState state) {
