@@ -21,6 +21,7 @@ public class DashAttackPattern implements BossAttackPattern {
 
     private float warnTime;
     private AttackState state;
+    private float origMoveSpeed;
 
     private static final float PHYSICS_UNITS = 64f;
 
@@ -97,7 +98,8 @@ public class DashAttackPattern implements BossAttackPattern {
     public void attack() {
         state = AttackState.ATTACK;
         controller.setAction(controlCode);
-        boss.setMoveSpeed(moveSpeed);
+        origMoveSpeed = boss.moveSpeed;
+        boss.moveSpeed = moveSpeed;
 
         warnPattern.active = false;
         boss.curWarn = null;
@@ -106,8 +108,6 @@ public class DashAttackPattern implements BossAttackPattern {
     @Override
     public void update(float delta) {
         switch (state) {
-            case INACTIVE:
-                break;
             case WARN:
                 if (warnTime > 0) {
                     warnTime -= delta;
@@ -115,13 +115,15 @@ public class DashAttackPattern implements BossAttackPattern {
                     attack();
                 }
             case ATTACK:
+                if (isOutOfBounds()) {
+                    state = AttackState.ENDED;
+                    boss.moveSpeed = origMoveSpeed;
+                }
                 break;
         }
-
     }
 
-    @Override
-    public boolean isEnded() {
+    private boolean isOutOfBounds() {
         return switch (controlCode) {
             case CONTROL_MOVE_UP -> (boss.getObstacle().getY() - 4) * PHYSICS_UNITS > 720;
             case CONTROL_MOVE_DOWN -> (boss.getObstacle().getY() + 4) * PHYSICS_UNITS < 0;
@@ -129,5 +131,10 @@ public class DashAttackPattern implements BossAttackPattern {
             case CONTROL_MOVE_RIGHT -> (boss.getObstacle().getX() - 4) * PHYSICS_UNITS > 1280;
             default -> true;
         };
+    }
+
+    @Override
+    public boolean isEnded() {
+        return state == AttackState.ENDED;
     }
 }
