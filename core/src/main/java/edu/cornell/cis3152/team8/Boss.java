@@ -68,9 +68,9 @@ public class Boss extends ObstacleSprite {
     private static final float PHYSICS_UNITS = 64f;
 
 
-    public Boss(float x, float y, World world) {
+    public Boss(float x, float y, int health, World world) {
         super(new CapsuleObstacle(x, y, 1.5f, 1.5f), true);
-        health = 30;// TODO: move this to constants?
+        this.health = health;
         angle = 90f;
         damage = false;
 

@@ -22,6 +22,7 @@
     <property name="attack8" type="object" value="20"/>
     <property name="attack9" type="object" value="21"/>
     <property name="bossType" value="mouse"/>
+    <property name="health" type="int" value="10"/>
    </properties>
   </object>
   <object id="7" name="a0" type="attack" x="640" y="360">
