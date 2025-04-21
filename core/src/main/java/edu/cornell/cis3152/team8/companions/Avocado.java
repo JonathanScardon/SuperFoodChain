@@ -9,6 +9,7 @@ import edu.cornell.cis3152.team8.Player;
 import edu.cornell.gdiac.graphics.SpriteSheet;
 
 public class Avocado extends Companion {
+
     Texture texture;
     float dx = 0.0f;
     float dy = 0.0f;
@@ -27,7 +28,7 @@ public class Avocado extends Companion {
         setCooldown(7);
 //        radius = 1;
         texture = new Texture("images/Avocado.png");
-        SpriteSheet avocado = new SpriteSheet(texture, 1, 7);
+        SpriteSheet avocado = new SpriteSheet(texture, 1, 8);
         setSpriteSheet(avocado);
         animationSpeed = 0.25f;
 //        size = 0.4f;
@@ -47,7 +48,7 @@ public class Avocado extends Companion {
                 continue; // you don't want to reduce your own ability cooldown
             }
             if (!c.canUse()) { // only reduce cooldowns for companions that have abilities on cooldown
-                c.coolDown(true, delta/5); // will reduce the ACTIVE cooldown value
+                c.coolDown(true, delta / 5); // will reduce the ACTIVE cooldown value
             }
         }
     }
