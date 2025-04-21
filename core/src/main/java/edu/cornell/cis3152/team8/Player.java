@@ -101,7 +101,7 @@ public class Player {
         this.coins = 0;
         this.attacking = false;
         this.shield = false;
-        Companion head = new Strawberry(x,y,0,world);
+        Companion head = new Durian(x,y,0,world);
         head.getObstacle().setName("player");
         companions.add(head);
         head.setCollected(true);

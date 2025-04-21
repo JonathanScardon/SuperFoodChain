@@ -22,15 +22,15 @@ public abstract class Projectile extends ObstacleSprite {
     // y component of the projectile velocity
     private static float vy;
     // How long the projectile should persist for
-    private static int maxLife;
+    protected static int maxLife;
     // Speed of the projectile
-    private float speed;
+    protected float speed;
 
     /// Attributes (per object)
     // Current animation frame of the projectile
     private float animeFrame;
     // How much "life" left for projectile to persist on screen
-    private int life;
+    protected int life;
     /**
      * Radius of the object (used for collisions)
      */
