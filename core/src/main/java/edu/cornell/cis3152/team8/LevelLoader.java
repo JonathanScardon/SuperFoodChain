@@ -1,9 +1,11 @@
 package edu.cornell.cis3152.team8;
 
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
 import com.badlogic.gdx.maps.tiled.*;
 import com.badlogic.gdx.maps.*;
 import com.badlogic.gdx.maps.tiled.objects.TiledMapTileMapObject;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import edu.cornell.gdiac.assets.AssetDirectory;
 import edu.cornell.gdiac.graphics.SpriteSheet;
@@ -56,6 +58,7 @@ public class LevelLoader {
         if (assets == null) {
             throw new RuntimeException("Asset directory not set");
         }
+        GameState state = scene.getState();
 
         // load assets
         mouseSprite = assets.getEntry("dashMouse.animation", SpriteSheet.class);
@@ -67,20 +70,38 @@ public class LevelLoader {
 
         TiledMap map = this.mapLoader.load(path);
 
-        MapLayer objects = map.getLayers().get("objects");
+        MapLayer bossLayer = map.getLayers().get("boss");
+        MapLayer companionLayer = map.getLayers().get("companion");
+        MapLayer minionLayer = map.getLayers().get("minion");
 
-        // create player
-        for (MapObject obj : objects.getObjects()) {
+        // create player and companions
+        for (MapObject obj : companionLayer.getObjects()) {
             if ("player".equals(obj.getProperties().get("type", String.class))) {
                 createPlayer(obj, scene);
+            } else if ("companion".equals(obj.getProperties().get("type", String.class))) {
+                createCompanionSpawn(obj, scene);
+            }
+        }
+
+        // create minions
+        for (MapObject obj : minionLayer.getObjects()) {
+            if ("minion".equals(obj.getProperties().get("type", String.class))) {
+                createMinionSpawn(obj, scene);
             }
         }
 
         // create bosses and attach attacks to them
-        for (MapObject obj : objects.getObjects()) {
+        for (MapObject obj : bossLayer.getObjects()) {
             if ("boss".equals(obj.getProperties().get("type", String.class))) {
                 createBoss(obj, scene);
             }
+        }
+
+        if (state.getMinionSpawns().isEmpty()) {
+            throw new RuntimeException("No minion spawns found");
+        }
+        if (state.getCompanionSpawns().isEmpty()) {
+            throw new RuntimeException("No companion spawns found");
         }
     }
 
@@ -195,5 +216,39 @@ public class LevelLoader {
 
         Player player = new Player(x, y, state.getWorld());
         state.setPlayer(player);
+    }
+
+    /**
+     * Create a companion spawn location and add it to the scene
+     *
+     * @param obj   the companion spawn object
+     * @param scene the game scene
+     */
+    private void createCompanionSpawn(MapObject obj, GameScene scene) {
+        GameState state = scene.getState();
+        MapProperties props = obj.getProperties();
+
+        int id = props.get("id", Integer.class);
+        float x = props.get("x", Float.class);
+        float y = props.get("y", Float.class);
+
+        state.getCompanionSpawns().add(new Vector2(x, y));
+    }
+
+    /**
+     * Create a minion spawn location and add it to the scene
+     *
+     * @param obj   the minion spawn object
+     * @param scene the game scene
+     */
+    private void createMinionSpawn(MapObject obj, GameScene scene) {
+        GameState state = scene.getState();
+        MapProperties props = obj.getProperties();
+
+        int id = props.get("id", Integer.class);
+        float x = props.get("x", Float.class);
+        float y = props.get("y", Float.class);
+
+        state.getMinionSpawns().add(new Vector2(x, y));
     }
 }

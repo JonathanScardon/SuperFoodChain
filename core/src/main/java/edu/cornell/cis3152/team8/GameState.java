@@ -4,7 +4,6 @@
 
 package edu.cornell.cis3152.team8;
 
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
@@ -12,9 +11,6 @@ import com.badlogic.gdx.utils.JsonValue;
 import edu.cornell.gdiac.assets.*;
 import edu.cornell.gdiac.graphics.*;
 import com.badlogic.gdx.physics.box2d.World;
-import edu.cornell.cis3152.team8.companions.Strawberry;
-import java.util.LinkedList;
-import java.util.ArrayList;
 
 /**
  * This is the base model class for the game which stores all the model objects
@@ -73,8 +69,8 @@ public class GameState {
 
     private int maxEnemies;
     private int numCompanions;
-    private Vector2[] minionSpawns;
-    private Vector2[] companionSpawns;
+    private Array<Vector2> minionSpawns;
+    private Array<Vector2> companionSpawns;
     private int numMinionSpawns;
     private int numCompanionSpawns;
     private int maxStrawberry;
@@ -113,8 +109,9 @@ public class GameState {
 
         coins = new Array<>();
 
-        initMinionSpawns(this.constants.get("Minion Spawns"));
-        initCompanionSpawns(this.constants.get("Companion Spawns"));
+        minionSpawns = new Array<>();
+        companionSpawns = new Array<>();
+
         Boss.setConstants(bossConstants);
 
         bossAttack =  bossConstants.getString("attack");
@@ -305,28 +302,11 @@ public class GameState {
     public Array<MinionController> getMinionControls() {
         return minionControls;
     }
-    public Vector2[] getMinionSpawns() {
+    public Array<Vector2> getMinionSpawns() {
         return minionSpawns;
     }
-    public Vector2[] getCompanionSpawns() {
+    public Array<Vector2> getCompanionSpawns() {
         return companionSpawns;
-    }
-
-    private void initMinionSpawns(JsonValue spawns){
-        minionSpawns = new Vector2[numMinionSpawns];
-        for (int i = 0; i < minionSpawns.length; i++) {
-            float x = spawns.get("Spawn " + i ).getFloat(0);
-            float y = spawns.get("Spawn " + i).getFloat(1);
-            minionSpawns[i] = new Vector2(x,y);
-        }
-    }
-    private void initCompanionSpawns(JsonValue spawns){
-        companionSpawns = new Vector2[numCompanionSpawns];
-        for (int i = 0; i < companionSpawns.length; i++) {
-            float x = spawns.get("Spawn " + i ).getFloat(0);
-            float y = spawns.get("Spawn " + i).getFloat(1);
-            companionSpawns[i] = new Vector2(x,y);
-        }
     }
 
     public Array<Companion>  getDeadCompanions(){

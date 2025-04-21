@@ -24,12 +24,9 @@ import edu.cornell.gdiac.graphics.TextLayout;
 import edu.cornell.gdiac.physics2.ObstacleSprite;
 import edu.cornell.gdiac.util.ScreenListener;
 
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Random;
-
 import org.w3c.dom.Text;
+
+import java.util.Random;
 
 /**
  * The screen for the actual gameplay in the game Heavily inspired by the Optimization lab
@@ -60,11 +57,6 @@ public class GameScene implements Screen {
     private int curDurian;
 
     private float companionAddTimer = 3.0f;
-
-
-    private Vector2[] minionSpawns;
-    private Vector2[] companionSpawns;
-
     /**
      * Reference to the game session
      */
@@ -95,6 +87,28 @@ public class GameScene implements Screen {
     protected World world;
 
     /**
+     * A list of possible minion spawn locations, shuffled after it is looped through
+     */
+    private Array<Vector2> minionSpawns;
+    /**
+     * A list of possible companion spawn locations, shuffled after it is looped through
+     */
+    private Array<Vector2> companionSpawns;
+    /**
+     * Index of next minion spawn location
+     */
+    int minionSpawnIdx;
+    /**
+     * Index of next companion spawn location
+     */
+    int companionSpawnIdx;
+
+    /**
+     * Random number generator
+     */
+    Random rand;
+
+    /**
      * List of all the input controllers
      */
     protected InputController playerControls;
@@ -116,8 +130,6 @@ public class GameScene implements Screen {
     private Texture coinTexture;
     private boolean paused;
     private boolean settingsOn;
-    private boolean[] minionSpawnTaken;
-    private boolean[] companionSpawnTaken;
     private Array<Companion> deadCompanions;
 
     private int level;
@@ -129,6 +141,7 @@ public class GameScene implements Screen {
      */
     public GameScene(final GDXRoot game, AssetDirectory assets, int level) {
         this.game = game;
+        rand = new Random();
         coinTexture = new Texture("images/CoinUI.png");
         constants = assets.getEntry("level" + level, JsonValue.class);
         //System.out.println(constants);
@@ -158,11 +171,6 @@ public class GameScene implements Screen {
         settingsButton = new Button(399, 180, settings, 0, 482, 120);
         exitButton = new Button(399, 41, exit, 0, 482, 120);
         settingsScreen = new Settings();
-
-        minionSpawnTaken = new boolean[minionSpawns.length];
-        Arrays.fill(minionSpawnTaken, false);
-        companionSpawnTaken = new boolean[companionSpawns.length];
-        Arrays.fill(companionSpawnTaken, false);
 
         reset();
         // System.out.println(minionControls);
@@ -194,8 +202,8 @@ public class GameScene implements Screen {
         state.setMinions(minions);
         minionControls = state.getMinionControls();
 
-        Arrays.fill(minionSpawnTaken, false);
-        Arrays.fill(companionSpawnTaken, false);
+        minionSpawns = state.getMinionSpawns();
+        companionSpawns = state.getCompanionSpawns();
 
         addMinions();
         addCompanions();
@@ -221,89 +229,75 @@ public class GameScene implements Screen {
 
 
     /**
-     * Initializes the minions to new random location.
+     * Spawn minions until we reach the maximum enemy numbers
      */
     private void addMinions() {
-        Random rand = new Random();
-        boolean r = true;
-        for (boolean b : minionSpawnTaken) {
-            if (!b) {
-                r = false;
-                break;
-            }
-        }
-        if (r) {
-            Arrays.fill(minionSpawnTaken, false);
-        }
         while (minions.size < maxEnemies) {
-            int spawn = rand.nextInt(minionSpawns.length);
-            if (!minionSpawnTaken[spawn]) {
-                float x = minionSpawns[spawn].x;
-                float y = minionSpawns[spawn].y;
-                if (rand.nextDouble() < 0.5) {
-                    Minion m = new Minion(x, y, minions.size, world);
-                    minions.add(m);
-                    minionControls.add(new MinionController(m.getId(), minions, player));
-                    minionSpawnTaken[spawn] = true;
-                } else {
-                    Minion m = new Cricket(x, y, minions.size, world, player);
-                    minions.add(m);
-                    minionControls.add(new MinionController(m.getId(), minions, player));
-                    minionSpawnTaken[spawn] = true;
-                }
-            }
+            spawnMinion();
         }
     }
 
+    /**
+     * Spawn a single minion in the world
+     */
+    private void spawnMinion() {
+        if (minionSpawnIdx >= minionSpawns.size) {
+            minionSpawnIdx = 0;
+            minionSpawns.shuffle();
+        }
+        Vector2 pos = minionSpawns.get(minionSpawnIdx);
+
+        Minion m;
+        if (rand.nextFloat() < 0.5f) {
+            m = new Minion(pos.x, pos.y, minions.size, world);
+        } else {
+            m = new Cricket(pos.x, pos.y, minions.size, world, player);
+        }
+
+        minions.add(m);
+        minionControls.add(new MinionController(m.getId(), minions, player));
+        minionSpawnIdx++;
+    }
 
     /**
-     * Initializes the companions to new random location.
+     * Spawn companions until we reach the maximum number for each
      */
     private void addCompanions() {
-        Random rand = new Random();
-
-        boolean r = true;
-        for (boolean b : companionSpawnTaken) {
-            if (!b) {
-                r = false;
-                break;
-            }
+        while (companions.size < maxStrawberry + maxPineapple + maxAvocado + maxBlueRaspberry + maxDurian) {
+            spawnCompanion();
         }
-        if (r) {
-            Arrays.fill(companionSpawnTaken, false);
-        }
-        while (companions.size < maxStrawberry+maxPineapple+maxAvocado+maxBlueRaspberry+maxDurian) {
-            int spawn = rand.nextInt(companionSpawns.length);
-            if (!companionSpawnTaken[spawn]) {
+    }
 
-                float x = companionSpawns[spawn].x;
-                float y = companionSpawns[spawn].y;
-            for (Companion c: companions) {
-                r = c.getObstacle().getX() == x && c.getObstacle().getY() == y;
-            }
-            if (!r)  {
-                Companion c;
-                if (curStrawberry < maxStrawberry) {
-                    c = new Strawberry(x, y, companions.size, world);
-                    curStrawberry++;
-                } else if (curPineapple < maxPineapple) {
-                    c = new Pineapple(x, y, companions.size, world);
-                    curPineapple++;
-                } else if (curBlueRaspberry < maxBlueRaspberry){
-                    c = new BlueRaspberry(x, y, companions.size, world);
-                    curBlueRaspberry++;
-                } else if (curDurian < maxDurian) {
-                    c = new Durian(x,y, companions.size, world);
-                } else {
-                    c = new Avocado(x, y, companions.size, world);
-                    curAvocado++;
-                }
-
-                    companions.add(c);
-                    companionSpawnTaken[spawn] = true;
-                }
-            }
+    /**
+     * Spawn a single companion in the world
+     */
+    private void spawnCompanion() {
+        if (companionSpawnIdx >= companionSpawns.size) {
+            companionSpawnIdx = 0;
+            companionSpawns.shuffle();
         }
+        Vector2 pos = companionSpawns.get(companionSpawnIdx);
+
+        Companion c;
+        if (curStrawberry < maxStrawberry) {
+            c = new Strawberry(pos.x, pos.y, companions.size, world);
+            curStrawberry++;
+        } else if (curPineapple < maxPineapple) {
+            c = new Pineapple(pos.x, pos.y, companions.size, world);
+            curPineapple++;
+        } else if (curBlueRaspberry < maxBlueRaspberry) {
+            c = new BlueRaspberry(pos.x, pos.y, companions.size, world);
+            curBlueRaspberry++;
+        } else if (curDurian < maxDurian) {
+            c = new Durian(pos.x, pos.y, companions.size, world);
+            curDurian++;
+        } else {
+            c = new Avocado(pos.x, pos.y, companions.size, world);
+            curAvocado++;
+        }
+
+        companions.add(c);
+        companionSpawnIdx++;
     }
 
     public GameState getState() {
@@ -375,12 +369,11 @@ public class GameScene implements Screen {
                         curStrawberry--;
                     } else if (type.equals(CompanionType.PINEAPPLE)) {
                         curPineapple--;
-                    }else if (type.equals(CompanionType.DURIAN)) {
+                    } else if (type.equals(CompanionType.DURIAN)) {
                         curDurian--;
-                    }else if (type.equals(CompanionType.BLUE_RASPBERRY)) {
+                    } else if (type.equals(CompanionType.BLUE_RASPBERRY)) {
                         curBlueRaspberry--;
-                    }
-                    else{
+                    } else {
                         curAvocado--;
                     }
 
@@ -440,7 +433,6 @@ public class GameScene implements Screen {
             // System.out.println(a);
             player.update(a);
 
-            //
             // // if board isn't updating then no point
             // state.getLevel().update();
             //
