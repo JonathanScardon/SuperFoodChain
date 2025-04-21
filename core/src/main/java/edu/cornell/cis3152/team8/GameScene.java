@@ -21,6 +21,7 @@ import edu.cornell.gdiac.assets.AssetDirectory;
 import edu.cornell.gdiac.graphics.SpriteBatch;
 import edu.cornell.gdiac.graphics.SpriteBatch.BlendMode;
 import edu.cornell.gdiac.graphics.TextLayout;
+import edu.cornell.gdiac.physics2.Obstacle;
 import edu.cornell.gdiac.physics2.ObstacleSprite;
 import edu.cornell.gdiac.util.ScreenListener;
 
@@ -130,7 +131,7 @@ public class GameScene implements Screen {
     private Texture coinTexture;
     private boolean paused;
     private boolean settingsOn;
-    private Array<Companion> deadCompanions;
+    private Array<ObstacleSprite> dead;
 
     private int level;
 
@@ -159,7 +160,7 @@ public class GameScene implements Screen {
         minionSpawns = state.getMinionSpawns();
         companions = state.getCompanions();
         companionSpawns = state.getCompanionSpawns();
-        deadCompanions = state.getDeadCompanions();
+        dead = state.getDead();
 
         pauseBackground = new Texture("images/Paused.png");
         Texture resetT = new Texture("images/ResetButton.png");
@@ -249,13 +250,13 @@ public class GameScene implements Screen {
 
         Minion m;
         if (rand.nextFloat() < 0.5f) {
-            m = new Minion(pos.x, pos.y, minions.size, world);
+            m = new Minion(pos.x, pos.y, minions.size, world, player);
         } else {
             m = new Cricket(pos.x, pos.y, minions.size, world, player);
         }
 
         minions.add(m);
-        minionControls.add(new MinionController(m.getId(), minions, player));
+        //minionControls.add(new MinionController(m.getId(), minions, player));
         minionSpawnIdx++;
     }
 
@@ -263,7 +264,8 @@ public class GameScene implements Screen {
      * Spawn companions until we reach the maximum number for each
      */
     private void addCompanions() {
-        while (companions.size < maxStrawberry + maxPineapple + maxAvocado + maxBlueRaspberry + maxDurian) {
+        while (companions.size
+            < maxStrawberry + maxPineapple + maxAvocado + maxBlueRaspberry + maxDurian) {
             spawnCompanion();
         }
     }
@@ -327,7 +329,15 @@ public class GameScene implements Screen {
             paused = false;
         }
 
+        if (paused || bosses.isEmpty() || !player.isAlive()) {
+            for (Minion m : minions) {
+                m.update(false);
+            }
+        }
+
         if (paused) {
+            player.update(InputController.CONTROL_NO_ACTION);
+
             if (resetButton.isHovering() && Gdx.input.isTouched()) {
                 reset();
                 paused = false;
@@ -409,9 +419,9 @@ public class GameScene implements Screen {
             for (int i = 0; i < minions.size; i++) {
                 if (minions.get(i).getObstacle().isActive()) {
                     // System.out.println("CONTROL " + i);
-                    int action = minionControls.get(i).getAction();
+                    //int action = minionControls.get(i).getAction();
                     // System.out.println("Id: " + i + " (" + action + ")");
-                    minions.get(i).update(action);
+                    minions.get(i).update(true);
                     minions.get(i).setDamage(false);
                 } else {
                     if (minions.get(i).shouldRemove()) {
@@ -443,12 +453,14 @@ public class GameScene implements Screen {
                 c.update(delta);
             }
 
-            for (int i = 0; i < deadCompanions.size; i++) {
-                deadCompanions.get(i).decreaseDeathExpirationTimer(delta);
-                if (deadCompanions.get(i).getTrash()) {
-                    deadCompanions.removeIndex(i);
-                }
-            }
+//            for (int i = 0; i < dead.size; i++) {
+//                String type = dead.get(i).getName();
+//                if (!type.equals("coin")) {
+//                    if () {
+//                        dead.removeIndex(i);
+//                    }
+//                }
+//            }
 //            addMinions();
 //            addCompanions();
         }
@@ -459,15 +471,6 @@ public class GameScene implements Screen {
 
     public void draw(float delta) {
         BitmapFont font = new BitmapFont();
-        //FileHandle f = new FileHandle("fonts/LePetitCochon/LPC.fnt");
-        //FileHandle image = new FileHandle("fonts/LePetitCochon/LPC.fnt");
-
-        //Texture tt = new Texture("fonts/LPC.png");
-
-        // TextureRegion t = new TextureRegion(tt);
-
-        //System.out.println(t);
-        //BitmapFont font = new BitmapFont(Gdx.files.internal("fonts/Arial.fnt"));
         ScreenUtils.clear(Color.WHITE);
 
         game.batch.begin();
@@ -475,8 +478,13 @@ public class GameScene implements Screen {
             Texture tileTexture = new Texture("images/Tile.png");
             game.batch.draw(tileTexture, 0, 0, 1280, 720);
         }
-        for (Companion c : deadCompanions) {
-            c.draw(game.batch, delta);
+        for (ObstacleSprite o : dead) {
+            String type = o.getName();
+            switch (type) {
+                case "minion" -> ((Minion) o).draw(game.batch, delta);
+                case "companion" -> ((Companion) o).draw(game.batch, delta);
+                case "boss" -> ((Boss) o).draw(game.batch, delta);
+            }
         }
 
         for (Boss boss : bosses) {
@@ -502,14 +510,6 @@ public class GameScene implements Screen {
                     game.batch.drawText(pressE, c.getObstacle().getX() * 64f,
                         c.getObstacle().getY() * 64f + 35f);
                 }
-
-//             if (!c.isCollected()) {
-//                 game.batch.drawText(compCost, c.getX() + 35, c.getY());
-//                 if (c.highlight){
-//                 game.batch.drawText(pressE,c.getX(),c.getY()+35);
-//                 }
-//             }
-
             }
         }
 
@@ -542,7 +542,6 @@ public class GameScene implements Screen {
         for (Boss b : bosses) {
             HP = "Boss HP: " + b.getHealth();
         }
-//        TextLayout shield;
         TextLayout coinCount = new TextLayout(coins, font, 128);
         TextLayout bossHP = new TextLayout(HP, font, 128);
         //Temp UI
@@ -550,15 +549,6 @@ public class GameScene implements Screen {
         game.batch.drawText(bossHP, 600, 700);
         game.batch.drawText(coinCount, 1200f, 80f);
 
-//        if (player.hasShield()) {
-//            font.setColor(Color.GREEN);
-//            shield = new TextLayout("Shield: On", font);
-//
-//        } else {
-//            font.setColor(Color.RED);
-//            shield = new TextLayout("Shield: Off", font);
-//        }
-//        game.batch.drawText(shield, 600, 20);
         font.setColor(Color.WHITE);
 
         if (!player.isAlive()) {
