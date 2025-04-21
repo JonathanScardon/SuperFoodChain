@@ -60,8 +60,6 @@ public class CollisionController implements ContactListener {
     public static final short COIN_CATEGORY = 0x0008;
     public static final short BOSS_CATEGORY = 0x0010;
     public static final short PROJECTILE_CATEGORY = 0x0020;
-    public static final short BORDER_CATEGORY = 0x0040;
-
 
     /**
      * Creates a CollisionController for the given models.
@@ -195,16 +193,6 @@ public class CollisionController implements ContactListener {
                 }
             }
 
-            // Player and Border
-            else if ((c1 == PLAYER_CATEGORY && c2 == BORDER_CATEGORY) || (c2 == PLAYER_CATEGORY && c1 == BORDER_CATEGORY)) {
-//                System.out.println("YOU HIT THE WALL");
-                if (c1 == PLAYER_CATEGORY) {
-                    removed.add(s1);
-                } else {
-                    removed.add(s2);
-                }
-            }
-
             // Projectile Collisions
             // Projectile and Minion
             else if ((c1 == PROJECTILE_CATEGORY && c2 == MINION_CATEGORY) || (
@@ -263,6 +251,10 @@ public class CollisionController implements ContactListener {
      * Adds or Removes objects from the world.
      */
     public void postUpdate() {
+        System.out.println(state.getPlayer().getPlayerHead().getObstacle().getPosition());
+        if (!state.inBounds(state.getPlayer().getPlayerHead())) {
+            removed.add(state.getPlayer().getPlayerHead());
+        }
         for (Minion m : state.getMinions()) {
             if (m.getHealth() <= 0) {
                 removed.add(m);
