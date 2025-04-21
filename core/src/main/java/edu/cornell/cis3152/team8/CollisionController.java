@@ -502,7 +502,7 @@ public class CollisionController implements ContactListener {
     public void bossHit(Body b) {
         for (Boss boss : state.getBosses()) {
             if (boss.getObstacle().getBody() == b) {
-                boss.setHealth(boss.getHealth() - 1);
+                boss.removeHealth(1);
                 boss.setDamage(true);
                 if (boss.getHealth() <= 0) {
                     removed.add((ObstacleSprite) b.getUserData());

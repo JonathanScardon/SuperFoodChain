@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="1" height="1" tilewidth="1280" tileheight="720" infinite="0" nextlayerid="6" nextobjectid="16">
- <objectgroup id="2" name="boss" visible="0">
+ <objectgroup id="2" name="boss">
   <object id="2" name="chopsticks" type="boss" x="112.703" y="892.073">
    <properties>
     <property name="attack0" type="object" value="5"/>

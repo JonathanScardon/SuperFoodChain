@@ -97,6 +97,9 @@ public class LevelLoader {
             }
         }
 
+        if (state.getBosses().isEmpty()) {
+            throw new RuntimeException("No bosses found");
+        }
         if (state.getMinionSpawns().isEmpty()) {
             throw new RuntimeException("No minion spawns found");
         }
@@ -121,7 +124,7 @@ public class LevelLoader {
         int id = props.get("id", Integer.class);
         float x = props.get("x", Float.class) / PHYSICS_UNITS;
         float y = props.get("y", Float.class) / PHYSICS_UNITS;
-        int health = props.get("health", Integer.class) / PHYSICS_UNITS;
+        int health = props.get("health", Integer.class);
 
         switch (bossType) {
             case "mouse":
@@ -182,10 +185,11 @@ public class LevelLoader {
                 break;
             case "dash":
                 String dir = props.get("dir", String.class);
+                Float moveSpeed = props.get("moveSpeed", Float.class);
                 if (dir.equals("up") || dir.equals("down")) {
-                    attack = new DashAttackPattern(controller, x, y, dir, warnDuration, dashWarnVerticalSprite);
+                    attack = new DashAttackPattern(controller, x, y, dir, warnDuration, moveSpeed, dashWarnVerticalSprite);
                 } else if (dir.equals("left") || dir.equals("right")) {
-                    attack = new DashAttackPattern(controller, x, y, dir, warnDuration, dashWarnHorizontalSprite);
+                    attack = new DashAttackPattern(controller, x, y, dir, warnDuration, moveSpeed, dashWarnHorizontalSprite);
                 }
                 break;
             case "snatch":

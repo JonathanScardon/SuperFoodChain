@@ -11,10 +11,7 @@ import edu.cornell.gdiac.physics2.CapsuleObstacle;
 import edu.cornell.gdiac.physics2.ObstacleSprite;
 
 public class Boss extends ObstacleSprite {
-    /**
-     * How far forward this boss can move in a single turn
-     */
-    private static float MOVE_SPEED;
+    // static constants
     /**
      * The damping factor for deceleration
      */
@@ -31,6 +28,8 @@ public class Boss extends ObstacleSprite {
      * How fast we change frames
      */
     private static float animationSpeed;
+
+    // local properties
     /**
      * Current angle of the sprite
      */
@@ -39,7 +38,13 @@ public class Boss extends ObstacleSprite {
      * The warn pattern that the boss is currently drawing
      */
     protected BossWarnPattern curWarn;
-
+    /**
+     * How far forward this boss can move in a single turn
+     */
+    private float moveSpeed;
+    /**
+     * Whether the boss was damaged this frame
+     */
     private boolean damage;
 
     public enum BossType {
@@ -58,7 +63,6 @@ public class Boss extends ObstacleSprite {
      * @param constants The JSON value with constants
      */
     public static void setConstants(JsonValue constants) {
-        MOVE_SPEED = constants.getFloat("moveSpeed", 10);
         SPEED_DAMP = constants.getFloat("speedDamp", 0.75f);
         EPSILON = constants.getFloat("epsilon", 0.01f);
         animationSpeed = constants.getFloat("animationSpeed", 0.1f);
@@ -73,6 +77,7 @@ public class Boss extends ObstacleSprite {
         this.health = health;
         angle = 90f;
         damage = false;
+        moveSpeed = 0;
 
         obstacle = getObstacle();
         obstacle.setName("boss");
@@ -105,19 +110,19 @@ public class Boss extends ObstacleSprite {
         // Process movement command.
         Vector2 velocity = obstacle.getLinearVelocity();
         if (movingLeft) {
-            velocity.x = -MOVE_SPEED;
+            velocity.x = -moveSpeed;
             velocity.y = 0;
             //angle = 180f;
         } else if (movingRight) {
-            velocity.x = MOVE_SPEED;
+            velocity.x = moveSpeed;
             velocity.y = 0;
             //angle = 0f;
         } else if (movingUp) {
-            velocity.y = MOVE_SPEED;
+            velocity.y = moveSpeed;
             velocity.x = 0;
             //angle = 90f;
         } else if (movingDown) {
-            velocity.y = -MOVE_SPEED;
+            velocity.y = -moveSpeed;
             velocity.x = 0;
             //angle = 270f;
         } else {
@@ -154,6 +159,8 @@ public class Boss extends ObstacleSprite {
     }
 
     public void removeHealth(int dmg) { health -= dmg; }
+
+    public void setMoveSpeed(float speed) { moveSpeed = speed; }
 
     /**
      * Draws this object to the sprite batch
