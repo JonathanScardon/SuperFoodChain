@@ -78,8 +78,7 @@ public abstract class Companion extends ObstacleSprite {
     private static final float units = 64f;
 
     public Companion(float x, float y, int id, World world) {
-        super(new CapsuleObstacle(x / units, y / units, 0.5f, 0.5f), true);
-        ((CapsuleObstacle) obstacle).setTolerance(0.5f);
+        super(new CapsuleObstacle(x / units, y / units, 0.8f, 0.8f), true);
 
         cost = 0;
         cooldown = 5;
