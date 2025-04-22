@@ -1,6 +1,7 @@
 package edu.cornell.cis3152.team8;
 
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.*;
 import com.badlogic.gdx.physics.box2d.Filter;
 import com.badlogic.gdx.physics.box2d.World;
@@ -107,12 +108,35 @@ public class Player {
 
     private long ticks;
 
+    private Texture current;
+    private Texture headDirStill;
+    private Texture headDirUp;
+
+    private Texture headDirDown;
+    private Texture headDirLeft;
+    private Texture headDirRight;
+
+    private float originX;
+    private float originY;
+
+    private Affine2 transform;
+
     public Player(float x, float y, World world) {
         this.companions = new LinkedList<>();
         this.coins = 0;
         this.attacking = false;
         this.shield = false;
         ticks = 0;
+        headDirStill = new Texture("images/UI_HeadIndicator_Still.PNG");
+        headDirUp = new Texture("images/UI_HeadIndicator_Up.PNG");
+        headDirDown = new Texture("images/UI_HeadIndicator_Down.PNG");
+        headDirLeft = new Texture("images/UI_HeadIndicator_Left.PNG");
+        headDirRight = new Texture("images/UI_HeadIndicator_Right.PNG");
+
+        current = headDirUp;
+        originX = 0;
+        originY = 0;
+        transform = new Affine2();
 
         calculateDelay();
 
@@ -162,7 +186,6 @@ public class Player {
             c.animationFrame = getPlayerHead().animationFrame;
             if (c.getAnimator() != null) {
                 c.animationFrame += c.animationSpeed;
-                //System.out.println(animationFrame);
                 if (c.animationFrame >= c.getAnimator().getSize()) {
                     c.animationFrame -= c.getAnimator().getSize() - 1;
                 }
@@ -175,13 +198,53 @@ public class Player {
      * @param batch The sprite batch
      */
     public void draw(SpriteBatch batch, float delta) {
-        if (forwardDirection == 8) {
-            for (int i = companions.size() - 1; i >= 0; i--) {
-                companions.get(i).draw(batch, delta);
+        if (isAlive()) {
+            switch (forwardDirection) {
+                case (InputController.CONTROL_MOVE_LEFT) -> {
+                    current = headDirLeft;
+                    originX = current.getWidth() / 2.0f + 30f;
+                    originY = current.getHeight() / 2.0f + 50f;
+                }
+                case (InputController.CONTROL_MOVE_RIGHT) -> {
+                    current = headDirRight;
+                    originX = current.getWidth() / 2.0f - 30f;
+                    originY = current.getHeight() / 2.0f + 50f;
+                }
+                case (InputController.CONTROL_MOVE_UP) -> {
+                    current = headDirUp;
+                    originX = current.getWidth() / 2.0f;
+                    originY = current.getHeight() / 2.0f;
+                }
+                case (InputController.CONTROL_MOVE_DOWN) -> {
+                    current = headDirDown;
+                    originX = current.getWidth() / 2.0f;
+                    originY = current.getHeight() / 2.0f + 100;
+                }case (InputController.CONTROL_NO_ACTION) -> {
+                    current = headDirStill;
+                    originX = current.getWidth() / 2.0f;
+                    originY = current.getHeight() / 2.0f + 50;
+                }
             }
-        } else {
-            for (Companion c : companions) {
-                c.draw(batch, delta);
+            Companion head = getPlayerHead();
+            SpriteBatch.computeTransform(transform, originX,originY
+                , head.getObstacle().getX() * units,
+                head.getObstacle().getY() * units, 0, 0.4f , 0.4f);
+
+            if (forwardDirection == InputController.CONTROL_MOVE_UP) {
+                for (int i = companions.size() - 1; i >= 0; i--) {
+                    Companion c = companions.get(i);
+                    if (c.equals(head)) {
+                        batch.draw(current, transform);
+                    }
+                    c.draw(batch, delta);
+                }
+            } else {
+                for (Companion c : companions) {
+                    if (c.equals(head)) {
+                        batch.draw(current, transform);
+                    }
+                    c.draw(batch, delta);
+                }
             }
         }
     }
