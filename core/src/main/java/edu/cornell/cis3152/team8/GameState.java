@@ -74,7 +74,7 @@ public class GameState {
 
     protected int maxMinions;
     private int numCompanions;
-    private Array<Vector2> minionSpawns;
+    private Array<MinionSpawnPoint> minionSpawns;
     private Array<Vector2> companionSpawns;
 
     protected int maxCompanions;
@@ -88,10 +88,6 @@ public class GameState {
     protected int numAvocados;
     protected int numBlueRaspberries;
     protected int numDurians;
-
-    protected float antSpawnRate;
-    protected float cricketSpawnRate;
-    protected float spiderSpawnRate;
 
     /**
      * Creates a new game session. This method will call reset() to set up the board.
@@ -300,7 +296,7 @@ public class GameState {
         return minionControls;
     }
 
-    public Array<Vector2> getMinionSpawns() {
+    public Array<MinionSpawnPoint> getMinionSpawns() {
         return minionSpawns;
     }
 

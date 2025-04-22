@@ -110,26 +110,10 @@ public class LevelLoader {
 
     private void loadMinionLayer(MapLayer minionLayer, GameState state) {
         MapProperties layerProps = minionLayer.getProperties();
-        float antSpawnProportion = layerProps.get("antSpawnProportion", Float.class);
-        float cricketSpawnProportion = layerProps.get("cricketSpawnProportion", Float.class);
-        float spiderSpawnProportion = layerProps.get("spiderSpawnProportion", Float.class);
-        float totalSpawnProportion = antSpawnProportion + cricketSpawnProportion + spiderSpawnProportion;
-
-        if (totalSpawnProportion <= 0) {
-            throw new RuntimeException("Total minion spawn proportions less than 0");
-        }
-
-        state.cricketSpawnRate = cricketSpawnProportion / totalSpawnProportion;
-        state.spiderSpawnRate = spiderSpawnProportion / totalSpawnProportion;
-        state.antSpawnRate = 1 - (state.cricketSpawnRate + state.spiderSpawnRate);
-
-        if (state.cricketSpawnRate < 0 || state.spiderSpawnRate < 0 || state.antSpawnRate < 0 || state.cricketSpawnRate + state.spiderSpawnRate + state.antSpawnRate > 1 || state.cricketSpawnRate + state.spiderSpawnRate + state.antSpawnRate <= 0) {
-            throw new RuntimeException("Invalid minion spawn proportions");
-        }
-
         state.maxMinions = layerProps.get("maxMinions", Integer.class);
+
         for (MapObject obj : minionLayer.getObjects()) {
-            if ("minion".equals(obj.getProperties().get("type", String.class))) {
+            if ("minionSpawnPoint".equals(obj.getProperties().get("type", String.class))) {
                 createMinionSpawn(obj, state);
             }
         }
@@ -292,6 +276,10 @@ public class LevelLoader {
         float x = props.get("x", Float.class);
         float y = props.get("y", Float.class);
 
-        state.getMinionSpawns().add(new Vector2(x, y));
+        float antSpawnProportion = props.get("antSpawnProportion", Float.class);
+        float cricketSpawnProportion = props.get("cricketSpawnProportion", Float.class);
+        float spiderSpawnProportion = props.get("spiderSpawnProportion", Float.class);
+
+        state.getMinionSpawns().add(new MinionSpawnPoint(x, y, antSpawnProportion, cricketSpawnProportion, spiderSpawnProportion));
     }
 }

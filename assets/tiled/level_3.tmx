@@ -46,9 +46,33 @@
    <property name="maxMinions" type="int" value="4"/>
    <property name="spiderSpawnProportion" type="float" value="2"/>
   </properties>
-  <object id="7" type="minion" x="-31.3177" y="-28.9087"/>
-  <object id="8" type="minion" x="1300.9" y="-16.8634"/>
-  <object id="9" type="minion" x="1296.07" y="741.99"/>
-  <object id="10" type="minion" x="-33.7268" y="746.808"/>
+  <object id="7" type="minionSpawnPoint" x="-31.3177" y="-28.9087">
+   <properties>
+    <property name="antSpawnProportion" type="float" value="1"/>
+    <property name="cricketSpawnProportion" type="float" value="0"/>
+    <property name="spiderSpawnProportion" type="float" value="0"/>
+   </properties>
+  </object>
+  <object id="8" type="minionSpawnPoint" x="1300.9" y="-16.8634">
+   <properties>
+    <property name="antSpawnProportion" type="float" value="1"/>
+    <property name="cricketSpawnProportion" type="float" value="0"/>
+    <property name="spiderSpawnProportion" type="float" value="0"/>
+   </properties>
+  </object>
+  <object id="9" type="minionSpawnPoint" x="1296.07" y="741.99">
+   <properties>
+    <property name="antSpawnProportion" type="float" value="1"/>
+    <property name="cricketSpawnProportion" type="float" value="0"/>
+    <property name="spiderSpawnProportion" type="float" value="0"/>
+   </properties>
+  </object>
+  <object id="10" type="minionSpawnPoint" x="-33.7268" y="746.808">
+   <properties>
+    <property name="antSpawnProportion" type="float" value="1"/>
+    <property name="cricketSpawnProportion" type="float" value="0"/>
+    <property name="spiderSpawnProportion" type="float" value="0"/>
+   </properties>
+  </object>
  </objectgroup>
 </map>
