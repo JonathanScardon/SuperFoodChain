@@ -23,7 +23,7 @@
    <properties>
     <property name="attackType" value="dash"/>
     <property name="dir" value="right"/>
-    <property name="moveSpeed" type="float" value="5"/>
+    <property name="moveSpeed" type="float" value="250"/>
     <property name="warnDuration" type="float" value="2"/>
    </properties>
   </object>
@@ -31,7 +31,7 @@
    <properties>
     <property name="attackType" value="dash"/>
     <property name="dir" value="down"/>
-    <property name="moveSpeed" type="float" value="5"/>
+    <property name="moveSpeed" type="float" value="250"/>
     <property name="warnDuration" type="float" value="2"/>
    </properties>
   </object>
@@ -39,7 +39,7 @@
    <properties>
     <property name="attackType" value="dash"/>
     <property name="dir" value="left"/>
-    <property name="moveSpeed" type="float" value="5"/>
+    <property name="moveSpeed" type="float" value="250"/>
     <property name="warnDuration" type="float" value="2"/>
    </properties>
   </object>
@@ -47,7 +47,7 @@
    <properties>
     <property name="attackType" value="dash"/>
     <property name="dir" value="up"/>
-    <property name="moveSpeed" type="float" value="5"/>
+    <property name="moveSpeed" type="float" value="250"/>
     <property name="warnDuration" type="float" value="2"/>
    </properties>
   </object>

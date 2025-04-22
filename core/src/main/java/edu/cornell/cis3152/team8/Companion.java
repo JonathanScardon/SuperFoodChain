@@ -73,7 +73,7 @@ public abstract class Companion extends ObstacleSprite {
     private boolean remove;
     private boolean moving;
 
-    private static float MOVE_SPEED = 5;
+    private static float MOVE_SPEED = 150;
 
     private static final float units = 64f;
 
@@ -236,7 +236,7 @@ public abstract class Companion extends ObstacleSprite {
      *
      * @param controlCode new direction of the companion
      */
-    public void update(int controlCode) {
+    public void update(float delta, int controlCode) {
         if (!obstacle.isActive()) {
             return;
         }
@@ -252,22 +252,22 @@ public abstract class Companion extends ObstacleSprite {
         Vector2 velocity = obstacle.getLinearVelocity();
         if (movingLeft) {
             this.direction = InputController.CONTROL_MOVE_LEFT;
-            velocity.x = -MOVE_SPEED;
+            velocity.x = -MOVE_SPEED * delta;
             velocity.y = 0;
             moving = true;
         } else if (movingRight) {
             this.direction = InputController.CONTROL_MOVE_RIGHT;
-            velocity.x = MOVE_SPEED;
+            velocity.x = MOVE_SPEED * delta;
             velocity.y = 0;
             moving = true;
         } else if (movingUp) {
             this.direction = InputController.CONTROL_MOVE_UP;
-            velocity.y = MOVE_SPEED;
+            velocity.y = MOVE_SPEED * delta;
             velocity.x = 0;
             moving = true;
         } else if (movingDown) {
             this.direction = InputController.CONTROL_MOVE_DOWN;
-            velocity.y = -MOVE_SPEED;
+            velocity.y = -MOVE_SPEED * delta;
             velocity.x = 0;
             moving = true;
         } else {
@@ -278,7 +278,6 @@ public abstract class Companion extends ObstacleSprite {
         }
 
         obstacle.setLinearVelocity(velocity);
-
     }
 
     public void draw(SpriteBatch batch, float delta) {
