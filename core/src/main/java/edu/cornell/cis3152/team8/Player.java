@@ -296,6 +296,12 @@ public class Player {
             throw new IndexOutOfBoundsException();
         }
 
+        //no catch up needed when head is removed, second in line takes over
+        if (companion == getPlayerHead()){
+            companions.remove(index);
+            return;
+        }
+
         //update positions to fill deleted companion
         for (int i = index+1; i < companions.size(); i++){
             Companion c = companions.get(i);
@@ -314,7 +320,7 @@ public class Player {
      */
     public static void calculateDelay() {
         int baseSpeed = 3;
-        int baseDelay = 7;
+        int baseDelay = 15;
 
         float rawDelay = (baseDelay * baseSpeed) / Companion.getSpeed();
         DELAY = Math.max(1, Math.round(rawDelay));
