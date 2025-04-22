@@ -69,8 +69,10 @@ public class Boss extends ObstacleSprite {
     }
 
     protected float health;
+    private final float startHealth;
 
     private String state;
+    private String name;
 
     /**
      * Defines the constants for this class.
@@ -85,9 +87,11 @@ public class Boss extends ObstacleSprite {
 
     private static final float PHYSICS_UNITS = 64f;
 
-    public Boss(float x, float y, int health, World world) {
+    public Boss(float x, float y, int health, String name, World world) {
         super(new CapsuleObstacle(x, y, 1.5f, 1.5f), true);
         this.health = health;
+        startHealth = health;
+        this.name = name;
         angle = 0f;
         flipHorizontal = false;
         flipVertical = false;
@@ -238,4 +242,7 @@ public class Boss extends ObstacleSprite {
     public void setAnimationSpeed(float speed) {
         animationSpeed = speed;
     }
+
+    public float getStartHealth(){return startHealth;}
+    public String getName(){return name;}
 }

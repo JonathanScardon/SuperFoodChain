@@ -5,6 +5,8 @@ import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
@@ -36,6 +38,7 @@ public class GameScene implements Screen {
 
     private final Texture win;
     private final Texture lose;
+    private Array<TextLayout> bossNames;
 
 
     private float companionAddTimer = 3.0f;
@@ -116,6 +119,8 @@ public class GameScene implements Screen {
     private Array<ObstacleSprite> dead;
 
     private int level;
+    private BitmapFont font;
+    private AssetDirectory assets;
 
     /**
      * Creates a GameScene
@@ -124,6 +129,7 @@ public class GameScene implements Screen {
      */
     public GameScene(final GDXRoot game, AssetDirectory assets, int level) {
         this.game = game;
+        this.assets = assets;
         coinTexture = new Texture("images/CoinUI.png");
         constants = assets.getEntry("constants", JsonValue.class);
         //System.out.println(constants);
@@ -147,9 +153,12 @@ public class GameScene implements Screen {
         settingsButton = new Button(399, 180, settings, 0, 482, 120);
         exitButton = new Button(399, 41, exit, 0, 482, 120);
         settingsScreen = new Settings();
-
+        font = new BitmapFont();
+        bossNames = new Array<>();
         reset();
-        // System.out.println(minionControls);
+        for (Boss b : bosses) {
+            bossNames.add(new TextLayout(b.getName(),font));
+        }
     }
 
     private void reset() {
@@ -166,7 +175,6 @@ public class GameScene implements Screen {
         projectiles = state.getActiveProjectiles();
 
         LevelLoader.getInstance().load(this, "tiled/level_" + level + ".tmx");
-
         player = state.getPlayer();
         playerControls = new PlayerController(player);
         state.setMinions(minions);
@@ -426,8 +434,8 @@ public class GameScene implements Screen {
         player.draw(game.batch, delta);
         for (Companion c : companions) {
             String cost = "Cost: " + c.getCost();
-            TextLayout compCost = new TextLayout(cost, game.font);
-            TextLayout pressE = new TextLayout("E", game.font);
+            TextLayout compCost = new TextLayout(cost, font);
+            TextLayout pressE = new TextLayout("E", font);
             c.draw(game.batch, delta);
             //temp UI
 
@@ -470,14 +478,13 @@ public class GameScene implements Screen {
         for (Boss b : bosses) {
             HP = "Boss HP: " + b.getHealth();
         }
-        TextLayout coinCount = new TextLayout(coins, game.font, 128);
-        TextLayout bossHP = new TextLayout(HP, game.font, 128);
+        TextLayout coinCount = new TextLayout(coins, font, 128);
         //Temp UI
         game.batch.draw(coinTexture, 1140, 65, 45, 45);
-        game.batch.drawText(bossHP, 600, 700);
         game.batch.drawText(coinCount, 1200f, 80f);
+        drawHPBars();
 
-        game.font.setColor(Color.WHITE);
+        font.setColor(Color.WHITE);
 
         if (!player.isAlive()) {
             drawLose();
@@ -531,6 +538,51 @@ public class GameScene implements Screen {
         levelsButton.draw(game.batch);
         settingsButton.draw(game.batch);
         exitButton.draw(game.batch);
+    }
+
+    private void drawHPBars() {
+        float w = 520;
+        float cx;
+        float cy = 650;
+
+        for (int i = 0; i < bosses.size; i++) {
+            if (bosses.size == 1) {
+                cx = 367;
+            } else {
+                if (i == 0) {
+                    cx = 71;
+                } else {
+                    cx = 662;
+                }
+            }
+            float ratio = bosses.get(i).health / bosses.get(i).getStartHealth();
+            TextureRegion region1, region2, region3;
+            game.batch.drawText(bossNames.get(i), cx + (w / 2 - (bossNames.get(i).getWidth() / 2)),
+                cy + 50);
+
+            // "3-patch" the background
+            game.batch.setColor(Color.WHITE);
+            region1 = assets.getEntry("progress.back", TextureRegion.class);
+            game.batch.draw(region1, cx, cy, region1.getRegionWidth(),
+                region1.getRegionHeight());
+
+            // "3-patch" the foreground
+
+            if (ratio > 0) {
+                region1 = assets.getEntry("progress.foreleft", TextureRegion.class);
+                game.batch.draw(region1, cx, cy, region1.getRegionWidth(),
+                    region1.getRegionHeight());
+                region2 = assets.getEntry("progress.foreright", TextureRegion.class);
+                float span = ratio * (w - (region1.getRegionWidth() + region2.getRegionWidth()));
+
+                game.batch.draw(region2, cx + region1.getRegionWidth() + span, cy,
+                    region2.getRegionWidth(), region2.getRegionHeight());
+
+                region3 = assets.getEntry("progress.foreground", TextureRegion.class);
+                game.batch.draw(region3, cx + region1.getRegionWidth(), cy,
+                    span, region3.getRegionHeight());
+            }
+        }
     }
 
     @Override
