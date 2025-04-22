@@ -37,9 +37,6 @@ public class Durian extends Companion {
     }
 
     @Override
-    /**
-     * TODO: THIS NEEDS TO BE CHANGED --> WILL CAUSE COIN TO NOT SPAWN UPON MINION DEATH
-     */
     public void useAbility(GameState state) {
         int numAttacks = 8;
         double angle = Math.toRadians(360.0 / numAttacks);
