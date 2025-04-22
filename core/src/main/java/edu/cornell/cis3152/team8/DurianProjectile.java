@@ -13,7 +13,7 @@ public class DurianProjectile extends Projectile {
         life = maxLife;
         if (texture == null) {
             // TODO: Change Durian projectile texture to Durian spike when asset available
-            texture = new Texture("images/Strawberry_Seed.png");
+            texture = new Texture("images/Projectile_Pineapple.png");
         }
     }
 
