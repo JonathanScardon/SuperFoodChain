@@ -61,7 +61,11 @@
    <property name="maxPineapple" type="int" value="0"/>
    <property name="maxStrawberry" type="int" value="0"/>
   </properties>
-  <object id="1" name="player" type="playerSpawn" x="294.583" y="198.774"/>
+  <object id="1" name="player" type="playerSpawn" x="294.583" y="198.774">
+   <properties>
+    <property name="companionType" propertytype="companionType" value="durian"/>
+   </properties>
+  </object>
   <object id="2" type="companionSpawn" x="873.426" y="392.319"/>
   <object id="13" type="companionSpawn" x="881.284" y="154.452"/>
   <object id="14" type="companionSpawn" x="711.69" y="490.612"/>

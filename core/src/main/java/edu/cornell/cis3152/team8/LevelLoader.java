@@ -5,6 +5,10 @@ import com.badlogic.gdx.maps.tiled.*;
 import com.badlogic.gdx.maps.*;
 import com.badlogic.gdx.maps.tiled.objects.TiledMapTileMapObject;
 import com.badlogic.gdx.math.Vector2;
+import edu.cornell.cis3152.team8.companions.Avocado;
+import edu.cornell.cis3152.team8.companions.BlueRaspberry;
+import edu.cornell.cis3152.team8.companions.Durian;
+import edu.cornell.cis3152.team8.companions.Strawberry;
 import edu.cornell.gdiac.assets.AssetDirectory;
 import edu.cornell.gdiac.graphics.SpriteSheet;
 
@@ -242,8 +246,19 @@ public class LevelLoader {
         int id = props.get("id", Integer.class);
         float x = props.get("x", Float.class);
         float y = props.get("y", Float.class);
+        String companionType = props.get("companionType", String.class);
 
         Player player = new Player(x, y, state.getWorld());
+
+        Companion head = switch (companionType) {
+            case "strawberry" -> new Strawberry(x, y, 0, state.getWorld());
+            case "durian" -> new Durian(x, y, 0, state.getWorld());
+            case "avocado" -> new Avocado(x, y, 0, state.getWorld());
+            case "blueRaspberry" -> new BlueRaspberry(x, y, 0, state.getWorld());
+            default -> null;
+        };
+        player.addCompanion(head);
+
         state.setPlayer(player);
     }
 

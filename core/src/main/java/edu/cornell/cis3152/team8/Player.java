@@ -69,56 +69,57 @@ public class Player {
         }
     }
 
-    /** Number of instructions to wait before following
+    /**
+     * Number of instructions to wait before following
      * Also the number of instructions stored per companion
-     * */
+     */
     private static int DELAY;
     private final static int MAX_COMPANIONS = 15;
 
     private CircularBuffer controlBuffer;
 
-    /** All companions in the player's current chain */
+    /**
+     * All companions in the player's current chain
+     */
     protected LinkedList<Companion> companions;
 
-    /** The players coin count, used to purchase companions */
+    /**
+     * The players coin count, used to purchase companions
+     */
     protected int coins;
 
-    /** Indicates whether the player is attacking */
+    /**
+     * Indicates whether the player is attacking
+     */
     protected boolean attacking;
 
-    /** Indicates whether the player has a shield */
+    /**
+     * Indicates whether the player has a shield
+     */
     protected boolean shield;
 
-    /** The direction the player is facing */
+    /**
+     * The direction the player is facing
+     */
     protected int forwardDirection;
 
     private static final float units = 64f;
 
     private long ticks;
 
-    public Player(float x, float y, World world){
+    public Player(float x, float y, World world) {
         this.companions = new LinkedList<>();
         this.coins = 0;
         this.attacking = false;
         this.shield = false;
-        Companion head = new Durian(x,y,0,world);
-        head.getObstacle().setName("player");
-        companions.add(head);
-        head.setCollected(true);
-//        radius = 2;
         ticks = 0;
-        calculateDelay();
 
-        Filter filter = head.getObstacle().getFilterData();
-        filter.categoryBits = CollisionController.PLAYER_CATEGORY;
-        filter.maskBits = CollisionController.MINION_CATEGORY | CollisionController.COMPANION_CATEGORY | CollisionController.COIN_CATEGORY | CollisionController.BOSS_CATEGORY;
-        head.getObstacle().setFilterData(filter);
+        calculateDelay();
 
         this.controlBuffer = new CircularBuffer(MAX_COMPANIONS * DELAY);
     }
 
     /**
-     *
      * @return head of player chain
      */
     public Companion getPlayerHead() {
@@ -127,12 +128,13 @@ public class Player {
 
     /**
      * Updates movement of the chain
+     *
      * @param controlCode direction of player input
      */
-    public void update(int controlCode){
+    public void update(int controlCode) {
         // automatically removes "dead" companions --> don't have to individually find in collision
         // can do deadCompanions instead?
-        for (int i = 0; i < companions.size(); i ++) {
+        for (int i = 0; i < companions.size(); i++) {
             Companion c = companions.get(i);
             if (!c.getObstacle().isActive()) {
                 deleteCompanion(c);
@@ -146,24 +148,23 @@ public class Player {
         Companion head = this.getPlayerHead();
         controlBuffer.add(head.getObstacle().getX(), head.getObstacle().getY(), head.getDirection());
 
-        for (int i = 0; i < companions.size(); i++){
+        for (int i = 0; i < companions.size(); i++) {
             Companion c = companions.get(i);
-            if (c == getPlayerHead()){
+            if (c == getPlayerHead()) {
                 c.update(controlCode);
-            }
-            else {
+            } else {
                 CircularBuffer.PositionAndDirection prev = controlBuffer.getSnapshot(i);
                 c.update(prev.dir);
             }
         }
 
-        for (Companion c: companions){
+        for (Companion c : companions) {
             c.animationFrame = getPlayerHead().animationFrame;
             if (c.getAnimator() != null) {
                 c.animationFrame += c.animationSpeed;
                 //System.out.println(animationFrame);
                 if (c.animationFrame >= c.getAnimator().getSize()) {
-                    c.animationFrame -= c.getAnimator().getSize()-1;
+                    c.animationFrame -= c.getAnimator().getSize() - 1;
                 }
             }
         }
@@ -171,12 +172,11 @@ public class Player {
     }
 
     /**
-     *
      * @param batch The sprite batch
      */
     public void draw(SpriteBatch batch, float delta) {
-        if (forwardDirection == 8){
-            for (int i = companions.size() - 1; i >= 0; i--){
+        if (forwardDirection == 8) {
+            for (int i = companions.size() - 1; i >= 0; i--) {
                 companions.get(i).draw(batch, delta);
             }
         } else {
@@ -188,85 +188,95 @@ public class Player {
 
     /**
      * Sets the player's attacking status
+     *
      * @param x the player's new attacking status
      */
-    public void setAttacking(boolean x){
+    public void setAttacking(boolean x) {
         this.attacking = x;
     }
 
     /**
      * Retrieves the player's attacking status
+     *
      * @return true if the player is attacking, false otherwise
      */
-    public boolean isAttacking(){
+    public boolean isAttacking() {
         return this.attacking;
     }
 
     /**
      * Checks it the player is alive.
+     *
      * @return true when the player has at least one companion,
      * false otherwise
      */
-    public boolean isAlive(){
+    public boolean isAlive() {
         return !companions.isEmpty();
     }
 
     /**
      * Retrieves the current number of coins the player has
+     *
      * @return the number of coins the player has
      */
-    public int getCoins(){
+    public int getCoins() {
         return this.coins;
     }
 
     /**
      * Sets the player's coin count to a specified value
+     *
      * @param coins the new number of coins the player has
      */
-    public void setCoins(int coins){
+    public void setCoins(int coins) {
         this.coins = coins;
     }
 
 
     /**
      * Returns whether the player has a shield
+     *
      * @return whether the player has a shield
      */
-    public boolean hasShield(){
+    public boolean hasShield() {
         return this.shield;
     }
 
     /**
      * Sets whether the player has a shield
+     *
      * @param shield true if the player has a shield, false otherwise
      */
-    public void setShield(boolean shield){
+    public void setShield(boolean shield) {
         this.shield = shield;
     }
 
     /**
      * Returning the direction the player is facing
+     *
      * @return the direction the player is facing
      */
-    public int getForwardDirection(){
+    public int getForwardDirection() {
         return this.forwardDirection;
     }
 
     /**
      * Sets the direction the player is facing
+     *
      * @param forwardDirection the new number of coins the player has
      */
-    public void setForwardDirection(int forwardDirection){
+    public void setForwardDirection(int forwardDirection) {
         this.forwardDirection = forwardDirection;
     }
 
     /**
      * Appends a companion to the player's chain
+     *
      * @param companion the companion to add
      */
-    public void addCompanion(Companion companion){
+    public void addCompanion(Companion companion) {
         //limited num of companions
-        if (companions.size() == MAX_COMPANIONS){
+        if (companions.size() == MAX_COMPANIONS) {
             return;
         }
 
@@ -285,28 +295,30 @@ public class Player {
         companions.add(companion);
         companion.setCollected(true);
     }
+
     /**
      * Removes the companion from the player's chain
+     *
      * @param companion the companion to remove
      */
-    public void deleteCompanion(Companion companion){
+    public void deleteCompanion(Companion companion) {
         int index = companions.indexOf(companion);
         //companion out of range
-        if (index < 0 || index > companions.size()-1){
+        if (index < 0 || index > companions.size() - 1) {
             throw new IndexOutOfBoundsException();
         }
 
         //no catch up needed when head is removed, second in line takes over
-        if (companion == getPlayerHead()){
+        if (companion == getPlayerHead()) {
             companions.remove(index);
             return;
         }
 
         //update positions to fill deleted companion
-        for (int i = index+1; i < companions.size(); i++){
+        for (int i = index + 1; i < companions.size(); i++) {
             Companion c = companions.get(i);
-            CircularBuffer.PositionAndDirection data = controlBuffer.getSnapshot(i-1);
-            if (data != null){
+            CircularBuffer.PositionAndDirection data = controlBuffer.getSnapshot(i - 1);
+            if (data != null) {
                 c.getObstacle().setX(data.x);
                 c.getObstacle().setY(data.y);
             }
@@ -327,10 +339,8 @@ public class Player {
     }
 
 
-
     /**
      * Returns the LinkedList of companions in the chain
-     *
      */
     public LinkedList<Companion> getCompanions() {
         return companions;
