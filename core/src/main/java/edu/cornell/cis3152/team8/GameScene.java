@@ -417,7 +417,10 @@ public class GameScene implements Screen {
         for (ObstacleSprite o : dead) {
             String type = o.getName();
             switch (type) {
-                case "minion" -> ((Minion) o).draw(game.batch, delta);
+                case "minion" -> {
+                    ((Minion) o).update(false);
+                    ((Minion) o).draw(game.batch, delta);
+                }
                 case "companion" -> ((Companion) o).draw(game.batch, delta);
                 case "boss" -> ((Boss) o).draw(game.batch, delta);
             }
