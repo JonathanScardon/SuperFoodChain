@@ -31,6 +31,8 @@ public class Minion extends ObstacleSprite {
     private float animationFrame;
     private Player player;
     private float MOVESPEED;
+    private SpriteSheet deadMinion;
+    private boolean dead;
 
     /**
      * Constructs a Minion at the given position
@@ -45,7 +47,9 @@ public class Minion extends ObstacleSprite {
         JsonValue constants = new JsonValue("assets/constants.json");
         Texture texture = new Texture("images/Minion.png");
 
+
 //        radius = 2;
+        dead = false;
         this.player = player;
         remove = false;
         damage = false;
@@ -53,6 +57,8 @@ public class Minion extends ObstacleSprite {
         MOVESPEED = 1f;
         SpriteSheet minion = new SpriteSheet(texture, 1, 1);
         setSpriteSheet(minion);
+        texture  = new Texture("images/Companion_Death_Universal.png");
+        deadMinion = new SpriteSheet(texture,1,6);
         animationSpeed = 0.15f;
         size = 0.3f * units;
         animationFrame = 0;
@@ -118,50 +124,12 @@ public class Minion extends ObstacleSprite {
         } else {
             obstacle.setLinearVelocity(new Vector2());
         }
-//        // If we are dead do nothing.
-//        if ((!obstacle.isActive())) {
-//            return;
-//        }
-//
-//        // Determine how we are moving.
-//        boolean movingLeft  = controlCode == 1;
-//        boolean movingRight = controlCode == 2;
-//        boolean movingUp    = controlCode == 4;
-//        boolean movingDown  = controlCode == 8;
-//        //System.out.println("" + movingLeft +movingRight+movingUp+movingDown);
-//
-//        //System.out.println(controlCode == InputController.CONTROL_MOVE_LEFT);
-//        int s = 1;
-//        Vector2 velocity = obstacle.getLinearVelocity();
-//        // Process movement command.
-//        if (movingLeft) {
-//            velocity.x = -s;
-//            velocity.y = 0;
-//        } else if (movingRight) {
-//            velocity.x = s;
-//            velocity.y = 0;
-//        } else if (movingUp) {
-//            velocity.y = -s;
-//            velocity.x = 0;
-//        } else if (movingDown) {
-//            velocity.y = s;
-//            velocity.x = 0;
-//        } else{
-//            velocity.x = 0;
-//            velocity.y = 0;
-//        }
-//        //System.out.println(velocity);
-//        obstacle.setLinearVelocity(velocity);
-//        //System.out.println(position);
-//
-//
-//        if (sprite != null) {
-//            animationFrame += animationSpeed;
-//            //System.out.println(animationFrame);
-//            if (animationFrame >= sprite.getSize()) {
-//                animationFrame -= sprite.getSize();
-//            }
-//        }
+        if (sprite != null) {
+            animationFrame += animationSpeed;
+            if (!dead && animationFrame >= sprite.getSize()) {
+                animationFrame -= sprite.getSize();
+            }
+        }
     }
 
     /**
@@ -170,32 +138,28 @@ public class Minion extends ObstacleSprite {
      * @param batch The sprite batch
      */
     public void draw(SpriteBatch batch, float delta) {
-//         SpriteBatch.computeTransform(transform, origin.x, origin.y,
-//             position.x, position.y, 0.0f, size
-//             , size);
         SpriteBatch.computeTransform(transform, sprite.getRegionWidth() / 2.0f,
             sprite.getRegionHeight() / 2.0f, obstacle.getPosition().x * units,
             obstacle.getPosition().y * units, 0.0f, size / units, size / units);
         if (!obstacle.isActive()) { // if destroyed...
-            sprite.setFrame(0);
-            if (deathExpirationTimer > 0.0f) { // and within recent death timer
-                batch.setColor(Color.BLACK); // show black shadow
-                batch.draw(sprite, transform); // draw the blackened corpse
-                deathExpirationTimer -= delta;
-                // decrement timer with the delta value passed in GameScene
-
+            if (!dead){
+                animationFrame = 0;
+                animationSpeed = 0.1f;
+                dead = true;
+                setSpriteSheet(deadMinion);
+            }
+            sprite.setFrame((int) animationFrame);
+            if (animationFrame < sprite.getSize()) { // and animation is not over
+                batch.draw(sprite, transform); // draw dead Minion
             } else {
                 remove = true;
             }
-            // if it's pass, say 3 seconds, don't draw the dead corpse to free up screen real estate
         } else { // if not destroyed, draw as normal
             sprite.setFrame((int) animationFrame);
             if (damage) {
                 batch.setColor(Color.RED);
             }
-
             batch.draw(sprite, transform);
-
         }
         batch.setColor(Color.WHITE);
     }
