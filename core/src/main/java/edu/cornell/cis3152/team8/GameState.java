@@ -89,6 +89,10 @@ public class GameState {
     protected int numBlueRaspberries;
     protected int numDurians;
 
+    protected float antSpawnRate;
+    protected float cricketSpawnRate;
+    protected float spiderSpawnRate;
+
     /**
      * Creates a new game session. This method will call reset() to set up the board.
      */

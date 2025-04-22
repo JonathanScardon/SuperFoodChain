@@ -182,19 +182,6 @@ public class GameScene implements Screen {
         }
     }
 
-    /**
-     * Initializes the player to center of the board.
-     * <p>
-     * UNLESS the player is also at random position.
-     */
-    private void initPlayerPosition() {
-        float px = 15;
-        float py = 10;
-        Companion head = player.companions.get(0);
-        head.getObstacle().setX(px);
-        head.getObstacle().setY(py);
-    }
-
 
     /**
      * Spawn minions until we reach the maximum enemy numbers
@@ -214,14 +201,19 @@ public class GameScene implements Screen {
         }
         Vector2 pos = minionSpawns.get(minionSpawnIdx);
 
-        Minion m;
+        Minion m = null;
         float probability = rand.nextFloat();
-        if (probability < 0.5f) {
+        float cumulative = 0f;
+        if ((cumulative += state.antSpawnRate) > probability) {
             m = new Minion(pos.x, pos.y, minions.size, world, player);
-        } else if (probability < 0.65f) {
+        } else if ((cumulative += state.spiderSpawnRate) > probability) {
             m = new Spider(pos.x, pos.y, minions.size, world, player);
-        } else { // can add elif statements to spawn other mobs at certain probabilities
+        } else if ((cumulative += state.cricketSpawnRate) > probability) {
             m = new Cricket(pos.x, pos.y, minions.size, world, player);
+        }
+
+        if (m == null) {
+            throw new RuntimeException("No minion was spawned");
         }
 
         minions.add(m);

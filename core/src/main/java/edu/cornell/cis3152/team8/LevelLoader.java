@@ -76,39 +76,9 @@ public class LevelLoader {
         MapLayer minionLayer = map.getLayers().get("minion");
         MapLayer bossLayer = map.getLayers().get("boss");
 
-        MapProperties companionLayerProps = companionLayer.getProperties();
-        MapProperties minionLayerProps = minionLayer.getProperties();
-        MapProperties bossLayerProps = bossLayer.getProperties();
-
-        // create player and companions
-        state.maxCompanions = companionLayerProps.get("maxCompanions", Integer.class);
-        state.maxAvocados = companionLayerProps.get("maxAvocado", Integer.class);
-        state.maxDurians = companionLayerProps.get("maxDurian", Integer.class);
-        state.maxPineapples = companionLayerProps.get("maxPineapple", Integer.class);
-        state.maxStrawberries = companionLayerProps.get("maxStrawberry", Integer.class);
-        state.maxBlueRaspberries = companionLayerProps.get("maxBlueRaspberry", Integer.class);
-        for (MapObject obj : companionLayer.getObjects()) {
-            if ("player".equals(obj.getProperties().get("type", String.class))) {
-                createPlayer(obj, scene);
-            } else if ("companion".equals(obj.getProperties().get("type", String.class))) {
-                createCompanionSpawn(obj, scene);
-            }
-        }
-
-        // create minions
-        state.maxMinions = minionLayerProps.get("maxMinions", Integer.class);
-        for (MapObject obj : minionLayer.getObjects()) {
-            if ("minion".equals(obj.getProperties().get("type", String.class))) {
-                createMinionSpawn(obj, scene);
-            }
-        }
-
-        // create bosses and attach attacks to them
-        for (MapObject obj : bossLayer.getObjects()) {
-            if ("boss".equals(obj.getProperties().get("type", String.class))) {
-                createBoss(obj, scene);
-            }
-        }
+        loadCompanionLayer(companionLayer, state);
+        loadMinionLayer(minionLayer, state);
+        loadBossLayer(bossLayer, state, scene);
 
         if (state.getBosses().isEmpty()) {
             throw new RuntimeException("No bosses found");
@@ -121,14 +91,66 @@ public class LevelLoader {
         }
     }
 
+    private void loadCompanionLayer(MapLayer companionLayer, GameState state) {
+        MapProperties layerProps = companionLayer.getProperties();
+        state.maxCompanions = layerProps.get("maxCompanions", Integer.class);
+        state.maxAvocados = layerProps.get("maxAvocado", Integer.class);
+        state.maxDurians = layerProps.get("maxDurian", Integer.class);
+        state.maxPineapples = layerProps.get("maxPineapple", Integer.class);
+        state.maxStrawberries = layerProps.get("maxStrawberry", Integer.class);
+        state.maxBlueRaspberries = layerProps.get("maxBlueRaspberry", Integer.class);
+        for (MapObject obj : companionLayer.getObjects()) {
+            if ("player".equals(obj.getProperties().get("type", String.class))) {
+                createPlayer(obj, state);
+            } else if ("companion".equals(obj.getProperties().get("type", String.class))) {
+                createCompanionSpawn(obj, state);
+            }
+        }
+    }
+
+    private void loadMinionLayer(MapLayer minionLayer, GameState state) {
+        MapProperties layerProps = minionLayer.getProperties();
+        float antSpawnProportion = layerProps.get("antSpawnProportion", Float.class);
+        float cricketSpawnProportion = layerProps.get("cricketSpawnProportion", Float.class);
+        float spiderSpawnProportion = layerProps.get("spiderSpawnProportion", Float.class);
+        float totalSpawnProportion = antSpawnProportion + cricketSpawnProportion + spiderSpawnProportion;
+
+        if (totalSpawnProportion <= 0) {
+            throw new RuntimeException("Total minion spawn proportions less than 0");
+        }
+
+        state.cricketSpawnRate = cricketSpawnProportion / totalSpawnProportion;
+        state.spiderSpawnRate = spiderSpawnProportion / totalSpawnProportion;
+        state.antSpawnRate = 1 - (state.cricketSpawnRate + state.spiderSpawnRate);
+
+        if (state.cricketSpawnRate < 0 || state.spiderSpawnRate < 0 || state.antSpawnRate < 0 || state.cricketSpawnRate + state.spiderSpawnRate + state.antSpawnRate > 1 || state.cricketSpawnRate + state.spiderSpawnRate + state.antSpawnRate <= 0) {
+            throw new RuntimeException("Invalid minion spawn proportions");
+        }
+
+        state.maxMinions = layerProps.get("maxMinions", Integer.class);
+        for (MapObject obj : minionLayer.getObjects()) {
+            if ("minion".equals(obj.getProperties().get("type", String.class))) {
+                createMinionSpawn(obj, state);
+            }
+        }
+    }
+
+    private void loadBossLayer(MapLayer bossLayer, GameState state, GameScene scene) {
+        for (MapObject obj : bossLayer.getObjects()) {
+            if ("boss".equals(obj.getProperties().get("type", String.class))) {
+                createBoss(obj, state, scene);
+            }
+        }
+    }
+
     /**
-     * Create a boss and put it in the game scene
+     * Create a boss and put it in the game state
      *
      * @param obj   the boss object
+     * @param state the game state
      * @param scene the game scene
      */
-    private void createBoss(MapObject obj, GameScene scene) {
-        GameState state = scene.getState();
+    private void createBoss(MapObject obj, GameState state, GameScene scene) {
         String bossType = obj.getProperties().get("bossType", String.class);
         MapProperties props = obj.getProperties();
 
@@ -225,13 +247,12 @@ public class LevelLoader {
     }
 
     /**
-     * Create a player and put it in the game scene
+     * Create a player and put it in the game state
      *
      * @param obj   the player object
-     * @param scene the game scene
+     * @param state the game state
      */
-    private void createPlayer(MapObject obj, GameScene scene) {
-        GameState state = scene.getState();
+    private void createPlayer(MapObject obj, GameState state) {
         MapProperties props = obj.getProperties();
 
         int id = props.get("id", Integer.class);
@@ -243,13 +264,12 @@ public class LevelLoader {
     }
 
     /**
-     * Create a companion spawn location and add it to the scene
+     * Create a companion spawn location and add it to the state
      *
      * @param obj   the companion spawn object
-     * @param scene the game scene
+     * @param state the game state
      */
-    private void createCompanionSpawn(MapObject obj, GameScene scene) {
-        GameState state = scene.getState();
+    private void createCompanionSpawn(MapObject obj, GameState state) {
         MapProperties props = obj.getProperties();
 
         int id = props.get("id", Integer.class);
@@ -260,13 +280,12 @@ public class LevelLoader {
     }
 
     /**
-     * Create a minion spawn location and add it to the scene
+     * Create a minion spawn location and add it to the state
      *
      * @param obj   the minion spawn object
-     * @param scene the game scene
+     * @param state the game state
      */
-    private void createMinionSpawn(MapObject obj, GameScene scene) {
-        GameState state = scene.getState();
+    private void createMinionSpawn(MapObject obj, GameState state) {
         MapProperties props = obj.getProperties();
 
         int id = props.get("id", Integer.class);

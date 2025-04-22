@@ -32,7 +32,6 @@
             "useAs": [
                 "property",
                 "object",
-                "tile",
                 "project"
             ]
         },
@@ -69,13 +68,7 @@
             "type": "class",
             "useAs": [
                 "property",
-                "map",
-                "layer",
                 "object",
-                "tile",
-                "tileset",
-                "wangcolor",
-                "wangset",
                 "project"
             ]
         },
@@ -101,13 +94,26 @@
             "type": "class",
             "useAs": [
                 "property",
-                "map",
-                "layer",
                 "object",
-                "tile",
-                "tileset",
-                "wangcolor",
-                "wangset",
+                "project"
+            ]
+        },
+        {
+            "color": "#ffa0a0a4",
+            "drawFill": true,
+            "id": 10,
+            "members": [
+                {
+                    "name": "maxCompanions",
+                    "type": "int",
+                    "value": 0
+                }
+            ],
+            "name": "companionLayer",
+            "type": "class",
+            "useAs": [
+                "property",
+                "layer",
                 "project"
             ]
         },
@@ -134,13 +140,41 @@
             "type": "class",
             "useAs": [
                 "property",
-                "map",
-                "layer",
                 "object",
-                "tile",
-                "tileset",
-                "wangcolor",
-                "wangset",
+                "project"
+            ]
+        },
+        {
+            "color": "#ffa0a0a4",
+            "drawFill": true,
+            "id": 9,
+            "members": [
+                {
+                    "name": "antSpawnProportion",
+                    "type": "float",
+                    "value": 0
+                },
+                {
+                    "name": "cricketSpawnProportion",
+                    "type": "float",
+                    "value": 0
+                },
+                {
+                    "name": "maxMinions",
+                    "type": "int",
+                    "value": 0
+                },
+                {
+                    "name": "spiderSpawnProportion",
+                    "type": "float",
+                    "value": 0
+                }
+            ],
+            "name": "minionLayer",
+            "type": "class",
+            "useAs": [
+                "property",
+                "layer",
                 "project"
             ]
         },
@@ -154,13 +188,7 @@
             "type": "class",
             "useAs": [
                 "property",
-                "map",
-                "layer",
                 "object",
-                "tile",
-                "tileset",
-                "wangcolor",
-                "wangset",
                 "project"
             ]
         }
