@@ -61,7 +61,7 @@
    <property name="maxPineapple" type="int" value="0"/>
    <property name="maxStrawberry" type="int" value="1"/>
   </properties>
-  <object id="1" type="player" x="355.152" y="223.002"/>
+  <object id="1" name="player" type="player" x="294.583" y="198.774"/>
   <object id="2" type="companion" x="873.426" y="392.319"/>
   <object id="13" type="companion" x="881.284" y="154.452"/>
   <object id="14" type="companion" x="711.69" y="490.612"/>
@@ -72,14 +72,21 @@
  </objectgroup>
  <objectgroup id="3" name="minion">
   <properties>
-   <property name="antSpawnProportion" type="float" value="1"/>
-   <property name="cricketSpawnProportion" type="float" value="0"/>
    <property name="maxMinions" type="int" value="4"/>
-   <property name="spiderSpawnProportion" type="float" value="0"/>
   </properties>
-  <object id="3" type="minion" x="-135.988" y="356.969"/>
-  <object id="4" type="minion" x="602.234" y="-114.133"/>
-  <object id="5" type="minion" x="1364.74" y="342.399"/>
-  <object id="6" type="minion" x="621.661" y="801.36"/>
+  <object id="3" type="minionSpawnPoint" x="-135.988" y="356.969">
+   <properties>
+    <property name="antSpawnProportion" type="float" value="0"/>
+    <property name="cricketSpawnProportion" type="float" value="1"/>
+    <property name="spiderSpawnProportion" type="float" value="0"/>
+   </properties>
+  </object>
+  <object id="5" type="minionSpawnPoint" x="1364.74" y="342.399">
+   <properties>
+    <property name="antSpawnProportion" type="float" value="1"/>
+    <property name="cricketSpawnProportion" type="float" value="0"/>
+    <property name="spiderSpawnProportion" type="float" value="0"/>
+   </properties>
+  </object>
  </objectgroup>
 </map>

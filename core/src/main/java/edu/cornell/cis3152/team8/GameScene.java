@@ -67,7 +67,7 @@ public class GameScene implements Screen {
     /**
      * A list of possible minion spawn locations, shuffled after it is looped through
      */
-    private Array<Vector2> minionSpawns;
+    private Array<MinionSpawnPoint> minionSpawns;
     /**
      * A list of possible companion spawn locations, shuffled after it is looped through
      */
@@ -84,7 +84,7 @@ public class GameScene implements Screen {
     /**
      * Random number generator
      */
-    Random rand;
+    private static final Random rand = new Random();
 
     /**
      * List of all the input controllers
@@ -120,7 +120,6 @@ public class GameScene implements Screen {
      */
     public GameScene(final GDXRoot game, AssetDirectory assets, int level) {
         this.game = game;
-        rand = new Random();
         coinTexture = new Texture("images/CoinUI.png");
         constants = assets.getEntry("constants", JsonValue.class);
         //System.out.println(constants);
@@ -199,25 +198,10 @@ public class GameScene implements Screen {
         if (minionSpawnIdx >= minionSpawns.size) {
             minionSpawnIdx = 0;
         }
-        Vector2 pos = minionSpawns.get(minionSpawnIdx);
-
-        Minion m = null;
-        float probability = rand.nextFloat();
-        float cumulative = 0f;
-        if ((cumulative += state.antSpawnRate) > probability) {
-            m = new Minion(pos.x, pos.y, minions.size, world, player);
-        } else if ((cumulative += state.spiderSpawnRate) > probability) {
-            m = new Spider(pos.x, pos.y, minions.size, world, player);
-        } else if ((cumulative += state.cricketSpawnRate) > probability) {
-            m = new Cricket(pos.x, pos.y, minions.size, world, player);
-        }
-
-        if (m == null) {
-            throw new RuntimeException("No minion was spawned");
-        }
+        MinionSpawnPoint sp = minionSpawns.get(minionSpawnIdx);
+        Minion m = sp.spawnMinion(minions.size, world, player);
 
         minions.add(m);
-        //minionControls.add(new MinionController(m.getId(), minions, player));
         minionSpawnIdx++;
     }
 

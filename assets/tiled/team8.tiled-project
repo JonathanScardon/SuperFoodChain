@@ -133,21 +133,26 @@
         {
             "color": "#ffa0a0a4",
             "drawFill": true,
-            "id": 6,
+            "id": 9,
             "members": [
+                {
+                    "name": "maxMinions",
+                    "type": "int",
+                    "value": 0
+                }
             ],
-            "name": "minion",
+            "name": "minionLayer",
             "type": "class",
             "useAs": [
                 "property",
-                "object",
+                "layer",
                 "project"
             ]
         },
         {
             "color": "#ffa0a0a4",
             "drawFill": true,
-            "id": 9,
+            "id": 6,
             "members": [
                 {
                     "name": "antSpawnProportion",
@@ -160,21 +165,16 @@
                     "value": 0
                 },
                 {
-                    "name": "maxMinions",
-                    "type": "int",
-                    "value": 0
-                },
-                {
                     "name": "spiderSpawnProportion",
                     "type": "float",
                     "value": 0
                 }
             ],
-            "name": "minionLayer",
+            "name": "minionSpawnPoint",
             "type": "class",
             "useAs": [
                 "property",
-                "layer",
+                "object",
                 "project"
             ]
         },
