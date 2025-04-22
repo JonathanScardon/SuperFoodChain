@@ -34,6 +34,10 @@ public class GameScene implements Screen {
     private final Button exitButton;
     private final Settings settingsScreen;
 
+    private final Texture win;
+    private final Texture lose;
+
+
     private float companionAddTimer = 3.0f;
     /**
      * Reference to the game session
@@ -136,6 +140,8 @@ public class GameScene implements Screen {
         Texture levels = new Texture("images/LevelsButton.png");
         Texture settings = new Texture("images/SettingsButton.png");
         Texture exit = new Texture("images/ExitButton.png");
+        win = new Texture("images/Win.png");
+        lose = new Texture("images/Lose.png");
         resetButton = new Button(399, 459, resetT, 0, 482, 120);
         levelsButton = new Button(399, 319, levels, 1, 482, 120);
         settingsButton = new Button(399, 180, settings, 0, 482, 120);
@@ -502,15 +508,12 @@ public class GameScene implements Screen {
     // }
 
     private void drawLose() {
-        Texture texture = new Texture("images/Lose.png");
-        game.batch.draw(texture, 250, 150);
+        game.batch.draw(lose, 250, 150);
 
     }
 
     private void drawWin() {
-        Texture texture = new Texture("images/Win.png");
-        game.batch.draw(texture, 400, 150);
-
+        game.batch.draw(win, 400, 150);
     }
 
     private void setStart() {
