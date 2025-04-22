@@ -130,7 +130,7 @@ public class GameScene implements Screen {
         companions = state.getCompanions();
         dead = state.getDead();
 
-        backgroundTexture = new Texture("images/Tile.png");
+        backgroundTexture = new Texture("images/temp_background.png");
         pauseBackground = new Texture("images/Paused.png");
         Texture resetT = new Texture("images/ResetButton.png");
         Texture levels = new Texture("images/LevelsButton.png");
