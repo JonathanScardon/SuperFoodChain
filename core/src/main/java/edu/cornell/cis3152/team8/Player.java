@@ -331,7 +331,7 @@ public class Player {
      * based on the speed of the chain
      */
     public static void calculateDelay() {
-        int baseSpeed = 3;
+        int baseSpeed = 150;
         int baseDelay = 15;
 
         float rawDelay = (baseDelay * baseSpeed) / Companion.getSpeed();
