@@ -100,9 +100,9 @@ public class LevelLoader {
         state.maxStrawberries = layerProps.get("maxStrawberry", Integer.class);
         state.maxBlueRaspberries = layerProps.get("maxBlueRaspberry", Integer.class);
         for (MapObject obj : companionLayer.getObjects()) {
-            if ("player".equals(obj.getProperties().get("type", String.class))) {
+            if ("playerSpawn".equals(obj.getProperties().get("type", String.class))) {
                 createPlayer(obj, state);
-            } else if ("companion".equals(obj.getProperties().get("type", String.class))) {
+            } else if ("companionSpawn".equals(obj.getProperties().get("type", String.class))) {
                 createCompanionSpawn(obj, state);
             }
         }
@@ -113,7 +113,7 @@ public class LevelLoader {
         state.maxMinions = layerProps.get("maxMinions", Integer.class);
 
         for (MapObject obj : minionLayer.getObjects()) {
-            if ("minionSpawnPoint".equals(obj.getProperties().get("type", String.class))) {
+            if ("minionSpawn".equals(obj.getProperties().get("type", String.class))) {
                 createMinionSpawn(obj, state);
             }
         }
