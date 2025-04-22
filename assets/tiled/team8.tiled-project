@@ -87,20 +87,6 @@
         {
             "color": "#ffa0a0a4",
             "drawFill": true,
-            "id": 8,
-            "members": [
-            ],
-            "name": "companion",
-            "type": "class",
-            "useAs": [
-                "property",
-                "object",
-                "project"
-            ]
-        },
-        {
-            "color": "#ffa0a0a4",
-            "drawFill": true,
             "id": 10,
             "members": [
                 {
@@ -114,6 +100,20 @@
             "useAs": [
                 "property",
                 "layer",
+                "project"
+            ]
+        },
+        {
+            "color": "#ffa0a0a4",
+            "drawFill": true,
+            "id": 8,
+            "members": [
+            ],
+            "name": "companionSpawn",
+            "type": "class",
+            "useAs": [
+                "property",
+                "object",
                 "project"
             ]
         },
@@ -170,7 +170,7 @@
                     "value": 0
                 }
             ],
-            "name": "minionSpawnPoint",
+            "name": "minionSpawn",
             "type": "class",
             "useAs": [
                 "property",
@@ -184,7 +184,7 @@
             "id": 7,
             "members": [
             ],
-            "name": "player",
+            "name": "playerSpawn",
             "type": "class",
             "useAs": [
                 "property",

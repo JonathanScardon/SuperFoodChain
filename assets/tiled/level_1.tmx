@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="1" height="1" tilewidth="1280" tileheight="720" infinite="0" nextlayerid="5" nextobjectid="21">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="1" height="1" tilewidth="1280" tileheight="720" infinite="0" nextlayerid="5" nextobjectid="23">
  <objectgroup id="2" name="boss">
   <object id="7" name="mouse" type="boss" x="-2.2048" y="1000.89">
    <properties>
@@ -57,31 +57,45 @@
    <property name="maxAvocado" type="int" value="0"/>
    <property name="maxBlueRaspberry" type="int" value="0"/>
    <property name="maxCompanions" type="int" value="1"/>
-   <property name="maxDurian" type="int" value="0"/>
+   <property name="maxDurian" type="int" value="1"/>
    <property name="maxPineapple" type="int" value="0"/>
-   <property name="maxStrawberry" type="int" value="1"/>
+   <property name="maxStrawberry" type="int" value="0"/>
   </properties>
-  <object id="1" name="player" type="player" x="294.583" y="198.774"/>
-  <object id="2" type="companion" x="873.426" y="392.319"/>
-  <object id="13" type="companion" x="881.284" y="154.452"/>
-  <object id="14" type="companion" x="711.69" y="490.612"/>
-  <object id="15" type="companion" x="420.957" y="372.502"/>
-  <object id="16" type="companion" x="254.391" y="333.131"/>
-  <object id="17" type="companion" x="944.882" y="611.75"/>
-  <object id="18" type="companion" x="417.929" y="599.637"/>
+  <object id="1" name="player" type="playerSpawn" x="294.583" y="198.774"/>
+  <object id="2" type="companionSpawn" x="873.426" y="392.319"/>
+  <object id="13" type="companionSpawn" x="881.284" y="154.452"/>
+  <object id="14" type="companionSpawn" x="711.69" y="490.612"/>
+  <object id="15" type="companionSpawn" x="420.957" y="372.502"/>
+  <object id="16" type="companionSpawn" x="254.391" y="333.131"/>
+  <object id="17" type="companionSpawn" x="944.882" y="611.75"/>
+  <object id="18" type="companionSpawn" x="417.929" y="599.637"/>
  </objectgroup>
  <objectgroup id="3" name="minion">
   <properties>
    <property name="maxMinions" type="int" value="4"/>
   </properties>
-  <object id="3" type="minionSpawnPoint" x="-135.988" y="356.969">
+  <object id="3" type="minionSpawn" x="-90.561" y="-48.8457">
    <properties>
-    <property name="antSpawnProportion" type="float" value="0"/>
-    <property name="cricketSpawnProportion" type="float" value="1"/>
+    <property name="antSpawnProportion" type="float" value="1"/>
+    <property name="cricketSpawnProportion" type="float" value="0"/>
     <property name="spiderSpawnProportion" type="float" value="0"/>
    </properties>
   </object>
-  <object id="5" type="minionSpawnPoint" x="1364.74" y="342.399">
+  <object id="5" type="minionSpawn" x="1363.66" y="-60.3872">
+   <properties>
+    <property name="antSpawnProportion" type="float" value="1"/>
+    <property name="cricketSpawnProportion" type="float" value="0"/>
+    <property name="spiderSpawnProportion" type="float" value="0"/>
+   </properties>
+  </object>
+  <object id="21" type="minionSpawn" x="-104.165" y="778.249">
+   <properties>
+    <property name="antSpawnProportion" type="float" value="1"/>
+    <property name="cricketSpawnProportion" type="float" value="0"/>
+    <property name="spiderSpawnProportion" type="float" value="0"/>
+   </properties>
+  </object>
+  <object id="22" type="minionSpawn" x="1350.06" y="766.707">
    <properties>
     <property name="antSpawnProportion" type="float" value="1"/>
     <property name="cricketSpawnProportion" type="float" value="0"/>
