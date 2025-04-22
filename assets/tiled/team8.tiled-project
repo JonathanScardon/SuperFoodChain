@@ -118,6 +118,19 @@
             ]
         },
         {
+            "id": 11,
+            "name": "companionType",
+            "storageType": "string",
+            "type": "enum",
+            "values": [
+                "strawberry",
+                "avocado",
+                "blueRaspberry",
+                "durian"
+            ],
+            "valuesAsFlags": false
+        },
+        {
             "id": 5,
             "name": "direction",
             "storageType": "string",
@@ -183,6 +196,12 @@
             "drawFill": true,
             "id": 7,
             "members": [
+                {
+                    "name": "companionType",
+                    "propertyType": "companionType",
+                    "type": "string",
+                    "value": "durian"
+                }
             ],
             "name": "playerSpawn",
             "type": "class",
