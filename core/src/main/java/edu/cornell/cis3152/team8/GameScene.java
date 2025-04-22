@@ -5,7 +5,6 @@ import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
@@ -106,6 +105,7 @@ public class GameScene implements Screen {
      */
     private JsonValue constants;
 
+    private Texture backgroundTexture;
     private Texture coinTexture;
     private boolean paused;
     private boolean settingsOn;
@@ -131,6 +131,7 @@ public class GameScene implements Screen {
         companions = state.getCompanions();
         dead = state.getDead();
 
+        backgroundTexture = new Texture("images/Tile.png");
         pauseBackground = new Texture("images/Paused.png");
         Texture resetT = new Texture("images/ResetButton.png");
         Texture levels = new Texture("images/LevelsButton.png");
@@ -417,13 +418,11 @@ public class GameScene implements Screen {
 
 
     public void draw(float delta) {
-        BitmapFont font = new BitmapFont();
         ScreenUtils.clear(Color.WHITE);
 
         game.batch.begin();
         if (!background) {
-            Texture tileTexture = new Texture("images/Tile.png");
-            game.batch.draw(tileTexture, 0, 0, 1280, 720);
+            game.batch.draw(backgroundTexture, 0, 0, 1280, 720);
         }
         for (ObstacleSprite o : dead) {
             String type = o.getName();
@@ -445,8 +444,8 @@ public class GameScene implements Screen {
         player.draw(game.batch, delta);
         for (Companion c : companions) {
             String cost = "Cost: " + c.getCost();
-            TextLayout compCost = new TextLayout(cost, font);
-            TextLayout pressE = new TextLayout("E", font);
+            TextLayout compCost = new TextLayout(cost, game.font);
+            TextLayout pressE = new TextLayout("E", game.font);
             c.draw(game.batch, delta);
             //temp UI
 
@@ -489,14 +488,14 @@ public class GameScene implements Screen {
         for (Boss b : bosses) {
             HP = "Boss HP: " + b.getHealth();
         }
-        TextLayout coinCount = new TextLayout(coins, font, 128);
-        TextLayout bossHP = new TextLayout(HP, font, 128);
+        TextLayout coinCount = new TextLayout(coins, game.font, 128);
+        TextLayout bossHP = new TextLayout(HP, game.font, 128);
         //Temp UI
         game.batch.draw(coinTexture, 1140, 65, 45, 45);
         game.batch.drawText(bossHP, 600, 700);
         game.batch.drawText(coinCount, 1200f, 80f);
 
-        font.setColor(Color.WHITE);
+        game.font.setColor(Color.WHITE);
 
         if (!player.isAlive()) {
             drawLose();
