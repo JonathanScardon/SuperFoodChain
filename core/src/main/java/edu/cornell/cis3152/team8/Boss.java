@@ -126,16 +126,16 @@ public class Boss extends ObstacleSprite {
         // Process movement command.
         Vector2 velocity = obstacle.getLinearVelocity();
         if (movingLeft) {
-            velocity.x = -moveSpeed;
+            velocity.x = -moveSpeed * delta;
             velocity.y = 0;
         } else if (movingRight) {
-            velocity.x = moveSpeed;
+            velocity.x = moveSpeed * delta;
             velocity.y = 0;
         } else if (movingUp) {
-            velocity.y = moveSpeed;
+            velocity.y = moveSpeed * delta;
             velocity.x = 0;
         } else if (movingDown) {
-            velocity.y = -moveSpeed;
+            velocity.y = -moveSpeed * delta;
             velocity.x = 0;
         } else {
             // NOT MOVING, SO SLOW DOWN

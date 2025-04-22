@@ -281,7 +281,7 @@ public class GameScene implements Screen {
         }
 
         if (paused) {
-            player.update(InputController.CONTROL_NO_ACTION);
+            player.update(delta, InputController.CONTROL_NO_ACTION);
 
             if (resetButton.isHovering() && Gdx.input.isTouched()) {
                 reset();
@@ -365,7 +365,7 @@ public class GameScene implements Screen {
             // // player chain moves
             int a = playerControls.getAction();
             // System.out.println(a);
-            player.update(a);
+            player.update(delta, a);
 
             // // if board isn't updating then no point
             // state.getLevel().update();

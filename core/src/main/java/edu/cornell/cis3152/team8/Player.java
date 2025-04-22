@@ -131,7 +131,7 @@ public class Player {
      *
      * @param controlCode direction of player input
      */
-    public void update(int controlCode) {
+    public void update(float delta, int controlCode) {
         // automatically removes "dead" companions --> don't have to individually find in collision
         // can do deadCompanions instead?
         for (int i = 0; i < companions.size(); i++) {
@@ -151,10 +151,10 @@ public class Player {
         for (int i = 0; i < companions.size(); i++) {
             Companion c = companions.get(i);
             if (c == getPlayerHead()) {
-                c.update(controlCode);
+                c.update(delta, controlCode);
             } else {
                 CircularBuffer.PositionAndDirection prev = controlBuffer.getSnapshot(i);
-                c.update(prev.dir);
+                c.update(delta, prev.dir);
             }
         }
 
