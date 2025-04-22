@@ -73,7 +73,7 @@ public abstract class Companion extends ObstacleSprite {
     private boolean remove;
     private boolean moving;
 
-    private static float MOVE_SPEED = 3;
+    private static float MOVE_SPEED = 5;
 
     private static final float units = 64f;
 
