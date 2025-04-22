@@ -72,7 +72,10 @@
  </objectgroup>
  <objectgroup id="3" name="minion">
   <properties>
-   <property name="maxMinions" type="int" value="1"/>
+   <property name="antSpawnProportion" type="float" value="1"/>
+   <property name="cricketSpawnProportion" type="float" value="0"/>
+   <property name="maxMinions" type="int" value="4"/>
+   <property name="spiderSpawnProportion" type="float" value="0"/>
   </properties>
   <object id="3" type="minion" x="-135.988" y="356.969"/>
   <object id="4" type="minion" x="602.234" y="-114.133"/>
