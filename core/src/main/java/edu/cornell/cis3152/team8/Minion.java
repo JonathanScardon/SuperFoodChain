@@ -39,8 +39,7 @@ public class Minion extends ObstacleSprite {
      * @param y The y-coordinate of the object
      */
     public Minion(float x, float y, int id, World world, Player player) {
-        super(new CapsuleObstacle(x / units, y / units, 0.8f, 0.8f), true);
-        ((CapsuleObstacle) obstacle).setTolerance(0.5f);
+        super(new BoxObstacle(x / units, y / units, 0.8f, 0.5f), true);
 
         this.id = id;
         JsonValue constants = new JsonValue("assets/constants.json");

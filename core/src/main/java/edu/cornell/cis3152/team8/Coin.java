@@ -31,7 +31,7 @@ public class Coin extends ObstacleSprite {
      */
     public Coin(float x, float y, World world) {
         // taking in the minion position which is already in units --> change for initCoins
-        super(new CapsuleObstacle(x, y, 0.8f, 0.8f), true);
+        super(new CapsuleObstacle(x, y, 0.7f, 0.7f), true);
 
       //         size = 0.3f;
         texture = new Texture("images/coin.png");
