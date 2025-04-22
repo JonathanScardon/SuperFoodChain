@@ -149,7 +149,36 @@
                     "size": 8
                 }
             }
+        },
+      "progress": {
+        "file": "images/progress.png",
+        "atlas": {
+          "back": [
+            0,
+            0,
+            520,
+            33
+          ],
+          "foreground": [
+            24,
+            33,
+            496,
+            66
+          ],
+          "foreleft": [
+            0,
+            33,
+            24,
+            66
+          ],
+          "foreright": [
+            496,
+            33,
+            520,
+            66
+          ]
         }
+      }
     },
     "jsons": {
         "constants": "jsons/constants.json",

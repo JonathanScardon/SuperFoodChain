@@ -151,7 +151,7 @@ public class LevelLoader {
 
         switch (bossType) {
             case "mouse":
-                boss = new Boss(x, y, health, state.getWorld());
+                boss = new Boss(x, y, health, bossType, state.getWorld());
                 boss.addAnimation("default", mouseDashVerticalSprite);
                 boss.addAnimation("idle", mouseIdleSprite);
                 boss.addAnimation("dashVertical", mouseDashVerticalSprite);
@@ -161,7 +161,7 @@ public class LevelLoader {
             case "chef":
                 break;
             case "chopsticks":
-                boss = new Boss(x, y, health, state.getWorld());
+                boss = new Boss(x, y, health, bossType, state.getWorld());
                 boss.addAnimation("default", chopsticksIdleSprite);
                 boss.addAnimation("idle", chopsticksIdleSprite);
                 boss.addAnimation("snatch", chopsticksDashSprite);
