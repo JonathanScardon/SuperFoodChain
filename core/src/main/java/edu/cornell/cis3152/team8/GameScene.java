@@ -153,7 +153,7 @@ public class GameScene implements Screen {
         settingsButton = new Button(399, 180, settings, 0, 482, 120);
         exitButton = new Button(399, 41, exit, 0, 482, 120);
         settingsScreen = new Settings();
-        font = new BitmapFont();
+        font = assets.getEntry("lpc", BitmapFont.class);
         bossNames = new Array<>();
         reset();
         for (Boss b : bosses) {
