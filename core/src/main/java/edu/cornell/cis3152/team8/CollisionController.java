@@ -251,7 +251,6 @@ public class CollisionController implements ContactListener {
      * Adds or Removes objects from the world.
      */
     public void postUpdate() {
-        System.out.println(state.getPlayer().getPlayerHead().getObstacle().getPosition());
         if (!state.inBounds(state.getPlayer().getPlayerHead())) {
             removed.add(state.getPlayer().getPlayerHead());
         }
