@@ -313,11 +313,11 @@ public class CollisionController implements ContactListener {
                 state.getCoins().removeValue(c, false);
             }
         }
-        for (Boss b : state.getBosses()) {
-            if (!b.getObstacle().isActive()) {
-                state.getBosses().removeValue(b, false);
-            }
-        }
+//        for (Boss b : state.getBosses()) {
+//            if (!b.getObstacle().isActive()) {
+//                state.getBosses().removeValue(b, false);
+//            }
+//        }
         for (ObstacleSprite o: state.getDead()){
             switch (o.getName()){
                 case ("minion") -> {
@@ -327,6 +327,10 @@ public class CollisionController implements ContactListener {
                 }
                 case ("player") -> {
                     if (((Companion) o).shouldRemove()) {
+                        state.getDead().removeValue(o, false);
+                    }
+                }case ("boss") -> {
+                    if (((Boss) o).shouldRemove()) {
                         state.getDead().removeValue(o, false);
                     }
                 }case ("coin") -> state.getDead().removeValue(o, false);

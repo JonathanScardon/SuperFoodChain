@@ -49,8 +49,7 @@ public class SpinAttackPattern implements BossAttackPattern {
 
     @Override
     public void start() {
-        if (gamestate.getBosses().get(0).getObstacle().isActive() && gamestate.getBosses().get(1)
-            .getObstacle().isActive()) {
+        if (twoBosses()) {
             state = AttackState.WARN;
             boss.setState("warn");
             controller.setAction(CONTROL_NO_ACTION);
@@ -74,10 +73,8 @@ public class SpinAttackPattern implements BossAttackPattern {
     }
 
     public void attack() {
-        if (gamestate.getBosses().get(0).getObstacle().isActive() && gamestate.getBosses().get(1)
-            .getObstacle().isActive()) {
+        if (twoBosses()) {
             boss.setAnimation("idle");
-            System.out.println(controlCode);
             state = AttackState.ATTACK;
             controller.setAction(controlCode);
             origMoveSpeed = boss.moveSpeed;
@@ -89,8 +86,7 @@ public class SpinAttackPattern implements BossAttackPattern {
 
     @Override
     public void update(float delta) {
-        if (gamestate.getBosses().get(0).getObstacle().isActive() && gamestate.getBosses().get(1)
-            .getObstacle().isActive()) {
+        if (twoBosses()) {
             switch (state) {
                 case INACTIVE -> {
                 }
@@ -116,8 +112,7 @@ public class SpinAttackPattern implements BossAttackPattern {
 
     @Override
     public boolean isEnded() {
-        if (gamestate.getBosses().get(0).getObstacle().isActive() && gamestate.getBosses().get(1)
-            .getObstacle().isActive()) {
+        if (twoBosses()) {
             Vector2 pos = boss.getObstacle().getPosition();
             boolean wall = atWall();
             float scootX;
@@ -188,8 +183,11 @@ public class SpinAttackPattern implements BossAttackPattern {
     }
     private boolean atWall(){
         Vector2 pos = boss.getObstacle().getPosition();
-        System.out.println(pos);
         return pos.x >= 1280/PHYSICS_UNITS || pos.x <= 0 || pos.y >= 720/PHYSICS_UNITS
             || pos.y <= 0;
+    }
+
+    private boolean twoBosses(){
+        return gamestate.getBosses().get(0).getObstacle().isActive() && gamestate.getBosses().get(1).getObstacle().isActive();
     }
 }

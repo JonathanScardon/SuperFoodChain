@@ -45,10 +45,12 @@ public class BossController implements InputController {
      * If there are no attacks left, resets current attack index to 0
      */
     public void startAttack() {
-        if (curAttackIdx >= this.attackPatterns.size) {
-            curAttackIdx = 0;
+        if (boss.getObstacle().isActive()) {
+            if (curAttackIdx >= this.attackPatterns.size) {
+                curAttackIdx = 0;
+            }
+            this.attackPatterns.get(curAttackIdx).start();
         }
-        this.attackPatterns.get(curAttackIdx).start();
     }
 
     @Override
