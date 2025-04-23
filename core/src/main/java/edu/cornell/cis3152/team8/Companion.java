@@ -62,11 +62,13 @@ public abstract class Companion extends ObstacleSprite {
 
     private float prevX;
 
+    private SpriteSheet deadCompanion;
     private float prevY;
     protected static float animationSpeed;
     protected float animationFrame;
     protected Texture glow;
-    protected Boolean highlight;
+    protected boolean highlight;
+    private boolean dead;
     private int id;
     private float size;
 
@@ -92,6 +94,10 @@ public abstract class Companion extends ObstacleSprite {
         this.id = id;
         remove = false;
         moving = false;
+        dead = false;
+
+        Texture texture = new Texture("images/Companion_Death_Universal.png");
+        deadCompanion = new SpriteSheet(texture,1,6);
 
         // change?
         obstacle = getObstacle();
@@ -238,6 +244,9 @@ public abstract class Companion extends ObstacleSprite {
      */
     public void update(float delta, int controlCode) {
         if (!obstacle.isActive()) {
+            if (sprite != null && dead) {
+                animationFrame += animationSpeed;
+            }
             return;
         }
         highlight = false;
@@ -276,19 +285,24 @@ public abstract class Companion extends ObstacleSprite {
             velocity.y = 0;
             moving = false;
         }
-
         obstacle.setLinearVelocity(velocity);
     }
 
     public void draw(SpriteBatch batch, float delta) {
-        if (!obstacle.isActive()) {
-            if (deathExpirationTimer > 0.0f) {
-                sprite.setFrame(1);
-                batch.setColor(Color.BLACK);
-                deathExpirationTimer -= delta;
+        if (!obstacle.isActive()) { // if destroyed...
+            if (!dead){
+                animationFrame = 0;
+                animationSpeed = 0.1f;
+                dead = true;
+                setSpriteSheet(deadCompanion);
+            }
+            if (animationFrame < sprite.getSize()) { // and animation is not over
+                sprite.setFrame((int) animationFrame);
+                batch.draw(sprite, transform); // draw dead Minion
+            } else {
+                remove = true;
             }
         } else {
-
             if (collected) {
                 if (moving) {
                     sprite.setFrame((int) animationFrame);

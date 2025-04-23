@@ -230,7 +230,7 @@ public class Player {
                 , head.getObstacle().getX() * units,
                 head.getObstacle().getY() * units, 0, 0.4f , 0.4f);
 
-            if (forwardDirection == InputController.CONTROL_MOVE_UP) {
+            if (forwardDirection == InputController.CONTROL_MOVE_DOWN) {
                 for (int i = companions.size() - 1; i >= 0; i--) {
                     Companion c = companions.get(i);
                     if (c.equals(head)) {

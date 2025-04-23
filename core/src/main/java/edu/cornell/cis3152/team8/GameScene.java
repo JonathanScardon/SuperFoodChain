@@ -418,7 +418,10 @@ public class GameScene implements Screen {
                     ((Minion) o).update(false);
                     o.draw(game.batch);
                 }
-                case "companion" -> ((Companion) o).draw(game.batch, delta);
+                case "player" -> {
+                    ((Companion) o).update(delta,0);
+                    ((Companion) o).draw(game.batch, delta);
+                }
                 case "boss" -> ((Boss) o).draw(game.batch, delta);
             }
         }
