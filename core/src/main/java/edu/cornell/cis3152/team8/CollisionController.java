@@ -43,7 +43,7 @@ public class CollisionController implements ContactListener {
 
     private List<Body> removedProjectiles = new ArrayList<>();
 
-    private Array<MinionController> minionControls;
+    //private Array<MinionController> minionControls;
     private Array<Companion> deadCompanions;
 
     /**

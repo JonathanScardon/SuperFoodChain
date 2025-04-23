@@ -32,16 +32,16 @@ public class MinionSpawnPoint {
         }
     }
 
-    public Minion spawnMinion(int id, World world, Player player) {
+    public Minion spawnMinion(World world, Player player) {
         Minion m = null;
         float probability = rand.nextFloat();
         float cumulative = 0f;
         if ((cumulative += antSpawnRate) > probability) {
-            m = new Minion(x, y, id, world, player);
+            m = new Ant(x, y, world, player);
         } else if ((cumulative += spiderSpawnRate) > probability) {
-            m = new Spider(x, y, id, world, player);
+            m = new Spider(x, y, world, player);
         } else if ((cumulative += cricketSpawnRate) > probability) {
-            m = new Cricket(x, y, id, world, player);
+            m = new Cricket(x, y, world, player);
         }
 
         if (m == null) {

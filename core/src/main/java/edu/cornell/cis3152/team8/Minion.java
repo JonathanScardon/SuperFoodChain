@@ -17,51 +17,44 @@ import edu.cornell.gdiac.physics2.CapsuleObstacle;
 import edu.cornell.gdiac.physics2.ObstacleSprite;
 
 public class Minion extends ObstacleSprite {
+    protected static final float units = 64f;
 
-    private int health;
-    private float size;
-    private int id;
-    // 5 second death expiration timer
-    private float deathExpirationTimer = 3.0f;
-    private float moveSpeed;
-    private static final float units = 64f;
-    private boolean remove;
+    //drawing fields
+    protected float size;
     private boolean damage;
-    private float animationSpeed;
+    protected float animationSpeed;
     private float animationFrame;
-    private Player player;
-    private float MOVESPEED;
-    private SpriteSheet deadMinion;
+    protected SpriteSheet deadMinion;
     private boolean dead;
+
+    //Minion constants
+    protected int health;
+    protected float moveSpeed;
+
+    //The player to target
+    protected Player player;
+
+    //When to remove a dead minion
+    private boolean remove;
 
     /**
      * Constructs a Minion at the given position
      *
      * @param x The x-coordinate of the object
      * @param y The y-coordinate of the object
+     * @param player The player the minion will attack
      */
-    public Minion(float x, float y, int id, World world, Player player) {
+    public Minion(float x, float y, World world, Player player) {
         super(new BoxObstacle(x / units, y / units, 0.8f, 0.5f), true);
 
-        this.id = id;
-        JsonValue constants = new JsonValue("assets/constants.json");
-        Texture texture = new Texture("images/Minion.png");
-
-
-//        radius = 2;
-        dead = false;
         this.player = player;
+        dead = false;
         remove = false;
         damage = false;
-        health = 3;
-        MOVESPEED = 1f;
-        SpriteSheet minion = new SpriteSheet(texture, 1, 1);
-        setSpriteSheet(minion);
-        texture  = new Texture("images/Companion_Death_Universal.png");
-        deadMinion = new SpriteSheet(texture,1,6);
-        animationSpeed = 0.15f;
-        size = 0.3f * units;
         animationFrame = 0;
+
+        Texture texture  = new Texture("images/Companion_Death_Universal.png");
+        deadMinion = new SpriteSheet(texture,1,6);
 
         obstacle = getObstacle();
         obstacle.setName("minion");
@@ -89,41 +82,16 @@ public class Minion extends ObstacleSprite {
      * @param constants The JsonValue of the object
      */
     private void setConstants(JsonValue constants) {
-//        this.constants = constants;
         health = constants.getInt("health");
-        //MOVE_SPEED = constants.getFloat("move speed");
-        moveSpeed = 4;
-    }
-
-    public int getHealth() {
-        return health;
-    }
-
-    public void removeHealth(int shot) {
-        health -= shot;
-    }
-
-    public int getId() {
-        return id;
+        moveSpeed = 1;
     }
 
     /**
-     * Updates the state of this Minion.
-     * <p>
-     * This method is only intended to update values that change local state in well-defined ways,
-     * like position or a cooldown value. It does not handle collisions (which are determined by the
-     * CollisionController). It is not intended to interact with other objects in any way at all.
+     * Updates the animation frames of this Minion.
      *
-     * @param u TODO: add param 'u' description since it changed from 'controlCode'
+     * @param moving if the minion should be moving
      */
-    public void update(boolean u) {
-        if (u) {
-            Vector2 pos = obstacle.getPosition().scl(units);
-            Vector2 dir = player.getPlayerHead().getObstacle().getPosition().scl(units).sub(pos).nor();
-            obstacle.setLinearVelocity(dir.scl(MOVESPEED));
-        } else {
-            obstacle.setLinearVelocity(new Vector2());
-        }
+    public void update(boolean moving) {
         if (sprite != null) {
             animationFrame += animationSpeed;
             if (!dead && animationFrame >= sprite.getSize()) {
@@ -137,7 +105,7 @@ public class Minion extends ObstacleSprite {
      *
      * @param batch The sprite batch
      */
-    public void draw(SpriteBatch batch, float delta) {
+    public void draw(SpriteBatch batch) {
         SpriteBatch.computeTransform(transform, sprite.getRegionWidth() / 2.0f,
             sprite.getRegionHeight() / 2.0f, obstacle.getPosition().x * units,
             obstacle.getPosition().y * units, 0.0f, size / units, size / units);
@@ -164,14 +132,17 @@ public class Minion extends ObstacleSprite {
         batch.setColor(Color.WHITE);
     }
 
+    public int getHealth() {
+        return health;
+    }
+
+    public void removeHealth(int shot) {
+        health -= shot;
+    }
+
     public boolean shouldRemove() {
         return remove;
     }
-
-    public void setID(int id) {
-        this.id = id;
-    }
-
     public void setDamage(boolean hit) {
         damage = hit;
     }
