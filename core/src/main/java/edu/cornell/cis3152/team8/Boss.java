@@ -153,7 +153,7 @@ public class Boss extends ObstacleSprite {
             }
         }
 
-        if (sprite != null) {
+        if (sprite != null & controlCode != InputController.CONTROL_NO_ACTION) {
             animeframe += animationSpeed;
             if (animeframe >= sprite.getSize()) {
                 animeframe -= sprite.getSize();
