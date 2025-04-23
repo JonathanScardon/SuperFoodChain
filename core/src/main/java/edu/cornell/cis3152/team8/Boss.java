@@ -122,10 +122,18 @@ public class Boss extends ObstacleSprite {
 
     public void update(float delta, int controlCode) {
         // Determine how we are moving.
-        boolean movingLeft = (controlCode & InputController.CONTROL_MOVE_LEFT) != 0;
-        boolean movingRight = (controlCode & InputController.CONTROL_MOVE_RIGHT) != 0;
-        boolean movingUp = (controlCode & InputController.CONTROL_MOVE_UP) != 0;
-        boolean movingDown = (controlCode & InputController.CONTROL_MOVE_DOWN) != 0;
+//        boolean movingLeft = (controlCode & InputController.CONTROL_MOVE_LEFT) != 0;
+//        boolean movingRight = (controlCode & InputController.CONTROL_MOVE_RIGHT) != 0;
+//        boolean movingUp = (controlCode & InputController.CONTROL_MOVE_UP) != 0;
+//        boolean movingDown = (controlCode & InputController.CONTROL_MOVE_DOWN) != 0;
+        boolean movingLeft = controlCode == InputController.CONTROL_MOVE_LEFT;
+        boolean movingRight = controlCode == InputController.CONTROL_MOVE_RIGHT;
+        boolean movingUp = controlCode == InputController.CONTROL_MOVE_UP;
+        boolean movingDown = controlCode == InputController.CONTROL_MOVE_DOWN;
+        boolean movingLeftUp = controlCode == InputController.CONTROL_MOVE_LEFT_UP;
+        boolean movingLeftDown = controlCode == InputController.CONTROL_MOVE_LEFT_DOWN;
+        boolean movingRightUp = controlCode == InputController.CONTROL_MOVE_RIGHT_UP;
+        boolean movingRightDown = controlCode == InputController.CONTROL_MOVE_RIGHT_DOWN;
 
         // Process movement command.
         Vector2 velocity = obstacle.getLinearVelocity();
@@ -141,6 +149,18 @@ public class Boss extends ObstacleSprite {
         } else if (movingDown) {
             velocity.y = -moveSpeed * delta;
             velocity.x = 0;
+        }else if (movingLeftUp) {
+            velocity.x = -moveSpeed * delta;
+            velocity.y = moveSpeed * delta;
+        } else if (movingLeftDown) {
+            velocity.x = -moveSpeed * delta;
+            velocity.y = -moveSpeed * delta;
+        } else if (movingRightUp) {
+            velocity.x = moveSpeed * delta;
+            velocity.y = moveSpeed * delta;
+        } else if (movingRightDown) {
+            velocity.x = moveSpeed * delta;
+            velocity.y = -moveSpeed * delta;
         } else {
             // NOT MOVING, SO SLOW DOWN
             velocity.x *= SPEED_DAMP;
@@ -153,7 +173,7 @@ public class Boss extends ObstacleSprite {
             }
         }
 
-        if (sprite != null & controlCode != InputController.CONTROL_NO_ACTION) {
+        if (sprite != null && controlCode != InputController.CONTROL_NO_ACTION) {
             animeframe += animationSpeed;
             if (animeframe >= sprite.getSize()) {
                 animeframe -= sprite.getSize();

@@ -26,6 +26,7 @@ public class BossWarnPattern extends ObstacleSprite {
     public BossWarnPattern(float x, float y) {
         super(new BoxObstacle(x, y, 1f, 1f), false);
         this.active = false;
+        obstacle.setAngle(0);
     }
 
     public void setPosition(float x, float y) {
@@ -57,7 +58,7 @@ public class BossWarnPattern extends ObstacleSprite {
 //        System.out.println(sprite.getRegionWidth() + " " + sprite.getRegionHeight());
 //        System.out.println(obstacle.getPosition().x + " " + obstacle.getPosition().y);
 
-        SpriteBatch.computeTransform(transform, sprite.getRegionWidth() / 2.0f, sprite.getRegionHeight() / 2.0f, obstacle.getPosition().x * PHYSICS_UNITS, obstacle.getPosition().y * PHYSICS_UNITS, 0, 1, 1);
+        SpriteBatch.computeTransform(transform, sprite.getRegionWidth() / 2.0f, sprite.getRegionHeight() / 2.0f, obstacle.getPosition().x * PHYSICS_UNITS, obstacle.getPosition().y * PHYSICS_UNITS, obstacle.getAngle(), 1, 1);
         sprite.setFrame((int) animeframe);
         batch.setColor(Color.WHITE);
         batch.draw(sprite, transform);
