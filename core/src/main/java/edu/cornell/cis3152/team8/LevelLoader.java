@@ -26,6 +26,7 @@ public class LevelLoader {
     private SpriteSheet mouseIdleSprite;
     private SpriteSheet mouseDashVerticalSprite;
     private SpriteSheet mouseDashHorizontalSprite;
+    private SpriteSheet mouseDeathSprite;
 
     private SpriteSheet chopsticksIdleSprite;
     private SpriteSheet chopsticksDashSprite;
@@ -69,6 +70,7 @@ private SpriteSheet spinWarnSprite;
         mouseIdleSprite = assets.getEntry("idleMouse.animation", SpriteSheet.class);
         mouseDashVerticalSprite = assets.getEntry("dashMouseVertical.animation", SpriteSheet.class);
         mouseDashHorizontalSprite = assets.getEntry("dashMouseHorizontal.animation", SpriteSheet.class);
+        mouseDeathSprite = assets.getEntry("deathMouse.animation", SpriteSheet.class);
 
         chopsticksIdleSprite = assets.getEntry("idleChopsticks.animation", SpriteSheet.class);
         chopsticksDashSprite = assets.getEntry("dashChopsticks.animation", SpriteSheet.class);
@@ -160,6 +162,7 @@ private SpriteSheet spinWarnSprite;
                 boss.addAnimation("idle", mouseIdleSprite);
                 boss.addAnimation("dashVertical", mouseDashVerticalSprite);
                 boss.addAnimation("dashHorizontal", mouseDashHorizontalSprite);
+                boss.addAnimation("death",mouseDeathSprite);
                 bossController = new BossController(boss, state);
                 break;
             case "chef":
@@ -169,6 +172,7 @@ private SpriteSheet spinWarnSprite;
                 boss.addAnimation("default", chopsticksIdleSprite);
                 boss.addAnimation("idle", chopsticksIdleSprite);
                 boss.addAnimation("snatch", chopsticksDashSprite);
+                boss.addAnimation("death",mouseDeathSprite);
                 bossController = new BossController(boss, state);
                 break;
         }

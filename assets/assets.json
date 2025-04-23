@@ -49,6 +49,15 @@
                     "size": 4
                 }
             }
+        },"deathMouse": {
+            "file": "images/MouseDeath.png",
+            "sprites": {
+                "animation": {
+                    "rows": 1,
+                    "cols": 6,
+                    "size": 6
+                }
+            }
         },
         "idleChopsticks": {
             "file": "images/Boss_Chopsticks_Static.png",

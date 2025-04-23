@@ -39,7 +39,9 @@ public class GameScene implements Screen {
     private final Texture win;
     private final Texture lose;
     private Array<TextLayout> bossNames;
+    private Array<Float> bossStartHealths;
 
+    private int numBosses;
 
     private float companionAddTimer = 3.0f;
     /**
@@ -121,6 +123,7 @@ public class GameScene implements Screen {
     private int level;
     private BitmapFont font;
     private AssetDirectory assets;
+    private boolean winGame;
 
     /**
      * Creates a GameScene
@@ -155,10 +158,13 @@ public class GameScene implements Screen {
         settingsScreen = new Settings();
         font = assets.getEntry("lpc", BitmapFont.class);
         bossNames = new Array<>();
+       bossStartHealths = new Array<>();
         reset();
         for (Boss b : bosses) {
             bossNames.add(new TextLayout(b.getName(),font));
+            bossStartHealths.add(b.getStartHealth());
         }
+        numBosses = bosses.size;
     }
 
     private void reset() {
@@ -166,6 +172,7 @@ public class GameScene implements Screen {
         reset = true;
         paused = false;
         state.reset();
+        winGame = false;
 
         bosses = state.getBosses();
         bossControls = state.getBossControls();
@@ -281,6 +288,13 @@ public class GameScene implements Screen {
 
         setStart();
         //System.out.println("Update" + bosses);
+        winGame = true;
+        for (Boss b: bosses){
+            if (b.getObstacle().isActive()){
+                winGame = false;
+                break;
+            }
+        }
 
         if (Gdx.input.isKeyPressed(Keys.ESCAPE) && !paused) {
             paused = true;
@@ -288,14 +302,17 @@ public class GameScene implements Screen {
             paused = false;
         }
 
-        if (paused || bosses.isEmpty() || !player.isAlive()) {
+        if (paused || winGame || !player.isAlive()) {
             for (Minion m : minions) {
                 m.update(false);
+            }
+            player.update(delta, InputController.CONTROL_NO_ACTION);
+            for (Boss b: bosses) {
+                b.update(delta, InputController.CONTROL_NO_ACTION);
             }
         }
 
         if (paused) {
-            player.update(delta, InputController.CONTROL_NO_ACTION);
 
             if (resetButton.isHovering() && Gdx.input.isTouched()) {
                 reset();
@@ -318,7 +335,7 @@ public class GameScene implements Screen {
             debug = true;
         }
 
-        if (!player.isAlive() || bosses.isEmpty()) {
+        if (!player.isAlive() || winGame) {
             return;
         }
 
@@ -422,7 +439,10 @@ public class GameScene implements Screen {
                     ((Companion) o).update(delta,0);
                     ((Companion) o).draw(game.batch, delta);
                 }
-                case "boss" -> ((Boss) o).draw(game.batch, delta);
+                case "boss" -> {
+                    ((Boss) o).update(delta, 0);
+                    ((Boss) o).draw(game.batch, delta);
+                }
             }
         }
 
@@ -493,7 +513,7 @@ public class GameScene implements Screen {
             drawLose();
         }
 
-        if (bosses.isEmpty()) {
+        if (winGame) {
             drawWin();
         }
         if (paused && !settingsOn) {
@@ -548,8 +568,8 @@ public class GameScene implements Screen {
         float cx;
         float cy = 650;
 
-        for (int i = 0; i < bosses.size; i++) {
-            if (bosses.size == 1) {
+        for (int i = 0; i < numBosses; i++) {
+            if (numBosses == 1) {
                 cx = 367;
             } else {
                 if (i == 0) {
@@ -558,8 +578,8 @@ public class GameScene implements Screen {
                     cx = 662;
                 }
             }
-            float ratio = bosses.get(i).health / bosses.get(i).getStartHealth();
             TextureRegion region1, region2, region3;
+            float ratio = bosses.get(i).getHealth() / bossStartHealths.get(i);
             game.batch.drawText(bossNames.get(i), cx + (w / 2 - (bossNames.get(i).getWidth() / 2)),
                 cy + 50);
 

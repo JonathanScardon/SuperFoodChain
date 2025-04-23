@@ -61,6 +61,7 @@ public class Boss extends ObstacleSprite {
      * Whether the boss was damaged this frame
      */
     private boolean damage;
+    private boolean dead;
 
     public enum BossType {
         MOUSE,
@@ -73,6 +74,7 @@ public class Boss extends ObstacleSprite {
 
     private String state;
     private String name;
+    private boolean remove;
 
     /**
      * Defines the constants for this class.
@@ -98,6 +100,8 @@ public class Boss extends ObstacleSprite {
         damage = false;
         moveSpeed = 0;
         animationMap = new HashMap<>();
+        dead = false;
+        remove = false;
 
         obstacle = getObstacle();
         obstacle.setName("boss");
@@ -121,69 +125,74 @@ public class Boss extends ObstacleSprite {
 
 
     public void update(float delta, int controlCode) {
-        // Determine how we are moving.
+        if (getObstacle().isActive()) {
+            // Determine how we are moving.
 //        boolean movingLeft = (controlCode & InputController.CONTROL_MOVE_LEFT) != 0;
 //        boolean movingRight = (controlCode & InputController.CONTROL_MOVE_RIGHT) != 0;
 //        boolean movingUp = (controlCode & InputController.CONTROL_MOVE_UP) != 0;
 //        boolean movingDown = (controlCode & InputController.CONTROL_MOVE_DOWN) != 0;
-        boolean movingLeft = controlCode == InputController.CONTROL_MOVE_LEFT;
-        boolean movingRight = controlCode == InputController.CONTROL_MOVE_RIGHT;
-        boolean movingUp = controlCode == InputController.CONTROL_MOVE_UP;
-        boolean movingDown = controlCode == InputController.CONTROL_MOVE_DOWN;
-        boolean movingLeftUp = controlCode == InputController.CONTROL_MOVE_LEFT_UP;
-        boolean movingLeftDown = controlCode == InputController.CONTROL_MOVE_LEFT_DOWN;
-        boolean movingRightUp = controlCode == InputController.CONTROL_MOVE_RIGHT_UP;
-        boolean movingRightDown = controlCode == InputController.CONTROL_MOVE_RIGHT_DOWN;
+            boolean movingLeft = controlCode == InputController.CONTROL_MOVE_LEFT;
+            boolean movingRight = controlCode == InputController.CONTROL_MOVE_RIGHT;
+            boolean movingUp = controlCode == InputController.CONTROL_MOVE_UP;
+            boolean movingDown = controlCode == InputController.CONTROL_MOVE_DOWN;
+            boolean movingLeftUp = controlCode == InputController.CONTROL_MOVE_LEFT_UP;
+            boolean movingLeftDown = controlCode == InputController.CONTROL_MOVE_LEFT_DOWN;
+            boolean movingRightUp = controlCode == InputController.CONTROL_MOVE_RIGHT_UP;
+            boolean movingRightDown = controlCode == InputController.CONTROL_MOVE_RIGHT_DOWN;
 
-        // Process movement command.
-        Vector2 velocity = obstacle.getLinearVelocity();
-        if (movingLeft) {
-            velocity.x = -moveSpeed * delta;
-            velocity.y = 0;
-        } else if (movingRight) {
-            velocity.x = moveSpeed * delta;
-            velocity.y = 0;
-        } else if (movingUp) {
-            velocity.y = moveSpeed * delta;
-            velocity.x = 0;
-        } else if (movingDown) {
-            velocity.y = -moveSpeed * delta;
-            velocity.x = 0;
-        }else if (movingLeftUp) {
-            velocity.x = -moveSpeed * delta;
-            velocity.y = moveSpeed * delta;
-        } else if (movingLeftDown) {
-            velocity.x = -moveSpeed * delta;
-            velocity.y = -moveSpeed * delta;
-        } else if (movingRightUp) {
-            velocity.x = moveSpeed * delta;
-            velocity.y = moveSpeed * delta;
-        } else if (movingRightDown) {
-            velocity.x = moveSpeed * delta;
-            velocity.y = -moveSpeed * delta;
-        } else {
-            // NOT MOVING, SO SLOW DOWN
-            velocity.x *= SPEED_DAMP;
-            velocity.y *= SPEED_DAMP;
-            if (Math.abs(velocity.x) < EPSILON) {
-                velocity.x = 0.0f;
+            // Process movement command.
+            Vector2 velocity = obstacle.getLinearVelocity();
+            if (movingLeft) {
+                velocity.x = -moveSpeed * delta;
+                velocity.y = 0;
+            } else if (movingRight) {
+                velocity.x = moveSpeed * delta;
+                velocity.y = 0;
+            } else if (movingUp) {
+                velocity.y = moveSpeed * delta;
+                velocity.x = 0;
+            } else if (movingDown) {
+                velocity.y = -moveSpeed * delta;
+                velocity.x = 0;
+            } else if (movingLeftUp) {
+                velocity.x = -moveSpeed * delta;
+                velocity.y = moveSpeed * delta;
+            } else if (movingLeftDown) {
+                velocity.x = -moveSpeed * delta;
+                velocity.y = -moveSpeed * delta;
+            } else if (movingRightUp) {
+                velocity.x = moveSpeed * delta;
+                velocity.y = moveSpeed * delta;
+            } else if (movingRightDown) {
+                velocity.x = moveSpeed * delta;
+                velocity.y = -moveSpeed * delta;
+            } else {
+                // NOT MOVING, SO SLOW DOWN
+                velocity.x *= SPEED_DAMP;
+                velocity.y *= SPEED_DAMP;
+                if (Math.abs(velocity.x) < EPSILON) {
+                    velocity.x = 0.0f;
+                }
+                if (Math.abs(velocity.y) < EPSILON) {
+                    velocity.y = 0.0f;
+                }
             }
-            if (Math.abs(velocity.y) < EPSILON) {
-                velocity.y = 0.0f;
+            obstacle.setLinearVelocity(velocity);
+            if (curWarn != null) {
+                curWarn.update(delta);
             }
+        }else {
+            obstacle.setLinearVelocity(new Vector2());
         }
 
         if (sprite != null && controlCode != InputController.CONTROL_NO_ACTION) {
             animeframe += animationSpeed;
-            if (animeframe >= sprite.getSize()) {
+            if (animeframe >= sprite.getSize() && getObstacle().isActive()) {
                 animeframe -= sprite.getSize();
             }
         }
 
-        obstacle.setLinearVelocity(velocity);
-        if (curWarn != null) {
-            curWarn.update(delta);
-        }
+
     }
 
     public float getHealth() {
@@ -206,17 +215,37 @@ public class Boss extends ObstacleSprite {
     public void draw(SpriteBatch batch, float delta) {
         SpriteBatch.computeTransform(transform, sprite.getRegionWidth() / 2.0f, sprite.getRegionHeight() / 2.0f, obstacle.getPosition().x * PHYSICS_UNITS, obstacle.getPosition().y * PHYSICS_UNITS, angle, 0.4f * (flipHorizontal ? -1 : 1), 0.4f * (flipVertical ? -1 : 1));
 
-        sprite.setFrame((int) animeframe);
-        if (damage) {
-            batch.setColor(Color.RED);
-        }
-        batch.draw(sprite, transform);
-        batch.setColor(Color.WHITE);
+        if (!obstacle.isActive()) { // if destroyed...
+            if (!dead) {
+                animeframe = 0;
+                animationSpeed = 0.1f;
+                dead = true;
+                setAnimation("death");
+            }
 
-        if (curWarn != null) {
-            curWarn.draw(batch, delta);
+            if (animeframe < sprite.getSize()) { // and animation is not over
+                sprite.setFrame((int) animeframe);
+                batch.draw(sprite, transform);// draw dead boss
+            } else {
+                remove = true;
+            }
+            batch.setColor(Color.WHITE);
+        }else { //else draw as normal
+            sprite.setFrame((int) animeframe);
+            if (damage) {
+                batch.setColor(Color.RED);
+            }
+            if (!getObstacle().isActive()) {
+                batch.setColor(Color.BLACK);
+            }
+            batch.draw(sprite, transform);
+            batch.setColor(Color.WHITE);
+
+            if (curWarn != null) {
+                curWarn.draw(batch, delta);
+            }
+            damage = false;
         }
-        damage = false;
 
     }
 
@@ -265,4 +294,7 @@ public class Boss extends ObstacleSprite {
 
     public float getStartHealth(){return startHealth;}
     public String getName(){return name;}
+    public boolean shouldRemove(){
+        return remove;
+    }
 }
