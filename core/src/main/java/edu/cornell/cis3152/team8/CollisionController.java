@@ -273,12 +273,13 @@ public class CollisionController implements ContactListener {
         }
         removed.clear();
 
-        Array<ObstacleSprite> dead = state.getDead();
-        for (int i = 0; i < dead.size; i++) {
-            if (0 > 1) {
-                dead.removeIndex(i);
-            }
-        }
+//        System.out.println("[");
+//        for (ObstacleSprite o : state.getDead()){
+//            System.out.println(o.getName());
+//        }
+//        System.out.println("]");
+
+
 
         // Add coins
         for (ObstacleSprite c : coinsAdded) {
@@ -316,6 +317,21 @@ public class CollisionController implements ContactListener {
             if (!b.getObstacle().isActive()) {
                 state.getBosses().removeValue(b, false);
             }
+        }
+        for (ObstacleSprite o: state.getDead()){
+            switch (o.getName()){
+                case ("minion") -> {
+                    if (((Minion) o).shouldRemove()) {
+                        state.getDead().removeValue(o, false);
+                    }
+                }
+                case ("player") -> {
+                    if (((Companion) o).shouldRemove()) {
+                        state.getDead().removeValue(o, false);
+                    }
+                }case ("coin") -> state.getDead().removeValue(o, false);
+            }
+
         }
 
         // Remove dead projectiles and return them to their pools

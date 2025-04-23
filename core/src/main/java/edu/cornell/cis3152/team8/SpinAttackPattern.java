@@ -37,7 +37,6 @@ public class SpinAttackPattern implements BossAttackPattern {
         this.player = player;
         boss = controller.boss;
         this.moveSpeed = moveSpeed;
-        Vector2 bPos = controller.boss.getObstacle().getPosition();
         startX = 640/PHYSICS_UNITS;
         startY = 360/PHYSICS_UNITS;
         warnPattern = new BossWarnPattern(0, 0);
