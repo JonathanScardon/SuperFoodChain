@@ -15,6 +15,11 @@ public interface InputController {
     /** Use ability */
     int CONTROL_USE_ABILITY = 0x10;
 
+    int CONTROL_MOVE_LEFT_UP = 0x12;
+    int CONTROL_MOVE_LEFT_DOWN = 0x14;
+    int CONTROL_MOVE_RIGHT_UP = 0x16;
+    int CONTROL_MOVE_RIGHT_DOWN = 0x18;
+
     int getAction();
 
 

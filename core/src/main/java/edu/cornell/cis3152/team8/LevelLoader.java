@@ -20,6 +20,7 @@ public class LevelLoader {
     private static final int PHYSICS_UNITS = 64;
     private final TmxMapLoader mapLoader = new TmxMapLoader(new InternalFileHandleResolver());
     private AssetDirectory assets = null;
+    private GameState state;
 
     // boss sprites
     private SpriteSheet mouseIdleSprite;
@@ -33,6 +34,7 @@ public class LevelLoader {
     private SpriteSheet idleWarnSprite;
     private SpriteSheet dashWarnVerticalSprite;
     private SpriteSheet dashWarnHorizontalSprite;
+private SpriteSheet spinWarnSprite;
 
     /**
      * @return The single instance of the LevelLoader class
@@ -60,7 +62,8 @@ public class LevelLoader {
         if (assets == null) {
             throw new RuntimeException("Asset directory not set");
         }
-        GameState state = scene.getState();
+        state = scene.getState();
+
 
         // load assets
         mouseIdleSprite = assets.getEntry("idleMouse.animation", SpriteSheet.class);
@@ -73,6 +76,7 @@ public class LevelLoader {
         idleWarnSprite = assets.getEntry("idleWarn.animation", SpriteSheet.class);
         dashWarnVerticalSprite = assets.getEntry("dashWarnVertical.animation", SpriteSheet.class);
         dashWarnHorizontalSprite = assets.getEntry("dashWarnHorizontal.animation", SpriteSheet.class);
+        spinWarnSprite = assets.getEntry("spinWarn.animation", SpriteSheet.class);
 
         TiledMap map = this.mapLoader.load(path);
 
@@ -206,6 +210,7 @@ public class LevelLoader {
         float y = props.get("y", Float.class) / PHYSICS_UNITS;
         float warnDuration = props.get("warnDuration", Float.class);
         float attackDuration;
+        float moveSpeed;
 
         switch (attackType) {
             case "idle":
@@ -214,12 +219,16 @@ public class LevelLoader {
                 break;
             case "dash":
                 String dir = props.get("dir", String.class);
-                Float moveSpeed = props.get("moveSpeed", Float.class);
+                moveSpeed = props.get("moveSpeed", Float.class);
                 if (dir.equals("up") || dir.equals("down")) {
                     attack = new DashAttackPattern(controller, x, y, dir, warnDuration, moveSpeed, dashWarnVerticalSprite);
                 } else if (dir.equals("left") || dir.equals("right")) {
                     attack = new DashAttackPattern(controller, x, y, dir, warnDuration, moveSpeed, dashWarnHorizontalSprite);
                 }
+                break;
+            case "spin":
+                moveSpeed = props.get("moveSpeed", Float.class);
+                attack = new SpinAttackPattern(controller, warnDuration, moveSpeed, spinWarnSprite, player, state);
                 break;
             case "snatch":
                 attackDuration = props.get("attackDuration", Float.class);

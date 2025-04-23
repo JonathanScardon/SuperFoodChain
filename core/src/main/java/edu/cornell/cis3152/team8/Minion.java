@@ -116,8 +116,8 @@ public class Minion extends ObstacleSprite {
                 dead = true;
                 setSpriteSheet(deadMinion);
             }
-            sprite.setFrame((int) animationFrame);
             if (animationFrame < sprite.getSize()) { // and animation is not over
+                sprite.setFrame((int) animationFrame);
                 batch.draw(sprite, transform); // draw dead Minion
             } else {
                 remove = true;
