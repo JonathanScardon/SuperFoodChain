@@ -38,7 +38,7 @@ public class GameState {
      * The minions
      */
     private Array<Minion> minions;
-    private Array<MinionController> minionControls;
+    //private Array<MinionController> minionControls;
     /**
      * The bosses
      */
@@ -100,7 +100,7 @@ public class GameState {
         companions = new Array<>();
 
         minions = new Array<>();
-        minionControls = new Array<>();
+        //minionControls = new Array<>();
 
         coins = new Array<>();
 
@@ -165,7 +165,7 @@ public class GameState {
         bossControls = new Array<>();
 
         minions.clear();
-        minionControls.clear();
+        //minionControls.clear();
         companions.clear();
         projectiles.clear();
         dead.clear();
@@ -292,9 +292,9 @@ public class GameState {
         return world;
     }
 
-    public Array<MinionController> getMinionControls() {
-        return minionControls;
-    }
+//    public Array<MinionController> getMinionControls() {
+//        return minionControls;
+//    }
 
     public Array<MinionSpawnPoint> getMinionSpawns() {
         return minionSpawns;

@@ -97,7 +97,7 @@ public class GameScene implements Screen {
      * List of all the input controllers
      */
     protected InputController playerControls;
-    protected Array<MinionController> minionControls;
+    //protected Array<MinionController> minionControls;
     protected Array<BossController> bossControls;
 
     private boolean start;
@@ -178,7 +178,7 @@ public class GameScene implements Screen {
         player = state.getPlayer();
         playerControls = new PlayerController(player);
         state.setMinions(minions);
-        minionControls = state.getMinionControls();
+        //minionControls = state.getMinionControls();
 
         minionSpawns = state.getMinionSpawns();
         companionSpawns = state.getCompanionSpawns();
@@ -213,7 +213,7 @@ public class GameScene implements Screen {
             minionSpawnIdx = 0;
         }
         MinionSpawnPoint sp = minionSpawns.get(minionSpawnIdx);
-        Minion m = sp.spawnMinion(minions.size, world, player);
+        Minion m = sp.spawnMinion(world, player);
 
         minions.add(m);
         minionSpawnIdx++;
@@ -328,9 +328,6 @@ public class GameScene implements Screen {
             addCompanions();
             bosses.get(0).setDamage(false);
 
-            for (int i = 0; i < minions.size; i++) {
-                minions.get(i).setID(i);
-            }
             for (int i = 0; i < companions.size; i++) {
                 companions.get(i).setId(i);
             }
@@ -365,7 +362,7 @@ public class GameScene implements Screen {
                     if (minions.get(i).shouldRemove()) {
                         // used to be m.getID but minionControls above needs i
                         minions.removeIndex(i);
-                        minionControls.removeIndex(i);
+                        //minionControls.removeIndex(i);
                     }
                 }
             }
@@ -419,7 +416,7 @@ public class GameScene implements Screen {
             switch (type) {
                 case "minion" -> {
                     ((Minion) o).update(false);
-                    ((Minion) o).draw(game.batch, delta);
+                    o.draw(game.batch);
                 }
                 case "companion" -> ((Companion) o).draw(game.batch, delta);
                 case "boss" -> ((Boss) o).draw(game.batch, delta);
@@ -431,7 +428,7 @@ public class GameScene implements Screen {
         }
 
         for (Minion m : minions) {
-            m.draw(game.batch, delta);
+            m.draw(game.batch);
         }
 
         player.draw(game.batch, delta);
