@@ -77,6 +77,8 @@ public abstract class Companion extends ObstacleSprite {
 
     private static float MOVE_SPEED = 150;
 
+    private static float SPEED_BOOST = 0;
+
     private static final float units = 64f;
 
     public Companion(float x, float y, int id, World world) {
@@ -258,25 +260,27 @@ public abstract class Companion extends ObstacleSprite {
         boolean movingDown = controlCode == 8;
 
         // Process movement command.
+
+        float speed = (MOVE_SPEED + SPEED_BOOST);
         Vector2 velocity = obstacle.getLinearVelocity();
         if (movingLeft) {
             this.direction = InputController.CONTROL_MOVE_LEFT;
-            velocity.x = -MOVE_SPEED * delta;
+            velocity.x = -speed * delta;
             velocity.y = 0;
             moving = true;
         } else if (movingRight) {
             this.direction = InputController.CONTROL_MOVE_RIGHT;
-            velocity.x = MOVE_SPEED * delta;
+            velocity.x = speed * delta;
             velocity.y = 0;
             moving = true;
         } else if (movingUp) {
             this.direction = InputController.CONTROL_MOVE_UP;
-            velocity.y = MOVE_SPEED * delta;
+            velocity.y = speed * delta;
             velocity.x = 0;
             moving = true;
         } else if (movingDown) {
             this.direction = InputController.CONTROL_MOVE_DOWN;
-            velocity.y = -MOVE_SPEED * delta;
+            velocity.y = -speed * delta;
             velocity.x = 0;
             moving = true;
         } else {
@@ -327,21 +331,26 @@ public abstract class Companion extends ObstacleSprite {
     }
 
     /**
-     * @return companion speed MOVE_SPEED
+     * Returns player's speed (including boost)
      */
-    public static float getSpeed() {
-        return MOVE_SPEED;
+    public static float getSpeed(){
+        return MOVE_SPEED + SPEED_BOOST;
     }
 
     /**
-     * Sets companion speed MOVE_SPEED
-     *
-     * @param speed new speed
+     * @param boost increase to SPEED_BOOST
      */
-    public static void setSpeed(float speed) {
-        MOVE_SPEED = speed;
+    public static void increaseBoost(float boost){
+        SPEED_BOOST += boost;
     }
 
+
+    /**
+     * Resets the speed boost to 0
+     */
+    public static void resetBoost(){
+        SPEED_BOOST = 0;
+    }
 
     /**
      * @return control code of companion's current movement

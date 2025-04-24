@@ -24,7 +24,7 @@ public class BlueRaspberry extends Companion {
     public BlueRaspberry(float x, float y, int id, World world) {
         super(x, y, id, world);
         setCompanionType(CompanionType.BLUE_RASPBERRY);
-        setCost(0);
+        setCost(2);
         // need to think about how CD will work with support characters
         setCooldown(7);
 //        radius = 1;
@@ -56,7 +56,7 @@ public class BlueRaspberry extends Companion {
     public void useAbility(GameState state) {
         usedBoost = true;
         //increase the player speed
-        Companion.setSpeed(Companion.getSpeed() + 25f);
+        Companion.increaseBoost(25f);
         Player.calculateDelay();
     }
 }
