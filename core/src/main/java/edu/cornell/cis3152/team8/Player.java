@@ -49,6 +49,14 @@ public class Player {
                 size++;
             }
         }
+        
+        /**
+         * Updates the head of the buffer, ensuring that members of the chain are reading
+         * from the correct positions when the player's head dies
+         */
+        public void updateHead(){
+            head = (head - DELAY + capacity) % capacity;
+        }
 
         public PositionAndDirection get(int index) {
             if (index < 0) {
@@ -163,6 +171,7 @@ public class Player {
         for (int i = 0; i < companions.size(); i++) {
             Companion c = companions.get(i);
             if (!c.getObstacle().isActive()) {
+                System.out.println("calling deleteCompanion() in player");
                 deleteCompanion(c);
             }
         }
@@ -172,8 +181,7 @@ public class Player {
         }
 
         Companion head = this.getPlayerHead();
-        controlBuffer.add(head.getObstacle().getX(), head.getObstacle().getY(),
-            head.getDirection());
+        controlBuffer.add(head.getObstacle().getX(), head.getObstacle().getY(), head.getDirection());
 
         for (int i = 0; i < companions.size(); i++) {
             Companion c = companions.get(i);
@@ -185,15 +193,16 @@ public class Player {
             }
         }
 
-        for (Companion c : companions) {
-            c.animationFrame = getPlayerHead().animationFrame;
-            if (c.getAnimator() != null) {
-                c.animationFrame += c.animationSpeed;
-                if (c.animationFrame >= c.getAnimator().getSize()) {
-                    c.animationFrame -= c.getAnimator().getSize() - 1;
-                }
-            }
-        }
+
+//        for (Companion c : companions) {
+//            c.animationFrame = getPlayerHead().animationFrame;
+//            if (c.getAnimator() != null) {
+//                c.animationFrame += c.animationSpeed;
+//                if (c.animationFrame >= c.getAnimator().getSize()) {
+//                    c.animationFrame -= c.getAnimator().getSize() - 1;
+//                }
+//            }
+//        }
 
     }
 
@@ -356,12 +365,21 @@ public class Player {
         companion.getObstacle().setFilterData(filter);
 
         CircularBuffer.PositionAndDirection tail = controlBuffer.getSnapshot(companions.size());
-        if (tail != null) {
+        //do not add if there is not enough data
+        if (tail != null & !companions.isEmpty()) {
             companion.getObstacle().setX(tail.x);
             companion.getObstacle().setY(tail.y);
+//            companion.getObstacle().setX(getPlayerHead().getObstacle().getX());
+//            companion.getObstacle().setY(getPlayerHead().getObstacle().getY());
+
+            companions.add(companion);
+            companion.setCollected(true);
         }
-        companions.add(companion);
-        companion.setCollected(true);
+        //allowed to add a companion if we are starting the level
+        else if (companions.isEmpty()){
+            companions.add(companion);
+            companion.setCollected(true);
+        }
     }
 
     /**
@@ -379,6 +397,7 @@ public class Player {
         //no catch up needed when head is removed, second in line takes over
         if (companion == getPlayerHead()) {
             companions.remove(index);
+            controlBuffer.updateHead();
             return;
         }
 
@@ -399,7 +418,7 @@ public class Player {
      * chain
      */
     public static void calculateDelay() {
-        int baseSpeed = 150;
+        int baseSpeed = 600;
         int baseDelay = 15;
 
         float rawDelay = (baseDelay * baseSpeed) / Companion.getSpeed();
