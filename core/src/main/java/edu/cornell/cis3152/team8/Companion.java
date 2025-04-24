@@ -64,7 +64,7 @@ public abstract class Companion extends ObstacleSprite {
 
     private SpriteSheet deadCompanion;
     private float prevY;
-    protected static float animationSpeed;
+    protected float animationSpeed;
     protected float animationFrame;
     protected Texture glow;
     protected boolean highlight;
