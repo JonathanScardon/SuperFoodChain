@@ -279,8 +279,6 @@ public class CollisionController implements ContactListener {
 //        }
 //        System.out.println("]");
 
-
-
         // Add coins
         for (ObstacleSprite c : coinsAdded) {
             state.getCoins().add(new Coin(c.getObstacle().getX(), c.getObstacle().getY(), world));
@@ -293,7 +291,7 @@ public class CollisionController implements ContactListener {
             switch (companionAdded.getCompanionType()) {
                 case DURIAN -> state.numDurians--;
                 case STRAWBERRY -> state.numStrawberries--;
-                case AVOCADO ->  state.numAvocados--;
+                case AVOCADO -> state.numAvocados--;
                 case BLUE_RASPBERRY -> state.numBlueRaspberries--;
                 case PINEAPPLE -> state.numPineapples--;
             }
@@ -318,8 +316,8 @@ public class CollisionController implements ContactListener {
 //                state.getBosses().removeValue(b, false);
 //            }
 //        }
-        for (ObstacleSprite o: state.getDead()){
-            switch (o.getName()){
+        for (ObstacleSprite o : state.getDead()) {
+            switch (o.getName()) {
                 case ("minion") -> {
                     if (((Minion) o).shouldRemove()) {
                         state.getDead().removeValue(o, false);
@@ -329,11 +327,17 @@ public class CollisionController implements ContactListener {
                     if (((Companion) o).shouldRemove()) {
                         state.getDead().removeValue(o, false);
                     }
-                }case ("boss") -> {
+                }
+                case ("boss") -> {
                     if (((Boss) o).shouldRemove()) {
                         state.getDead().removeValue(o, false);
                     }
-                }case ("coin") -> state.getDead().removeValue(o, false);
+                }
+                case ("coin") -> {
+                    if (((Coin) o).shouldRemove()) {
+                        state.getDead().removeValue(o, false);
+                    }
+                }
             }
 
         }

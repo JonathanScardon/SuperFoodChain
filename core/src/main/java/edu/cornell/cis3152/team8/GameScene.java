@@ -18,6 +18,8 @@ import edu.cornell.gdiac.graphics.SpriteBatch.BlendMode;
 import edu.cornell.gdiac.graphics.TextLayout;
 import edu.cornell.gdiac.physics2.ObstacleSprite;
 
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.Random;
 
 /**
@@ -29,15 +31,25 @@ public class GameScene implements Screen {
      * Reference to the GDX root
      */
     private final GDXRoot game;
+    private final Texture dim;
     private final Texture pauseBackground;
+    private final Button resumeButton;
     private final Button resetButton;
+
     private final Button levelsButton;
     private final Button settingsButton;
     private final Button exitButton;
+    private final Button homeButton;
+    private final Button nextButton;
+    private final Button replayButton;
+
+
     private final Settings settingsScreen;
 
     private final Texture win;
-    private final Texture lose;
+    private final Texture mouseLose;
+    private final Texture chopsticksLose;
+
     private Array<TextLayout> bossNames;
     private Array<Float> bossStartHealths;
 
@@ -105,6 +117,7 @@ public class GameScene implements Screen {
     private boolean start;
     private boolean reset;
     private boolean debug;
+    private Array<ObstacleSprite> everything;
 
 
     private boolean background;
@@ -115,7 +128,7 @@ public class GameScene implements Screen {
     private JsonValue constants;
 
     private Texture backgroundTexture;
-    private Texture coinTexture;
+    private Texture coinCounter;
     private boolean paused;
     private boolean settingsOn;
     private Array<ObstacleSprite> dead;
@@ -124,6 +137,8 @@ public class GameScene implements Screen {
     private BitmapFont font;
     private AssetDirectory assets;
     private boolean winGame;
+    private Texture cost;
+    private Texture costGrey;
 
     /**
      * Creates a GameScene
@@ -133,7 +148,7 @@ public class GameScene implements Screen {
     public GameScene(final GDXRoot game, AssetDirectory assets, int level) {
         this.game = game;
         this.assets = assets;
-        coinTexture = new Texture("images/CoinUI.png");
+        coinCounter = new Texture("images/coin-counter.png");
         constants = assets.getEntry("constants", JsonValue.class);
         //System.out.println(constants);
         this.state = new GameState(constants, assets);
@@ -143,25 +158,40 @@ public class GameScene implements Screen {
         companions = state.getCompanions();
         dead = state.getDead();
 
+        dim = new Texture("images/dim.png");
         backgroundTexture = new Texture("images/temp_background.png");
-        pauseBackground = new Texture("images/Paused.png");
-        Texture resetT = new Texture("images/ResetButton.png");
-        Texture levels = new Texture("images/LevelsButton.png");
-        Texture settings = new Texture("images/SettingsButton.png");
-        Texture exit = new Texture("images/ExitButton.png");
+        //backgroundTexture = new Texture("images/background_angled.png");
+        pauseBackground = new Texture("images/PauseBackground.png");
+        Texture button = new Texture("images/Button.png");
+        Texture replay = new Texture("images/Replay_Button.png");
+        Texture home = new Texture("images/Home_Button.png");
+        Texture next = new Texture("images/Next_Button.png");
+
         win = new Texture("images/Win.png");
-        lose = new Texture("images/Lose.png");
-        resetButton = new Button(399, 459, resetT, 0, 482, 120);
-        levelsButton = new Button(399, 319, levels, 1, 482, 120);
-        settingsButton = new Button(399, 180, settings, 0, 482, 120);
-        exitButton = new Button(399, 41, exit, 0, 482, 120);
-        settingsScreen = new Settings();
+        mouseLose = new Texture("images/LoseRat.png");
+        chopsticksLose = new Texture("images/LoseChopsticks.png");
+        cost = new Texture("images/cost-ui.png");
+        costGrey = new Texture("images/grayed-cost-ui.png");
+
         font = assets.getEntry("lpc", BitmapFont.class);
+        resumeButton = new Button(506, 452, button, 0, 280, 63, "Resume", font);
+        resetButton = new Button(506, 381, button, 0, 280, 63, "Reset", font);
+        levelsButton = new Button(506, 310, button, 1, 280, 63, "Levels", font);
+        settingsButton = new Button(506, 239, button, 0, 280, 63, "Settings", font);
+        exitButton = new Button(506, 160, button, 0, 280, 63, "Exit", font);
+
+        replayButton = new Button(0, 0, replay, 0, 78, 78);
+        homeButton = new Button(0, 0, home, 1, 78, 78);
+        nextButton = new Button(734, 114, next, 2, 78, 78);
+
+        settingsScreen = new Settings();
+
         bossNames = new Array<>();
-       bossStartHealths = new Array<>();
+        bossStartHealths = new Array<>();
+        everything = new Array<>();
         reset();
         for (Boss b : bosses) {
-            bossNames.add(new TextLayout(b.getName(),font));
+            bossNames.add(new TextLayout(b.getName(), font));
             bossStartHealths.add(b.getStartHealth());
         }
         numBosses = bosses.size;
@@ -289,17 +319,11 @@ public class GameScene implements Screen {
         setStart();
         //System.out.println("Update" + bosses);
         winGame = true;
-        for (Boss b: bosses){
-            if (b.getObstacle().isActive()){
+        for (Boss b : bosses) {
+            if (b.getObstacle().isActive()) {
                 winGame = false;
                 break;
             }
-        }
-
-        if (Gdx.input.isKeyPressed(Keys.ESCAPE) && !paused) {
-            paused = true;
-        } else if (Gdx.input.isKeyPressed(Keys.R) && paused) {
-            paused = false;
         }
 
         if (paused || winGame || !player.isAlive()) {
@@ -307,39 +331,40 @@ public class GameScene implements Screen {
                 m.update(false);
             }
             player.update(delta, InputController.CONTROL_NO_ACTION);
-            for (Boss b: bosses) {
+            for (Boss b : bosses) {
                 b.update(delta, InputController.CONTROL_NO_ACTION);
             }
         }
 
-        if (paused) {
-
-            if (resetButton.isHovering() && Gdx.input.isTouched()) {
+        if (winGame) {
+            if (replayButton.isHovering() && Gdx.input.isTouched()) {
                 reset();
-                paused = false;
-            } else if (levelsButton.isHovering() && Gdx.input.isTouched()) {
-                game.exitScreen(this, levelsButton.getExitCode());
+            } else if (homeButton.isHovering() && Gdx.input.isTouched()) {
                 dispose();
-            } else if (settingsButton.isHovering() && Gdx.input.isTouched()) {
-                settingsOn = true;
-                settingsScreen.update();
-            } else if (exitButton.isHovering() && Gdx.input.isTouched()) {
-                Gdx.app.exit();
-            }
-
-            if (settingsOn && Gdx.input.isKeyPressed(Keys.ESCAPE)) {
-                settingsOn = false;
+                game.exitScreen(this, homeButton.getExitCode());
+            } else if (nextButton.isHovering() && Gdx.input.isTouched()) {
+                dispose();
+                game.exitScreen(this, nextButton.getExitCode());
             }
         }
+        if (!player.isAlive()) {
+            if (replayButton.isHovering() && Gdx.input.isTouched()) {
+                reset();
+            } else if (homeButton.isHovering() && Gdx.input.isTouched()) {
+                dispose();
+                game.exitScreen(this, homeButton.getExitCode());
+            }
+        }
+
         if (Gdx.input.isKeyPressed(Keys.D)) {
             debug = true;
         }
 
-        if (!player.isAlive() || winGame) {
-            return;
-        }
+//        if (!player.isAlive() || winGame) {
+//            return;
+//        }
 
-        if (start && !paused) {
+        if (start && !paused && !winGame && player.isAlive()) {
             state.update();
             addMinions();
             addCompanions();
@@ -415,9 +440,33 @@ public class GameScene implements Screen {
 //            }
 //            addMinions();
 //            addCompanions();
-        }
 
-        state.getCollisionController().postUpdate();
+        }
+        if (player.isAlive() && !winGame) {
+            state.getCollisionController().postUpdate();
+            if (Gdx.input.isKeyPressed(Keys.ESCAPE) && !paused) {
+                paused = true;
+            }
+            if (paused) {
+                if (resumeButton.isHovering() && Gdx.input.isTouched()) {
+                    paused = false;
+                } else if (resetButton.isHovering() && Gdx.input.isTouched()) {
+                    reset();
+                    paused = false;
+                } else if (levelsButton.isHovering() && Gdx.input.isTouched()) {
+                    dispose();
+                    game.exitScreen(this, levelsButton.getExitCode());
+                } else if (settingsButton.isHovering() && Gdx.input.isTouched()) {
+                    settingsOn = true;
+                    settingsScreen.update();
+                } else if (exitButton.isHovering() && Gdx.input.isTouched()) {
+                    Gdx.app.exit();
+                }
+                if (settingsOn && Gdx.input.isKeyPressed(Keys.ESCAPE)) {
+                    settingsOn = false;
+                }
+            }
+        }
     }
 
 
@@ -425,9 +474,8 @@ public class GameScene implements Screen {
         ScreenUtils.clear(Color.WHITE);
 
         game.batch.begin();
-        if (!background) {
-            game.batch.draw(backgroundTexture, 0, 0, 1280, 720);
-        }
+        game.batch.draw(backgroundTexture, 0, 0, 1280, 720);
+
         for (ObstacleSprite o : dead) {
             String type = o.getName();
             switch (type) {
@@ -436,7 +484,7 @@ public class GameScene implements Screen {
                     o.draw(game.batch);
                 }
                 case "player" -> {
-                    ((Companion) o).update(delta,0);
+                    ((Companion) o).update(delta, 0);
                     ((Companion) o).draw(game.batch, delta);
                 }
                 case "boss" -> {
@@ -446,25 +494,35 @@ public class GameScene implements Screen {
             }
         }
 
-        for (Boss boss : bosses) {
-            boss.draw(game.batch, delta);
-        }
-
         for (Minion m : minions) {
             m.draw(game.batch);
         }
 
         player.draw(game.batch, delta);
+        for (Boss boss : bosses) {
+            boss.draw(game.batch, delta);
+        }
         for (Companion c : companions) {
-            String cost = "Cost: " + c.getCost();
-            TextLayout compCost = new TextLayout(cost, font);
+            TextLayout compCost = new TextLayout(c.getCost() + "", font);
             TextLayout pressE = new TextLayout("E", font);
             c.draw(game.batch, delta);
             //temp UI
 
             if (!player.companions.contains(c)) {
-                game.batch.drawText(compCost, c.getObstacle().getX() * 64f,
-                    c.getObstacle().getY() * 64f - 32f);
+
+                if (player.getCoins() >= c.getCost()) {
+                    font.setColor(Color.BROWN);
+                    game.batch.draw(this.cost,
+                        c.getObstacle().getX() * 64f - this.cost.getWidth() / 2f,
+                        c.getObstacle().getY() * 64f + 40f);
+                } else {
+                    game.batch.draw(costGrey,
+                        c.getObstacle().getX() * 64f - costGrey.getWidth() / 2f,
+                        c.getObstacle().getY() * 64f + 40f);
+                }
+                game.batch.drawText(compCost, c.getObstacle().getX() * 64f + 12f,
+                    c.getObstacle().getY() * 64f + 53f);
+                font.setColor(Color.WHITE);
                 if (c.highlight) {
                     game.batch.drawText(pressE, c.getObstacle().getX() * 64f,
                         c.getObstacle().getY() * 64f + 35f);
@@ -496,17 +554,19 @@ public class GameScene implements Screen {
             }
         }
 
-        String coins = "X" + player.getCoins();
-        String HP = "";
-        for (Boss b : bosses) {
-            HP = "Boss HP: " + b.getHealth();
-        }
-        TextLayout coinCount = new TextLayout(coins, font, 128);
+        String coins = "" + player.getCoins();
+        TextLayout coinCount = new TextLayout(coins, font);
         //Temp UI
-        game.batch.draw(coinTexture, 1140, 65, 45, 45);
-        game.batch.drawText(coinCount, 1200f, 80f);
+        game.batch.draw(coinCounter, 1050, 50);
+        game.batch.drawText(coinCount, 1150f, 79f);
         drawHPBars();
-
+        for (ObstacleSprite o : dead) {
+            String type = o.getName();
+            if (type.equals("coin")) {
+                o.update(delta);
+                o.draw(game.batch);
+            }
+        }
         font.setColor(Color.WHITE);
 
         if (!player.isAlive()) {
@@ -520,6 +580,7 @@ public class GameScene implements Screen {
             drawPause();
         }
         if (settingsOn) {
+            game.batch.draw(dim, 0, 0);
             settingsScreen.draw(game.batch);
         }
         game.batch.end();
@@ -538,12 +599,27 @@ public class GameScene implements Screen {
     // }
 
     private void drawLose() {
-        game.batch.draw(lose, 250, 150);
+        game.batch.draw(dim, 0, 0);
+        if (bosses.get(0).getName().equals("mouse")) {
+            game.batch.draw(mouseLose, 112, 60);
+        } else if (bosses.get(0).getName().equals("chopsticks")) {
+            game.batch.draw(chopsticksLose, 112, 60);
+        }
+        replayButton.setPosition(546, 108);
+        homeButton.setPosition(666, 108);
+        replayButton.draw(game.batch);
+        homeButton.draw(game.batch);
 
     }
 
     private void drawWin() {
-        game.batch.draw(win, 400, 150);
+        game.batch.draw(dim, 0, 0);
+        game.batch.draw(win, 112, 60);
+        replayButton.setPosition(494, 114);
+        homeButton.setPosition(613, 114);
+        replayButton.draw(game.batch);
+        homeButton.draw(game.batch);
+        nextButton.draw(game.batch);
     }
 
     private void setStart() {
@@ -556,15 +632,18 @@ public class GameScene implements Screen {
 
     private void drawPause() {
         game.batch.setBlendMode(BlendMode.ALPHA_BLEND);
-        game.batch.draw(pauseBackground, 0, 0);
+        game.batch.draw(dim, 0, 0);
+        game.batch.draw(pauseBackground, 111.5f, 60.1f);
+        resumeButton.draw(game.batch);
         resetButton.draw(game.batch);
         levelsButton.draw(game.batch);
         settingsButton.draw(game.batch);
         exitButton.draw(game.batch);
+        font.setColor(Color.WHITE);
     }
 
     private void drawHPBars() {
-        float w = 520;
+        float w = 523;
         float cx;
         float cy = 650;
 
@@ -645,4 +724,24 @@ public class GameScene implements Screen {
             state.getWorld().dispose();
         }
     }
+
+    public int getLevel() {
+        return level;
+    }
+
+//    private void drawOrder() {
+//        everything.addAll(coins);
+//        everything.addAll(minions);
+//        everything.addAll(bosses);
+//        for (Companion c : player.companions) {
+//            everything.add(c);
+//        }
+//        Comparator<ObstacleSprite> comparator = (o1, o2) -> {
+//            float o1Y = o1.getObstacle().getY();
+//            float o2Y = o2.getObstacle().getY();
+//            return Float.compare(o1Y, o2Y);
+//        };
+//        Arrays.sort(everything, comparator);
+//        everything.clear();
+//    }
 }

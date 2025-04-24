@@ -31,14 +31,15 @@ public class SpinAttackPattern implements BossAttackPattern {
     private float origMoveSpeed;
     private final float moveSpeed;
 
-    public SpinAttackPattern(BossController controller, float warnDuration, float moveSpeed, SpriteSheet warnSprite,
+    public SpinAttackPattern(BossController controller, float warnDuration, float moveSpeed,
+        SpriteSheet warnSprite,
         Player player, GameState gamestate) {
         this.controller = controller;
         this.player = player;
         boss = controller.boss;
         this.moveSpeed = moveSpeed;
-        startX = 640/PHYSICS_UNITS;
-        startY = 360/PHYSICS_UNITS;
+        startX = 640 / PHYSICS_UNITS;
+        startY = 360 / PHYSICS_UNITS;
         warnPattern = new BossWarnPattern(0, 0);
         warnPattern.setSpriteSheet(warnSprite);
         actionSet = false;
@@ -52,6 +53,7 @@ public class SpinAttackPattern implements BossAttackPattern {
         if (twoBosses()) {
             state = AttackState.WARN;
             boss.setState("warn");
+            boss.setAnimation("spin");
             controller.setAction(CONTROL_NO_ACTION);
             Vector2 b1Pos = gamestate.getBosses().get(0).getObstacle().getPosition();
             Vector2 b2Pos = gamestate.getBosses().get(1).getObstacle().getPosition();
@@ -66,15 +68,11 @@ public class SpinAttackPattern implements BossAttackPattern {
             setControlCode();
 
 
-
-
-
         }
     }
 
     public void attack() {
         if (twoBosses()) {
-            boss.setAnimation("idle");
             state = AttackState.ATTACK;
             controller.setAction(controlCode);
             origMoveSpeed = boss.moveSpeed;
@@ -118,20 +116,20 @@ public class SpinAttackPattern implements BossAttackPattern {
             float scootX;
             float scootY;
             if (wall) {
-                if (pos.x >= 1280/PHYSICS_UNITS) {
+                if (pos.x >= 1280 / PHYSICS_UNITS) {
                     scootX = -15f;
                     scootY = 0;
                 } else if (pos.x <= 0) {
                     scootX = 15f;
                     scootY = 0;
-                } else if (pos.y >= 720/PHYSICS_UNITS) {
+                } else if (pos.y >= 720 / PHYSICS_UNITS) {
                     scootX = 0;
                     scootY = -15f;
                 } else {
                     scootX = 0;
                     scootY = 15f;
                 }
-                controller.boss.getObstacle().setLinearVelocity(new Vector2(scootX,scootY));
+                controller.boss.getObstacle().setLinearVelocity(new Vector2(scootX, scootY));
             }
             return wall;
         }
@@ -141,7 +139,7 @@ public class SpinAttackPattern implements BossAttackPattern {
     private void setControlCode() {
         Vector2 bPos = boss.getObstacle().getPosition();
         Vector2 pPos = player.getPlayerHead().getObstacle().getPosition();
-        float gap = 120/PHYSICS_UNITS;
+        float gap = 120 / PHYSICS_UNITS;
         if (pPos.x >= bPos.x - gap
             && pPos.x <= bPos.x + gap) {
             if (bPos.y < pPos.y) {
@@ -181,13 +179,15 @@ public class SpinAttackPattern implements BossAttackPattern {
             }
         }
     }
-    private boolean atWall(){
+
+    private boolean atWall() {
         Vector2 pos = boss.getObstacle().getPosition();
-        return pos.x >= 1280/PHYSICS_UNITS || pos.x <= 0 || pos.y >= 720/PHYSICS_UNITS
+        return pos.x >= 1280 / PHYSICS_UNITS || pos.x <= 0 || pos.y >= 720 / PHYSICS_UNITS
             || pos.y <= 0;
     }
 
-    private boolean twoBosses(){
-        return gamestate.getBosses().get(0).getObstacle().isActive() && gamestate.getBosses().get(1).getObstacle().isActive();
+    private boolean twoBosses() {
+        return gamestate.getBosses().get(0).getObstacle().isActive() && gamestate.getBosses().get(1)
+            .getObstacle().isActive();
     }
 }

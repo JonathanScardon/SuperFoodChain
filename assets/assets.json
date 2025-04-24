@@ -1,202 +1,206 @@
 {
-    "textures": {
-        "coin": {
-            "file": "images/coin.png",
-            "sprites": {
-                "animation": {
-                    "rows": 1,
-                    "cols": 4,
-                    "size": 4
-                }
-            }
-        },
-        "idleMouse": {
-            "file": "images/Boss_Rat_IdleStatic.png",
-            "sprites": {
-                "animation": {
-                    "rows": 1,
-                    "cols": 1,
-                    "size": 1
-                }
-            }
-        },
-        "dashMouseVertical": {
-            "file": "images/Boss_Rat_RunDown.png",
-            "sprites": {
-                "animation": {
-                    "rows": 1,
-                    "cols": 5,
-                    "size": 5
-                }
-            }
-        },
-        "dashMouseHorizontal": {
-            "file": "images/Boss_Rat_RunHorizontal.png",
-            "sprites": {
-                "animation": {
-                    "rows": 1,
-                    "cols": 5,
-                    "size": 5
-                }
-            }
-        },
-        "spinMouse": {
-            "file": "images/MouseSpin.png",
-            "sprites": {
-                "animation": {
-                    "rows": 1,
-                    "cols": 4,
-                    "size": 4
-                }
-            }
-        },"deathMouse": {
-            "file": "images/MouseDeath.png",
-            "sprites": {
-                "animation": {
-                    "rows": 1,
-                    "cols": 6,
-                    "size": 6
-                }
-            }
-        },
-        "idleChopsticks": {
-            "file": "images/Boss_Chopsticks_Static.png",
-            "sprites": {
-                "animation": {
-                    "rows": 1,
-                    "cols": 1,
-                    "size": 1
-                }
-            }
-        },
-        "dashChopsticks": {
-            "file": "images/Boss_Chopstick_Dash.png",
-            "sprites": {
-                "animation": {
-                    "rows": 1,
-                    "cols": 4,
-                    "size": 4
-                }
-            }
-        },
-        "dashWarnVertical": {
-            "file": "images/DashWarnVertical.png",
-            "sprites": {
-                "animation": {
-                    "rows": 1,
-                    "cols": 2,
-                    "size": 2
-                }
-            }
-        },
-        "dashWarnHorizontal": {
-            "file": "images/DashWarnHorizontal.png",
-            "sprites": {
-                "animation": {
-                    "rows": 2,
-                    "cols": 1,
-                    "size": 2
-                }
-            }
-        },
-        "spinWarn": {
-            "file": "images/SpinWarn.png",
-            "sprites": {
-                "animation": {
-                    "rows": 1,
-                    "cols": 2,
-                    "size": 2
-                }
-            }
-        },
-        "idleWarn": {
-            "file": "images/idleWarn.png",
-            "sprites": {
-                "animation": {
-                    "rows": 1,
-                    "cols": 2,
-                    "size": 2
-                }
-            }
-        },
-        "blue raspberry": {
-            "file": "images/BlueRaspberry.png",
-            "sprites": {
-                "animation": {
-                    "rows": 1,
-                    "cols": 8,
-                    "size": 8
-                }
-            }
-        },
-        "durian": {
-            "file": "images/Durian.png",
-            "sprites": {
-                "animation": {
-                    "rows": 1,
-                    "cols": 8,
-                    "size": 8
-                }
-            }
-        },
-        "pineapple": {
-            "file": "images/Pineapple.png",
-            "sprites": {
-                "animation": {
-                    "rows": 1,
-                    "cols": 8,
-                    "size": 8
-                }
-            }
-        },
-        "strawberry": {
-            "file": "images/Strawberry.png",
-            "sprites": {
-                "animation": {
-                    "rows": 1,
-                    "cols": 8,
-                    "size": 8
-                }
-            }
-        },
-      "progress": {
-        "file": "images/progress.png",
-        "atlas": {
-          "back": [
-            0,
-            0,
-            520,
-            33
-          ],
-          "foreground": [
-            24,
-            33,
-            496,
-            66
-          ],
-          "foreleft": [
-            0,
-            33,
-            24,
-            66
-          ],
-          "foreright": [
-            496,
-            33,
-            520,
-            66
-          ]
+  "textures": {
+    "coin": {
+      "file": "images/coin.png",
+      "sprites": {
+        "animation": {
+          "rows": 1,
+          "cols": 4,
+          "size": 4
         }
       }
     },
+    "idleMouse": {
+      "file": "images/Boss_Rat_IdleStatic.png",
+      "sprites": {
+        "animation": {
+          "rows": 1,
+          "cols": 1,
+          "size": 1
+        }
+      }
+    },
+    "dashMouseVertical": {
+      "file": "images/Boss_Rat_RunDown.png",
+      "sprites": {
+        "animation": {
+          "rows": 1,
+          "cols": 5,
+          "size": 5
+        }
+      }
+    },
+    "dashMouseHorizontal": {
+      "file": "images/Boss_Rat_RunHorizontal.png",
+      "sprites": {
+        "animation": {
+          "rows": 1,
+          "cols": 5,
+          "size": 5
+        }
+      }
+    },
+    "spinMouse": {
+      "file": "images/MouseSpin.png",
+      "sprites": {
+        "animation": {
+          "rows": 1,
+          "cols": 4,
+          "size": 4
+        }
+      }
+    },
+    "deathMouse": {
+      "file": "images/MouseDeath.png",
+      "sprites": {
+        "animation": {
+          "rows": 1,
+          "cols": 6,
+          "size": 6
+        }
+      }
+    },
+    "idleChopsticks": {
+      "file": "images/Boss_Chopsticks_Static.png",
+      "sprites": {
+        "animation": {
+          "rows": 1,
+          "cols": 1,
+          "size": 1
+        }
+      }
+    },
+    "dashChopsticks": {
+      "file": "images/Boss_Chopstick_Dash.png",
+      "sprites": {
+        "animation": {
+          "rows": 1,
+          "cols": 4,
+          "size": 4
+        }
+      }
+    },
+    "dashWarnVertical": {
+      "file": "images/DashWarnVertical.png",
+      "sprites": {
+        "animation": {
+          "rows": 1,
+          "cols": 2,
+          "size": 2
+        }
+      }
+    },
+    "dashWarnHorizontal": {
+      "file": "images/DashWarnHorizontal.png",
+      "sprites": {
+        "animation": {
+          "rows": 2,
+          "cols": 1,
+          "size": 2
+        }
+      }
+    },
+    "spinWarn": {
+      "file": "images/SpinWarn.png",
+      "sprites": {
+        "animation": {
+          "rows": 1,
+          "cols": 2,
+          "size": 2
+        }
+      }
+    },
+    "idleWarn": {
+      "file": "images/idleWarn.png",
+      "sprites": {
+        "animation": {
+          "rows": 1,
+          "cols": 2,
+          "size": 2
+        }
+      }
+    },
+    "blue raspberry": {
+      "file": "images/BlueRaspberry.png",
+      "sprites": {
+        "animation": {
+          "rows": 1,
+          "cols": 8,
+          "size": 8
+        }
+      }
+    },
+    "durian": {
+      "file": "images/Durian.png",
+      "sprites": {
+        "animation": {
+          "rows": 1,
+          "cols": 8,
+          "size": 8
+        }
+      }
+    },
+    "pineapple": {
+      "file": "images/Pineapple.png",
+      "sprites": {
+        "animation": {
+          "rows": 1,
+          "cols": 8,
+          "size": 8
+        }
+      }
+    },
+    "strawberry": {
+      "file": "images/Strawberry.png",
+      "sprites": {
+        "animation": {
+          "rows": 1,
+          "cols": 8,
+          "size": 8
+        }
+      }
+    },
+    "progress": {
+      "file": "images/hpBar.png",
+      "atlas": {
+        "back": [
+          0,
+          0,
+          523,
+          33
+        ],
+        "foreground": [
+          27,
+          34,
+          496,
+          68
+        ],
+        "foreleft": [
+          0,
+          34,
+          27,
+          68
+        ],
+        "foreright": [
+          496,
+          34,
+          523,
+          68
+        ]
+      }
+    }
+  },
   "fonts": {
     "lpc": {
       "file": "fonts/LPC.ttf",
       "size": 25
     }
   },
-    "jsons": {
-        "constants": "jsons/constants.json",
-        "save": "jsons/savedGame.json"
-    }
+  "jsons": {
+    "constants": "jsons/constants.json",
+    "save": "jsons/savedGame.json"
+  },
+  "soundf": {
+    "click": "sounds/pop.wav"
+  }
 }
