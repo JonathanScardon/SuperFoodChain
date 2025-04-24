@@ -109,8 +109,14 @@ public class GDXRoot extends Game implements ScreenListener {
             gameScene = new GameScene(this, directory, exitCode);
             this.setScreen(gameScene);
         } else if (screen == gameScene) {
-            levelSelectScene.resetWait();
-            setScreen(levelSelectScene);
+            if (exitCode == 1) {
+                levelSelectScene.resetWait();
+                setScreen(levelSelectScene);
+            } else if (exitCode == 2) {
+                int next = gameScene.getLevel() + 1;
+                gameScene = new GameScene(this, directory, next);
+                setScreen(gameScene);
+            }
         } else {
             Gdx.app.exit();
         }

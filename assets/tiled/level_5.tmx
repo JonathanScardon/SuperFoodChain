@@ -33,7 +33,7 @@
     <property name="attack8" type="object" value="20"/>
     <property name="attack9" type="object" value="21"/>
     <property name="bossType" value="mouse"/>
-    <property name="health" type="int" value="10"/>
+    <property name="health" type="int" value="20"/>
    </properties>
   </object>
   <object id="77" name="mouse" type="boss" x="1165.03" y="1043.14" width="77.0899" height="88.6667">
@@ -68,7 +68,7 @@
     <property name="attack8" type="object" value="9"/>
     <property name="attack9" type="object" value="14"/>
     <property name="bossType" value="mouse"/>
-    <property name="health" type="int" value="100"/>
+    <property name="health" type="int" value="20"/>
    </properties>
   </object>
   <object id="7" name="idle1" type="attack" x="438.834" y="360">

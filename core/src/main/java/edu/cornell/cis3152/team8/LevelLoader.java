@@ -16,6 +16,7 @@ import edu.cornell.gdiac.graphics.SpriteSheet;
  * This is a singleton class meant to load levels from the tmx file format
  */
 public class LevelLoader {
+
     private static final LevelLoader instance = new LevelLoader();
     private static final int PHYSICS_UNITS = 64;
     private final TmxMapLoader mapLoader = new TmxMapLoader(new InternalFileHandleResolver());
@@ -26,6 +27,7 @@ public class LevelLoader {
     private SpriteSheet mouseIdleSprite;
     private SpriteSheet mouseDashVerticalSprite;
     private SpriteSheet mouseDashHorizontalSprite;
+    private SpriteSheet mouseSpinSprite;
     private SpriteSheet mouseDeathSprite;
 
     private SpriteSheet chopsticksIdleSprite;
@@ -35,7 +37,7 @@ public class LevelLoader {
     private SpriteSheet idleWarnSprite;
     private SpriteSheet dashWarnVerticalSprite;
     private SpriteSheet dashWarnHorizontalSprite;
-private SpriteSheet spinWarnSprite;
+    private SpriteSheet spinWarnSprite;
 
     /**
      * @return The single instance of the LevelLoader class
@@ -65,11 +67,12 @@ private SpriteSheet spinWarnSprite;
         }
         state = scene.getState();
 
-
         // load assets
         mouseIdleSprite = assets.getEntry("idleMouse.animation", SpriteSheet.class);
         mouseDashVerticalSprite = assets.getEntry("dashMouseVertical.animation", SpriteSheet.class);
-        mouseDashHorizontalSprite = assets.getEntry("dashMouseHorizontal.animation", SpriteSheet.class);
+        mouseDashHorizontalSprite = assets.getEntry("dashMouseHorizontal.animation",
+            SpriteSheet.class);
+        mouseSpinSprite = assets.getEntry("spinMouse.animation", SpriteSheet.class);
         mouseDeathSprite = assets.getEntry("deathMouse.animation", SpriteSheet.class);
 
         chopsticksIdleSprite = assets.getEntry("idleChopsticks.animation", SpriteSheet.class);
@@ -77,7 +80,8 @@ private SpriteSheet spinWarnSprite;
 
         idleWarnSprite = assets.getEntry("idleWarn.animation", SpriteSheet.class);
         dashWarnVerticalSprite = assets.getEntry("dashWarnVertical.animation", SpriteSheet.class);
-        dashWarnHorizontalSprite = assets.getEntry("dashWarnHorizontal.animation", SpriteSheet.class);
+        dashWarnHorizontalSprite = assets.getEntry("dashWarnHorizontal.animation",
+            SpriteSheet.class);
         spinWarnSprite = assets.getEntry("spinWarn.animation", SpriteSheet.class);
 
         TiledMap map = this.mapLoader.load(path);
@@ -162,7 +166,8 @@ private SpriteSheet spinWarnSprite;
                 boss.addAnimation("idle", mouseIdleSprite);
                 boss.addAnimation("dashVertical", mouseDashVerticalSprite);
                 boss.addAnimation("dashHorizontal", mouseDashHorizontalSprite);
-                boss.addAnimation("death",mouseDeathSprite);
+                boss.addAnimation("spin", mouseSpinSprite);
+                boss.addAnimation("death", mouseDeathSprite);
                 bossController = new BossController(boss, state);
                 break;
             case "chef":
@@ -172,7 +177,7 @@ private SpriteSheet spinWarnSprite;
                 boss.addAnimation("default", chopsticksIdleSprite);
                 boss.addAnimation("idle", chopsticksIdleSprite);
                 boss.addAnimation("snatch", chopsticksDashSprite);
-                boss.addAnimation("death",mouseDeathSprite);
+                boss.addAnimation("death", mouseDeathSprite);
                 bossController = new BossController(boss, state);
                 break;
         }
@@ -204,7 +209,8 @@ private SpriteSheet spinWarnSprite;
      * @param obj        the attack object
      * @param controller the boss that will execute the attack
      */
-    private BossAttackPattern createAttack(MapObject obj, BossController controller, Player player) {
+    private BossAttackPattern createAttack(MapObject obj, BossController controller,
+        Player player) {
         String attackType = obj.getProperties().get("attackType", String.class);
         MapProperties props = obj.getProperties();
 
@@ -219,24 +225,29 @@ private SpriteSheet spinWarnSprite;
         switch (attackType) {
             case "idle":
                 attackDuration = props.get("attackDuration", Float.class);
-                attack = new IdleAttackPattern(controller, x, y, warnDuration, attackDuration, idleWarnSprite);
+                attack = new IdleAttackPattern(controller, x, y, warnDuration, attackDuration,
+                    idleWarnSprite);
                 break;
             case "dash":
                 String dir = props.get("dir", String.class);
                 moveSpeed = props.get("moveSpeed", Float.class);
                 if (dir.equals("up") || dir.equals("down")) {
-                    attack = new DashAttackPattern(controller, x, y, dir, warnDuration, moveSpeed, dashWarnVerticalSprite);
+                    attack = new DashAttackPattern(controller, x, y, dir, warnDuration, moveSpeed,
+                        dashWarnVerticalSprite);
                 } else if (dir.equals("left") || dir.equals("right")) {
-                    attack = new DashAttackPattern(controller, x, y, dir, warnDuration, moveSpeed, dashWarnHorizontalSprite);
+                    attack = new DashAttackPattern(controller, x, y, dir, warnDuration, moveSpeed,
+                        dashWarnHorizontalSprite);
                 }
                 break;
             case "spin":
                 moveSpeed = props.get("moveSpeed", Float.class);
-                attack = new SpinAttackPattern(controller, warnDuration, moveSpeed, spinWarnSprite, player, state);
+                attack = new SpinAttackPattern(controller, warnDuration, moveSpeed, spinWarnSprite,
+                    player, state);
                 break;
             case "snatch":
                 attackDuration = props.get("attackDuration", Float.class);
-                attack = new SnatchAttackPattern(controller, warnDuration, attackDuration, idleWarnSprite, player);
+                attack = new SnatchAttackPattern(controller, warnDuration, attackDuration,
+                    idleWarnSprite, player);
                 break;
         }
 
@@ -308,6 +319,8 @@ private SpriteSheet spinWarnSprite;
         float cricketSpawnProportion = props.get("cricketSpawnProportion", Float.class);
         float spiderSpawnProportion = props.get("spiderSpawnProportion", Float.class);
 
-        state.getMinionSpawns().add(new MinionSpawnPoint(x, y, antSpawnProportion, cricketSpawnProportion, spiderSpawnProportion));
+        state.getMinionSpawns().add(
+            new MinionSpawnPoint(x, y, antSpawnProportion, cricketSpawnProportion,
+                spiderSpawnProportion));
     }
 }

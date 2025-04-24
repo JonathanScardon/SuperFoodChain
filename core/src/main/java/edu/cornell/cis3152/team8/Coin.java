@@ -13,13 +13,19 @@ import edu.cornell.gdiac.physics2.ObstacleSprite;
 
 public class Coin extends ObstacleSprite {
 
-    /** Current animation frame for this coin */
+    /**
+     * Current animation frame for this coin
+     */
     private float animationFrame;
-    /** How fast we change frames */
+    /**
+     * How fast we change frames
+     */
     private static float animationSpeed;
     private float size;
 
-    private Texture texture;
+    private SpriteSheet plusOne;
+    private boolean collected;
+    boolean remove;
     private static final float units = 64f;
 
 
@@ -33,11 +39,13 @@ public class Coin extends ObstacleSprite {
         // taking in the minion position which is already in units --> change for initCoins
         super(new CapsuleObstacle(x, y, 0.8f, 0.8f), true);
 
-      //         size = 0.3f;
-        texture = new Texture("images/coin.png");
+        Texture texture = new Texture("images/coin.png");
         SpriteSheet coin = new SpriteSheet(texture, 1, 22);
         setSpriteSheet(coin);
+        collected = false;
+        plusOne = new SpriteSheet(new Texture("images/+1.png"), 1, 6);
         animationSpeed = 0.5f;
+        remove = false;
         //setConstants(constants);
 
         obstacle = getObstacle();
@@ -57,15 +65,15 @@ public class Coin extends ObstacleSprite {
         obstacle.setFilterData(filter);
 
         size = 0.3f * units;
-        mesh.set(-size/2.0f,-size/2.0f,size,size);
+        mesh.set(-size / 2.0f, -size / 2.0f, size, size);
     }
 
     /**
      * Sets constants for this Coin
      *
      * @param constants The JsonValue of the object
-     * */
-    private void setConstants(JsonValue constants){
+     */
+    private void setConstants(JsonValue constants) {
 //        this.constants = constants;
         animationSpeed = constants.getFloat("animation speed");
     }
@@ -83,58 +91,45 @@ public class Coin extends ObstacleSprite {
      * @param delta Number of seconds since last animation frame
      */
     public void update(float delta) {
-        // Call superclass's run
-//        super.update(delta);
-
-        if ((!obstacle.isActive())) {
-            return;
-        }
-
-        // Increase animation frame
         if (sprite != null) {
             animationFrame += animationSpeed;
-            if (animationFrame >= sprite.getSize()) {
+            if (!collected && animationFrame >= sprite.getSize()) {
                 animationFrame -= sprite.getSize();
             }
         }
     }
+
     /**
      * Draws this Coin to the sprite batch
      *
      * @param batch The sprite batch
      */
-    public void draw(SpriteBatch batch){
-        //animator.setFrame((int)animationFrame);
-//        SpriteBatch.computeTransform(transform, origin.x, origin.y,
-//            position.x, position.y, 0.0f, 1, 1);
-//        batch.setColor( Color.WHITE );
-//        batch.draw( animator, transform );
+    public void draw(SpriteBatch batch) {
+        SpriteBatch.computeTransform(transform, sprite.getRegionWidth() / 2.0f,
+            sprite.getRegionHeight() / 2.0f, obstacle.getPosition().x * units,
+            obstacle.getPosition().y * units, 0.0f, size / units, size / units);
+        if (!obstacle.isActive()) { // if destroyed...
+            if (!collected) {
+                animationFrame = 0;
+                animationSpeed = 0.15f;
+                collected = true;
 
-//         if (obstacle.isActive()) {
-//             batch.draw(texture, obstacle.getPosition().x * units - 32, obstacle.getPosition().y * units - 32, 64, 64);
-//            super.draw(batch);
-//        if (!isDestroyed()) {
-//            batch.draw(texture, position.x, position.y, 64, 64);
-//        }
-
-        if (!obstacle.isActive()) {
-            sprite.setFrame(0);
-            batch.setColor(Color.BLACK);
-        }else {
-            sprite.setFrame((int)animationFrame);
-            batch.setColor( Color.WHITE );
-
+                setSpriteSheet(plusOne);
+            }
+            if (animationFrame < sprite.getSize()) { // and animation is not over
+                sprite.setFrame((int) animationFrame);
+                batch.draw(sprite, transform); //
+            } else {
+                remove = true;
+            }
+        } else { // if not destroyed, draw as normal
+            sprite.setFrame((int) animationFrame);
+            batch.draw(sprite, transform);
         }
-//         SpriteBatch.computeTransform(transform, origin.x, origin.y,
-//             position.x, position.y, 0.0f, size
-//             , size);
-        SpriteBatch.computeTransform(transform, sprite.getRegionWidth()/2.0f, sprite.getRegionHeight()/2.0f, obstacle.getPosition().x * units, obstacle.getPosition().y * units, 0.0f, size/units, size/units);
-
-
-        batch.draw( sprite, transform );
-        //batch.draw(texture, position.x, position.y, 64, 64);
-        //batch.draw(texture, position.x, position.y, 64, 64);
         batch.setColor(Color.WHITE);
     }
 
+    public boolean shouldRemove() {
+        return remove;
+    }
 }

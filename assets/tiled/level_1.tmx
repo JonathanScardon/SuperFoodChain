@@ -8,7 +8,7 @@
     <property name="attack2" type="object" value="10"/>
     <property name="attack3" type="object" value="11"/>
     <property name="attack4" type="object" value="12"/>
-    <property name="bossType" propertytype="bossType" value="mouse"/>
+    <property name="bossType" value="mouse"/>
     <property name="health" type="int" value="10"/>
    </properties>
   </object>
@@ -63,7 +63,7 @@
   </properties>
   <object id="1" name="player" type="playerSpawn" x="294.583" y="198.774">
    <properties>
-    <property name="companionType" propertytype="companionType" value="durian"/>
+    <property name="companionType" value="durian"/>
    </properties>
   </object>
   <object id="2" type="companionSpawn" x="873.426" y="392.319"/>
