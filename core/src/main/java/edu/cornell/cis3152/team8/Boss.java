@@ -116,7 +116,8 @@ public class Boss extends ObstacleSprite {
 
         Filter filter = obstacle.getFilterData();
         filter.categoryBits = CollisionController.BOSS_CATEGORY;
-        filter.maskBits = CollisionController.PLAYER_CATEGORY | CollisionController.PROJECTILE_CATEGORY;
+        filter.maskBits =
+            CollisionController.PLAYER_CATEGORY | CollisionController.PROJECTILE_CATEGORY;
         obstacle.setFilterData(filter);
 
         float size = 4 * PHYSICS_UNITS;
@@ -181,7 +182,7 @@ public class Boss extends ObstacleSprite {
             if (curWarn != null) {
                 curWarn.update(delta);
             }
-        }else {
+        } else {
             obstacle.setLinearVelocity(new Vector2());
         }
 
@@ -213,7 +214,10 @@ public class Boss extends ObstacleSprite {
      * @param batch The sprite batch
      */
     public void draw(SpriteBatch batch, float delta) {
-        SpriteBatch.computeTransform(transform, sprite.getRegionWidth() / 2.0f, sprite.getRegionHeight() / 2.0f, obstacle.getPosition().x * PHYSICS_UNITS, obstacle.getPosition().y * PHYSICS_UNITS, angle, 0.4f * (flipHorizontal ? -1 : 1), 0.4f * (flipVertical ? -1 : 1));
+        SpriteBatch.computeTransform(transform, sprite.getRegionWidth() / 2.0f,
+            sprite.getRegionHeight() / 2.0f, obstacle.getPosition().x * PHYSICS_UNITS,
+            obstacle.getPosition().y * PHYSICS_UNITS, angle, 0.4f * (flipHorizontal ? -1 : 1),
+            0.4f * (flipVertical ? -1 : 1));
 
         if (!obstacle.isActive()) { // if destroyed...
             if (!dead) {
@@ -230,7 +234,7 @@ public class Boss extends ObstacleSprite {
                 remove = true;
             }
             batch.setColor(Color.WHITE);
-        }else { //else draw as normal
+        } else { //else draw as normal
             sprite.setFrame((int) animeframe);
             if (damage) {
                 batch.setColor(Color.RED);
@@ -272,8 +276,8 @@ public class Boss extends ObstacleSprite {
     }
 
     /**
-     * Set the current sprite sheet to the animation which corresponds to the name
-     * If it cannot be found, it just sets it to the default sprite sheet
+     * Set the current sprite sheet to the animation which corresponds to the name If it cannot be
+     * found, it just sets it to the default sprite sheet
      *
      * @param name the name of the animation we want to use
      */
@@ -292,9 +296,19 @@ public class Boss extends ObstacleSprite {
         animationSpeed = speed;
     }
 
-    public float getStartHealth(){return startHealth;}
-    public String getName(){return name;}
-    public boolean shouldRemove(){
+    public float getStartHealth() {
+        return startHealth;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public boolean shouldRemove() {
         return remove;
+    }
+
+    public void setAnimationFrame(float frame) {
+        animeframe = frame;
     }
 }
