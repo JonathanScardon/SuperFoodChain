@@ -757,7 +757,6 @@ public class GameScene implements Screen {
         };
         Arrays.sort(temp, comparator);
         for (ObstacleSprite o : temp) {
-            System.out.println(o.getName());
             switch (o.getName()) {
                 case ("minion"), ("companion"), ("coin") -> o.draw(game.batch);
                 case ("player") -> {
