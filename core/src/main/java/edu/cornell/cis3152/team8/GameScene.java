@@ -476,6 +476,7 @@ public class GameScene implements Screen {
         game.batch.begin();
         game.batch.draw(backgroundTexture, 0, 0, 1280, 720);
 
+        //Dead Things first
         for (ObstacleSprite o : dead) {
             String type = o.getName();
             switch (type) {
@@ -485,7 +486,7 @@ public class GameScene implements Screen {
                 }
                 case "player" -> {
                     ((Companion) o).update(delta, 0);
-                    ((Companion) o).draw(game.batch, delta);
+                    o.draw(game.batch);
                 }
                 case "boss" -> {
                     ((Boss) o).update(delta, 0);
@@ -494,18 +495,26 @@ public class GameScene implements Screen {
             }
         }
 
-        for (Minion m : minions) {
-            m.draw(game.batch);
+//        for (Minion m : minions) {
+//            m.draw(game.batch);
+//        }
+//
+//        player.draw(game.batch, delta);
+//        for (Boss boss : bosses) {
+//            boss.draw(game.batch, delta);
+//        }
+        drawOrder(delta);
+
+        for (Projectile p : state.getActiveProjectiles()) {
+            p.draw(game.batch);
+//            System.out.println(p.getObstacle().getPosition());
         }
 
-        player.draw(game.batch, delta);
-        for (Boss boss : bosses) {
-            boss.draw(game.batch, delta);
-        }
+        // UI Last
         for (Companion c : companions) {
             TextLayout compCost = new TextLayout(c.getCost() + "", font);
             TextLayout pressE = new TextLayout("E", font);
-            c.draw(game.batch, delta);
+//            c.draw(game.batch);
             //temp UI
 
             if (!player.companions.contains(c)) {
@@ -530,15 +539,11 @@ public class GameScene implements Screen {
             }
         }
 
-        for (Projectile p : state.getActiveProjectiles()) {
-            p.draw(game.batch);
-//            System.out.println(p.getObstacle().getPosition());
-        }
 //        System.out.println();
 
-        for (Coin c : coins) {
-            c.draw(game.batch);
-        }
+//        for (Coin c : coins) {
+//            c.draw(game.batch);
+//        }
 
         if (debug) {
             // Draw the outlines
@@ -554,12 +559,14 @@ public class GameScene implements Screen {
             }
         }
 
-        String coins = "" + player.getCoins();
-        TextLayout coinCount = new TextLayout(coins, font);
-        //Temp UI
+        //Coin Counter
+        TextLayout coinCount = new TextLayout("" + player.getCoins(), font);
         game.batch.draw(coinCounter, 1050, 50);
         game.batch.drawText(coinCount, 1150f, 79f);
+
         drawHPBars();
+
+        //Coin collection UI
         for (ObstacleSprite o : dead) {
             String type = o.getName();
             if (type.equals("coin")) {
@@ -567,6 +574,7 @@ public class GameScene implements Screen {
                 o.draw(game.batch);
             }
         }
+
         font.setColor(Color.WHITE);
 
         if (!player.isAlive()) {
@@ -729,19 +737,37 @@ public class GameScene implements Screen {
         return level;
     }
 
-//    private void drawOrder() {
-//        everything.addAll(coins);
-//        everything.addAll(minions);
-//        everything.addAll(bosses);
-//        for (Companion c : player.companions) {
-//            everything.add(c);
-//        }
-//        Comparator<ObstacleSprite> comparator = (o1, o2) -> {
-//            float o1Y = o1.getObstacle().getY();
-//            float o2Y = o2.getObstacle().getY();
-//            return Float.compare(o1Y, o2Y);
-//        };
-//        Arrays.sort(everything, comparator);
-//        everything.clear();
-//    }
+    private void drawOrder(float delta) {
+        everything.addAll(coins);
+        everything.addAll(minions);
+        everything.addAll(bosses);
+        everything.addAll(companions);
+        for (Companion c : player.companions) {
+            everything.add(c);
+        }
+        ObstacleSprite[] temp = new ObstacleSprite[everything.size];
+        for (int i = 0; i < temp.length; i++) {
+            temp[i] = everything.get(i);
+        }
+
+        Comparator<ObstacleSprite> comparator = (o1, o2) -> {
+            float o1Y = o1.getObstacle().getY();
+            float o2Y = o2.getObstacle().getY();
+            return Float.compare(720 - o1Y, 720 - o2Y);
+        };
+        Arrays.sort(temp, comparator);
+        for (ObstacleSprite o : temp) {
+            System.out.println(o.getName());
+            switch (o.getName()) {
+                case ("minion"), ("companion"), ("coin") -> o.draw(game.batch);
+                case ("player") -> {
+                    player.draw(game.batch);
+                    o.draw(game.batch);
+                }
+                case ("mouse"), ("chopsticks") -> ((Boss) o).draw(game.batch, delta);
+
+            }
+        }
+        everything.clear();
+    }
 }

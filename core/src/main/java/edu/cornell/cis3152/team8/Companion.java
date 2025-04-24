@@ -97,7 +97,7 @@ public abstract class Companion extends ObstacleSprite {
         dead = false;
 
         Texture texture = new Texture("images/Companion_Death_Universal.png");
-        deadCompanion = new SpriteSheet(texture,1,6);
+        deadCompanion = new SpriteSheet(texture, 1, 6);
 
         // change?
         obstacle = getObstacle();
@@ -288,9 +288,9 @@ public abstract class Companion extends ObstacleSprite {
         obstacle.setLinearVelocity(velocity);
     }
 
-    public void draw(SpriteBatch batch, float delta) {
+    public void draw(SpriteBatch batch) {
         if (!obstacle.isActive()) { // if destroyed...
-            if (!dead){
+            if (!dead) {
                 animationFrame = 0;
                 animationSpeed = 0.1f;
                 dead = true;

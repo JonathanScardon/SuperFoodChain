@@ -16,7 +16,9 @@ import java.util.LinkedList;
 public class Player {
 
     private class CircularBuffer {
+
         private class PositionAndDirection {
+
             protected float x;
             protected float y;
             protected int dir;
@@ -71,8 +73,8 @@ public class Player {
     }
 
     /**
-     * Number of instructions to wait before following
-     * Also the number of instructions stored per companion
+     * Number of instructions to wait before following Also the number of instructions stored per
+     * companion
      */
     private static int DELAY;
     private final static int MAX_COMPANIONS = 15;
@@ -170,7 +172,8 @@ public class Player {
         }
 
         Companion head = this.getPlayerHead();
-        controlBuffer.add(head.getObstacle().getX(), head.getObstacle().getY(), head.getDirection());
+        controlBuffer.add(head.getObstacle().getX(), head.getObstacle().getY(),
+            head.getDirection());
 
         for (int i = 0; i < companions.size(); i++) {
             Companion c = companions.get(i);
@@ -197,7 +200,7 @@ public class Player {
     /**
      * @param batch The sprite batch
      */
-    public void draw(SpriteBatch batch, float delta) {
+    public void draw(SpriteBatch batch) {
         if (isAlive()) {
             switch (forwardDirection) {
                 case (InputController.CONTROL_MOVE_LEFT) -> {
@@ -219,16 +222,17 @@ public class Player {
                     current = headDirDown;
                     originX = current.getWidth() / 2.0f;
                     originY = current.getHeight() / 2.0f + 100;
-                }case (InputController.CONTROL_NO_ACTION) -> {
+                }
+                case (InputController.CONTROL_NO_ACTION) -> {
                     current = headDirStill;
                     originX = current.getWidth() / 2.0f;
                     originY = current.getHeight() / 2.0f + 50;
                 }
             }
             Companion head = getPlayerHead();
-            SpriteBatch.computeTransform(transform, originX,originY
+            SpriteBatch.computeTransform(transform, originX, originY
                 , head.getObstacle().getX() * units,
-                head.getObstacle().getY() * units, 0, 0.4f , 0.4f);
+                head.getObstacle().getY() * units, 0, 0.4f, 0.4f);
 
             if (forwardDirection == InputController.CONTROL_MOVE_DOWN) {
                 for (int i = companions.size() - 1; i >= 0; i--) {
@@ -236,14 +240,14 @@ public class Player {
                     if (c.equals(head)) {
                         batch.draw(current, transform);
                     }
-                    c.draw(batch, delta);
+                    //c.draw(batch);
                 }
             } else {
                 for (Companion c : companions) {
                     if (c.equals(head)) {
                         batch.draw(current, transform);
                     }
-                    c.draw(batch, delta);
+                    //c.draw(batch);
                 }
             }
         }
@@ -270,8 +274,7 @@ public class Player {
     /**
      * Checks it the player is alive.
      *
-     * @return true when the player has at least one companion,
-     * false otherwise
+     * @return true when the player has at least one companion, false otherwise
      */
     public boolean isAlive() {
         return !companions.isEmpty();
@@ -347,7 +350,9 @@ public class Player {
 
         Filter filter = companion.getObstacle().getFilterData();
         filter.categoryBits = CollisionController.PLAYER_CATEGORY;
-        filter.maskBits = CollisionController.MINION_CATEGORY | CollisionController.COMPANION_CATEGORY | CollisionController.COIN_CATEGORY | CollisionController.BOSS_CATEGORY;
+        filter.maskBits =
+            CollisionController.MINION_CATEGORY | CollisionController.COMPANION_CATEGORY
+                | CollisionController.COIN_CATEGORY | CollisionController.BOSS_CATEGORY;
         companion.getObstacle().setFilterData(filter);
 
         CircularBuffer.PositionAndDirection tail = controlBuffer.getSnapshot(companions.size());
@@ -390,8 +395,8 @@ public class Player {
     }
 
     /**
-     * Calculates and sets buffer read delay (used for chaining behavior)
-     * based on the speed of the chain
+     * Calculates and sets buffer read delay (used for chaining behavior) based on the speed of the
+     * chain
      */
     public static void calculateDelay() {
         int baseSpeed = 150;
