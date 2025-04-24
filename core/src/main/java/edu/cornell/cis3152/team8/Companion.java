@@ -344,6 +344,13 @@ public abstract class Companion extends ObstacleSprite {
         SPEED_BOOST += boost;
     }
 
+    /**
+     * @param boost decrease to SPEED_BOOST
+     */
+    public static void decreaseBoost(float boost){
+        SPEED_BOOST -= boost;
+    }
+
 
     /**
      * Resets the speed boost to 0

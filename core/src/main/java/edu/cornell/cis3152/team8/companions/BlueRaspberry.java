@@ -13,6 +13,7 @@ public class BlueRaspberry extends Companion {
     float dx = 0.0f;
     float dy = 0.0f;
 
+    float boost = 25f;
     boolean usedBoost;
 
     /**
@@ -24,7 +25,7 @@ public class BlueRaspberry extends Companion {
     public BlueRaspberry(float x, float y, int id, World world) {
         super(x, y, id, world);
         setCompanionType(CompanionType.BLUE_RASPBERRY);
-        setCost(2);
+        setCost(0);
         // need to think about how CD will work with support characters
         setCooldown(7);
 //        radius = 1;
@@ -49,14 +50,23 @@ public class BlueRaspberry extends Companion {
     }
 
     /**
-     * The blue raspberry increases the speed of the player. usedBoost is set to true, preventing
+     * Blue Raspberry adds a speed boost
+     * usedBoost is set to true, preventing
      * the speed increase from being used more than once
      */
     @Override
     public void useAbility(GameState state) {
         usedBoost = true;
         //increase the player speed
-        Companion.increaseBoost(25f);
+        Companion.increaseBoost(boost);
+        Player.calculateDelay();
+    }
+
+    /**
+     * Removes associated speed boost from Blue Raspberry
+     */
+    public void loseAbility(){
+        Companion.decreaseBoost(boost);
         Player.calculateDelay();
     }
 }

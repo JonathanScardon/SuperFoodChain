@@ -6,6 +6,7 @@ import com.badlogic.gdx.math.*;
 import com.badlogic.gdx.physics.box2d.Filter;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.JsonValue;
+import edu.cornell.cis3152.team8.companions.BlueRaspberry;
 import edu.cornell.cis3152.team8.companions.Durian;
 import edu.cornell.cis3152.team8.companions.Strawberry;
 import edu.cornell.gdiac.graphics.*;
@@ -49,7 +50,7 @@ public class Player {
                 size++;
             }
         }
-        
+
         /**
          * Updates the head of the buffer, ensuring that members of the chain are reading
          * from the correct positions when the player's head dies
@@ -194,15 +195,15 @@ public class Player {
         }
 
 
-//        for (Companion c : companions) {
-//            c.animationFrame = getPlayerHead().animationFrame;
-//            if (c.getAnimator() != null) {
-//                c.animationFrame += c.animationSpeed;
-//                if (c.animationFrame >= c.getAnimator().getSize()) {
-//                    c.animationFrame -= c.getAnimator().getSize() - 1;
-//                }
-//            }
-//        }
+        for (Companion c : companions) {
+            c.animationFrame = getPlayerHead().animationFrame;
+            if (c.getAnimator() != null) {
+                c.animationFrame += c.animationSpeed;
+                if (c.animationFrame >= c.getAnimator().getSize()) {
+                    c.animationFrame -= c.getAnimator().getSize() - 1;
+                }
+            }
+        }
 
     }
 
@@ -394,7 +395,12 @@ public class Player {
             throw new IndexOutOfBoundsException();
         }
 
-        //no catch up needed when head is removed, second in line takes over
+        //lose speed boost gained from Blue Raspberry
+        if (companion.getCompanionType() == Companion.CompanionType.BLUE_RASPBERRY){
+            ((BlueRaspberry)companion).loseAbility();
+        }
+
+        //no catch up needed when head is removed (no gap is created in the chain)
         if (companion == getPlayerHead()) {
             companions.remove(index);
             controlBuffer.updateHead();
@@ -418,7 +424,7 @@ public class Player {
      * chain
      */
     public static void calculateDelay() {
-        int baseSpeed = 600;
+        int baseSpeed = 225;
         int baseDelay = 15;
 
         float rawDelay = (baseDelay * baseSpeed) / Companion.getSpeed();
