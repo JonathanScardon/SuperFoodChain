@@ -309,8 +309,8 @@ public class GameScene implements Screen {
      * position). New ability action is processed but photon collisions are not.
      */
     public void update(float delta) {
-        float frameTime = Math.min(delta, 0.25f);
-        state.getWorld().step(frameTime, 6, 2);
+        delta = Math.min(delta, 0.25f);
+        state.getWorld().step(delta, 6, 2);
 
 //        if (Gdx.input.isKeyPressed(Keys.R) && !reset) {
 //            reset();

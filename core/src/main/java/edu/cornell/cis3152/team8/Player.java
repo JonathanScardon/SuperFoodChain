@@ -6,6 +6,7 @@ import com.badlogic.gdx.math.*;
 import com.badlogic.gdx.physics.box2d.Filter;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.JsonValue;
+import edu.cornell.cis3152.team8.companions.BlueRaspberry;
 import edu.cornell.cis3152.team8.companions.Durian;
 import edu.cornell.cis3152.team8.companions.Strawberry;
 import edu.cornell.gdiac.graphics.*;
@@ -48,6 +49,14 @@ public class Player {
             if (size < capacity) {
                 size++;
             }
+        }
+
+        /**
+         * Updates the head of the buffer, ensuring that members of the chain are reading
+         * from the correct positions when the player's head dies
+         */
+        public void updateHead(){
+            head = (head - DELAY + capacity) % capacity;
         }
 
         public PositionAndDirection get(int index) {
@@ -163,6 +172,7 @@ public class Player {
         for (int i = 0; i < companions.size(); i++) {
             Companion c = companions.get(i);
             if (!c.getObstacle().isActive()) {
+                System.out.println("calling deleteCompanion() in player");
                 deleteCompanion(c);
             }
         }
@@ -172,8 +182,7 @@ public class Player {
         }
 
         Companion head = this.getPlayerHead();
-        controlBuffer.add(head.getObstacle().getX(), head.getObstacle().getY(),
-            head.getDirection());
+        controlBuffer.add(head.getObstacle().getX(), head.getObstacle().getY(), head.getDirection());
 
         for (int i = 0; i < companions.size(); i++) {
             Companion c = companions.get(i);
@@ -184,6 +193,7 @@ public class Player {
                 c.update(delta, prev.dir);
             }
         }
+
 
         for (Companion c : companions) {
             c.animationFrame = getPlayerHead().animationFrame;
@@ -356,12 +366,21 @@ public class Player {
         companion.getObstacle().setFilterData(filter);
 
         CircularBuffer.PositionAndDirection tail = controlBuffer.getSnapshot(companions.size());
-        if (tail != null) {
+        //do not add if there is not enough data
+        if (tail != null & !companions.isEmpty()) {
             companion.getObstacle().setX(tail.x);
             companion.getObstacle().setY(tail.y);
+//            companion.getObstacle().setX(getPlayerHead().getObstacle().getX());
+//            companion.getObstacle().setY(getPlayerHead().getObstacle().getY());
+
+            companions.add(companion);
+            companion.setCollected(true);
         }
-        companions.add(companion);
-        companion.setCollected(true);
+        //allowed to add a companion if we are starting the level
+        else if (companions.isEmpty()){
+            companions.add(companion);
+            companion.setCollected(true);
+        }
     }
 
     /**
@@ -376,9 +395,15 @@ public class Player {
             throw new IndexOutOfBoundsException();
         }
 
-        //no catch up needed when head is removed, second in line takes over
+        //lose speed boost gained from Blue Raspberry
+        if (companion.getCompanionType() == Companion.CompanionType.BLUE_RASPBERRY){
+            ((BlueRaspberry)companion).loseAbility();
+        }
+
+        //no catch up needed when head is removed (no gap is created in the chain)
         if (companion == getPlayerHead()) {
             companions.remove(index);
+            controlBuffer.updateHead();
             return;
         }
 
@@ -399,7 +424,7 @@ public class Player {
      * chain
      */
     public static void calculateDelay() {
-        int baseSpeed = 150;
+        int baseSpeed = 225;
         int baseDelay = 15;
 
         float rawDelay = (baseDelay * baseSpeed) / Companion.getSpeed();

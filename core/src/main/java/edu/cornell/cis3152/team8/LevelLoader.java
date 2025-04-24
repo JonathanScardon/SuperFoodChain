@@ -283,6 +283,8 @@ public class LevelLoader {
         };
         player.addCompanion(head);
 
+        Companion.resetBoost();
+
         state.setPlayer(player);
     }
 

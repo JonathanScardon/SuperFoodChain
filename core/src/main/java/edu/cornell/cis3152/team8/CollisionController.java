@@ -300,7 +300,6 @@ public class CollisionController implements ContactListener {
         companionAdded = null;
 
         // Remove dead companions/minions/coins/boss from lists
-        state.getPlayer().companions.removeIf(c -> !c.getObstacle().isActive());
         for (Minion m : state.getMinions()) {
             if (!m.getObstacle().isActive()) {
                 state.getMinions().removeValue(m, false);
