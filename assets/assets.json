@@ -200,7 +200,7 @@
     "constants": "jsons/constants.json",
     "save": "jsons/savedGame.json"
   },
-  "soundf": {
+  "soundfx": {
     "click": "sounds/pop.wav"
   }
 }
