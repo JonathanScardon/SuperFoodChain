@@ -40,7 +40,8 @@ public class MainMenuScene implements Screen {
         settingsButton = new Button(833, 240, settings, 0);
         exitButton = new Button(833, 140, exit, 0);
         settingsScreen = new Settings();
-        click = assets.getEntry("click", SoundEffect.class);
+//        click = assets.getEntry("click", SoundEffect.class);
+//        click.play();
         //click = Gdx.audio.newSound();
         // System.out.println(click);
         backgroundMusic = assets.getEntry("dodge", AudioSource.class);
