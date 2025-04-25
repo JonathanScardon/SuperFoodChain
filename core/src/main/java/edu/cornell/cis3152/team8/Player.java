@@ -122,7 +122,6 @@ public class Player {
     private Texture current;
     private Texture headDirStill;
     private Texture headDirUp;
-
     private Texture headDirDown;
     private Texture headDirLeft;
     private Texture headDirRight;
@@ -191,6 +190,11 @@ public class Player {
             } else {
                 CircularBuffer.PositionAndDirection prev = controlBuffer.getSnapshot(i);
                 c.update(delta, prev.dir);
+
+                if (Math.pow(c.getObstacle().getX() - prev.x, 2) + Math.pow(c.getObstacle().getY() - prev.y, 2) > 0.25) {
+                    c.getObstacle().setX(prev.x);
+                    c.getObstacle().setX(prev.y);
+                }
             }
         }
 
@@ -204,7 +208,6 @@ public class Player {
                 }
             }
         }
-
     }
 
     /**
@@ -260,6 +263,49 @@ public class Player {
                     //c.draw(batch);
                 }
             }
+        }
+    }
+
+    /**
+     * Draw the desired position and direction for each companion other than the head
+     * @param batch the SpriteBatch to draw with
+     */
+    public void drawDebug(SpriteBatch batch) {
+        for (int i = 1; i < companions.size(); i++) {
+            CircularBuffer.PositionAndDirection prev = controlBuffer.getSnapshot(i);
+
+            switch (prev.dir) {
+                case (InputController.CONTROL_MOVE_LEFT) -> {
+                    current = headDirLeft;
+                    originX = current.getWidth() / 2.0f + 30f;
+                    originY = current.getHeight() / 2.0f + 50f;
+                }
+                case (InputController.CONTROL_MOVE_RIGHT) -> {
+                    current = headDirRight;
+                    originX = current.getWidth() / 2.0f - 30f;
+                    originY = current.getHeight() / 2.0f + 50f;
+                }
+                case (InputController.CONTROL_MOVE_UP) -> {
+                    current = headDirUp;
+                    originX = current.getWidth() / 2.0f;
+                    originY = current.getHeight() / 2.0f;
+                }
+                case (InputController.CONTROL_MOVE_DOWN) -> {
+                    current = headDirDown;
+                    originX = current.getWidth() / 2.0f;
+                    originY = current.getHeight() / 2.0f + 100;
+                }
+                case (InputController.CONTROL_NO_ACTION) -> {
+                    current = headDirStill;
+                    originX = current.getWidth() / 2.0f;
+                    originY = current.getHeight() / 2.0f + 50;
+                }
+            }
+
+            SpriteBatch.computeTransform(transform, originX, originY
+                , prev.x * units,
+                prev.y * units, 0, 0.4f, 0.4f);
+            batch.draw(current, transform);
         }
     }
 
