@@ -557,6 +557,7 @@ public class GameScene implements Screen {
             for (ObstacleSprite obj : sprites) {
                 obj.drawDebug(game.batch);
             }
+            player.drawDebug(game.batch);
         }
 
         //Coin Counter
