@@ -189,12 +189,13 @@ public class Player {
                 c.update(delta, controlCode);
             } else {
                 CircularBuffer.PositionAndDirection prev = controlBuffer.getSnapshot(i);
-                c.update(delta, prev.dir);
+                c.update(delta, InputController.CONTROL_NO_ACTION);
+                c.getObstacle().setX(prev.x);
+                c.getObstacle().setY(prev.y);
 
-                if (Math.pow(c.getObstacle().getX() - prev.x, 2) + Math.pow(c.getObstacle().getY() - prev.y, 2) > 0.25) {
-                    c.getObstacle().setX(prev.x);
-                    c.getObstacle().setX(prev.y);
-                }
+                // TODO: not sure if this is necessary
+                c.getObstacle().setVX(0);
+                c.getObstacle().setVY(0);
             }
         }
 

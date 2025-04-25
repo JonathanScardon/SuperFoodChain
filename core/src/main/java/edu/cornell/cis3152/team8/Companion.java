@@ -308,9 +308,7 @@ public abstract class Companion extends ObstacleSprite {
             }
         } else {
             if (collected) {
-                if (moving) {
-                    sprite.setFrame((int) animationFrame);
-                }
+                sprite.setFrame((int) animationFrame);
             } else {
                 if (highlight) {
                     sprite.setFrame(0);
