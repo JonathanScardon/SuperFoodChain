@@ -48,7 +48,7 @@ import javax.swing.Box;
  * progress bar. Once all assets are loaded, the progress bar is replaced
  * by a play button. You are free to adopt this to your needs.
  */
-public class LoadingScene implements Screen, InputProcessor {
+public class LoadingScene implements Screen {
     /**
      * Default budget for asset loader (do nothing but load 60 fps)
      */
@@ -105,10 +105,6 @@ public class LoadingScene implements Screen, InputProcessor {
      */
     private float progress;
     /**
-     * The current state of the play button
-     */
-    private int pressState;
-    /**
      * The amount of time to devote to loading assets (as opposed to on screen hints, etc.)
      */
     private int budget;
@@ -149,12 +145,12 @@ public class LoadingScene implements Screen, InputProcessor {
     }
 
     /**
-     * Returns true if all assets are loaded and the player is ready to go.
+     * Returns true if all assets are loaded
      *
-     * @return true if the player is ready to go
+     * @return true if all assets are loadedl
      */
     public boolean isReady() {
-        return pressState == 2;
+        return progress >= 1.0f;
     }
 
     /**
@@ -206,10 +202,8 @@ public class LoadingScene implements Screen, InputProcessor {
 
         // No progress so far
         progress = 0;
-        pressState = 0;
 
         affine = new Affine2();
-        Gdx.input.setInputProcessor(this);
 
         // Start loading the REAL assets
         assets = new AssetDirectory(file);
@@ -265,18 +259,6 @@ public class LoadingScene implements Screen, InputProcessor {
 
         if (progress < 1.0f) {
             drawProgress();
-        } else {
-            float cx = width / 2;
-            float cy = (int) (constants.getFloat("bar.height") * height);
-            float s = constants.getFloat("button.scale") * scale;
-            Color tint = (pressState == 1 ? Color.GRAY : Color.WHITE);
-            texture = internal.getEntry("play", Texture.class);
-
-            SpriteBatch.computeTransform(affine, texture.getWidth() / 2, texture.getHeight() / 2,
-                cx, cy, 0, s, s);
-
-            batch.setColor(tint);
-            batch.draw(texture, affine);
         }
         batch.end();
     }
@@ -345,7 +327,7 @@ public class LoadingScene implements Screen, InputProcessor {
             update(delta);
             draw();
 
-            // We are are ready, notify our listener
+            // We are ready, notify our listener
             if (isReady() && listener != null) {
                 listener.exitScreen(this, 0);
             }
@@ -382,7 +364,6 @@ public class LoadingScene implements Screen, InputProcessor {
      */
     public void pause() {
         // TODO Auto-generated method stub
-
     }
 
     /**
@@ -392,7 +373,6 @@ public class LoadingScene implements Screen, InputProcessor {
      */
     public void resume() {
         // TODO Auto-generated method stub
-
     }
 
     /**
@@ -419,142 +399,5 @@ public class LoadingScene implements Screen, InputProcessor {
     public void setScreenListener(ScreenListener listener) {
         this.listener = listener;
     }
-
-    // PROCESSING PLAYER INPUT
-
-    /**
-     * Called when the screen was touched or a mouse button was pressed.
-     * <p>
-     * This method checks to see if the play button is available and if the click
-     * is in the bounds of the play button. If so, it signals the that the button
-     * has been pressed and is currently down. Any mouse button is accepted.
-     *
-     * @param screenX the x-coordinate of the mouse on the screen
-     * @param screenY the y-coordinate of the mouse on the screen
-     * @param pointer the button or touch finger number
-     * @return whether to hand the event to other listeners.
-     */
-    public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        if (progress < 1.0f || pressState == 2) {
-            return true;
-        }
-
-        // Flip to match graphics coordinates
-        screenY = height - screenY;
-
-        // Play button is a circle.
-        float cx = width / 2;
-        float cy = (int) (constants.getFloat("bar.height") * height);
-        float s = constants.getFloat("button.scale") * scale;
-        float radius = s * internal.getEntry("play", Texture.class).getWidth() / 2.0f;
-        float dist = (screenX - cx) * (screenX - cx) + (screenY - cy) * (screenY - cy);
-        if (dist < radius * radius) {
-            pressState = 1;
-        }
-        return false;
-    }
-
-    /**
-     * Called when a finger was lifted or a mouse button was released.
-     * <p>
-     * This method checks to see if the play button is currently pressed down.
-     * If so, it signals the that the player is ready to go.
-     *
-     * @param screenX the x-coordinate of the mouse on the screen
-     * @param screenY the y-coordinate of the mouse on the screen
-     * @param pointer the button or touch finger number
-     * @return whether to hand the event to other listeners.
-     */
-    public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-        if (pressState == 1) {
-            pressState = 2;
-            return false;
-        }
-        return true;
-    }
-
-    // UNSUPPORTED METHODS FROM InputProcessor
-
-    /**
-     * Called when a key is pressed (UNSUPPORTED)
-     *
-     * @param keycode the key pressed
-     * @return whether to hand the event to other listeners.
-     */
-    public boolean keyDown(int keycode) {
-        return true;
-    }
-
-    /**
-     * Called when a key is typed (UNSUPPORTED)
-     *
-     * @param character the key typed
-     * @return whether to hand the event to other listeners.
-     */
-    public boolean keyTyped(char character) {
-        return true;
-    }
-
-    /**
-     * Called when a key is released (UNSUPPORTED)
-     *
-     * @param keycode the key released
-     * @return whether to hand the event to other listeners.
-     */
-    public boolean keyUp(int keycode) {
-        return true;
-    }
-
-    /**
-     * Called when the mouse was moved without any buttons being pressed. (UNSUPPORTED)
-     *
-     * @param screenX the x-coordinate of the mouse on the screen
-     * @param screenY the y-coordinate of the mouse on the screen
-     * @return whether to hand the event to other listeners.
-     */
-    public boolean mouseMoved(int screenX, int screenY) {
-        return true;
-    }
-
-    /**
-     * Called when the mouse wheel was scrolled. (UNSUPPORTED)
-     *
-     * @param dx the amount of horizontal scroll
-     * @param dy the amount of vertical scroll
-     * @return whether to hand the event to other listeners.
-     */
-    public boolean scrolled(float dx, float dy) {
-        return true;
-    }
-
-    /**
-     * Called when the touch gesture is cancelled (UNSUPPORTED)
-     * <p>
-     * Reason may be from OS interruption to touch becoming a large surface such
-     * as the user cheek. Relevant on Android and iOS only. The button parameter
-     * will be Input.Buttons.LEFT on iOS.
-     *
-     * @param screenX the x-coordinate of the mouse on the screen
-     * @param screenY the y-coordinate of the mouse on the screen
-     * @param pointer the button or touch finger number
-     * @param button  the button
-     * @return whether to hand the event to other listeners.
-     */
-    public boolean touchCancelled(int screenX, int screenY, int pointer, int button) {
-        return true;
-    }
-
-    /**
-     * Called when the mouse or finger was dragged. (UNSUPPORTED)
-     *
-     * @param screenX the x-coordinate of the mouse on the screen
-     * @param screenY the y-coordinate of the mouse on the screen
-     * @param pointer the button or touch finger number
-     * @return whether to hand the event to other listeners.
-     */
-    public boolean touchDragged(int screenX, int screenY, int pointer) {
-        return true;
-    }
-
 }
 
