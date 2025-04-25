@@ -476,7 +476,6 @@ public class GameScene implements Screen {
         game.batch.begin();
         game.batch.draw(backgroundTexture, 0, 0, 1280, 720);
 
-        //Dead Things first
         for (ObstacleSprite o : dead) {
             String type = o.getName();
             switch (type) {
@@ -508,6 +507,23 @@ public class GameScene implements Screen {
         for (Projectile p : state.getActiveProjectiles()) {
             p.draw(game.batch);
 //            System.out.println(p.getObstacle().getPosition());
+        }
+        for (ObstacleSprite o : dead) {
+            String type = o.getName();
+            switch (type) {
+                case "minion" -> {
+                    ((Minion) o).update(false);
+                    o.draw(game.batch);
+                }
+                case "player" -> {
+                    ((Companion) o).update(delta, 0);
+                    o.draw(game.batch);
+                }
+                case "boss" -> {
+                    ((Boss) o).update(delta, 0);
+                    ((Boss) o).draw(game.batch, delta);
+                }
+            }
         }
 
         // UI Last

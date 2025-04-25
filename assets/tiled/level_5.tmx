@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="1" height="1" tilewidth="1280" tileheight="720" infinite="0" nextlayerid="12" nextobjectid="78">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="1" height="1" tilewidth="1280" tileheight="720" infinite="0" nextlayerid="12" nextobjectid="79">
  <objectgroup id="6" name="boss">
   <object id="5" name="mouse" type="boss" x="57.1602" y="1057.72" width="77.0899" height="88.6667">
    <properties>
     <property name="attack0" type="object" value="7"/>
     <property name="attack1" type="object" value="14"/>
     <property name="attack10" type="object" value="7"/>
-    <property name="attack11" type="object" value="75"/>
+    <property name="attack11" type="object" value="78"/>
     <property name="attack12" type="object" value="75"/>
     <property name="attack13" type="object" value="75"/>
     <property name="attack14" type="object" value="75"/>
@@ -20,7 +20,7 @@
     <property name="attack21" type="object" value="30"/>
     <property name="attack22" type="object" value="33"/>
     <property name="attack23" type="object" value="7"/>
-    <property name="attack24" type="object" value="75"/>
+    <property name="attack24" type="object" value="78"/>
     <property name="attack25" type="object" value="75"/>
     <property name="attack26" type="object" value="75"/>
     <property name="attack27" type="object" value="75"/>
@@ -41,7 +41,7 @@
     <property name="attack0" type="object" value="74"/>
     <property name="attack1" type="object" value="21"/>
     <property name="attack10" type="object" value="74"/>
-    <property name="attack11" type="object" value="75"/>
+    <property name="attack11" type="object" value="78"/>
     <property name="attack12" type="object" value="75"/>
     <property name="attack13" type="object" value="75"/>
     <property name="attack14" type="object" value="75"/>
@@ -55,7 +55,7 @@
     <property name="attack21" type="object" value="32"/>
     <property name="attack22" type="object" value="28"/>
     <property name="attack23" type="object" value="7"/>
-    <property name="attack24" type="object" value="75"/>
+    <property name="attack24" type="object" value="78"/>
     <property name="attack25" type="object" value="75"/>
     <property name="attack26" type="object" value="75"/>
     <property name="attack27" type="object" value="75"/>
@@ -165,12 +165,20 @@
     <property name="warnDuration" type="float" value="2"/>
    </properties>
   </object>
-  <object id="75" name="spin" type="attack" x="625.364" y="-141.633">
+  <object id="75" name="spin" type="attack" x="603.248" y="-211.666">
    <properties>
     <property name="attackType" value="spin"/>
     <property name="dir" value="down"/>
     <property name="moveSpeed" type="float" value="500"/>
     <property name="warnDuration" type="float" value="2"/>
+   </properties>
+  </object>
+  <object id="78" name="first spin" type="attack" x="794.918" y="-211.666">
+   <properties>
+    <property name="attackType" value="spin"/>
+    <property name="dir" value="down"/>
+    <property name="moveSpeed" type="float" value="500"/>
+    <property name="warnDuration" type="float" value="5"/>
    </properties>
   </object>
   <object id="17" name="dash" type="attack" x="640" y="780">
