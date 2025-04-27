@@ -2,6 +2,7 @@ package edu.cornell.cis3152.team8.companions;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.utils.JsonValue;
 import edu.cornell.cis3152.team8.Companion;
 import edu.cornell.cis3152.team8.GameState;
 import edu.cornell.cis3152.team8.Player;
@@ -9,12 +10,13 @@ import edu.cornell.gdiac.graphics.SpriteSheet;
 
 public class BlueRaspberry extends Companion {
 
-    Texture texture;
-    float dx = 0.0f;
-    float dy = 0.0f;
+    private static int COST;
+    private static int COOLDOWN;
+    private static float ANIMATION_SPEED;
+    private static float BOOST;
 
-    float boost = 25f;
-    boolean usedBoost;
+    private Texture texture;
+    private boolean usedBoost;
 
     /**
      * Constructor for
@@ -25,24 +27,30 @@ public class BlueRaspberry extends Companion {
     public BlueRaspberry(float x, float y, int id, World world) {
         super(x, y, id, world);
         setCompanionType(CompanionType.BLUE_RASPBERRY);
-        setCost(1);
-        // need to think about how CD will work with support characters
-        setCooldown(7);
-//        radius = 1;
+
+        setCost(COST);
+        setCooldown(COOLDOWN);
+
         texture = new Texture("images/BlueRaspberry.png");
         SpriteSheet blueRaspberry = new SpriteSheet(texture, 1, 8);
         setSpriteSheet(blueRaspberry);
-        animationSpeed = 0.25f;
-//        size = 0.4f;
 
+        animationSpeed = ANIMATION_SPEED;
         usedBoost = false;
+    }
+
+    /** Loads BlueRaspberry-specific constants from JSON */
+    public static void setConstants(JsonValue constants) {
+        COST = constants.getInt("cost", 1);
+        COOLDOWN = constants.getInt("cooldown", 7);
+        ANIMATION_SPEED = constants.getFloat("animationSpeed", 0.25f);
+        BOOST = constants.getFloat("boost", 25f);
     }
 
     @Override
     public void update(float delta) {
         super.update(delta);
     }
-
 
     @Override
     public boolean canUse() {
@@ -56,8 +64,7 @@ public class BlueRaspberry extends Companion {
     @Override
     public void useAbility(GameState state) {
         usedBoost = true;
-        //increase the player speed
-        Companion.increaseBoost(boost);
+        Companion.increaseBoost(BOOST);
         Player.calculateDelay();
     }
 
@@ -65,7 +72,7 @@ public class BlueRaspberry extends Companion {
      * Removes associated speed boost from Blue Raspberry
      */
     public void loseAbility() {
-        Companion.decreaseBoost(boost);
+        Companion.decreaseBoost(BOOST);
         Player.calculateDelay();
     }
 }

@@ -8,9 +8,9 @@ import com.badlogic.gdx.physics.box2d.Filter;
 import com.badlogic.gdx.physics.box2d.World;
 import edu.cornell.gdiac.graphics.SpriteBatch;
 import edu.cornell.gdiac.graphics.SpriteSheet;
-import edu.cornell.gdiac.physics2.BoxObstacle;
 import edu.cornell.gdiac.physics2.CapsuleObstacle;
 import edu.cornell.gdiac.physics2.ObstacleSprite;
+import com.badlogic.gdx.utils.JsonValue;
 
 import static edu.cornell.cis3152.team8.InputController.CONTROL_MOVE_LEFT;
 import static edu.cornell.cis3152.team8.InputController.CONTROL_NO_ACTION;
@@ -28,10 +28,17 @@ public abstract class Companion extends ObstacleSprite {
         PINEAPPLE,
     }
 
+    private static float MOVE_SPEED;
+    private static float SPEED_BOOST;
+    private static int DEFAULT_COOLDOWN;
+    private static float DEATH_EXPIRATION_TIMER;
+    private static float DEATH_ANIMATION_SPEED;
+    private static float UNIT_SCALE;
+
     /**
      * How long the death sprite persists on screen in seconds
      */
-    private float deathExpirationTimer = 3.0f;
+    private float deathExpirationTimer;
 
     /**
      * The type of Companion
@@ -59,10 +66,7 @@ public abstract class Companion extends ObstacleSprite {
      * The direction the companion is currently moving in
      */
     private int direction;
-
     private float prevX;
-
-    private SpriteSheet deadCompanion;
     private float prevY;
     protected float animationSpeed;
     protected float animationFrame;
@@ -71,25 +75,19 @@ public abstract class Companion extends ObstacleSprite {
     private boolean dead;
     private int id;
     private float size;
-
     private boolean remove;
     private boolean moving;
-
-    private static float MOVE_SPEED = 150;
-
-    private static float SPEED_BOOST = 0;
-
-    private static final float units = 64f;
+    private SpriteSheet deadCompanion;
 
     public Companion(float x, float y, int id, World world) {
-        super(new CapsuleObstacle(x / units, y / units, 0.8f, 0.8f), true);
+        super(new CapsuleObstacle(x / UNIT_SCALE, y / UNIT_SCALE, 0.8f, 0.8f), true);
 
         cost = 0;
-        cooldown = 5;
+        cooldown = DEFAULT_COOLDOWN;
         abilityCool = 0;
         collected = false;
         prevVelocity = new Vector2();
-        direction = InputController.CONTROL_NO_ACTION;
+        direction = CONTROL_NO_ACTION;
         highlight = false;
         animationFrame = 1;
         sprite.setFrame((int) animationFrame);
@@ -97,21 +95,18 @@ public abstract class Companion extends ObstacleSprite {
         remove = false;
         moving = false;
         dead = false;
+        deathExpirationTimer = DEATH_EXPIRATION_TIMER;
 
         Texture texture = new Texture("images/Companion_Death_Universal.png");
         deadCompanion = new SpriteSheet(texture, 1, 6);
 
-        // change?
         obstacle = getObstacle();
         obstacle.setName("companion");
         obstacle.setFixedRotation(true);
         obstacle.setBodyType(BodyDef.BodyType.DynamicBody);
-        obstacle.setPhysicsUnits(units);
-
+        obstacle.setPhysicsUnits(UNIT_SCALE);
         obstacle.activatePhysics(world);
         obstacle.setUserData(this);
-
-        // prevents physics?
         obstacle.setSensor(true);
 
         Filter filter = obstacle.getFilterData();
@@ -119,9 +114,22 @@ public abstract class Companion extends ObstacleSprite {
         filter.maskBits = CollisionController.PLAYER_CATEGORY;
         obstacle.setFilterData(filter);
 
-        // TODO: was this different?
-        size = 0.4f * units;
+        size = 0.4f * UNIT_SCALE;
         mesh.set(-size / 2.0f, -size / 2.0f, size, size);
+    }
+
+    /**
+     * Loads Companion class constants from JSON.
+     *
+     * @param constants The JSON value with constants
+     */
+    public static void setConstants(JsonValue constants) {
+        MOVE_SPEED = constants.getFloat("moveSpeed", 150f);
+        SPEED_BOOST = constants.getFloat("speedBoost", 0f);
+        DEFAULT_COOLDOWN = constants.getInt("cooldown", 5);
+        DEATH_EXPIRATION_TIMER = constants.getFloat("deathExpirationTimer", 3.0f);
+        DEATH_ANIMATION_SPEED = constants.getFloat("deathAnimationSpeed", 0.1f);
+        UNIT_SCALE = constants.getFloat("unitScale", 64f);
     }
 
     // accessors
@@ -296,7 +304,7 @@ public abstract class Companion extends ObstacleSprite {
         if (!obstacle.isActive()) { // if destroyed...
             if (!dead) {
                 animationFrame = 0;
-                animationSpeed = 0.1f;
+                animationSpeed = DEATH_ANIMATION_SPEED;
                 dead = true;
                 setSpriteSheet(deadCompanion);
             }
@@ -320,8 +328,8 @@ public abstract class Companion extends ObstacleSprite {
         }
 
         SpriteBatch.computeTransform(transform, sprite.getRegionWidth() / 2.0f,
-            sprite.getRegionHeight() / 2.0f, obstacle.getPosition().x * units,
-            obstacle.getPosition().y * units + 16f, 0.0f, size / units, size / units);
+            sprite.getRegionHeight() / 2.0f, obstacle.getPosition().x * UNIT_SCALE,
+            obstacle.getPosition().y * UNIT_SCALE + 16f, 0.0f, size / UNIT_SCALE, size / UNIT_SCALE);
 
         batch.draw(sprite, transform);
         batch.setColor(Color.WHITE);

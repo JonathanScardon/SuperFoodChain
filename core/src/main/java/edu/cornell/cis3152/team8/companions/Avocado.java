@@ -3,6 +3,7 @@ package edu.cornell.cis3152.team8.companions;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.utils.JsonValue;
 import edu.cornell.cis3152.team8.Companion;
 import edu.cornell.cis3152.team8.GameState;
 import edu.cornell.cis3152.team8.Player;
@@ -10,28 +11,32 @@ import edu.cornell.gdiac.graphics.SpriteSheet;
 
 public class Avocado extends Companion {
 
-    Texture texture;
-    float dx = 0.0f;
-    float dy = 0.0f;
+    private static int COST;
+    private static int COOLDOWN;
+    private static float ANIMATION_SPEED;
+    private static float COOLDOWN_REDUCTION_RATE;
 
-    /**
-     * Constructor for
-     *
-     * @param x x-position for the Avocado companion
-     * @param y y-position for the Avocado companion
-     */
+    private Texture texture;
+
     public Avocado(float x, float y, int id, World world) {
         super(x, y, id, world);
         setCompanionType(CompanionType.AVOCADO);
-        setCost(0);
-        // need to think about how CD will work with support characters
-        setCooldown(7);
-//        radius = 1;
+        setCost(COST);
+        setCooldown(COOLDOWN);
+
         texture = new Texture("images/Avocado.png");
         SpriteSheet avocado = new SpriteSheet(texture, 1, 8);
         setSpriteSheet(avocado);
-        animationSpeed = 0.25f;
-//        size = 0.4f;
+
+        animationSpeed = ANIMATION_SPEED;
+    }
+
+    /** Loads Avocado-specific constants from JSON */
+    public static void setConstants(JsonValue constants) {
+        COST = constants.getInt("cost", 0);
+        COOLDOWN = constants.getInt("cooldown", 7);
+        ANIMATION_SPEED = constants.getFloat("animationSpeed", 0.25f);
+        COOLDOWN_REDUCTION_RATE = constants.getFloat("cooldownReductionRate", 5.0f);
     }
 
     @Override
@@ -44,11 +49,11 @@ public class Avocado extends Companion {
         Player player = state.getPlayer();
         float delta = Gdx.graphics.getDeltaTime();
         for (Companion c : player.getCompanions()) {
-            if (c == this) { // if check for itself in the chain
-                continue; // you don't want to reduce your own ability cooldown
+            if (c == this) {
+                continue; // Don't reduce own cooldown
             }
-            if (!c.canUse()) { // only reduce cooldowns for companions that have abilities on cooldown
-                c.coolDown(true, delta / 5); // will reduce the ACTIVE cooldown value
+            if (!c.canUse()) {
+                c.coolDown(true, delta / COOLDOWN_REDUCTION_RATE);
             }
         }
     }
