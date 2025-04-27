@@ -28,7 +28,9 @@ public class utilities {
             // if there are minions, iterate through and find the closest one
             for (Minion m : minionList) {
                 // consider active/non-destroyed minions only
-                if (m.getObstacle().isActive()) {
+                if (m.getObstacle().isActive() && m.getObstacle().getX() < 20 &&
+                    m.getObstacle().getX() > 0 && m.getObstacle().getY() < 11.25 &&
+                    m.getObstacle().getY() > 0) {
                     float pairwiseDist = utilities.manhattan(m.getObstacle().getPosition(), pos);
                     if (pairwiseDist < closestEnemyDist) {
                         closestEnemyDist = pairwiseDist;
