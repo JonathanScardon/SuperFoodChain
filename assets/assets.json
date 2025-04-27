@@ -194,6 +194,10 @@
     "lpc": {
       "file": "fonts/LPC.ttf",
       "size": 25
+    },
+    "lpcBig": {
+      "file": "fonts/LPC.ttf",
+      "size": 40
     }
   },
   "jsons": {

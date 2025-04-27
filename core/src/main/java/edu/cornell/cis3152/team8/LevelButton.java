@@ -11,7 +11,8 @@ public class LevelButton extends Button {
     private boolean locked;
 
     public LevelButton(float x, float y, Texture number, int exitCode) {
-        super(x, y, new Texture("images/LevelSelectPlate.png"), exitCode);
+        super(x, y, new Texture("images/LevelSelectPlate.png"),
+            new Texture("images/LevelSelectPlate.png"), exitCode);
         lock = new Texture("images/Lock.png");
         this.number = number;
 
