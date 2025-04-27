@@ -1,48 +1,57 @@
 package edu.cornell.cis3152.team8.companions;
 
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
-import edu.cornell.cis3152.team8.Boss;
+import com.badlogic.gdx.utils.JsonValue;
 import edu.cornell.cis3152.team8.Companion;
 import edu.cornell.cis3152.team8.DurianProjectile;
 import edu.cornell.cis3152.team8.GameState;
-import edu.cornell.cis3152.team8.Minion;
 import edu.cornell.gdiac.graphics.SpriteBatch;
 import edu.cornell.gdiac.graphics.SpriteSheet;
-import java.util.Random;
 
 public class Durian extends Companion {
 
-    private int units = 64;
-    Texture texture;
+    private static int COST;
+    private static int COOLDOWN;
+    private static float ANIMATION_SPEED;
+    private static int NUM_ATTACKS;
+    private static float PROJECTILE_SPEED;
 
-    /**
-     * Constructs a Durian at the given position
-     *
-     * @param x The x-coordinate of the object
-     * @param y The y-coordinate of the object
-     */
+    private Texture texture;
+
     public Durian(float x, float y, int id, World world) {
         super(x, y, id, world);
         setCompanionType(CompanionType.DURIAN);
-        setCost(1);
-        setCooldown(2);
+
+        setCost(COST);
+        setCooldown(COOLDOWN);
 
         texture = new Texture("images/Durian.png");
         SpriteSheet durian = new SpriteSheet(texture, 1, 8);
         setSpriteSheet(durian);
-        animationSpeed = 0.25f;
+
+        animationSpeed = ANIMATION_SPEED;
+    }
+
+    /** Loads Durian-specific constants from JSON */
+    public static void setConstants(JsonValue constants) {
+        COST = constants.getInt("cost", 1);
+        COOLDOWN = constants.getInt("cooldown", 2);
+        ANIMATION_SPEED = constants.getFloat("animationSpeed", 0.25f);
+        NUM_ATTACKS = constants.getInt("numAttacks", 8);
+        PROJECTILE_SPEED = constants.getFloat("projectileSpeed", 8f);
     }
 
     @Override
     public void useAbility(GameState state) {
-        int numAttacks = 8;
-        double angle = Math.toRadians(360.0 / numAttacks);
-        for (int i = 0; i < numAttacks; i++) {
-            DurianProjectile projectile = new DurianProjectile(0,0,0,0, state.getWorld());
-            projectile.getObstacle().setLinearVelocity(new Vector2((float) Math.cos(angle*i) * 8, (float) Math.sin(angle*i) * 8));
+        double angleStep = Math.toRadians(360.0 / NUM_ATTACKS);
+        for (int i = 0; i < NUM_ATTACKS; i++) {
+            DurianProjectile projectile = new DurianProjectile(0, 0, 0, 0, state.getWorld());
+            projectile.getObstacle().setLinearVelocity(new Vector2(
+                (float) Math.cos(angleStep * i) * PROJECTILE_SPEED,
+                (float) Math.sin(angleStep * i) * PROJECTILE_SPEED
+            ));
             projectile.getObstacle().setX(obstacle.getX());
             projectile.getObstacle().setY(obstacle.getY());
             state.getActiveProjectiles().add(projectile);
