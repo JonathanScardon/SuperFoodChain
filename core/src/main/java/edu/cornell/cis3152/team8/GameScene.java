@@ -372,7 +372,6 @@ public class GameScene implements Screen {
             state.update();
             addMinions();
             addCompanions();
-            bosses.get(0).setDamage(false);
 
             for (int i = 0; i < companions.size; i++) {
                 companions.get(i).setId(i);
@@ -403,7 +402,6 @@ public class GameScene implements Screen {
                     //int action = minionControls.get(i).getAction();
                     // System.out.println("Id: " + i + " (" + action + ")");
                     minions.get(i).update(true);
-                    minions.get(i).setDamage(false);
                 } else {
                     if (minions.get(i).shouldRemove()) {
                         // used to be m.getID but minionControls above needs i
@@ -530,6 +528,14 @@ public class GameScene implements Screen {
             }
         }
 
+        // THIS IS FOR RED BLINKING FOR DAMAGE
+        for (Minion m : minions) {
+            m.setDamage(false);
+        }
+        for (Boss b : bosses) {
+            b.setDamage(false);
+        }
+
         // UI Last
         for (Companion c : companions) {
             TextLayout compCost = new TextLayout(c.getCost() + "", font);
@@ -568,7 +574,9 @@ public class GameScene implements Screen {
         if (debug) {
             // Draw the outlines
             Array<ObstacleSprite> sprites = new Array<>();
-//                sprites.addAll(player.companions);
+            for (Companion c : player.companions) {
+                sprites.add(c);
+            }
             sprites.addAll(minions);
             sprites.addAll(coins);
             sprites.addAll(companions);

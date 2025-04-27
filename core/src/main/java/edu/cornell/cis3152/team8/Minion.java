@@ -140,7 +140,7 @@ public class Minion extends ObstacleSprite {
         } else { // if not destroyed, draw as normal
             sprite.setFrame((int) animationFrame);
             if (damage) {
-                batch.setColor(Color.RED);
+                batch.setColor(Color.GREEN);
             }
             batch.draw(sprite, transform);
         }
@@ -153,6 +153,7 @@ public class Minion extends ObstacleSprite {
 
     public void removeHealth(int shot) {
         health -= shot;
+        damage = true;
     }
 
     public boolean shouldRemove() {

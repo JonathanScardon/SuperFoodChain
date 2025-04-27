@@ -19,7 +19,7 @@ apply plugin: 'io.github.fourlastor.construo'
 import io.github.fourlastor.construo.Target
 
 sourceSets.main.resources.srcDirs += [ rootProject.file('assets').path ]
-mainClassName = 'edu.cornell.cis3152.team8.lwjgl3.Lwjgl3Launcher'
+mainClassName = 'edu.cornell.cis3152.team8.lwjgl3.DesktopLauncher'
 application.setMainClass(mainClassName)
 eclipse.project.name = appName + '-lwjgl3'
 java.sourceCompatibility = 17

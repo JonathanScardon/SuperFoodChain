@@ -17,14 +17,12 @@ public abstract class Projectile extends ObstacleSprite {
     private static float imageScale;
     // How fast the animation should be
     private static float animationSpeed;
-    // x component of the projectile velocity
-    private static float vx;
-    // y component of the projectile velocity
-    private static float vy;
     // How long the projectile should persist for
     protected static int maxLife;
     // Speed of the projectile
     protected float speed;
+    // Damage of the projectile
+    protected int attack;
 
     /// Attributes (per object)
     // Current animation frame of the projectile
@@ -58,6 +56,7 @@ public abstract class Projectile extends ObstacleSprite {
         // yet
         radius = 1;
         speed = 750;
+        attack = 1;
         maxLife = 150;
         imageScale = 1;
         animationSpeed = 4;
@@ -110,6 +109,22 @@ public abstract class Projectile extends ObstacleSprite {
      */
     public int getLife() {
         return life;
+    }
+
+    /**
+     * Sets the attack damage of the projectile
+     */
+    public void setAttack(int a) {
+        attack = a;
+    }
+
+    /**
+     * Returns the attack damage of the projectile
+     *
+     * @return attack damage
+     */
+    public int getAttack() {
+        return attack;
     }
 
     /**

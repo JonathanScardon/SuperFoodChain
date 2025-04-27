@@ -103,26 +103,15 @@ public class CollisionController implements ContactListener {
             if ((c1 == PLAYER_CATEGORY && c2 == MINION_CATEGORY) || (c2 == PLAYER_CATEGORY
                 && c1 == MINION_CATEGORY)) {
 //                System.out.println("P-M CONTACT IS HAPPENING");
-                if (state.getPlayer().hasShield()) {
-//                    System.out.println("BREAKS SHIELD");
-                    state.getPlayer().setShield(false);
-
-                    if (c1 == PLAYER_CATEGORY) {
-                        removed.add(s2);
-                        coinsAdded.add(s2);
-                    } else {
-                        removed.add(s1);
-                        coinsAdded.add(s1);
-                    }
-                } else {
+                if (c1 == PLAYER_CATEGORY) {
 //                    System.out.println("DEATH");
                     removed.add(s1);
                     removed.add(s2);
-                    if (c1 == PLAYER_CATEGORY) {
-                        coinsAdded.add(s2);
-                    } else {
-                        coinsAdded.add(s1);
-                    }
+                    coinsAdded.add(s2);
+                } else {
+                    removed.add(s2);
+                    removed.add(s1);
+                    coinsAdded.add(s1);
                 }
             }
 
@@ -201,13 +190,11 @@ public class CollisionController implements ContactListener {
                 if (c1 == PROJECTILE_CATEGORY) {
 //                    System.out.println("KILL MINION");
                     removedProjectiles.add(b1);
-                    removed.add(s2);
-                    coinsAdded.add(s2);
+                    minionHit(b2, b1);
                 } else {
 //                    System.out.println("KILL MINION");
                     removedProjectiles.add(b2);
-                    removed.add(s1);
-                    coinsAdded.add(s1);
+                    minionHit(b1, b2);
                 }
             }
             // Projectile and Boss
@@ -350,15 +337,37 @@ public class CollisionController implements ContactListener {
 //                if (p instanceof StrawberryProjectile) {
 //                    ProjectilePools.strawberryPool.free((StrawberryProjectile) p);
 //                }
-                p.getObstacle().setActive(false);
-                p.getObstacle().markRemoved(true);
-                p.getObstacle().deactivatePhysics(world);
+                if (p.getObstacle().getBody() != null && p.getObstacle().getBody().getWorld() != null) {
+                    p.getObstacle().setActive(false);
+                    p.getObstacle().markRemoved(true);
+                    p.getObstacle().deactivatePhysics(world);
+                }
             }
         }
         removedProjectiles.clear();
         for (Projectile p : state.getActiveProjectiles()) {
             if (!p.getObstacle().isActive()) {
                 state.getActiveProjectiles().removeValue(p, false);
+            }
+        }
+    }
+
+    /**
+     * Minion loses health (projectile collision)
+     */
+    public void minionHit(Body b1, Body b2) {
+        for (Minion m : state.getMinions()) {
+            if (m.getObstacle().getBody() == b1) {
+                for (Projectile p : state.getActiveProjectiles()) {
+                    if (p.getObstacle().getBody() == b2) {
+                        m.removeHealth(p.getAttack());
+                        if (m.getHealth() <= 0) {
+                            ObstacleSprite s = (ObstacleSprite) b1.getUserData();
+                            coinsAdded.add(s);
+                            removed.add(s);
+                        }
+                    }
+                }
             }
         }
     }
