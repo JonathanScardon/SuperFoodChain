@@ -7,20 +7,22 @@ import com.badlogic.gdx.physics.box2d.World;
 import edu.cornell.gdiac.graphics.SpriteSheet;
 
 public class Spider extends Minion {
+
     private Vector2 direction;
     private static final float ALIVE_DURATION = 5f; // alive_duration of 5 seconds
     private float aliveTimer;
 
-    public Spider (float x, float y, World world, Player player) {
+    public Spider(float x, float y, World world, Player player) {
         super(x, y, world, player);
-        setSpriteSheet(new SpriteSheet(new Texture("images/Spider.png"),1,1));
+        setSpriteSheet(new SpriteSheet(new Texture("images/Spider.png"), 1, 3));
         this.aliveTimer = ALIVE_DURATION;
         moveSpeed = 7;
         health = 1;
         animationSpeed = 0.15f;
         size = 0.3f * units;
         Vector2 spawnPos = new Vector2(x, y);
-        Vector2 playerPos = new Vector2(player.getPlayerHead().getObstacle().getPosition()).scl(units);
+        Vector2 playerPos = new Vector2(player.getPlayerHead().getObstacle().getPosition()).scl(
+            units);
         direction = playerPos.sub(spawnPos).nor();
     }
 

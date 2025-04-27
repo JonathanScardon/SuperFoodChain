@@ -17,13 +17,14 @@ import edu.cornell.gdiac.physics2.CapsuleObstacle;
 import edu.cornell.gdiac.physics2.ObstacleSprite;
 
 public class Minion extends ObstacleSprite {
+
     protected static final float units = 64f;
 
     //drawing fields
     protected float size;
     private boolean damage;
     protected float animationSpeed;
-    private float animationFrame;
+    protected float animationFrame;
     protected SpriteSheet deadMinion;
     private boolean dead;
 
@@ -36,12 +37,14 @@ public class Minion extends ObstacleSprite {
 
     //When to remove a dead minion
     private boolean remove;
+    private boolean flipHorizontal;
+
 
     /**
      * Constructs a Minion at the given position
      *
-     * @param x The x-coordinate of the object
-     * @param y The y-coordinate of the object
+     * @param x      The x-coordinate of the object
+     * @param y      The y-coordinate of the object
      * @param player The player the minion will attack
      */
     public Minion(float x, float y, World world, Player player) {
@@ -53,8 +56,8 @@ public class Minion extends ObstacleSprite {
         damage = false;
         animationFrame = 0;
 
-        Texture texture  = new Texture("images/Companion_Death_Universal.png");
-        deadMinion = new SpriteSheet(texture,1,6);
+        Texture texture = new Texture("images/Companion_Death_Universal.png");
+        deadMinion = new SpriteSheet(texture, 1, 6);
 
         obstacle = getObstacle();
         obstacle.setName("minion");
@@ -92,11 +95,16 @@ public class Minion extends ObstacleSprite {
      * @param moving if the minion should be moving
      */
     public void update(boolean moving) {
-        if (sprite != null) {
+        if ((sprite != null && dead) || !obstacle.getLinearVelocity().equals(new Vector2())) {
             animationFrame += animationSpeed;
             if (!dead && animationFrame >= sprite.getSize()) {
                 animationFrame -= sprite.getSize();
             }
+        }
+        if (obstacle.getLinearVelocity().x < 0) {
+            flipHorizontal = false;
+        } else if (obstacle.getLinearVelocity().x > 0) {
+            flipHorizontal = true;
         }
     }
 
@@ -106,11 +114,18 @@ public class Minion extends ObstacleSprite {
      * @param batch The sprite batch
      */
     public void draw(SpriteBatch batch) {
-        SpriteBatch.computeTransform(transform, sprite.getRegionWidth() / 2.0f,
-            sprite.getRegionHeight() / 2.0f, obstacle.getPosition().x * units,
-            obstacle.getPosition().y * units, 0.0f, size / units, size / units);
+        if (flipHorizontal) {
+            SpriteBatch.computeTransform(transform, sprite.getRegionWidth() / 2.0f,
+                sprite.getRegionHeight() / 2.0f, obstacle.getPosition().x * units,
+                obstacle.getPosition().y * units, 0.0f, -size / units, size / units);
+        } else {
+            SpriteBatch.computeTransform(transform, sprite.getRegionWidth() / 2.0f,
+                sprite.getRegionHeight() / 2.0f, obstacle.getPosition().x * units,
+                obstacle.getPosition().y * units, 0.0f, size / units, size / units);
+        }
         if (!obstacle.isActive()) { // if destroyed...
-            if (!dead){
+            if (!dead) {
+                flipHorizontal = false;
                 animationFrame = 0;
                 animationSpeed = 0.1f;
                 dead = true;
@@ -143,6 +158,7 @@ public class Minion extends ObstacleSprite {
     public boolean shouldRemove() {
         return remove;
     }
+
     public void setDamage(boolean hit) {
         damage = hit;
     }
