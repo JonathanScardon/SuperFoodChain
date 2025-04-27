@@ -182,12 +182,12 @@ public class CollisionController implements ContactListener {
                         if (c.getObstacle().getBody() == b2
                             && c.getCost() <= state.getPlayer().getCoins()) {
                             c.setGlow(true);
-                            if (Gdx.input.isKeyPressed(Input.Keys.E)) {
+                            // if (Gdx.input.isKeyPressed(Input.Keys.E)) {
 //                                System.out.println("ADD COMPANION");
-                                companionAdded = c;
-                                state.getPlayer()
-                                    .setCoins(state.getPlayer().getCoins() - c.getCost());
-                            }
+                            companionAdded = c;
+                            state.getPlayer()
+                                .setCoins(state.getPlayer().getCoins() - c.getCost());
+                            //}
                         }
                     }
                 }
