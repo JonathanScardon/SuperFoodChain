@@ -16,7 +16,7 @@ public class Cricket extends Minion {
 
     public Cricket(float x, float y, World world, Player player) {
         super(x, y, world, player);
-        setSpriteSheet(new SpriteSheet(new Texture("images/Cricket.png"), 1, 1));
+        setSpriteSheet(new SpriteSheet(new Texture("images/Cricket.png"), 1, 2));
         this.player = player;
         this.state = State.WAIT;
         this.waitTimer = WAIT_DURATION;
@@ -36,12 +36,14 @@ public class Cricket extends Minion {
                 case WAIT -> {
                     obstacle.setLinearVelocity(new Vector2(0, 0));
                     waitTimer -= delta;
+                    animationFrame = 0;
                     if (waitTimer <= 0) {
                         state = State.HOP;
                         hopTimer = HOP_DURATION;
                     }
                 }
                 case HOP -> {
+                    animationFrame = 1;
                     Vector2 dir = player.getPlayerHead().getObstacle().getPosition().scl(units)
                         .sub(pos)
                         .nor();
