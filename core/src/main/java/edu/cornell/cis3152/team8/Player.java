@@ -248,22 +248,7 @@ public class Player {
                 , head.getObstacle().getX() * units,
                 head.getObstacle().getY() * units, 0, 0.4f, 0.4f);
 
-            if (forwardDirection == InputController.CONTROL_MOVE_DOWN) {
-                for (int i = companions.size() - 1; i >= 0; i--) {
-                    Companion c = companions.get(i);
-                    if (c.equals(head)) {
-                        batch.draw(current, transform);
-                    }
-                    //c.draw(batch);
-                }
-            } else {
-                for (Companion c : companions) {
-                    if (c.equals(head)) {
-                        batch.draw(current, transform);
-                    }
-                    //c.draw(batch);
-                }
-            }
+            batch.draw(current, transform);
         }
     }
 

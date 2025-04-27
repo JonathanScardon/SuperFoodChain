@@ -498,43 +498,17 @@ public class GameScene implements Screen {
             }
         }
 
-//        for (Minion m : minions) {
-//            m.draw(game.batch);
-//        }
-//
-//        player.draw(game.batch, delta);
-//        for (Boss boss : bosses) {
-//            boss.draw(game.batch, delta);
-//        }
+        // draw
         drawOrder(delta);
 
         for (Projectile p : state.getActiveProjectiles()) {
             p.draw(game.batch);
-//            System.out.println(p.getObstacle().getPosition());
-        }
-        for (ObstacleSprite o : dead) {
-            String type = o.getName();
-            switch (type) {
-                case "minion" -> {
-                    ((Minion) o).update(false);
-                    o.draw(game.batch);
-                }
-                case "player" -> {
-                    ((Companion) o).update(delta, 0);
-                    o.draw(game.batch);
-                }
-                case "boss" -> {
-                    ((Boss) o).update(delta, 0);
-                    ((Boss) o).draw(game.batch, delta);
-                }
-            }
         }
 
         // UI Last
         for (Companion c : companions) {
             TextLayout compCost = new TextLayout(c.getCost() + "", font);
             TextLayout pressE = new TextLayout("E", font);
-//            c.draw(game.batch);
             //temp UI
 
             if (!player.companions.contains(c)) {
@@ -559,11 +533,21 @@ public class GameScene implements Screen {
             }
         }
 
-//        System.out.println();
+        // Coin Counter
+        TextLayout coinCount = new TextLayout("" + player.getCoins(), font);
+        game.batch.draw(coinCounter, 1050, 50);
+        game.batch.drawText(coinCount, 1150f, 79f);
 
-//        for (Coin c : coins) {
-//            c.draw(game.batch);
-//        }
+        drawHPBars();
+
+        // Coin collection UI
+        for (ObstacleSprite o : dead) {
+            String type = o.getName();
+            if (type.equals("coin")) {
+                o.update(delta);
+                o.draw(game.batch);
+            }
+        }
 
         if (debug) {
             // Draw the outlines
@@ -578,22 +562,6 @@ public class GameScene implements Screen {
                 obj.drawDebug(game.batch);
             }
             player.drawDebug(game.batch);
-        }
-
-        //Coin Counter
-        TextLayout coinCount = new TextLayout("" + player.getCoins(), font);
-        game.batch.draw(coinCounter, 1050, 50);
-        game.batch.drawText(coinCount, 1150f, 79f);
-
-        drawHPBars();
-
-        //Coin collection UI
-        for (ObstacleSprite o : dead) {
-            String type = o.getName();
-            if (type.equals("coin")) {
-                o.update(delta);
-                o.draw(game.batch);
-            }
         }
 
         font.setColor(Color.WHITE);
@@ -758,6 +726,10 @@ public class GameScene implements Screen {
         return level;
     }
 
+    /**
+     * Draw all objects in order based on y coordinate
+     * @param delta the time in seconds since the last frame
+     */
     private void drawOrder(float delta) {
         everything.addAll(coins);
         everything.addAll(minions);
@@ -766,28 +738,19 @@ public class GameScene implements Screen {
         for (Companion c : player.companions) {
             everything.add(c);
         }
-        ObstacleSprite[] temp = new ObstacleSprite[everything.size];
-        for (int i = 0; i < temp.length; i++) {
-            temp[i] = everything.get(i);
-        }
 
-        Comparator<ObstacleSprite> comparator = (o1, o2) -> {
-            float o1Y = o1.getObstacle().getY();
-            float o2Y = o2.getObstacle().getY();
-            return Float.compare(720 - o1Y, 720 - o2Y);
-        };
-        Arrays.sort(temp, comparator);
-        for (ObstacleSprite o : temp) {
+        everything.sort((o1, o2) -> Float.compare(720 - o1.getObstacle().getY(), 720 - o2.getObstacle().getY()));
+
+        // draw movement indicator first
+        player.draw(game.batch);
+
+        for (ObstacleSprite o : everything) {
             switch (o.getName()) {
-                case ("minion"), ("companion"), ("coin") -> o.draw(game.batch);
-                case ("player") -> {
-                    player.draw(game.batch);
-                    o.draw(game.batch);
-                }
-                case ("mouse"), ("chopsticks") -> ((Boss) o).draw(game.batch, delta);
-
+                case "minion", "companion", "coin", "player" -> o.draw(game.batch);
+                case "mouse", "chopsticks" -> ((Boss) o).draw(game.batch, delta);
             }
         }
+
         everything.clear();
     }
 }
