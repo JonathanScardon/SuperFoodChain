@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Affine2;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
@@ -159,8 +160,8 @@ public class GameScene implements Screen {
         dead = state.getDead();
 
         dim = new Texture("images/dim.png");
-        backgroundTexture = new Texture("images/temp_background.png");
-        //backgroundTexture = new Texture("images/background_angled.png");
+        //backgroundTexture = new Texture("images/temp_background.png");
+        backgroundTexture = new Texture("images/background_angled.png");
         pauseBackground = new Texture("images/PauseBackground.png");
         Texture button = new Texture("images/Button.png");
         Texture buttonDark = new Texture("images/ButtonDark.png");
