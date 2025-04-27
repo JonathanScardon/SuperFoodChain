@@ -13,6 +13,8 @@ public class Button {
     protected float posX;
     protected float posY;
     protected Texture texture;
+    protected Texture dark;
+
 
     protected float width;
 
@@ -22,7 +24,7 @@ public class Button {
 
     private int exitCode;
 
-    public Button(float x, float y, Texture texture, int exitCode) {
+    public Button(float x, float y, Texture texture, Texture dark, int exitCode) {
         posX = x;
         posY = y;
         this.texture = texture;
@@ -30,9 +32,11 @@ public class Button {
         height = texture.getHeight();
         this.exitCode = exitCode;
         text = new TextLayout("", new BitmapFont());
+        this.dark = dark;
     }
 
-    public Button(float x, float y, Texture texture, int exitCode, float width, float height) {
+    public Button(float x, float y, Texture texture, Texture dark, int exitCode, float width,
+        float height) {
         posX = x;
         posY = y;
         this.texture = texture;
@@ -40,9 +44,11 @@ public class Button {
         this.height = height;
         this.exitCode = exitCode;
         text = new TextLayout("", new BitmapFont());
+        this.dark = dark;
     }
 
-    public Button(float x, float y, Texture texture, int exitCode, float width, float height,
+    public Button(float x, float y, Texture texture, Texture dark, int exitCode, float width,
+        float height,
         String name, BitmapFont font) {
         posX = x;
         posY = y;
@@ -51,6 +57,7 @@ public class Button {
         this.height = height;
         this.exitCode = exitCode;
         text = new TextLayout(name, font);
+        this.dark = dark;
     }
 
 
@@ -62,15 +69,17 @@ public class Button {
     }
 
     public void draw(SpriteBatch batch) {
-        if (isHovering()) {
-            batch.setBlendMode(BlendMode.ADDITIVE);
-        }
-        batch.draw(texture, posX, posY, width, height);
-        text.getFont().setColor(Color.BROWN);
-        batch.drawText(text, posX + (texture.getWidth() / 2f - (text.getWidth() / 2f)),
-            posY + texture.getHeight() / 2f);
-        text.getFont().setColor(Color.WHITE);
         batch.setBlendMode(BlendMode.ALPHA_BLEND);
+        if (isHovering()) {
+            batch.draw(texture, posX, posY, width, height);
+        } else {
+            batch.draw(dark, posX, posY, width, height);
+        }
+
+        text.getFont().setColor(Color.BROWN);
+        batch.drawText(text, posX + (width / 2f),
+            posY + height / 2f);
+        text.getFont().setColor(Color.WHITE);
     }
 
     public int getExitCode() {

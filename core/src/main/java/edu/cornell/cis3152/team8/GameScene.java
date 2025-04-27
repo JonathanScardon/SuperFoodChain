@@ -163,9 +163,13 @@ public class GameScene implements Screen {
         //backgroundTexture = new Texture("images/background_angled.png");
         pauseBackground = new Texture("images/PauseBackground.png");
         Texture button = new Texture("images/Button.png");
+        Texture buttonDark = new Texture("images/ButtonDark.png");
         Texture replay = new Texture("images/Replay_Button.png");
         Texture home = new Texture("images/Home_Button.png");
         Texture next = new Texture("images/Next_Button.png");
+        Texture replayLight = new Texture("images/replayLight.png");
+        Texture homeLight = new Texture("images/homeLight.png");
+        Texture nextLight = new Texture("images/nextLight.png");
 
         win = new Texture("images/Win.png");
         mouseLose = new Texture("images/LoseRat.png");
@@ -174,15 +178,15 @@ public class GameScene implements Screen {
         costGrey = new Texture("images/grayed-cost-ui.png");
 
         font = assets.getEntry("lpc", BitmapFont.class);
-        resumeButton = new Button(506, 452, button, 0, 280, 63, "Resume", font);
-        resetButton = new Button(506, 381, button, 0, 280, 63, "Reset", font);
-        levelsButton = new Button(506, 310, button, 1, 280, 63, "Levels", font);
-        settingsButton = new Button(506, 239, button, 0, 280, 63, "Settings", font);
-        exitButton = new Button(506, 160, button, 0, 280, 63, "Exit", font);
+        resumeButton = new Button(506, 452, button, buttonDark, 0, 280, 63, "Resume", font);
+        resetButton = new Button(506, 381, button, buttonDark, 0, 280, 63, "Reset", font);
+        levelsButton = new Button(506, 310, button, buttonDark, 1, 280, 63, "Levels", font);
+        settingsButton = new Button(506, 239, button, buttonDark, 0, 280, 63, "Settings", font);
+        exitButton = new Button(506, 160, button, buttonDark, 0, 280, 63, "Exit", font);
 
-        replayButton = new Button(0, 0, replay, 0, 78, 78);
-        homeButton = new Button(0, 0, home, 1, 78, 78);
-        nextButton = new Button(734, 114, next, 2, 78, 78);
+        replayButton = new Button(0, 0, replayLight, replay, 0, 78, 78);
+        homeButton = new Button(0, 0, homeLight, home, 1, 78, 78);
+        nextButton = new Button(734, 114, nextLight, next, 2, 78, 78);
 
         settingsScreen = new Settings();
 

@@ -8,6 +8,7 @@ import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.utils.ScreenUtils;
 import edu.cornell.gdiac.assets.AssetDirectory;
 import edu.cornell.gdiac.audio.*;
@@ -32,13 +33,17 @@ public class MainMenuScene implements Screen {
 
     public MainMenuScene(final GDXRoot game, AssetDirectory assets) {
         this.game = game;
+        BitmapFont font = assets.getEntry("lpcBig", BitmapFont.class);
         background = new Texture("images/Menu.png");
         Texture play = new Texture("images/PlayButton.png");
         Texture settings = new Texture("images/SettingsButton.png");
         Texture exit = new Texture("images/ExitButton.png");
-        playButton = new Button(833, 340, play, 0);
-        settingsButton = new Button(833, 240, settings, 0);
-        exitButton = new Button(833, 140, exit, 0);
+        Texture button = new Texture("images/Button.png");
+        Texture buttonDark = new Texture("images/ButtonDark.png");
+
+        playButton = new Button(806, 320, button, buttonDark, 0, 429, 100, "Play", font);
+        settingsButton = new Button(806, 220, button, buttonDark, 0, 429, 100, "Settings", font);
+        exitButton = new Button(806, 120, button, buttonDark, 0, 429, 100, "Exit", font);
         settingsScreen = new Settings();
 //        click = assets.getEntry("click", SoundEffect.class);
 //        click.play();
