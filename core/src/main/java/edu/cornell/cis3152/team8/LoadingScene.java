@@ -44,11 +44,12 @@ import javax.swing.Box;
 /**
  * Class that provides a loading screen for the state of the game.
  * <p>
- * This is a fairly generic loading screen that shows the GDIAC logo and a
- * progress bar. Once all assets are loaded, the progress bar is replaced
- * by a play button. You are free to adopt this to your needs.
+ * This is a fairly generic loading screen that shows the GDIAC logo and a progress bar. Once all
+ * assets are loaded, the progress bar is replaced by a play button. You are free to adopt this to
+ * your needs.
  */
 public class LoadingScene implements Screen {
+
     /**
      * Default budget for asset loader (do nothing but load 60 fps)
      */
@@ -117,11 +118,10 @@ public class LoadingScene implements Screen {
     /**
      * Returns the budget for the asset loader.
      * <p>
-     * The budget is the number of milliseconds to spend loading assets each
-     * animation frame. This allows you to do something other than load assets.
-     * An animation frame is ~16 milliseconds. So if the budget is 10, you have
-     * 6 milliseconds to do something else. This is how game companies animate
-     * their loading screens.
+     * The budget is the number of milliseconds to spend loading assets each animation frame. This
+     * allows you to do something other than load assets. An animation frame is ~16 milliseconds. So
+     * if the budget is 10, you have 6 milliseconds to do something else. This is how game companies
+     * animate their loading screens.
      *
      * @return the budget in milliseconds
      */
@@ -132,11 +132,10 @@ public class LoadingScene implements Screen {
     /**
      * Sets the budget for the asset loader.
      * <p>
-     * The budget is the number of milliseconds to spend loading assets each
-     * animation frame. This allows you to do something other than load assets.
-     * An animation frame is ~16 milliseconds. So if the budget is 10, you have
-     * 6 milliseconds to do something else. This is how game companies animate
-     * their loading screens.
+     * The budget is the number of milliseconds to spend loading assets each animation frame. This
+     * allows you to do something other than load assets. An animation frame is ~16 milliseconds. So
+     * if the budget is 10, you have 6 milliseconds to do something else. This is how game companies
+     * animate their loading screens.
      *
      * @param millis the budget in milliseconds
      */
@@ -156,9 +155,8 @@ public class LoadingScene implements Screen {
     /**
      * Returns the asset directory produced by this loading screen
      * <p>
-     * This asset loader is NOT owned by this loading scene, so it persists even
-     * after the scene is disposed. It is your responsbility to unload the
-     * assets in this directory.
+     * This asset loader is NOT owned by this loading scene, so it persists even after the scene is
+     * disposed. It is your responsbility to unload the assets in this directory.
      *
      * @return the asset directory produced by this loading screen
      */
@@ -179,13 +177,13 @@ public class LoadingScene implements Screen {
     /**
      * Creates a LoadingMode with the default size and position.
      * <p>
-     * The budget is the number of milliseconds to spend loading assets each animation
-     * frame. This allows you to do something other than load assets. An animation
-     * frame is ~16 milliseconds. So if the budget is 10, you have 6 milliseconds to
-     * do something else. This is how game companies animate their loading screens.
+     * The budget is the number of milliseconds to spend loading assets each animation frame. This
+     * allows you to do something other than load assets. An animation frame is ~16 milliseconds. So
+     * if the budget is 10, you have 6 milliseconds to do something else. This is how game companies
+     * animate their loading screens.
      *
      * @param file   The asset directory to load in the background
-     * @param batch The game canvas to draw to
+     * @param batch  The game canvas to draw to
      * @param millis The loading budget in milliseconds
      */
     public LoadingScene(String file, SpriteBatch batch, int millis) {
@@ -222,9 +220,9 @@ public class LoadingScene implements Screen {
     /**
      * Updates the status of this scene
      * <p>
-     * We prefer to separate update and draw from one another as separate
-     * methods, instead of using the single render() method that LibGDX does.
-     * We will talk about why we prefer this in lecture.
+     * We prefer to separate update and draw from one another as separate methods, instead of using
+     * the single render() method that LibGDX does. We will talk about why we prefer this in
+     * lecture.
      *
      * @param delta Number of seconds since last animation frame
      */
@@ -241,9 +239,9 @@ public class LoadingScene implements Screen {
     /**
      * Draws the status of this player mode.
      * <p>
-     * We prefer to separate update and draw from one another as separate
-     * methods, instead of using the single render() method that LibGDX does.
-     * We will talk about why we prefer this in lecture.
+     * We prefer to separate update and draw from one another as separate methods, instead of using
+     * the single render() method that LibGDX does. We will talk about why we prefer this in
+     * lecture.
      */
     private void draw() {
         // Cornell colors
@@ -266,48 +264,43 @@ public class LoadingScene implements Screen {
     /**
      * Updates the progress bar according to loading progress
      * <p>
-     * The progress bar is composed of parts: two rounded caps on the end, and
-     * a rectangle in a middle. We adjust the size of the rectangle in the
-     * middle to represent the amount of progress.
+     * The progress bar is composed of parts: two rounded caps on the end, and a rectangle in a
+     * middle. We adjust the size of the rectangle in the middle to represent the amount of
+     * progress.
      */
     private void drawProgress() {
-        float w = (int) (constants.getFloat("bar.width") * width);
+
         float cx = width / 2;
         float cy = (int) (constants.getFloat("bar.height") * height);
         TextureRegion region1, region2, region3;
 
         // "3-patch" the background
         batch.setColor(Color.WHITE);
-        region1 = internal.getEntry("progress.backleft", TextureRegion.class);
-        batch.draw(region1, cx - w / 2, cy, scale * region1.getRegionWidth(), scale * region1.getRegionHeight());
 
-        region2 = internal.getEntry("progress.backright", TextureRegion.class);
-        batch.draw(region2, cx + w / 2 - scale * region2.getRegionWidth(), cy,
-            scale * region2.getRegionWidth(), scale * region2.getRegionHeight());
-
-        region3 = internal.getEntry("progress.background", TextureRegion.class);
-        batch.draw(region3, cx - w / 2 + scale * region1.getRegionWidth(), cy,
-            w - scale * (region2.getRegionWidth() + region1.getRegionWidth()),
-            scale * region3.getRegionHeight());
+        region1 = internal.getEntry("progress.background", TextureRegion.class);
+        float w = region1.getRegionWidth();
+        batch.draw(region1, cx - w / 2f, cy);
 
         // "3-patch" the foreground
         region1 = internal.getEntry("progress.foreleft", TextureRegion.class);
-        batch.draw(region1, cx - w / 2, cy, scale * region1.getRegionWidth(), scale * region1.getRegionHeight());
+        batch.draw(region1, cx - w / 2, cy, region1.getRegionWidth(),
+            region1.getRegionHeight());
 
         if (progress > 0) {
             region2 = internal.getEntry("progress.foreright", TextureRegion.class);
-            float span = progress * (w - scale * (region1.getRegionWidth() + region2.getRegionWidth()));
+            float span =
+                progress * (w - (region1.getRegionWidth() + region2.getRegionWidth()));
 
-            batch.draw(region2, cx - w / 2 + scale * region1.getRegionWidth() + span, cy,
-                scale * region2.getRegionWidth(), scale * region2.getRegionHeight());
+            batch.draw(region2, cx - w / 2 + region1.getRegionWidth() + span, cy,
+                region2.getRegionWidth(), region2.getRegionHeight());
 
             region3 = internal.getEntry("progress.foreground", TextureRegion.class);
-            batch.draw(region3, cx - w / 2 + scale * region1.getRegionWidth(), cy,
-                span, scale * region3.getRegionHeight());
+            batch.draw(region3, cx - w / 2 + region1.getRegionWidth(), cy,
+                span, region3.getRegionHeight());
         } else {
             region2 = internal.getEntry("progress.foreright", TextureRegion.class);
-            batch.draw(region2, cx - w / 2 + scale * region1.getRegionWidth(), cy,
-                scale * region2.getRegionWidth(), scale * region2.getRegionHeight());
+            batch.draw(region2, cx - w / 2 + region1.getRegionWidth(), cy,
+                region2.getRegionWidth(), region2.getRegionHeight());
         }
 
     }
@@ -317,8 +310,8 @@ public class LoadingScene implements Screen {
     /**
      * Called when the Screen should render itself.
      * <p>
-     * We defer to the other methods update() and draw(). However, it is VERY
-     * important that we only quit AFTER a draw.
+     * We defer to the other methods update() and draw(). However, it is VERY important that we only
+     * quit AFTER a draw.
      *
      * @param delta Number of seconds since last animation frame
      */
@@ -337,8 +330,8 @@ public class LoadingScene implements Screen {
     /**
      * Called when the Screen is resized.
      * <p>
-     * This can happen at any point during a non-paused state but will never
-     * happen before a call to show().
+     * This can happen at any point during a non-paused state but will never happen before a call to
+     * show().
      *
      * @param width  The new width in pixels
      * @param height The new height in pixels
@@ -359,8 +352,8 @@ public class LoadingScene implements Screen {
     /**
      * Called when the Screen is paused.
      * <p>
-     * This is usually when it's not active or visible on screen. An Application
-     * is also paused before it is destroyed.
+     * This is usually when it's not active or visible on screen. An Application is also paused
+     * before it is destroyed.
      */
     public void pause() {
         // TODO Auto-generated method stub
