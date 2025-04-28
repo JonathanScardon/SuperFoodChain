@@ -282,6 +282,7 @@ public class Boss extends ObstacleSprite {
      * @param name the name of the animation we want to use
      */
     public void setAnimation(String name) {
+        animeframe = 0;
         if (!animationMap.containsKey(name)) {
             // sprite sheet not found, using default
             name = "default";
