@@ -341,6 +341,7 @@ public class GameScene implements Screen {
         }
 
         if (paused || winGame || !player.isAlive()) {
+            state.getAudio().stopSfx();
             for (Minion m : minions) {
                 m.update(false);
             }
@@ -352,19 +353,24 @@ public class GameScene implements Screen {
 
         if (winGame) {
             if (replayButton.isHovering() && Gdx.input.isTouched()) {
+                state.getAudio().play("click");
                 reset();
             } else if (homeButton.isHovering() && Gdx.input.isTouched()) {
+                state.getAudio().play("click");
                 dispose();
                 game.exitScreen(this, homeButton.getExitCode());
             } else if (nextButton.isHovering() && Gdx.input.isTouched()) {
+                state.getAudio().play("click");
                 dispose();
                 game.exitScreen(this, nextButton.getExitCode());
             }
         }
         if (!player.isAlive()) {
             if (replayButton.isHovering() && Gdx.input.isTouched()) {
+                state.getAudio().play("click");
                 reset();
             } else if (homeButton.isHovering() && Gdx.input.isTouched()) {
+                state.getAudio().play("click");
                 dispose();
                 game.exitScreen(this, homeButton.getExitCode());
             }
@@ -391,6 +397,7 @@ public class GameScene implements Screen {
                 if (c.getObstacle().isActive()) {
                     if (c.canUse()) {
                         c.useAbility(state);
+                        state.getAudio().play(c.getCompanionType().name());
                     } else {
                         c.coolDown(true, delta);
                     }
@@ -423,7 +430,10 @@ public class GameScene implements Screen {
 
             // boss moves and acts
             for (int i = 0; i < bosses.size; i++) {
-                bossControls.get(i).update(delta);
+                boolean play = bossControls.get(i).update(delta);
+                if (play) {
+                    state.getAudio().play(bossControls.get(i).getAttackName());
+                }
                 bosses.get(i).update(delta, bossControls.get(i).getAction());
             }
             //
@@ -450,17 +460,22 @@ public class GameScene implements Screen {
             }
             if (paused) {
                 if (resumeButton.isHovering() && Gdx.input.isTouched()) {
+                    state.getAudio().play("click");
                     paused = false;
                 } else if (resetButton.isHovering() && Gdx.input.isTouched()) {
+                    state.getAudio().play("click");
                     reset();
                     paused = false;
                 } else if (levelsButton.isHovering() && Gdx.input.isTouched()) {
+                    state.getAudio().play("click");
                     dispose();
                     game.exitScreen(this, levelsButton.getExitCode());
                 } else if (settingsButton.isHovering() && Gdx.input.isTouched()) {
+                    state.getAudio().play("click");
                     settingsOn = true;
                     settingsScreen.update();
                 } else if (exitButton.isHovering() && Gdx.input.isTouched()) {
+                    state.getAudio().play("click");
                     Gdx.app.exit();
                 }
                 if (settingsOn && Gdx.input.isKeyPressed(Keys.ESCAPE)) {
@@ -476,6 +491,9 @@ public class GameScene implements Screen {
 
         game.batch.begin();
         game.batch.draw(backgroundTexture, 0, 0, 1280, 720);
+
+        // draw
+        drawOrder(delta);
 
         for (ObstacleSprite o : dead) {
             String type = o.getName();
@@ -494,9 +512,6 @@ public class GameScene implements Screen {
                 }
             }
         }
-
-        // draw
-        drawOrder(delta);
 
         for (Projectile p : state.getActiveProjectiles()) {
             p.draw(game.batch);
@@ -723,6 +738,7 @@ public class GameScene implements Screen {
 
     /**
      * Draw all objects in order based on y coordinate
+     *
      * @param delta the time in seconds since the last frame
      */
     private void drawOrder(float delta) {
@@ -734,7 +750,8 @@ public class GameScene implements Screen {
             everything.add(c);
         }
 
-        everything.sort((o1, o2) -> Float.compare(720 - o1.getObstacle().getY(), 720 - o2.getObstacle().getY()));
+        everything.sort((o1, o2) -> Float.compare(720 - o1.getObstacle().getY(),
+            720 - o2.getObstacle().getY()));
 
         // draw movement indicator first
         player.draw(game.batch);

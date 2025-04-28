@@ -10,6 +10,7 @@ import static edu.cornell.cis3152.team8.InputController.*;
  * the screen again
  */
 public class SpinAttackPattern extends BossAttackPattern {
+
     private BossWarnPattern warnPattern;
     private final float startX, startY;
     private float attackX, attackY;
@@ -32,6 +33,7 @@ public class SpinAttackPattern extends BossAttackPattern {
         SpriteSheet warnSprite,
         Player player, GameState gamestate) {
         super(controller);
+        attackName = "spin";
         this.player = player;
         this.moveSpeed = moveSpeed;
         startX = 640 / PHYSICS_UNITS;

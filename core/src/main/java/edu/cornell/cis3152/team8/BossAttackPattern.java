@@ -3,6 +3,7 @@ package edu.cornell.cis3152.team8;
 import com.badlogic.gdx.utils.Array;
 
 public abstract class BossAttackPattern {
+
     protected enum AttackState {
         /**
          * The boss is not currently executing this attack pattern
@@ -27,6 +28,7 @@ public abstract class BossAttackPattern {
     protected final Array<MinionSpawnPoint> minionSpawnPointArray;
 
     protected AttackState state;
+    protected String attackName;
 
     protected BossAttackPattern(BossController controller) {
         this.controller = controller;
@@ -47,6 +49,10 @@ public abstract class BossAttackPattern {
      */
     public boolean isEnded() {
         return this.state == AttackState.ENDED;
+    }
+
+    public String getName() {
+        return attackName;
     }
 
     /**

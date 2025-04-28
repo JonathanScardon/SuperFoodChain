@@ -11,6 +11,7 @@ import edu.cornell.cis3152.team8.BossAttackPattern.AttackState;
 import edu.cornell.gdiac.graphics.SpriteSheet;
 
 public class PreSpinAttackPattern extends BossAttackPattern {
+
     private final BossWarnPattern warnPattern;
     private final float startX, startY;
     private final int controlCode;
@@ -50,7 +51,6 @@ public class PreSpinAttackPattern extends BossAttackPattern {
     public void start() {
         state = AttackState.WARN;
         boss.setAnimation("dashHorizontal");
-
         warnTime = warnDuration;
         warnPattern.active = true;
         boss.curWarn = warnPattern;

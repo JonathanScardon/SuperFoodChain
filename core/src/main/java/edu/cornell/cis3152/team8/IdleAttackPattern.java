@@ -8,6 +8,7 @@ import static edu.cornell.cis3152.team8.InputController.*;
  * The boss will idle in the center of the screen
  */
 public class IdleAttackPattern extends BossAttackPattern {
+
     private final BossWarnPattern warnPattern;
     private final float idleX, idleY;
     private final float warnDuration;
@@ -16,9 +17,11 @@ public class IdleAttackPattern extends BossAttackPattern {
     private float warnTime;
     private float attackTime;
 
-    public IdleAttackPattern(BossController controller, float x, float y, float warnDuration, float attackDuration, SpriteSheet warnSprite) {
+    public IdleAttackPattern(BossController controller, float x, float y, float warnDuration,
+        float attackDuration, SpriteSheet warnSprite) {
         super(controller);
 
+        attackName = "idle";
         this.idleX = x;
         this.idleY = y;
         this.warnDuration = warnDuration;
@@ -27,7 +30,7 @@ public class IdleAttackPattern extends BossAttackPattern {
         this.warnPattern = new BossWarnPattern(this.idleX, this.idleY);
         this.warnPattern.setSpriteSheet(warnSprite);
 
-        boss.setAnimationFrame(0);
+
     }
 
     @Override

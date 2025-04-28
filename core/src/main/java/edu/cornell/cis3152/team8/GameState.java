@@ -93,6 +93,8 @@ public class GameState {
     protected int numBlueRaspberries;
     protected int numDurians;
 
+    private GameAudio audio;
+
     /**
      * Creates a new game session. This method will call reset() to set up the board.
      */
@@ -105,6 +107,8 @@ public class GameState {
         JsonValue avocadoConstants = this.constants.get("avocado");
         JsonValue blueRaspberryConstants = this.constants.get("blueRaspberry");
         JsonValue durianConstants = this.constants.get("durian");
+
+        audio = new GameAudio(assets);
 
         companions = new Array<>();
 
@@ -216,7 +220,8 @@ public class GameState {
      */
     public boolean inBounds(ObstacleSprite o) {
         //TODO: might have to consider radius but idk how to get it from obstacle
-        return o.getObstacle().getX() > 0.25 && o.getObstacle().getX() < 1280/64-0.25 && o.getObstacle().getY() > 0.25 && o.getObstacle().getY() < 720/64-0.25;
+        return o.getObstacle().getX() > 0.25 && o.getObstacle().getX() < 1280 / 64 - 0.25
+            && o.getObstacle().getY() > 0.25 && o.getObstacle().getY() < 720 / 64 - 0.25;
     }
 
     /**
@@ -320,5 +325,9 @@ public class GameState {
 
     public Array<ObstacleSprite> getDead() {
         return dead;
+    }
+
+    public GameAudio getAudio() {
+        return audio;
     }
 }

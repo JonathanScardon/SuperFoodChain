@@ -26,60 +26,45 @@ public class MainMenuScene implements Screen {
     private Button exitButton;
     private Settings settingsScreen;
     private boolean settingsOn;
-    private SoundEffect click;
-    private AudioSource backgroundMusic;
-
-    private MusicQueue music;
+    private GameAudio audio;
 
     public MainMenuScene(final GDXRoot game, AssetDirectory assets) {
         this.game = game;
         BitmapFont font = assets.getEntry("lpcBig", BitmapFont.class);
         background = new Texture("images/Menu.png");
-        Texture play = new Texture("images/PlayButton.png");
-        Texture settings = new Texture("images/SettingsButton.png");
-        Texture exit = new Texture("images/ExitButton.png");
         Texture button = new Texture("images/Button.png");
         Texture buttonDark = new Texture("images/ButtonDark.png");
 
-        playButton = new Button(806, 320, button, buttonDark, 0, 429, 100, "Play", font);
-        settingsButton = new Button(806, 220, button, buttonDark, 0, 429, 100, "Settings", font);
-        exitButton = new Button(806, 120, button, buttonDark, 0, 429, 100, "Exit", font);
+        playButton = new Button(806, 320, buttonDark, button, 0, 429, 100, "Play", font);
+        settingsButton = new Button(806, 220, buttonDark, button, 0, 429, 100, "Settings", font);
+        exitButton = new Button(806, 120, buttonDark, button, 0, 429, 100, "Exit", font);
         settingsScreen = new Settings();
-//        click = assets.getEntry("click", SoundEffect.class);
-//        click.play();
-        //click = Gdx.audio.newSound();
-        // System.out.println(click);
-        backgroundMusic = assets.getEntry("dodge", AudioSource.class);
-        //System.out.println(backgroundMusic);
-//        AudioEngine engine = (AudioEngine) Gdx.audio;
-//        music = engine.newMusicQueue(false, 44100);
-//        music.addSource(backgroundMusic);
-//        music.play();
+
+        audio = new GameAudio(assets);
     }
 
     public void update(float delta) {
         if (playButton.isHovering() && Gdx.input.isTouched()) {
-            //click.play();
+            audio.play("click");
             game.exitScreen(this, 0);
             dispose();
         }
         if (settingsButton.isHovering() && Gdx.input.isTouched()) {
-            //click.play();
+            audio.play("click");
             settingsOn = true;
             settingsScreen.update();
         }
         if (exitButton.isHovering() && Gdx.input.isTouched()) {
-            //click.play();
+            audio.play("click");
             game.exitScreen(this, 1);
             dispose();
         }
         if (settingsOn && Gdx.input.isKeyPressed(Keys.ESCAPE)) {
-            //click.play();
             settingsOn = false;
         }
     }
 
-    public void draw(float delta) {
+    public void draw() {
         ScreenUtils.clear(Color.BLACK);
 
         game.viewport.apply();
@@ -106,7 +91,7 @@ public class MainMenuScene implements Screen {
     @Override
     public void render(float delta) {
         this.update(delta);
-        this.draw(delta);
+        this.draw();
     }
 
     @Override

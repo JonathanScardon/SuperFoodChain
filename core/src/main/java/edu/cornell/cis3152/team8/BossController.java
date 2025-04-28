@@ -3,6 +3,7 @@ package edu.cornell.cis3152.team8;
 import com.badlogic.gdx.utils.Array;
 
 public class BossController implements InputController {
+
     /**
      * The boss to be controlled
      */
@@ -24,6 +25,11 @@ public class BossController implements InputController {
      */
     protected int curAttackIdx;
 
+    /**
+     * The name of the current attack
+     */
+    private String attackName;
+
     public BossController(Boss boss, GameState gameState) {
         this.gameState = gameState;
         this.boss = boss;
@@ -34,6 +40,7 @@ public class BossController implements InputController {
 
     /**
      * Add an attack pattern to the boss' list of possible attacks
+     *
      * @param attackPattern the attack pattern to add
      */
     public void addAttackPattern(BossAttackPattern attackPattern) {
@@ -41,8 +48,8 @@ public class BossController implements InputController {
     }
 
     /**
-     * Starts the current attack of the boss
-     * If there are no attacks left, resets the current attack index to 0
+     * Starts the current attack of the boss If there are no attacks left, resets the current attack
+     * index to 0
      */
     public void startAttack() {
         if (boss.getObstacle().isActive()) {
@@ -62,12 +69,24 @@ public class BossController implements InputController {
         this.action = action;
     }
 
-    public void update(float delta) {
+    public boolean update(float delta) {
+        //boolean to see if an attack started
+        boolean started;
+
         // if we finished the current attack do the next one in the queue
         if (this.attackPatterns.get(curAttackIdx).isEnded()) {
             curAttackIdx++;
             this.startAttack();
+            started = true;
+        } else {
+            started = false;
         }
         this.attackPatterns.get(curAttackIdx).update(delta);
+        attackName = attackPatterns.get(curAttackIdx).getName();
+        return started;
+    }
+
+    public String getAttackName() {
+        return attackName;
     }
 }

@@ -8,6 +8,7 @@ import static edu.cornell.cis3152.team8.InputController.*;
  * The boss will target the head of the player
  */
 public class SnatchAttackPattern extends BossAttackPattern {
+
     private final Player player;
     private final BossWarnPattern warnPattern;
     private final float warnDuration;
@@ -17,10 +18,12 @@ public class SnatchAttackPattern extends BossAttackPattern {
     private float warnTime;
     private float attackTime;
 
-    public SnatchAttackPattern(BossController controller, float warnDuration, float attackDuration, SpriteSheet warnSprite, Player player) {
+    public SnatchAttackPattern(BossController controller, float warnDuration, float attackDuration,
+        SpriteSheet warnSprite, Player player) {
         super(controller);
         this.player = player;
 
+        attackName = "snatch";
         this.warnDuration = warnDuration;
         this.attackDuration = attackDuration;
 
