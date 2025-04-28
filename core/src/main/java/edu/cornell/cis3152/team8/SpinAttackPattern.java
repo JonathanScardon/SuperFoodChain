@@ -9,19 +9,14 @@ import static edu.cornell.cis3152.team8.InputController.*;
  * The boss will start at the top or bottom of the screen and then travel across it until it is off
  * the screen again
  */
-public class SpinAttackPattern implements BossAttackPattern {
-
-    private final BossController controller;
-    private final Boss boss;
+public class SpinAttackPattern extends BossAttackPattern {
     private BossWarnPattern warnPattern;
-
     private final float startX, startY;
     private float attackX, attackY;
     private int controlCode;
     private final float warnDuration;
 
     private float warnTime;
-    private AttackState state;
     private SpriteSheet warnSprite;
     private Player player;
     private SpriteSheet attackSprite;
@@ -36,9 +31,8 @@ public class SpinAttackPattern implements BossAttackPattern {
     public SpinAttackPattern(BossController controller, float warnDuration, float moveSpeed,
         SpriteSheet warnSprite,
         Player player, GameState gamestate) {
-        this.controller = controller;
+        super(controller);
         this.player = player;
-        boss = controller.boss;
         this.moveSpeed = moveSpeed;
         startX = 640 / PHYSICS_UNITS;
         startY = 360 / PHYSICS_UNITS;
@@ -109,6 +103,8 @@ public class SpinAttackPattern implements BossAttackPattern {
             boss.moveSpeed = moveSpeed;
             warnPattern.active = false;
             boss.curWarn = null;
+
+            this.spawnMinions();
         }
     }
 

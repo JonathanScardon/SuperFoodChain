@@ -251,14 +251,23 @@ public class GameScene implements Screen {
      * Spawn a single minion in the world
      */
     private void spawnMinion() {
-        if (minionSpawnIdx >= minionSpawns.size) {
-            minionSpawnIdx = 0;
-        }
-        MinionSpawnPoint sp = minionSpawns.get(minionSpawnIdx);
-        Minion m = sp.spawnMinion(world, player);
+        int checked = 0;
+        while (checked < minionSpawns.size) { // avoid infinite loop
+            if (minionSpawnIdx >= minionSpawns.size) {
+                minionSpawnIdx = 0;
+            }
+            MinionSpawnPoint sp = minionSpawns.get(minionSpawnIdx);
+            minionSpawnIdx++;
 
-        minions.add(m);
-        minionSpawnIdx++;
+            if (!sp.isBossOnly()) {
+                sp.spawnMinion();
+                return;
+            }
+
+            // skip this point if it is only triggered by a boss
+            checked++;
+        }
+        // if we reach here, none of our spawn points auto-spawn
     }
 
     /**
@@ -433,17 +442,6 @@ public class GameScene implements Screen {
                 c.update(delta);
             }
 
-//            for (int i = 0; i < dead.size; i++) {
-//                String type = dead.get(i).getName();
-//                if (!type.equals("coin")) {
-//                    if () {
-//                        dead.removeIndex(i);
-//                    }
-//                }
-//            }
-//            addMinions();
-//            addCompanions();
-
         }
         if (player.isAlive() && !winGame) {
             state.getCollisionController().postUpdate();
@@ -591,18 +589,6 @@ public class GameScene implements Screen {
         }
         game.batch.end();
     }
-
-    // /**
-    // * Creates photons and updates the object's cooldown.
-    // *
-    // * Using an ability requires access to all other models? so we have factored
-    // * this behavior out of the Ship into the GameplayController.
-    // */
-    // private void useAbility(Companion c) {
-    // c.useAbility(state);
-    // // reset ability cooldown
-    // c.coolDown(false);
-    // }
 
     private void drawLose() {
         game.batch.draw(dim, 0, 0);

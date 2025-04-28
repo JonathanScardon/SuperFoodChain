@@ -6,13 +6,10 @@ import edu.cornell.gdiac.graphics.SpriteSheet;
 import static edu.cornell.cis3152.team8.InputController.*;
 
 /**
- * The boss will start at the top or bottom of the screen and then travel across it until it is off
- * the screen again
+ * The boss will start at the top or bottom of the screen
+ * and then travel across it until it is off the screen again
  */
-public class DashAttackPattern implements BossAttackPattern {
-
-    private final BossController controller;
-    private final Boss boss;
+public class DashAttackPattern extends BossAttackPattern {
     private final BossWarnPattern warnPattern;
 
     private final float startX, startY;
@@ -21,15 +18,12 @@ public class DashAttackPattern implements BossAttackPattern {
     private final float moveSpeed;
 
     private float warnTime;
-    private AttackState state;
     private float origMoveSpeed;
 
     private static final float PHYSICS_UNITS = 64f;
 
-    public DashAttackPattern(BossController controller, float x, float y, String dir,
-        float warnDuration, float moveSpeed, SpriteSheet warnSprite) {
-        this.controller = controller;
-        this.boss = controller.boss;
+    public DashAttackPattern(BossController controller, float x, float y, String dir, float warnDuration, float moveSpeed, SpriteSheet warnSprite) {
+        super(controller);
 
         this.startX = x;
         this.startY = y;
@@ -58,8 +52,6 @@ public class DashAttackPattern implements BossAttackPattern {
                 throw new IllegalArgumentException("Unknown direction: " + dir);
         }
         this.warnPattern.setSpriteSheet(warnSprite);
-
-        this.state = AttackState.INACTIVE;
     }
 
     @Override
@@ -109,6 +101,8 @@ public class DashAttackPattern implements BossAttackPattern {
         origMoveSpeed = boss.moveSpeed;
         boss.moveSpeed = moveSpeed;
 
+        this.spawnMinions();
+
         warnPattern.active = false;
         boss.curWarn = null;
     }
@@ -141,10 +135,5 @@ public class DashAttackPattern implements BossAttackPattern {
             case CONTROL_MOVE_RIGHT -> (boss.getObstacle().getX() - 4) * PHYSICS_UNITS > 1280;
             default -> true;
         };
-    }
-
-    @Override
-    public boolean isEnded() {
-        return state == AttackState.ENDED;
     }
 }

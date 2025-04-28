@@ -1,7 +1,9 @@
 package edu.cornell.cis3152.team8;
 
-public interface BossAttackPattern {
-    enum AttackState {
+import com.badlogic.gdx.utils.Array;
+
+public abstract class BossAttackPattern {
+    protected enum AttackState {
         /**
          * The boss is not currently executing this attack pattern
          */
@@ -20,15 +22,48 @@ public interface BossAttackPattern {
         ENDED,
     }
 
+    protected final BossController controller;
+    protected final Boss boss;
+    protected final Array<MinionSpawnPoint> minionSpawnPointArray;
+
+    protected AttackState state;
+
+    protected BossAttackPattern(BossController controller) {
+        this.controller = controller;
+        this.boss = controller.boss;
+        this.minionSpawnPointArray = new Array<>();
+        this.state = AttackState.INACTIVE;
+    }
+
     /**
      * Start the warning process for the boss
      */
-    void start();
+    public abstract void start();
 
-    void update(float delta);
+    public abstract void update(float delta);
 
     /**
      * @return Whether the warning and attack have both ended
      */
-    boolean isEnded();
+    public boolean isEnded() {
+        return this.state == AttackState.ENDED;
+    }
+
+    /**
+     * Add a spawn point for the attack to spawn minions add
+     *
+     * @param spawnPoint the spawn point to add
+     */
+    void addMinionSpawnPoint(MinionSpawnPoint spawnPoint) {
+        minionSpawnPointArray.add(spawnPoint);
+    }
+
+    /**
+     * Trigger spawning at every spawn point associated with this attack
+     */
+    void spawnMinions() {
+        for (MinionSpawnPoint spawn : minionSpawnPointArray) {
+            spawn.spawnMinion();
+        }
+    }
 }
