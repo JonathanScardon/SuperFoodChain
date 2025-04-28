@@ -35,15 +35,15 @@ public class MainMenuScene implements Screen {
         Texture button = new Texture("images/Button.png");
         Texture buttonDark = new Texture("images/ButtonDark.png");
 
-        playButton = new Button(806, 320, buttonDark, button, 0, 429, 100, "Play", font);
-        settingsButton = new Button(806, 220, buttonDark, button, 0, 429, 100, "Settings", font);
-        exitButton = new Button(806, 120, buttonDark, button, 0, 429, 100, "Exit", font);
+        playButton = new Button(806, 320, button, buttonDark, 0, 429, 100, "Play", font);
+        settingsButton = new Button(806, 220, button, buttonDark, 0, 429, 100, "Settings", font);
+        exitButton = new Button(806, 120, button, buttonDark, 0, 429, 100, "Exit", font);
         settingsScreen = new Settings();
 
         audio = new GameAudio(assets);
     }
 
-    public void update(float delta) {
+    public void update() {
         if (playButton.isHovering() && Gdx.input.isTouched()) {
             audio.play("click");
             game.exitScreen(this, 0);
@@ -90,7 +90,7 @@ public class MainMenuScene implements Screen {
 
     @Override
     public void render(float delta) {
-        this.update(delta);
+        this.update();
         this.draw();
     }
 

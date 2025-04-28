@@ -13,7 +13,7 @@ public class Button {
     protected float posX;
     protected float posY;
     protected Texture texture;
-    protected Texture dark;
+    protected Texture hover;
 
 
     protected float width;
@@ -24,7 +24,7 @@ public class Button {
 
     private int exitCode;
 
-    public Button(float x, float y, Texture texture, Texture dark, int exitCode) {
+    public Button(float x, float y, Texture texture, Texture hover, int exitCode) {
         posX = x;
         posY = y;
         this.texture = texture;
@@ -32,10 +32,10 @@ public class Button {
         height = texture.getHeight();
         this.exitCode = exitCode;
         text = new TextLayout("", new BitmapFont());
-        this.dark = dark;
+        this.hover = hover;
     }
 
-    public Button(float x, float y, Texture texture, Texture dark, int exitCode, float width,
+    public Button(float x, float y, Texture texture, Texture hover, int exitCode, float width,
         float height) {
         posX = x;
         posY = y;
@@ -44,10 +44,10 @@ public class Button {
         this.height = height;
         this.exitCode = exitCode;
         text = new TextLayout("", new BitmapFont());
-        this.dark = dark;
+        this.hover = hover;
     }
 
-    public Button(float x, float y, Texture texture, Texture dark, int exitCode, float width,
+    public Button(float x, float y, Texture texture, Texture hover, int exitCode, float width,
         float height,
         String name, BitmapFont font) {
         posX = x;
@@ -57,7 +57,7 @@ public class Button {
         this.height = height;
         this.exitCode = exitCode;
         text = new TextLayout(name, font);
-        this.dark = dark;
+        this.hover = hover;
     }
 
 
@@ -71,9 +71,9 @@ public class Button {
     public void draw(SpriteBatch batch) {
         batch.setBlendMode(BlendMode.ALPHA_BLEND);
         if (isHovering()) {
-            batch.draw(texture, posX, posY, width, height);
+            batch.draw(hover, posX, posY, width, height);
         } else {
-            batch.draw(dark, posX, posY, width, height);
+            batch.draw(texture, posX, posY, width, height);
         }
 
         text.getFont().setColor(Color.BROWN);

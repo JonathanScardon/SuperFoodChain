@@ -43,6 +43,7 @@ public class GameScene implements Screen {
     private final Button homeButton;
     private final Button nextButton;
     private final Button replayButton;
+    private final Button handbookButton;
 
 
     private final Settings settingsScreen;
@@ -165,12 +166,14 @@ public class GameScene implements Screen {
         pauseBackground = new Texture("images/PauseBackground.png");
         Texture button = new Texture("images/Button.png");
         Texture buttonDark = new Texture("images/ButtonDark.png");
-        Texture replay = new Texture("images/Replay_Button.png");
-        Texture home = new Texture("images/Home_Button.png");
-        Texture next = new Texture("images/Next_Button.png");
-        Texture replayLight = new Texture("images/replayLight.png");
-        Texture homeLight = new Texture("images/homeLight.png");
-        Texture nextLight = new Texture("images/nextLight.png");
+        Texture replay = new Texture("images/ReplayButton.png");
+        Texture home = new Texture("images/HomeButton.png");
+        Texture next = new Texture("images/NextButton.png");
+        Texture handbook = new Texture("images/HandbookButton.png");
+        Texture replayHover = new Texture("images/ReplayButtonHover.png");
+        Texture homeHover = new Texture("images/HomeButtonHover.png");
+        Texture nextHover = new Texture("images/NextButtonHover.png");
+        Texture handbookHover = new Texture("images/HandbookButtonHover.png");
 
         win = new Texture("images/Win.png");
         mouseLose = new Texture("images/LoseRat.png");
@@ -185,9 +188,10 @@ public class GameScene implements Screen {
         settingsButton = new Button(506, 239, button, buttonDark, 0, 280, 63, "Settings", font);
         exitButton = new Button(506, 160, button, buttonDark, 0, 280, 63, "Exit", font);
 
-        replayButton = new Button(0, 0, replayLight, replay, 0, 78, 78);
-        homeButton = new Button(0, 0, homeLight, home, 1, 78, 78);
-        nextButton = new Button(734, 114, nextLight, next, 2, 78, 78);
+        replayButton = new Button(0, 0, replay, replayHover, 0, 78, 78);
+        homeButton = new Button(0, 0, home, homeHover, 1, 78, 78);
+        nextButton = new Button(0, 0, next, nextHover, 2, 78, 78);
+        handbookButton = new Button(0, 0, handbook, handbookHover, 2, 78, 78);
 
         settingsScreen = new Settings();
 
@@ -606,26 +610,45 @@ public class GameScene implements Screen {
     }
 
     private void drawLose() {
+        float loseX = 1280 / 2f - mouseLose.getWidth() / 2f;
+        float loseY = 720 / 2f - mouseLose.getHeight() / 2f;
         game.batch.draw(dim, 0, 0);
         if (bosses.get(0).getName().equals("mouse")) {
-            game.batch.draw(mouseLose, 112, 60);
+            game.batch.draw(mouseLose, loseX, loseY);
         } else if (bosses.get(0).getName().equals("chopsticks")) {
-            game.batch.draw(chopsticksLose, 112, 60);
+            game.batch.draw(chopsticksLose, loseX, loseY);
         }
-        replayButton.setPosition(546, 108);
-        homeButton.setPosition(666, 108);
+        float height = loseY + replayButton.height / 2f;
+        float gap = 40;
+        float span = (replayButton.width * 3) + (gap * 2);
+
+        replayButton.setPosition(loseX + (mouseLose.getWidth() / 2f - span / 2), height);
+        handbookButton.setPosition(replayButton.posX + replayButton.width + gap, height);
+        homeButton.setPosition(handbookButton.posX + handbookButton.width + gap, height);
+
         replayButton.draw(game.batch);
+        handbookButton.draw(game.batch);
         homeButton.draw(game.batch);
 
     }
 
     private void drawWin() {
+        float winX = win.getWidth() / 2f;
+        float winY = win.getHeight() / 2f;
         game.batch.draw(dim, 0, 0);
-        game.batch.draw(win, 112, 60);
-        replayButton.setPosition(494, 114);
-        homeButton.setPosition(613, 114);
+        game.batch.draw(win, winX, 60);
+        float height = winY + replayButton.height / 2f;
+        float gap = 40;
+        float span = (replayButton.width * 4) + (gap * 3);
+
+        replayButton.setPosition(winX + (win.getWidth() / 2f - span / 2), height);
+        homeButton.setPosition(replayButton.posX + replayButton.width + gap, height);
+        handbookButton.setPosition(homeButton.posX + homeButton.width + gap, height);
+        nextButton.setPosition(handbookButton.posX + handbookButton.width + gap, height);
+
         replayButton.draw(game.batch);
         homeButton.draw(game.batch);
+        handbookButton.draw(game.batch);
         nextButton.draw(game.batch);
     }
 

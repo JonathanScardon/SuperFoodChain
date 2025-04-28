@@ -84,29 +84,88 @@ public class GameAudio {
     }
 
     public void play(String name) {
-//        menuSfx[currSfx].stop();
+//        if (currSfx < menuSfx.length) {
+//            menuSfx[currSfx].stop();
+//        }
 //        gameSfx[currSfx].stop();
         switch (name) {
-            case ("click") -> menuSfx[0].play(sfxVolume);
-            case ("clickLevel") -> menuSfx[1].play(sfxVolume);
-            case ("coin") -> gameSfx[0].play(sfxVolume);
-            case ("DURIAN") -> gameSfx[1].play(sfxVolume);
-            case ("pineapple") -> gameSfx[2].play(sfxVolume);
-            case ("STRAWBERRY") -> gameSfx[3].play(sfxVolume);
-            case ("dash") -> gameSfx[4].play(sfxVolume);
-            case ("spin") -> gameSfx[4].play(sfxVolume);
-            case ("chefAttack") -> gameSfx[5].play(sfxVolume);
-            case ("snatch") -> gameSfx[6].play(sfxVolume);
-            case ("mouseHit") -> gameSfx[7].play(sfxVolume);
-            case ("chefHit") -> gameSfx[8].play(sfxVolume);
-            case ("chopsticksHit") -> gameSfx[9].play(sfxVolume);
-            case ("mouseDeath") -> gameSfx[7].play(sfxVolume);
-            case ("chefDeath") -> gameSfx[8].play(sfxVolume);
-            case ("chopsticksDeath") -> gameSfx[9].play(sfxVolume);
-            case ("minion") -> gameSfx[10].play(sfxVolume);
-            case ("companionDeath") -> gameSfx[11].play(sfxVolume);
-            case ("companionRecruitment") -> gameSfx[12].play(sfxVolume);
-            // case ("menu") -> menuMusic.play
+            case ("click") -> {
+                menuSfx[0].play(sfxVolume);
+                currSfx = 0;
+            }
+            case ("clickLevel") -> {
+                menuSfx[1].play(sfxVolume);
+                currSfx = 1;
+            }
+            case ("coin") -> {
+                gameSfx[0].play(sfxVolume);
+                currSfx = 0;
+            }
+            case ("DURIAN") -> {
+                gameSfx[1].play(sfxVolume);
+                currSfx = 1;
+            }
+            case ("pineapple") -> {
+                gameSfx[2].play(sfxVolume);
+                currSfx = 2;
+            }
+            case ("STRAWBERRY") -> {
+                gameSfx[3].play(sfxVolume);
+                currSfx = 3;
+            }
+            case ("dash") -> {
+                gameSfx[4].play(sfxVolume);
+                currSfx = 4;
+            }
+            case ("spin") -> {
+                gameSfx[4].play(sfxVolume);
+                currSfx = 4;
+            }
+            case ("chefAttack") -> {
+                gameSfx[5].play(sfxVolume);
+                currSfx = 5;
+            }
+            case ("snatch") -> {
+                gameSfx[6].play(sfxVolume);
+                currSfx = 6;
+            }
+            case ("mouseHit") -> {
+                gameSfx[7].play(sfxVolume);
+                currSfx = 7;
+            }
+            case ("chefHit") -> {
+                gameSfx[8].play(sfxVolume);
+                currSfx = 8;
+            }
+            case ("chopsticksHit") -> {
+                gameSfx[9].play(sfxVolume);
+                currSfx = 9;
+            }
+            case ("mouseDeath") -> {
+                gameSfx[7].play(sfxVolume);
+                currSfx = 7;
+            }
+            case ("chefDeath") -> {
+                gameSfx[8].play(sfxVolume);
+                currSfx = 8;
+            }
+            case ("chopsticksDeath") -> {
+                gameSfx[9].play(sfxVolume);
+                currSfx = 9;
+            }
+            case ("minion") -> {
+                gameSfx[10].play(sfxVolume);
+                currSfx = 10;
+            }
+            case ("companionDeath") -> {
+                gameSfx[11].play(sfxVolume);
+                currSfx = 11;
+            }
+            case ("companionRecruitment") -> {
+                gameSfx[12].play(sfxVolume);
+                currSfx = 12;
+                // case ("menu") -> menuMusic.play
+            }
 
         }
     }
