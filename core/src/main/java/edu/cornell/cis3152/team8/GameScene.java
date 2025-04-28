@@ -633,8 +633,8 @@ public class GameScene implements Screen {
     }
 
     private void drawWin() {
-        float winX = win.getWidth() / 2f;
-        float winY = win.getHeight() / 2f;
+        float winX = 1280 / 2f - win.getWidth() / 2f;
+        float winY = 720 / 2f - win.getHeight() / 2f;
         game.batch.draw(dim, 0, 0);
         game.batch.draw(win, winX, 60);
         float height = winY + replayButton.height / 2f;
