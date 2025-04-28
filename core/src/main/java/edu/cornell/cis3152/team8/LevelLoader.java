@@ -12,6 +12,9 @@ import edu.cornell.cis3152.team8.companions.Strawberry;
 import edu.cornell.gdiac.assets.AssetDirectory;
 import edu.cornell.gdiac.graphics.SpriteSheet;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * This is a singleton class meant to load levels from the tmx file format
  */
@@ -38,6 +41,9 @@ public class LevelLoader {
     private SpriteSheet dashWarnVerticalSprite;
     private SpriteSheet dashWarnHorizontalSprite;
     private SpriteSheet spinWarnSprite;
+
+    // map of ids to minion spawn points
+    private Map<Integer, MinionSpawnPoint> minionSpawns;
 
     /**
      * @return The single instance of the LevelLoader class
@@ -87,11 +93,10 @@ public class LevelLoader {
         TiledMap map = this.mapLoader.load(path);
 
         MapLayer companionLayer = map.getLayers().get("companion");
-        MapLayer minionLayer = map.getLayers().get("minion");
         MapLayer bossLayer = map.getLayers().get("boss");
+        minionSpawns = new HashMap<>();
 
         loadCompanionLayer(companionLayer, state);
-        loadMinionLayer(minionLayer, state);
         loadBossLayer(bossLayer, state, scene);
 
         if (state.getBosses().isEmpty()) {
@@ -107,12 +112,12 @@ public class LevelLoader {
 
     private void loadCompanionLayer(MapLayer companionLayer, GameState state) {
         MapProperties layerProps = companionLayer.getProperties();
-        state.maxCompanions = layerProps.get("maxCompanions", Integer.class);
-        state.maxAvocados = layerProps.get("maxAvocado", Integer.class);
-        state.maxDurians = layerProps.get("maxDurian", Integer.class);
-        state.maxPineapples = layerProps.get("maxPineapple", Integer.class);
-        state.maxStrawberries = layerProps.get("maxStrawberry", Integer.class);
-        state.maxBlueRaspberries = layerProps.get("maxBlueRaspberry", Integer.class);
+        state.maxCompanions = layerProps.get("maxCompanions", 0, Integer.class);
+        state.maxAvocados = layerProps.get("maxAvocado", 0, Integer.class);
+        state.maxDurians = layerProps.get("maxDurian", 0, Integer.class);
+        state.maxPineapples = layerProps.get("maxPineapple", 0, Integer.class);
+        state.maxStrawberries = layerProps.get("maxStrawberry", 0, Integer.class);
+        state.maxBlueRaspberries = layerProps.get("maxBlueRaspberry", 0, Integer.class);
         for (MapObject obj : companionLayer.getObjects()) {
             if ("playerSpawn".equals(obj.getProperties().get("type", String.class))) {
                 createPlayer(obj, state);
@@ -122,18 +127,17 @@ public class LevelLoader {
         }
     }
 
-    private void loadMinionLayer(MapLayer minionLayer, GameState state) {
-        MapProperties layerProps = minionLayer.getProperties();
-        state.maxMinions = layerProps.get("maxMinions", Integer.class);
+    private void loadBossLayer(MapLayer bossLayer, GameState state, GameScene scene) {
+        MapProperties layerProps = bossLayer.getProperties();
+        state.maxMinions = layerProps.get("maxMinions", 0, Integer.class);
 
-        for (MapObject obj : minionLayer.getObjects()) {
+        // create minion spawners first
+        for (MapObject obj : bossLayer.getObjects()) {
             if ("minionSpawn".equals(obj.getProperties().get("type", String.class))) {
                 createMinionSpawn(obj, state);
             }
         }
-    }
 
-    private void loadBossLayer(MapLayer bossLayer, GameState state, GameScene scene) {
         for (MapObject obj : bossLayer.getObjects()) {
             if ("boss".equals(obj.getProperties().get("type", String.class))) {
                 createBoss(obj, state, scene);
@@ -157,7 +161,7 @@ public class LevelLoader {
         int id = props.get("id", Integer.class);
         float x = props.get("x", Float.class) / PHYSICS_UNITS;
         float y = props.get("y", Float.class) / PHYSICS_UNITS;
-        int health = props.get("health", Integer.class);
+        int health = props.get("health", 0, Integer.class);
 
         switch (bossType) {
             case "mouse":
@@ -192,7 +196,7 @@ public class LevelLoader {
         MapObject attackObj;
         BossAttackPattern attack;
         while (props.containsKey("attack" + attackIdx)) {
-            attackObj = props.get("attack" + attackIdx, TiledMapTileMapObject.class);
+            attackObj = props.get("attack" + attackIdx, MapObject.class);
             attack = createAttack(attackObj, bossController, state.getPlayer());
             bossController.addAttackPattern(attack);
 
@@ -210,7 +214,7 @@ public class LevelLoader {
      * @param controller the boss that will execute the attack
      */
     private BossAttackPattern createAttack(MapObject obj, BossController controller,
-        Player player) {
+                                           Player player) {
         String attackType = obj.getProperties().get("attackType", String.class);
         MapProperties props = obj.getProperties();
 
@@ -218,19 +222,19 @@ public class LevelLoader {
         int id = props.get("id", Integer.class);
         float x = props.get("x", Float.class) / PHYSICS_UNITS;
         float y = props.get("y", Float.class) / PHYSICS_UNITS;
-        float warnDuration = props.get("warnDuration", Float.class);
+        float warnDuration = props.get("warnDuration", 0f, Float.class);
         float attackDuration;
         float moveSpeed;
 
         switch (attackType) {
             case "idle":
-                attackDuration = props.get("attackDuration", Float.class);
+                attackDuration = props.get("attackDuration", 0f, Float.class);
                 attack = new IdleAttackPattern(controller, x, y, warnDuration, attackDuration,
                     idleWarnSprite);
                 break;
             case "dash":
                 String dir = props.get("dir", String.class);
-                moveSpeed = props.get("moveSpeed", Float.class);
+                moveSpeed = props.get("moveSpeed", 0f, Float.class);
                 if (dir.equals("up") || dir.equals("down")) {
                     attack = new DashAttackPattern(controller, x, y, dir, warnDuration, moveSpeed,
                         dashWarnVerticalSprite);
@@ -240,12 +244,12 @@ public class LevelLoader {
                 }
                 break;
             case "spin":
-                moveSpeed = props.get("moveSpeed", Float.class);
+                moveSpeed = props.get("moveSpeed", 0f, Float.class);
                 attack = new SpinAttackPattern(controller, warnDuration, moveSpeed, spinWarnSprite,
                     player, state);
                 break;
             case "snatch":
-                attackDuration = props.get("attackDuration", Float.class);
+                attackDuration = props.get("attackDuration", 0f, Float.class);
                 attack = new SnatchAttackPattern(controller, warnDuration, attackDuration,
                     idleWarnSprite, player);
                 break;
@@ -253,6 +257,18 @@ public class LevelLoader {
 
         if (attack == null) {
             throw new RuntimeException("Attack creation failed");
+        }
+
+        // get all minion spawns
+        int spawnIdx = 0;
+        int spawnId;
+        MinionSpawnPoint spawn;
+        while (props.containsKey("minion" + spawnIdx)) {
+            spawnId = props.get("minion" + spawnIdx, MapObject.class).getProperties().get("id", Integer.class);
+            spawn = minionSpawns.get(spawnId);
+            attack.addMinionSpawnPoint(spawn);
+
+            spawnIdx++;
         }
 
         return attack;
@@ -317,12 +333,14 @@ public class LevelLoader {
         float x = props.get("x", Float.class);
         float y = props.get("y", Float.class);
 
-        float antSpawnProportion = props.get("antSpawnProportion", Float.class);
-        float cricketSpawnProportion = props.get("cricketSpawnProportion", Float.class);
-        float spiderSpawnProportion = props.get("spiderSpawnProportion", Float.class);
+        boolean bossOnly = props.get("bossOnly", false, Boolean.class);
+        float antSpawnProportion = props.get("antSpawnProportion", 0f, Float.class);
+        float cricketSpawnProportion = props.get("cricketSpawnProportion", 0f, Float.class);
+        float spiderSpawnProportion = props.get("spiderSpawnProportion", 0f, Float.class);
 
-        state.getMinionSpawns().add(
-            new MinionSpawnPoint(x, y, antSpawnProportion, cricketSpawnProportion,
-                spiderSpawnProportion));
+        MinionSpawnPoint spawn = new MinionSpawnPoint(state, x, y, bossOnly, antSpawnProportion, cricketSpawnProportion, spiderSpawnProportion);
+
+        state.getMinionSpawns().add(spawn);
+        this.minionSpawns.put(id, spawn);
     }
 }

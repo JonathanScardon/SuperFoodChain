@@ -42,7 +42,7 @@ public class BossController implements InputController {
 
     /**
      * Starts the current attack of the boss
-     * If there are no attacks left, resets current attack index to 0
+     * If there are no attacks left, resets the current attack index to 0
      */
     public void startAttack() {
         if (boss.getObstacle().isActive()) {

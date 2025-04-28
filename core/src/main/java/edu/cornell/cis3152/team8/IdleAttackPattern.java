@@ -7,24 +7,17 @@ import static edu.cornell.cis3152.team8.InputController.*;
 /**
  * The boss will idle in the center of the screen
  */
-public class IdleAttackPattern implements BossAttackPattern {
-
-    private final BossController controller;
-    private final Boss boss;
+public class IdleAttackPattern extends BossAttackPattern {
     private final BossWarnPattern warnPattern;
-
     private final float idleX, idleY;
     private final float warnDuration;
     private final float attackDuration;
 
     private float warnTime;
     private float attackTime;
-    private AttackState state;
 
-    public IdleAttackPattern(BossController controller, float x, float y, float warnDuration,
-        float attackDuration, SpriteSheet warnSprite) {
-        this.controller = controller;
-        this.boss = controller.boss;
+    public IdleAttackPattern(BossController controller, float x, float y, float warnDuration, float attackDuration, SpriteSheet warnSprite) {
+        super(controller);
 
         this.idleX = x;
         this.idleY = y;
@@ -34,7 +27,6 @@ public class IdleAttackPattern implements BossAttackPattern {
         this.warnPattern = new BossWarnPattern(this.idleX, this.idleY);
         this.warnPattern.setSpriteSheet(warnSprite);
 
-        this.state = AttackState.INACTIVE;
         boss.setAnimationFrame(0);
     }
 
@@ -61,6 +53,8 @@ public class IdleAttackPattern implements BossAttackPattern {
         boss.getObstacle().setY(this.idleY);
         attackTime = attackDuration;
 
+        this.spawnMinions();
+
         warnPattern.active = false;
         boss.curWarn = null;
     }
@@ -83,10 +77,5 @@ public class IdleAttackPattern implements BossAttackPattern {
                 }
                 break;
         }
-    }
-
-    @Override
-    public boolean isEnded() {
-        return state == AttackState.ENDED;
     }
 }

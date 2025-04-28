@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="1" height="1" tilewidth="1280" tileheight="720" infinite="0" nextlayerid="5" nextobjectid="23">
- <objectgroup id="2" name="boss">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="1" height="1" tilewidth="1280" tileheight="720" infinite="0" nextlayerid="5" nextobjectid="27">
+ <objectgroup id="2" name="boss" class="bossLayer">
+  <properties>
+   <property name="maxMinions" type="int" value="4"/>
+  </properties>
   <object id="7" name="mouse" type="boss" x="-2.2048" y="1000.89">
    <properties>
     <property name="attack0" type="object" value="8"/>
@@ -51,8 +54,40 @@
     <property name="warnDuration" type="float" value="2"/>
    </properties>
   </object>
+  <object id="23" type="minionSpawn" x="-106.193" y="-49.8424">
+   <properties>
+    <property name="antSpawnProportion" type="float" value="1"/>
+    <property name="bossOnly" type="bool" value="false"/>
+    <property name="cricketSpawnProportion" type="float" value="0"/>
+    <property name="spiderSpawnProportion" type="float" value="0"/>
+   </properties>
+  </object>
+  <object id="24" type="minionSpawn" x="1348.03" y="-61.3839">
+   <properties>
+    <property name="antSpawnProportion" type="float" value="1"/>
+    <property name="bossOnly" type="bool" value="false"/>
+    <property name="cricketSpawnProportion" type="float" value="0"/>
+    <property name="spiderSpawnProportion" type="float" value="0"/>
+   </properties>
+  </object>
+  <object id="25" type="minionSpawn" x="-119.797" y="777.252">
+   <properties>
+    <property name="antSpawnProportion" type="float" value="1"/>
+    <property name="bossOnly" type="bool" value="false"/>
+    <property name="cricketSpawnProportion" type="float" value="0"/>
+    <property name="spiderSpawnProportion" type="float" value="0"/>
+   </properties>
+  </object>
+  <object id="26" type="minionSpawn" x="1334.43" y="765.71">
+   <properties>
+    <property name="antSpawnProportion" type="float" value="1"/>
+    <property name="bossOnly" type="bool" value="false"/>
+    <property name="cricketSpawnProportion" type="float" value="0"/>
+    <property name="spiderSpawnProportion" type="float" value="0"/>
+   </properties>
+  </object>
  </objectgroup>
- <objectgroup id="4" name="companion">
+ <objectgroup id="4" name="companion" class="companionLayer">
   <properties>
    <property name="maxAvocado" type="int" value="0"/>
    <property name="maxBlueRaspberry" type="int" value="0"/>
@@ -73,38 +108,5 @@
   <object id="16" type="companionSpawn" x="254.391" y="333.131"/>
   <object id="17" type="companionSpawn" x="944.882" y="611.75"/>
   <object id="18" type="companionSpawn" x="417.929" y="599.637"/>
- </objectgroup>
- <objectgroup id="3" name="minion">
-  <properties>
-   <property name="maxMinions" type="int" value="4"/>
-  </properties>
-  <object id="3" type="minionSpawn" x="-90.561" y="-48.8457">
-   <properties>
-    <property name="antSpawnProportion" type="float" value="1"/>
-    <property name="cricketSpawnProportion" type="float" value="0"/>
-    <property name="spiderSpawnProportion" type="float" value="0"/>
-   </properties>
-  </object>
-  <object id="5" type="minionSpawn" x="1363.66" y="-60.3872">
-   <properties>
-    <property name="antSpawnProportion" type="float" value="1"/>
-    <property name="cricketSpawnProportion" type="float" value="0"/>
-    <property name="spiderSpawnProportion" type="float" value="0"/>
-   </properties>
-  </object>
-  <object id="21" type="minionSpawn" x="-104.165" y="778.249">
-   <properties>
-    <property name="antSpawnProportion" type="float" value="1"/>
-    <property name="cricketSpawnProportion" type="float" value="0"/>
-    <property name="spiderSpawnProportion" type="float" value="0"/>
-   </properties>
-  </object>
-  <object id="22" type="minionSpawn" x="1350.06" y="766.707">
-   <properties>
-    <property name="antSpawnProportion" type="float" value="1"/>
-    <property name="cricketSpawnProportion" type="float" value="0"/>
-    <property name="spiderSpawnProportion" type="float" value="0"/>
-   </properties>
-  </object>
  </objectgroup>
 </map>
