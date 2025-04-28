@@ -68,9 +68,9 @@ public class Button {
             && y <= posY + height;
     }
 
-    public void draw(SpriteBatch batch) {
+    public void draw(SpriteBatch batch, boolean allowHover) {
         batch.setBlendMode(BlendMode.ALPHA_BLEND);
-        if (isHovering()) {
+        if (isHovering() && allowHover) {
             batch.draw(hover, posX, posY, width, height);
         } else {
             batch.draw(texture, posX, posY, width, height);
@@ -91,4 +91,8 @@ public class Button {
         posY = y;
     }
 
+
+    public boolean isPressed() {
+        return isHovering() && Gdx.input.isTouched();
+    }
 }

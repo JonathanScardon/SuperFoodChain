@@ -626,9 +626,9 @@ public class GameScene implements Screen {
         handbookButton.setPosition(replayButton.posX + replayButton.width + gap, height);
         homeButton.setPosition(handbookButton.posX + handbookButton.width + gap, height);
 
-        replayButton.draw(game.batch);
-        handbookButton.draw(game.batch);
-        homeButton.draw(game.batch);
+        replayButton.draw(game.batch, true);
+        handbookButton.draw(game.batch, true);
+        homeButton.draw(game.batch, true);
 
     }
 
@@ -636,7 +636,7 @@ public class GameScene implements Screen {
         float winX = 1280 / 2f - win.getWidth() / 2f;
         float winY = 720 / 2f - win.getHeight() / 2f;
         game.batch.draw(dim, 0, 0);
-        game.batch.draw(win, winX, 60);
+        game.batch.draw(win, winX, winY);
         float height = winY + replayButton.height / 2f;
         float gap = 40;
         float span = (replayButton.width * 4) + (gap * 3);
@@ -646,10 +646,10 @@ public class GameScene implements Screen {
         handbookButton.setPosition(homeButton.posX + homeButton.width + gap, height);
         nextButton.setPosition(handbookButton.posX + handbookButton.width + gap, height);
 
-        replayButton.draw(game.batch);
-        homeButton.draw(game.batch);
-        handbookButton.draw(game.batch);
-        nextButton.draw(game.batch);
+        replayButton.draw(game.batch, true);
+        homeButton.draw(game.batch, true);
+        handbookButton.draw(game.batch, true);
+        nextButton.draw(game.batch, true);
     }
 
     private void setStart() {
@@ -664,11 +664,11 @@ public class GameScene implements Screen {
         game.batch.setBlendMode(BlendMode.ALPHA_BLEND);
         game.batch.draw(dim, 0, 0);
         game.batch.draw(pauseBackground, 111.5f, 60.1f);
-        resumeButton.draw(game.batch);
-        resetButton.draw(game.batch);
-        levelsButton.draw(game.batch);
-        settingsButton.draw(game.batch);
-        exitButton.draw(game.batch);
+        resumeButton.draw(game.batch, true);
+        resetButton.draw(game.batch, true);
+        levelsButton.draw(game.batch, true);
+        settingsButton.draw(game.batch, true);
+        exitButton.draw(game.batch, true);
         font.setColor(Color.WHITE);
     }
 

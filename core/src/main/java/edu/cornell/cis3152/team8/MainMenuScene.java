@@ -44,22 +44,23 @@ public class MainMenuScene implements Screen {
     }
 
     public void update() {
-        if (playButton.isHovering() && Gdx.input.isTouched()) {
-            audio.play("click");
-            game.exitScreen(this, 0);
-            dispose();
-        }
-        if (settingsButton.isHovering() && Gdx.input.isTouched()) {
-            audio.play("click");
-            settingsOn = true;
-            settingsScreen.update();
-        }
-        if (exitButton.isHovering() && Gdx.input.isTouched()) {
-            audio.play("click");
-            game.exitScreen(this, 1);
-            dispose();
-        }
-        if (settingsOn && Gdx.input.isKeyPressed(Keys.ESCAPE)) {
+        if (!settingsOn) {
+            if (playButton.isPressed()) {
+                audio.play("click");
+                game.exitScreen(this, 0);
+                dispose();
+            }
+            if (settingsButton.isPressed()) {
+                audio.play("click");
+                settingsOn = true;
+                settingsScreen.update();
+            }
+            if (exitButton.isPressed()) {
+                audio.play("click");
+                game.exitScreen(this, 1);
+                dispose();
+            }
+        } else if (Gdx.input.isKeyPressed(Keys.ESCAPE)) {
             settingsOn = false;
         }
     }
@@ -72,9 +73,9 @@ public class MainMenuScene implements Screen {
         game.batch.begin();
 
         game.batch.draw(background, 0, 0);
-        playButton.draw(game.batch);
-        settingsButton.draw(game.batch);
-        exitButton.draw(game.batch);
+        playButton.draw(game.batch, !settingsOn);
+        settingsButton.draw(game.batch, !settingsOn);
+        exitButton.draw(game.batch, !settingsOn);
 
         if (settingsOn) {
             settingsScreen.draw(game.batch);

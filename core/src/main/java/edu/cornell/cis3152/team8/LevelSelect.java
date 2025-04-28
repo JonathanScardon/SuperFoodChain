@@ -85,7 +85,7 @@ public class LevelSelect implements Screen {
         game.batch.draw(background, 0, 0);
         game.batch.draw(tray, 0, 0);
         for (Button b : buttons) {
-            b.draw(game.batch);
+            b.draw(game.batch, true);
         }
         //game.batch.draw(arrow,1050,220);
         game.batch.end();
