@@ -270,7 +270,7 @@ public class LoadingScene implements Screen {
      */
     private void drawProgress() {
 
-        float cx = width / 2;
+        float cx = width / 2f;
         float cy = (int) (constants.getFloat("bar.height") * height);
         TextureRegion region1, region2, region3;
 

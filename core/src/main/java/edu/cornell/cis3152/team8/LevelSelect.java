@@ -31,7 +31,6 @@ public class LevelSelect implements Screen {
 
     public LevelSelect(final GDXRoot game, AssetDirectory assets) {
         this.game = game;
-        wait = 0;
         audio = new GameAudio(assets);
         background = new Texture("images/LevelSelectBackground.png");
         tray = new Texture("images/LevelSelectTray.png");
@@ -129,6 +128,6 @@ public class LevelSelect implements Screen {
     }
 
     public void resetWait() {
-        wait = 0.5f;
+        wait = 0.25f;
     }
 }
