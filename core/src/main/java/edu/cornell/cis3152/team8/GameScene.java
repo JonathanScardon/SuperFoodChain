@@ -185,12 +185,13 @@ public class GameScene implements Screen {
         cost = new Texture("images/cost-ui.png");
         costGrey = new Texture("images/grayed-cost-ui.png");
 
-        font = assets.getEntry("lpc", BitmapFont.class);
+        font = assets.getEntry("lpcBig", BitmapFont.class);
         resumeButton = new Button(506, 452, button, buttonDark, 0, 280, 63, "Resume", font);
         resetButton = new Button(506, 381, button, buttonDark, 0, 280, 63, "Reset", font);
         levelsButton = new Button(506, 310, button, buttonDark, 1, 280, 63, "Levels", font);
         settingsButton = new Button(506, 239, button, buttonDark, 0, 280, 63, "Settings", font);
         exitButton = new Button(506, 160, button, buttonDark, 0, 280, 63, "Exit", font);
+        font = assets.getEntry("lpc", BitmapFont.class);
 
         replayButton = new Button(0, 0, replay, replayHover, 0, 78, 78);
         homeButton = new Button(0, 0, home, homeHover, 1, 78, 78);
@@ -316,7 +317,7 @@ public class GameScene implements Screen {
         }
 
         if (c != null) {
-            c.setCost(c.getCost() + (int)Math.floor(time/10));
+            c.setCost(c.getCost() + (int) Math.floor(time / 10));
             companions.add(c);
             companionSpawnIdx++;
         }

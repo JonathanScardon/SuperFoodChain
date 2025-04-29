@@ -191,6 +191,9 @@
         ]
       }
     },
+    "plate": "images/LevelSelectPlate.png",
+    "plateHover": "images/LevelSelectPlate.png",
+    "lock": "images/Lock.png",
     "arrow": "images/NextButton.png",
     "arrowHover": "images/NextButtonHover.png",
     "settings": "images/HandbookButton.png",
