@@ -5,33 +5,36 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.math.Affine2;
-import com.badlogic.gdx.math.Rectangle;
 import edu.cornell.gdiac.graphics.SpriteBatch;
 import edu.cornell.gdiac.graphics.SpriteBatch.BlendMode;
 import edu.cornell.gdiac.graphics.TextLayout;
 
 public class Button {
 
+    /**
+     * Position and size
+     */
     protected float posX;
     protected float posY;
-    protected Texture texture;
-    protected Texture hover;
-
-
     protected float width;
-
     protected float height;
 
-    private TextLayout text;
-
-    private int exitCode;
-
+    /**
+     * Visual
+     */
+    protected Texture texture;
+    protected Texture hover;
+    private final TextLayout text;
     private boolean flip = false;
-    private Affine2 transform = new Affine2();
+    protected Affine2 transform = new Affine2();
+    protected Color fontColor = new Color(89f / 255, 43f / 255, 34f / 255, 100f);
+
+    /**
+     * Pressing logic
+     */
+    private int exitCode;
     private boolean pressed = false;
-
     private float resetWait = 1;
-
 
     public Button(float x, float y, Texture texture, Texture hover, int exitCode) {
         posX = x;
@@ -96,6 +99,54 @@ public class Button {
     }
 
 
+    /**
+     * Allows time between button presses
+     */
+    public void update(float delta) {
+        if (pressed) {
+            resetWait -= delta;
+        }
+        if (resetWait <= 0) {
+            resetWait = 1f;
+            pressed = false;
+        }
+    }
+
+    /**
+     * Draws  button
+     *
+     * @param batch      the SpriteBatch
+     * @param allowHover whether the button is able to be clicked
+     */
+    public void draw(SpriteBatch batch, boolean allowHover) {
+        batch.setBlendMode(BlendMode.ALPHA_BLEND);
+        if (isHovering() && allowHover) { //draw hovered button
+            batch.draw(hover, posX, posY, width, height);
+        } else { //draw normal button
+            batch.draw(texture, posX, posY, width, height);
+        }
+        SpriteBatch.computeTransform(transform, 0,
+            0, posX + (width / 2f),
+            posY + (height / 2f), 0.0f, 1f, 1f);
+        batch.drawText(text, transform);
+    }
+
+    public int getExitCode() {
+        return exitCode;
+    }
+
+    public void setExitCode(int code) {
+        exitCode = code;
+    }
+
+    public void setPosition(float x, float y) {
+        posX = x;
+        posY = y;
+    }
+
+    /**
+     * @return true if the mouse is over this Button
+     */
     public boolean isHovering() {
         int x;
         if (posX > 1280 && posX < 2560) {
@@ -116,41 +167,9 @@ public class Button {
         }
     }
 
-    public void update(float delta) {
-        if (pressed) {
-            resetWait -= delta;
-        }
-        if (resetWait <= 0) {
-            resetWait = 1f;
-            pressed = false;
-        }
-    }
-
-    public void draw(SpriteBatch batch, boolean allowHover) {
-        batch.setBlendMode(BlendMode.ALPHA_BLEND);
-        if (isHovering() && allowHover) {
-            batch.draw(hover, posX, posY, width, height);
-        } else {
-            batch.draw(texture, posX, posY, width, height);
-        }
-        batch.drawText(text, posX + (width / 2f),
-            posY + height / 2f);
-    }
-
-    public int getExitCode() {
-        return exitCode;
-    }
-
-    public void setExitCode(int code) {
-        exitCode = code;
-    }
-
-    public void setPosition(float x, float y) {
-        posX = x;
-        posY = y;
-    }
-
-
+    /**
+     * @return whether the button was pressed
+     */
     public boolean isPressed() {
         if (isHovering() && Gdx.input.isTouched() && !pressed) {
             pressed = true;

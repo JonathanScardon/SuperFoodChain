@@ -1,9 +1,7 @@
 package edu.cornell.cis3152.team8;
 
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.math.Affine2;
 import edu.cornell.gdiac.assets.AssetDirectory;
 import edu.cornell.gdiac.graphics.SpriteBatch;
 import edu.cornell.gdiac.graphics.SpriteBatch.BlendMode;
@@ -11,18 +9,31 @@ import edu.cornell.gdiac.graphics.TextLayout;
 
 public class LevelButton extends Button {
 
-    private TextLayout number;
-    private Texture lock;
+    /**
+     * The number of this level
+     */
+    private final TextLayout number;
+
+    /**
+     * The lock texture
+     */
+    private final Texture lock;
+
+    /**
+     * Whether this level is locked
+     */
     private boolean locked;
-    private BitmapFont font;
-    private Color fontColor;
+
+    /**
+     * The font for the number
+     */
+    private final BitmapFont font;
 
     public LevelButton(float x, float y, int exitCode, AssetDirectory assets) {
-        super(x, y, new Texture("images/LevelSelectPlate.png"),
-            new Texture("images/LevelSelectPlate.png"), exitCode);
-        lock = new Texture("images/Lock.png");
+        super(x, y, assets.getEntry("plate", Texture.class),
+            assets.getEntry("plateHover", Texture.class), exitCode);
+        lock = assets.getEntry("lock", Texture.class);
         font = assets.getEntry("lpcBig", BitmapFont.class);
-        fontColor = new Color(89f / 255, 43f / 255, 34f / 255, 100f);
         this.number = new TextLayout(exitCode + "", font);
         locked = true;
     }
@@ -30,23 +41,28 @@ public class LevelButton extends Button {
     @Override
     public void draw(SpriteBatch batch, boolean allowHover) {
         if (isHovering() && !locked) {
-            batch.setBlendMode(BlendMode.ADDITIVE);
+            batch.setBlendMode(BlendMode.ADDITIVE); //draw hover state
         }
         batch.draw(texture, posX, posY, width, height);
         batch.setBlendMode(BlendMode.ALPHA_BLEND);
 
-        if (locked) {
+        if (locked) { //draw lock
             batch.draw(lock, posX + (width / 2f - lock.getWidth() / 2f),
                 posY + (height / 2f - lock.getHeight() / 2f));
-        } else {
+        } else { //draw number
             font.setColor(fontColor);
-            batch.drawText(number, posX + (width / 2f),
-                posY + (height / 2f));
+            SpriteBatch.computeTransform(transform, 0,
+                0, posX + (width / 2f),
+                posY + (height / 2f), 0.0f, 1f, 1f);
+            batch.drawText(number, transform);
         }
     }
 
-    public boolean getLocked() {
-        return locked;
+    /**
+     * @return whether the level is unlocked
+     */
+    public boolean getUnlocked() {
+        return !locked;
     }
 
     public void setLocked(boolean locked) {

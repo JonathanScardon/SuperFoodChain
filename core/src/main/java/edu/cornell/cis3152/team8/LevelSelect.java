@@ -112,13 +112,13 @@ public class LevelSelect extends MultiPageScene {
      */
     protected void processButtons() {
         for (LevelButton b : page1) {
-            if (b.isPressed() && !b.getLocked()) {
+            if (b.isPressed() && b.getUnlocked()) {
                 audio.play("clickLevel");
                 game.exitScreen(this, b.getExitCode());
             }
         }
         for (LevelButton b : page2) {
-            if (b.isPressed() && !b.getLocked()) {
+            if (b.isPressed() && b.getUnlocked()) {
                 audio.play("click");
                 game.exitScreen(this, b.getExitCode());
             }
