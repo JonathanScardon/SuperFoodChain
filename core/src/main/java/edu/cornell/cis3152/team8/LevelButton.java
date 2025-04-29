@@ -15,13 +15,14 @@ public class LevelButton extends Button {
     private Texture lock;
     private boolean locked;
     private BitmapFont font;
+    private Color fontColor;
 
     public LevelButton(float x, float y, int exitCode, AssetDirectory assets) {
         super(x, y, new Texture("images/LevelSelectPlate.png"),
             new Texture("images/LevelSelectPlate.png"), exitCode);
         lock = new Texture("images/Lock.png");
-        font = assets.getEntry("lpc", BitmapFont.class);
-        font.setColor(Color.BROWN);
+        font = assets.getEntry("lpcBig", BitmapFont.class);
+        fontColor = new Color(89f / 255, 43f / 255, 34f / 255, 100f);
         this.number = new TextLayout(exitCode + "", font);
         locked = true;
     }
@@ -35,15 +36,12 @@ public class LevelButton extends Button {
         batch.setBlendMode(BlendMode.ALPHA_BLEND);
 
         if (locked) {
-            batch.draw(lock, posX + texture.getWidth() / 2f - lock.getWidth() / 2f,
-                posY + texture.getHeight() / 2f - lock.getHeight() / 2f);
+            batch.draw(lock, posX + (width / 2f - lock.getWidth() / 2f),
+                posY + (height / 2f - lock.getHeight() / 2f));
         } else {
-
-            Affine2 trans = new Affine2();
-            trans.setToTrnScl(posX + (texture.getWidth() / 2f - number.getWidth() / 2f),
-                posY + (texture.getHeight() / 2f) - number.getWidth(), 2f, 2f);
-            batch.drawText(number, trans);
-
+            font.setColor(fontColor);
+            batch.drawText(number, posX + (width / 2f),
+                posY + (height / 2f));
         }
     }
 

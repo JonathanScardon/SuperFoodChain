@@ -90,6 +90,7 @@ public class Button {
         this.width = width;
         this.height = height;
         this.exitCode = exitCode;
+        font.setColor(new Color(89f / 255, 43f / 255, 34f / 255, 100f));
         text = new TextLayout(name, font);
         this.hover = hover;
     }
@@ -132,25 +133,8 @@ public class Button {
         } else {
             batch.draw(texture, posX, posY, width, height);
         }
-
-        text.getFont().setColor(Color.BROWN);
         batch.drawText(text, posX + (width / 2f),
             posY + height / 2f);
-        text.getFont().setColor(Color.WHITE);
-    }
-
-    public void draw(SpriteBatch batch, boolean allowHover, float x, float y) {
-        batch.setBlendMode(BlendMode.ALPHA_BLEND);
-        if (isHovering() && allowHover) {
-            batch.draw(hover, x, y, width, height);
-        } else {
-            batch.draw(texture, x, y, width, height);
-        }
-
-        text.getFont().setColor(Color.BROWN);
-        batch.drawText(text, posX + (width / 2f),
-            posY + height / 2f);
-        text.getFont().setColor(Color.WHITE);
     }
 
     public int getExitCode() {
