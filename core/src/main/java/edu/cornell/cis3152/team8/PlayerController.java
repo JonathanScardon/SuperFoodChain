@@ -7,22 +7,23 @@ import com.badlogic.gdx.math.*;
 import com.badlogic.gdx.utils.JsonValue;
 import edu.cornell.gdiac.graphics.*;
 
-public class PlayerController implements InputController{
+public class PlayerController implements InputController {
 
     private int forwardDirection;
     Player player;
 
-    public PlayerController(Player p){
+    public PlayerController(Player p) {
         forwardDirection = 1;
         player = p;
     }
-    public int getAction(){
+
+    public int getAction() {
         //TODO
         int code = CONTROL_NO_ACTION;
 
-        if (Gdx.input.isKeyPressed(Input.Keys.UP))    code |= CONTROL_MOVE_UP;
-        if (Gdx.input.isKeyPressed(Input.Keys.LEFT))  code |= CONTROL_MOVE_LEFT;
-        if (Gdx.input.isKeyPressed(Input.Keys.DOWN))  code |= CONTROL_MOVE_DOWN;
+        if (Gdx.input.isKeyPressed(Input.Keys.UP)) code |= CONTROL_MOVE_UP;
+        if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) code |= CONTROL_MOVE_LEFT;
+        if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) code |= CONTROL_MOVE_DOWN;
         if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) code |= CONTROL_MOVE_RIGHT;
         if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) code |= CONTROL_USE_ABILITY;
 
@@ -53,20 +54,22 @@ public class PlayerController implements InputController{
         }
 
         // Prevent backwards movement
-        if (forwardDirection == CONTROL_MOVE_UP && code == CONTROL_MOVE_DOWN) {
-            code = CONTROL_NO_ACTION;
-        }
+        if (player.getCompanions().size() > 1) {
+            if (forwardDirection == CONTROL_MOVE_UP && code == CONTROL_MOVE_DOWN) {
+                code = CONTROL_NO_ACTION;
+            }
 
-        if (forwardDirection == CONTROL_MOVE_LEFT && code == CONTROL_MOVE_RIGHT) {
-            code = CONTROL_NO_ACTION;
-        }
+            if (forwardDirection == CONTROL_MOVE_LEFT && code == CONTROL_MOVE_RIGHT) {
+                code = CONTROL_NO_ACTION;
+            }
 
-        if (forwardDirection == CONTROL_MOVE_DOWN && code == CONTROL_MOVE_UP) {
-            code = CONTROL_NO_ACTION;
-        }
+            if (forwardDirection == CONTROL_MOVE_DOWN && code == CONTROL_MOVE_UP) {
+                code = CONTROL_NO_ACTION;
+            }
 
-        if (forwardDirection == CONTROL_MOVE_RIGHT && code == CONTROL_MOVE_LEFT) {
-            code = CONTROL_NO_ACTION;
+            if (forwardDirection == CONTROL_MOVE_RIGHT && code == CONTROL_MOVE_LEFT) {
+                code = CONTROL_NO_ACTION;
+            }
         }
 
         // Forced movement (if no action)
