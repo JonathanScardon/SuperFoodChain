@@ -43,7 +43,10 @@ public class MainMenuScene implements Screen {
         audio = new GameAudio(assets);
     }
 
-    public void update() {
+    public void update(float delta) {
+        playButton.update(delta);
+        settingsButton.update(delta);
+        exitButton.update(delta);
         if (!settingsOn) {
             if (playButton.isPressed()) {
                 audio.play("click");
@@ -78,7 +81,7 @@ public class MainMenuScene implements Screen {
         exitButton.draw(game.batch, !settingsOn);
 
         if (settingsOn) {
-            settingsScreen.draw(game.batch);
+            settingsScreen.draw(game.batch, 1);
         }
 
         game.batch.end();
@@ -91,7 +94,7 @@ public class MainMenuScene implements Screen {
 
     @Override
     public void render(float delta) {
-        this.update();
+        this.update(delta);
         this.draw();
     }
 

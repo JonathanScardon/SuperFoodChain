@@ -604,7 +604,7 @@ public class GameScene implements Screen {
         }
         if (settingsOn) {
             game.batch.draw(dim, 0, 0);
-            settingsScreen.draw(game.batch);
+            settingsScreen.draw(game.batch, 1);
         }
         game.batch.end();
     }
