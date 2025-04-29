@@ -17,6 +17,8 @@ public class StrawberryProjectile extends Projectile {
     public StrawberryProjectile(float x, float y, float vx, float vy, World world) {
         // Call the parent constructor (in Projectile)
         super(x, y, vx, vy, world);
+        maxLife = 60;
+        life = maxLife;
         if (texture == null) {
             texture = new Texture("images/Strawberry_Seed.png");
         }

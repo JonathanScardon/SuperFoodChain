@@ -19,7 +19,7 @@ public class BlueRaspberry extends Companion {
     private boolean usedBoost;
 
     /**
-     * Constructor for
+     * Constructor for Blue Raspberry companion
      *
      * @param x x-position for the Blue Raspberry companion
      * @param y y-position for the Blue Raspberry companion
