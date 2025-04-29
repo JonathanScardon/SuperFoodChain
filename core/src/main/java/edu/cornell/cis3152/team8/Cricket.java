@@ -20,7 +20,7 @@ public class Cricket extends Minion {
         this.player = player;
         this.state = State.WAIT;
         this.waitTimer = WAIT_DURATION;
-        health = 1;
+        health = 2;
         animationSpeed = 0.15f;
         size = 0.3f * units;
     }

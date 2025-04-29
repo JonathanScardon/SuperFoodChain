@@ -21,6 +21,9 @@ public class Coin extends ObstacleSprite {
      * How fast we change frames
      */
     private static float animationSpeed;
+
+    // How long the coin should persist for
+    protected static int life;
     private float size;
 
     private SpriteSheet plusOne;
@@ -45,6 +48,7 @@ public class Coin extends ObstacleSprite {
         collected = false;
         plusOne = new SpriteSheet(new Texture("images/+1.png"), 1, 6);
         animationSpeed = 0.5f;
+        life = 300;
         remove = false;
         //setConstants(constants);
 
@@ -78,6 +82,15 @@ public class Coin extends ObstacleSprite {
         animationSpeed = constants.getFloat("animation speed");
     }
 
+    /**
+     * Returns the current life value of the coin
+     *
+     * @return life value
+     */
+    public int getLife() {
+        return life;
+    }
+
 
     @Override
     /**
@@ -97,6 +110,7 @@ public class Coin extends ObstacleSprite {
                 animationFrame -= sprite.getSize();
             }
         }
+        life--;
     }
 
     /**
@@ -109,7 +123,12 @@ public class Coin extends ObstacleSprite {
             sprite.getRegionHeight() / 2.0f, obstacle.getPosition().x * units,
             obstacle.getPosition().y * units, 0.0f, size / units, size / units);
         if (!obstacle.isActive()) { // if destroyed...
-            if (!collected) {
+            if (life <= 0) {
+                animationFrame = 0;
+                animationSpeed = 0.15f;
+                batch.setColor(Color.BLACK);
+            }
+            else if (!collected) {
                 animationFrame = 0;
                 animationSpeed = 0.15f;
                 collected = true;

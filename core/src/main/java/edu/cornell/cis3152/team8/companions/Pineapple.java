@@ -1,11 +1,10 @@
 package edu.cornell.cis3152.team8.companions;
 
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 import edu.cornell.cis3152.team8.*;
-import edu.cornell.gdiac.graphics.SpriteBatch;
+import edu.cornell.cis3152.team8.projectiles.PineappleProjectile;
 import edu.cornell.gdiac.graphics.SpriteSheet;
 
 public class Pineapple extends Companion {

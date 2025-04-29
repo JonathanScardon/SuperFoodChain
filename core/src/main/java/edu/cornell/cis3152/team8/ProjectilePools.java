@@ -2,6 +2,9 @@ package edu.cornell.cis3152.team8;
 
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Pool;
+import edu.cornell.cis3152.team8.projectiles.GarlicProjectile;
+import edu.cornell.cis3152.team8.projectiles.PineappleProjectile;
+import edu.cornell.cis3152.team8.projectiles.StrawberryProjectile;
 
 public class ProjectilePools {
 

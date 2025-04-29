@@ -5,9 +5,8 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.JsonValue;
 import edu.cornell.cis3152.team8.Companion;
-import edu.cornell.cis3152.team8.DurianProjectile;
+import edu.cornell.cis3152.team8.projectiles.DurianProjectile;
 import edu.cornell.cis3152.team8.GameState;
-import edu.cornell.gdiac.graphics.SpriteBatch;
 import edu.cornell.gdiac.graphics.SpriteSheet;
 
 public class Durian extends Companion {

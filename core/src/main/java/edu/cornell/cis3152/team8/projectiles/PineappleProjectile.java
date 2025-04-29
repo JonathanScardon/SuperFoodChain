@@ -1,7 +1,8 @@
-package edu.cornell.cis3152.team8;
+package edu.cornell.cis3152.team8.projectiles;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.physics.box2d.World;
+import edu.cornell.cis3152.team8.Projectile;
 import edu.cornell.gdiac.graphics.SpriteBatch;
 
 /**

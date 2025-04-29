@@ -56,7 +56,7 @@ public abstract class Projectile extends ObstacleSprite {
         // yet
         radius = 1;
         speed = 750;
-        attack = 1;
+        attack = 2;
         maxLife = 150;
         imageScale = 1;
         animationSpeed = 4;

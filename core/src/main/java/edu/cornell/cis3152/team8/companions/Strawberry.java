@@ -7,8 +7,7 @@ import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.JsonValue;
 import edu.cornell.cis3152.team8.Companion;
 import edu.cornell.cis3152.team8.GameState;
-import edu.cornell.cis3152.team8.StrawberryProjectile;
-import edu.cornell.gdiac.graphics.SpriteBatch;
+import edu.cornell.cis3152.team8.projectiles.StrawberryProjectile;
 import edu.cornell.gdiac.graphics.SpriteSheet;
 
 public class Strawberry extends Companion {

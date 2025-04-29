@@ -2,6 +2,7 @@ package edu.cornell.cis3152.team8.companions;
 
 import com.badlogic.gdx.physics.box2d.World;
 import edu.cornell.cis3152.team8.*;
+import edu.cornell.cis3152.team8.projectiles.GarlicProjectile;
 
 public class Garlic extends Companion {
 
