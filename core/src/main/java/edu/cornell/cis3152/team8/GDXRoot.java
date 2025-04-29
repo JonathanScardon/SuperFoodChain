@@ -27,6 +27,8 @@ public class GDXRoot extends Game implements ScreenListener {
     private GameScene gameScene;
     private MainMenuScene menuScene;
     private LevelSelect levelSelectScene;
+    private CompanionHandbookScene handbookScene;
+    private String prev;
 
     @Override
     public void create() {
@@ -67,6 +69,11 @@ public class GDXRoot extends Game implements ScreenListener {
             gameScene = null;
         }
 
+        if (handbookScene != null) {
+            handbookScene.dispose();
+            handbookScene = null;
+        }
+
         batch.dispose();
         font.dispose();
         batch = null;
@@ -93,6 +100,7 @@ public class GDXRoot extends Game implements ScreenListener {
             loadingScene = null;
 
             menuScene = new MainMenuScene(this, directory);
+            handbookScene = new CompanionHandbookScene(this, directory);
             setScreen(menuScene);
         } else if (screen == menuScene) {
             menuScene.dispose();
@@ -109,7 +117,8 @@ public class GDXRoot extends Game implements ScreenListener {
             if (exitCode == -1) {
                 setScreen(menuScene);
             } else if (exitCode == 0) {
-                setScreen(levelSelectScene);
+                prev = "levels";
+                setScreen(handbookScene);
             } else {
                 gameScene = new GameScene(this, directory, exitCode);
                 this.setScreen(gameScene);
@@ -122,7 +131,20 @@ public class GDXRoot extends Game implements ScreenListener {
                 int next = gameScene.getLevel() + 1;
                 gameScene = new GameScene(this, directory, next);
                 setScreen(gameScene);
+            } else if (exitCode == 3) {
+                prev = "game";
+                setScreen(handbookScene);
             }
+        } else if (screen == handbookScene) {
+            handbookScene.dispose();
+            if (exitCode == -1) {
+                if (prev.equals("levels")) {
+                    setScreen(levelSelectScene);
+                } else if (prev.equals("game")) {
+                    setScreen(gameScene);
+                }
+            }
+
         } else {
             Gdx.app.exit();
         }

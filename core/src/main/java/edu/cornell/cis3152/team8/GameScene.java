@@ -191,7 +191,7 @@ public class GameScene implements Screen {
         replayButton = new Button(0, 0, replay, replayHover, 0, 78, 78);
         homeButton = new Button(0, 0, home, homeHover, 1, 78, 78);
         nextButton = new Button(0, 0, next, nextHover, 2, 78, 78);
-        handbookButton = new Button(0, 0, handbook, handbookHover, 2, 78, 78);
+        handbookButton = new Button(0, 0, handbook, handbookHover, 3, 78, 78);
 
         settingsScreen = new Settings();
 
@@ -367,6 +367,10 @@ public class GameScene implements Screen {
                 state.getAudio().play("click");
                 dispose();
                 game.exitScreen(this, nextButton.getExitCode());
+            } else if (handbookButton.isPressed()) {
+                state.getAudio().play("click");
+                //dispose();
+                game.exitScreen(this, handbookButton.getExitCode());
             }
         }
         if (!player.isAlive()) {
@@ -377,6 +381,10 @@ public class GameScene implements Screen {
                 state.getAudio().play("click");
                 dispose();
                 game.exitScreen(this, homeButton.getExitCode());
+            } else if (handbookButton.isPressed()) {
+                state.getAudio().play("click");
+                //dispose();
+                game.exitScreen(this, handbookButton.getExitCode());
             }
         }
 
