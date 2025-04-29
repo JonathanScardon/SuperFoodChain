@@ -9,13 +9,22 @@ public class MinionSpawnPoint {
     private final float x;
     private final float y;
 
-    private float antSpawnRate;
-    private float cricketSpawnRate;
-    private float spiderSpawnRate;
+    private final boolean bossOnly;
+    private final float antSpawnRate;
+    private final float cricketSpawnRate;
+    private final float spiderSpawnRate;
 
-    public MinionSpawnPoint(float x, float y, float antSpawnProportion, float cricketSpawnProportion, float spiderSpawnProportion) {
+    private final GameState gameState;
+    private final World world;
+    private final Player player;
+
+    public MinionSpawnPoint(GameState state, float x, float y, boolean bossOnly, float antSpawnProportion, float cricketSpawnProportion, float spiderSpawnProportion) {
+        this.gameState = state;
+        this.world = state.getWorld();
+        this.player = state.getPlayer();
         this.x = x;
         this.y = y;
+        this.bossOnly = bossOnly;
 
         float totalSpawnProportion = antSpawnProportion + cricketSpawnProportion + spiderSpawnProportion;
 
@@ -32,7 +41,10 @@ public class MinionSpawnPoint {
         }
     }
 
-    public Minion spawnMinion(World world, Player player) {
+    /**
+     * Creates a minion at this point
+     */
+    public void spawnMinion() {
         Minion m = null;
         float probability = rand.nextFloat();
         float cumulative = 0f;
@@ -47,6 +59,15 @@ public class MinionSpawnPoint {
         if (m == null) {
             throw new RuntimeException("No minion was spawned");
         }
-        return m;
+
+        gameState.getMinions().add(m);
+    }
+
+    /**
+     * Returns whether this spawn point is only triggered by the boss and not automatically
+     * @return true if this spawn point is only for the boss, false otherwise
+     */
+    public boolean isBossOnly() {
+        return bossOnly;
     }
 }

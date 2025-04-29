@@ -7,25 +7,23 @@ import static edu.cornell.cis3152.team8.InputController.*;
 /**
  * The boss will target the head of the player
  */
-public class SnatchAttackPattern implements BossAttackPattern {
-    private final BossController controller;
-    private final Boss boss;
+public class SnatchAttackPattern extends BossAttackPattern {
+
     private final Player player;
     private final BossWarnPattern warnPattern;
-
     private final float warnDuration;
     private final float attackDuration;
 
     private float attackX, attackY;
     private float warnTime;
     private float attackTime;
-    private AttackState state;
 
-    public SnatchAttackPattern(BossController controller, float warnDuration, float attackDuration, SpriteSheet warnSprite, Player player) {
-        this.controller = controller;
-        this.boss = controller.boss;
+    public SnatchAttackPattern(BossController controller, float warnDuration, float attackDuration,
+        SpriteSheet warnSprite, Player player) {
+        super(controller);
         this.player = player;
 
+        attackName = "snatch";
         this.warnDuration = warnDuration;
         this.attackDuration = attackDuration;
 
@@ -60,6 +58,8 @@ public class SnatchAttackPattern implements BossAttackPattern {
         boss.getObstacle().setY(this.attackY);
         attackTime = attackDuration;
 
+        this.spawnMinions();
+
         warnPattern.active = false;
         boss.curWarn = null;
     }
@@ -82,10 +82,5 @@ public class SnatchAttackPattern implements BossAttackPattern {
                 }
                 break;
         }
-    }
-
-    @Override
-    public boolean isEnded() {
-        return state == AttackState.ENDED;
     }
 }

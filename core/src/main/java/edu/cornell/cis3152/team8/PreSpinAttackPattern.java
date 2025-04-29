@@ -10,27 +10,22 @@ import com.badlogic.gdx.math.Vector2;
 import edu.cornell.cis3152.team8.BossAttackPattern.AttackState;
 import edu.cornell.gdiac.graphics.SpriteSheet;
 
-public class PreSpinAttackPattern implements BossAttackPattern {
+public class PreSpinAttackPattern extends BossAttackPattern {
 
-    private final BossController controller;
-    private final Boss boss;
     private final BossWarnPattern warnPattern;
-
     private final float startX, startY;
     private final int controlCode;
     private final float warnDuration;
     private final float moveSpeed;
 
     private float warnTime;
-    private AttackState state;
     private float origMoveSpeed;
 
     private static final float PHYSICS_UNITS = 64f;
 
     public PreSpinAttackPattern(BossController controller, String dir, float warnDuration,
         float moveSpeed, SpriteSheet warnSprite) {
-        this.controller = controller;
-        this.boss = controller.boss;
+        super(controller);
 
         this.startX = 640;
         this.startY = 360;
@@ -50,15 +45,12 @@ public class PreSpinAttackPattern implements BossAttackPattern {
             default -> throw new IllegalArgumentException("Unknown direction: " + dir);
         }
         this.warnPattern.setSpriteSheet(warnSprite);
-
-        this.state = AttackState.INACTIVE;
     }
 
     @Override
     public void start() {
         state = AttackState.WARN;
         boss.setAnimation("dashHorizontal");
-
         warnTime = warnDuration;
         warnPattern.active = true;
         boss.curWarn = warnPattern;
@@ -101,11 +93,6 @@ public class PreSpinAttackPattern implements BossAttackPattern {
                 break;
         }
         attack();
-    }
-
-    @Override
-    public boolean isEnded() {
-        return state == AttackState.ENDED;
     }
 }
 

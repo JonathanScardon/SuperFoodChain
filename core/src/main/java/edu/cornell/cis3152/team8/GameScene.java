@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Affine2;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
@@ -42,6 +43,7 @@ public class GameScene implements Screen {
     private final Button homeButton;
     private final Button nextButton;
     private final Button replayButton;
+    private final Button handbookButton;
 
 
     private final Settings settingsScreen;
@@ -159,17 +161,19 @@ public class GameScene implements Screen {
         dead = state.getDead();
 
         dim = new Texture("images/dim.png");
-        backgroundTexture = new Texture("images/temp_background.png");
-        //backgroundTexture = new Texture("images/background_angled.png");
+        //backgroundTexture = new Texture("images/temp_background.png");
+        backgroundTexture = new Texture("images/background_angled.png");
         pauseBackground = new Texture("images/PauseBackground.png");
         Texture button = new Texture("images/Button.png");
         Texture buttonDark = new Texture("images/ButtonDark.png");
-        Texture replay = new Texture("images/Replay_Button.png");
-        Texture home = new Texture("images/Home_Button.png");
-        Texture next = new Texture("images/Next_Button.png");
-        Texture replayLight = new Texture("images/replayLight.png");
-        Texture homeLight = new Texture("images/homeLight.png");
-        Texture nextLight = new Texture("images/nextLight.png");
+        Texture replay = new Texture("images/ReplayButton.png");
+        Texture home = new Texture("images/HomeButton.png");
+        Texture next = new Texture("images/NextButton.png");
+        Texture handbook = new Texture("images/HandbookButton.png");
+        Texture replayHover = new Texture("images/ReplayButtonHover.png");
+        Texture homeHover = new Texture("images/HomeButtonHover.png");
+        Texture nextHover = new Texture("images/NextButtonHover.png");
+        Texture handbookHover = new Texture("images/HandbookButtonHover.png");
 
         win = new Texture("images/Win.png");
         mouseLose = new Texture("images/LoseRat.png");
@@ -184,9 +188,10 @@ public class GameScene implements Screen {
         settingsButton = new Button(506, 239, button, buttonDark, 0, 280, 63, "Settings", font);
         exitButton = new Button(506, 160, button, buttonDark, 0, 280, 63, "Exit", font);
 
-        replayButton = new Button(0, 0, replayLight, replay, 0, 78, 78);
-        homeButton = new Button(0, 0, homeLight, home, 1, 78, 78);
-        nextButton = new Button(734, 114, nextLight, next, 2, 78, 78);
+        replayButton = new Button(0, 0, replay, replayHover, 0, 78, 78);
+        homeButton = new Button(0, 0, home, homeHover, 1, 78, 78);
+        nextButton = new Button(0, 0, next, nextHover, 2, 78, 78);
+        handbookButton = new Button(0, 0, handbook, handbookHover, 2, 78, 78);
 
         settingsScreen = new Settings();
 
@@ -250,14 +255,23 @@ public class GameScene implements Screen {
      * Spawn a single minion in the world
      */
     private void spawnMinion() {
-        if (minionSpawnIdx >= minionSpawns.size) {
-            minionSpawnIdx = 0;
-        }
-        MinionSpawnPoint sp = minionSpawns.get(minionSpawnIdx);
-        Minion m = sp.spawnMinion(world, player);
+        int checked = 0;
+        while (checked < minionSpawns.size) { // avoid infinite loop
+            if (minionSpawnIdx >= minionSpawns.size) {
+                minionSpawnIdx = 0;
+            }
+            MinionSpawnPoint sp = minionSpawns.get(minionSpawnIdx);
+            minionSpawnIdx++;
 
-        minions.add(m);
-        minionSpawnIdx++;
+            if (!sp.isBossOnly()) {
+                sp.spawnMinion();
+                return;
+            }
+
+            // skip this point if it is only triggered by a boss
+            checked++;
+        }
+        // if we reach here, none of our spawn points auto-spawn
     }
 
     /**
@@ -331,6 +345,7 @@ public class GameScene implements Screen {
         }
 
         if (paused || winGame || !player.isAlive()) {
+            state.getAudio().stopSfx();
             for (Minion m : minions) {
                 m.update(false);
             }
@@ -342,19 +357,24 @@ public class GameScene implements Screen {
 
         if (winGame) {
             if (replayButton.isHovering() && Gdx.input.isTouched()) {
+                state.getAudio().play("click");
                 reset();
             } else if (homeButton.isHovering() && Gdx.input.isTouched()) {
+                state.getAudio().play("click");
                 dispose();
                 game.exitScreen(this, homeButton.getExitCode());
             } else if (nextButton.isHovering() && Gdx.input.isTouched()) {
+                state.getAudio().play("click");
                 dispose();
                 game.exitScreen(this, nextButton.getExitCode());
             }
         }
         if (!player.isAlive()) {
             if (replayButton.isHovering() && Gdx.input.isTouched()) {
+                state.getAudio().play("click");
                 reset();
             } else if (homeButton.isHovering() && Gdx.input.isTouched()) {
+                state.getAudio().play("click");
                 dispose();
                 game.exitScreen(this, homeButton.getExitCode());
             }
@@ -381,6 +401,7 @@ public class GameScene implements Screen {
                 if (c.getObstacle().isActive()) {
                     if (c.canUse()) {
                         c.useAbility(state);
+                        state.getAudio().play(c.getCompanionType().name());
                     } else {
                         c.coolDown(true, delta);
                     }
@@ -413,7 +434,10 @@ public class GameScene implements Screen {
 
             // boss moves and acts
             for (int i = 0; i < bosses.size; i++) {
-                bossControls.get(i).update(delta);
+                boolean play = bossControls.get(i).update(delta);
+                if (play) {
+                    state.getAudio().play(bossControls.get(i).getAttackName());
+                }
                 bosses.get(i).update(delta, bossControls.get(i).getAction());
             }
             //
@@ -432,17 +456,6 @@ public class GameScene implements Screen {
                 c.update(delta);
             }
 
-//            for (int i = 0; i < dead.size; i++) {
-//                String type = dead.get(i).getName();
-//                if (!type.equals("coin")) {
-//                    if () {
-//                        dead.removeIndex(i);
-//                    }
-//                }
-//            }
-//            addMinions();
-//            addCompanions();
-
         }
         if (player.isAlive() && !winGame) {
             state.getCollisionController().postUpdate();
@@ -451,17 +464,22 @@ public class GameScene implements Screen {
             }
             if (paused) {
                 if (resumeButton.isHovering() && Gdx.input.isTouched()) {
+                    state.getAudio().play("click");
                     paused = false;
                 } else if (resetButton.isHovering() && Gdx.input.isTouched()) {
+                    state.getAudio().play("click");
                     reset();
                     paused = false;
                 } else if (levelsButton.isHovering() && Gdx.input.isTouched()) {
+                    state.getAudio().play("click");
                     dispose();
                     game.exitScreen(this, levelsButton.getExitCode());
                 } else if (settingsButton.isHovering() && Gdx.input.isTouched()) {
+                    state.getAudio().play("click");
                     settingsOn = true;
                     settingsScreen.update();
                 } else if (exitButton.isHovering() && Gdx.input.isTouched()) {
+                    state.getAudio().play("click");
                     Gdx.app.exit();
                 }
                 if (settingsOn && Gdx.input.isKeyPressed(Keys.ESCAPE)) {
@@ -477,6 +495,9 @@ public class GameScene implements Screen {
 
         game.batch.begin();
         game.batch.draw(backgroundTexture, 0, 0, 1280, 720);
+
+        // draw
+        drawOrder(delta);
 
         for (ObstacleSprite o : dead) {
             String type = o.getName();
@@ -495,9 +516,6 @@ public class GameScene implements Screen {
                 }
             }
         }
-
-        // draw
-        drawOrder(delta);
 
         for (Projectile p : state.getActiveProjectiles()) {
             p.draw(game.batch);
@@ -591,40 +609,47 @@ public class GameScene implements Screen {
         game.batch.end();
     }
 
-    // /**
-    // * Creates photons and updates the object's cooldown.
-    // *
-    // * Using an ability requires access to all other models? so we have factored
-    // * this behavior out of the Ship into the GameplayController.
-    // */
-    // private void useAbility(Companion c) {
-    // c.useAbility(state);
-    // // reset ability cooldown
-    // c.coolDown(false);
-    // }
-
     private void drawLose() {
+        float loseX = 1280 / 2f - mouseLose.getWidth() / 2f;
+        float loseY = 720 / 2f - mouseLose.getHeight() / 2f;
         game.batch.draw(dim, 0, 0);
         if (bosses.get(0).getName().equals("mouse")) {
-            game.batch.draw(mouseLose, 112, 60);
+            game.batch.draw(mouseLose, loseX, loseY);
         } else if (bosses.get(0).getName().equals("chopsticks")) {
-            game.batch.draw(chopsticksLose, 112, 60);
+            game.batch.draw(chopsticksLose, loseX, loseY);
         }
-        replayButton.setPosition(546, 108);
-        homeButton.setPosition(666, 108);
-        replayButton.draw(game.batch);
-        homeButton.draw(game.batch);
+        float height = loseY + replayButton.height / 2f;
+        float gap = 40;
+        float span = (replayButton.width * 3) + (gap * 2);
+
+        replayButton.setPosition(loseX + (mouseLose.getWidth() / 2f - span / 2), height);
+        handbookButton.setPosition(replayButton.posX + replayButton.width + gap, height);
+        homeButton.setPosition(handbookButton.posX + handbookButton.width + gap, height);
+
+        replayButton.draw(game.batch, true);
+        handbookButton.draw(game.batch, true);
+        homeButton.draw(game.batch, true);
 
     }
 
     private void drawWin() {
+        float winX = 1280 / 2f - win.getWidth() / 2f;
+        float winY = 720 / 2f - win.getHeight() / 2f;
         game.batch.draw(dim, 0, 0);
-        game.batch.draw(win, 112, 60);
-        replayButton.setPosition(494, 114);
-        homeButton.setPosition(613, 114);
-        replayButton.draw(game.batch);
-        homeButton.draw(game.batch);
-        nextButton.draw(game.batch);
+        game.batch.draw(win, winX, winY);
+        float height = winY + replayButton.height / 2f;
+        float gap = 40;
+        float span = (replayButton.width * 4) + (gap * 3);
+
+        replayButton.setPosition(winX + (win.getWidth() / 2f - span / 2), height);
+        homeButton.setPosition(replayButton.posX + replayButton.width + gap, height);
+        handbookButton.setPosition(homeButton.posX + homeButton.width + gap, height);
+        nextButton.setPosition(handbookButton.posX + handbookButton.width + gap, height);
+
+        replayButton.draw(game.batch, true);
+        homeButton.draw(game.batch, true);
+        handbookButton.draw(game.batch, true);
+        nextButton.draw(game.batch, true);
     }
 
     private void setStart() {
@@ -639,11 +664,11 @@ public class GameScene implements Screen {
         game.batch.setBlendMode(BlendMode.ALPHA_BLEND);
         game.batch.draw(dim, 0, 0);
         game.batch.draw(pauseBackground, 111.5f, 60.1f);
-        resumeButton.draw(game.batch);
-        resetButton.draw(game.batch);
-        levelsButton.draw(game.batch);
-        settingsButton.draw(game.batch);
-        exitButton.draw(game.batch);
+        resumeButton.draw(game.batch, true);
+        resetButton.draw(game.batch, true);
+        levelsButton.draw(game.batch, true);
+        settingsButton.draw(game.batch, true);
+        exitButton.draw(game.batch, true);
         font.setColor(Color.WHITE);
     }
 
@@ -736,6 +761,7 @@ public class GameScene implements Screen {
 
     /**
      * Draw all objects in order based on y coordinate
+     *
      * @param delta the time in seconds since the last frame
      */
     private void drawOrder(float delta) {
@@ -747,7 +773,8 @@ public class GameScene implements Screen {
             everything.add(c);
         }
 
-        everything.sort((o1, o2) -> Float.compare(720 - o1.getObstacle().getY(), 720 - o2.getObstacle().getY()));
+        everything.sort((o1, o2) -> Float.compare(720 - o1.getObstacle().getY(),
+            720 - o2.getObstacle().getY()));
 
         // draw movement indicator first
         player.draw(game.batch);
