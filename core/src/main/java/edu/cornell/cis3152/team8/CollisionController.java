@@ -246,18 +246,27 @@ public class CollisionController implements ContactListener {
      * Adds or Removes objects from the world.
      */
     public void postUpdate() {
+        // Kills player if out of bounds
         if (!state.inBounds(state.getPlayer().getPlayerHead())) {
             removed.add(state.getPlayer().getPlayerHead());
             audio.play("companionDeath");
         }
+        // Kills minions if no health
         for (Minion m : state.getMinions()) {
             if (m.getHealth() <= 0) {
                 removed.add(m);
             }
         }
+        // Kills boss if no health
         for (Boss b : state.getBosses()) {
             if (b.getHealth() <= 0) {
                 removed.add(b);
+            }
+        }
+        // Removes coins if time limit
+        for (Coin c : state.getCoins()) {
+            if (c.getLife() <= 0) {
+                removed.add(c);
             }
         }
         // Removes objects

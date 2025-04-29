@@ -19,7 +19,7 @@ public class Ant extends Minion {
         super(x, y, world, player);
         setSpriteSheet(new SpriteSheet(new Texture("images/Ant.png"), 1, 3));
         moveSpeed = 1f;
-        health = 1;
+        health = 2;
         animationSpeed = 0.15f;
         size = 0.3f * units;
     }
