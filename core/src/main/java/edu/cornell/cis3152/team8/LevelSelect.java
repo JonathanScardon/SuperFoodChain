@@ -26,10 +26,12 @@ public class LevelSelect implements Screen {
     private Array<LevelButton> buttons;
     private float wait = 0.0f;
     private int unlocked;
+    private GameAudio audio;
 
 
     public LevelSelect(final GDXRoot game, AssetDirectory assets) {
         this.game = game;
+        audio = new GameAudio(assets);
         background = new Texture("images/LevelSelectBackground.png");
         tray = new Texture("images/LevelSelectTray.png");
         plate = new Texture("images/LevelSelectPlate.png");
@@ -60,19 +62,19 @@ public class LevelSelect implements Screen {
     }
 
     public void update(float delta) {
-        //System.out.println(delta);
         if (wait > 0.0f) {
             wait -= delta;
         } else {
             for (LevelButton b : buttons) {
                 if (b.isHovering() && Gdx.input.isTouched() && !b.getLocked()) {
+                    audio.play("clickLevel");
                     game.exitScreen(this, b.getExitCode());
                 }
             }
         }
     }
 
-    public void draw(float delta) {
+    public void draw() {
         ScreenUtils.clear(Color.BLACK);
 
         game.viewport.apply();
@@ -80,11 +82,10 @@ public class LevelSelect implements Screen {
 
         game.batch.begin();
         game.batch.setColor(Color.WHITE);
-        //draw text. Remember that x and y are in meters
         game.batch.draw(background, 0, 0);
         game.batch.draw(tray, 0, 0);
         for (Button b : buttons) {
-            b.draw(game.batch);
+            b.draw(game.batch, true);
         }
         //game.batch.draw(arrow,1050,220);
         game.batch.end();
@@ -98,7 +99,7 @@ public class LevelSelect implements Screen {
     @Override
     public void render(float delta) {
         this.update(delta);
-        this.draw(delta);
+        this.draw();
     }
 
     @Override
@@ -127,6 +128,6 @@ public class LevelSelect implements Screen {
     }
 
     public void resetWait() {
-        wait = 0.5f;
+        wait = 0.25f;
     }
 }

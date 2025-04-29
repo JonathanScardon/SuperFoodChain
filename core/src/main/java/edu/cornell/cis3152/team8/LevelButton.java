@@ -21,7 +21,7 @@ public class LevelButton extends Button {
     }
 
     @Override
-    public void draw(SpriteBatch batch) {
+    public void draw(SpriteBatch batch, boolean allowHover) {
         if (isHovering() && !locked) {
             batch.setBlendMode(BlendMode.ADDITIVE);
         }

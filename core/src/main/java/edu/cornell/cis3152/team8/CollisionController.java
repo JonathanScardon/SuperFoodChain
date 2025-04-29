@@ -51,6 +51,9 @@ public class CollisionController implements ContactListener {
      */
     private Vector2 tmp;
 
+    //Game audio controller
+    private GameAudio audio;
+
     /**
      * Category bits for Filtering
      */
@@ -68,15 +71,9 @@ public class CollisionController implements ContactListener {
         tmp = new Vector2();
         this.state = state;
         this.world = state.getWorld();
+        audio = state.getAudio();
 //         this.minionControls = minionControls;
 //         this.deadCompanions = deadCompanions;
-    }
-
-    /**
-     * Updates minions, bosses, and the player moving them forward. Handles all collisions.
-     */
-    public void update() {
-
     }
 
     // Contact Listener Methods
@@ -99,6 +96,7 @@ public class CollisionController implements ContactListener {
             short c2 = f2.getFilterData().categoryBits;
 
             // Player Collisions
+
             // Player and Minion
             if ((c1 == PLAYER_CATEGORY && c2 == MINION_CATEGORY) || (c2 == PLAYER_CATEGORY
                 && c1 == MINION_CATEGORY)) {
@@ -113,6 +111,8 @@ public class CollisionController implements ContactListener {
                     removed.add(s1);
                     coinsAdded.add(s1);
                 }
+                audio.play("minionDeath");
+                audio.play("companionDeath");
             }
 
 //            // Player and Boss
@@ -127,6 +127,7 @@ public class CollisionController implements ContactListener {
                     } else {
                         bossHit(b2);
                     }
+                    audio.play("mouseDeath");
                 } else {
 //                    System.out.println("DEATH");
                     if (c1 == PLAYER_CATEGORY) {
@@ -134,6 +135,7 @@ public class CollisionController implements ContactListener {
                     } else {
                         removed.add(s2);
                     }
+                    audio.play("companionDeath");
                 }
             }
 
@@ -147,6 +149,7 @@ public class CollisionController implements ContactListener {
                 } else {
                     removed.add(s1);
                 }
+                audio.play("coin");
             }
 
             // Player and Companion
@@ -161,9 +164,11 @@ public class CollisionController implements ContactListener {
                             //if (Gdx.input.isKeyPressed(Input.Keys.E)) {
 //                                System.out.println("ADD COMPANION");
                             companionAdded = c;
+                            audio.play("companionRecruitment");
                             state.getPlayer()
                                 .setCoins(state.getPlayer().getCoins() - c.getCost());
                             //}
+
                         }
                     }
                 } else {
@@ -174,6 +179,7 @@ public class CollisionController implements ContactListener {
                             // if (Gdx.input.isKeyPressed(Input.Keys.E)) {
 //                                System.out.println("ADD COMPANION");
                             companionAdded = c;
+                            audio.play("companionRecruitment");
                             state.getPlayer()
                                 .setCoins(state.getPlayer().getCoins() - c.getCost());
                             //}
@@ -183,6 +189,7 @@ public class CollisionController implements ContactListener {
             }
 
             // Projectile Collisions
+
             // Projectile and Minion
             else if ((c1 == PROJECTILE_CATEGORY && c2 == MINION_CATEGORY) || (
                 c2 == PROJECTILE_CATEGORY && c1 == MINION_CATEGORY)) {
@@ -196,6 +203,7 @@ public class CollisionController implements ContactListener {
                     removedProjectiles.add(b2);
                     minionHit(b1, b2);
                 }
+
             }
             // Projectile and Boss
             else if ((c1 == PROJECTILE_CATEGORY && c2 == BOSS_CATEGORY) || (
@@ -240,6 +248,7 @@ public class CollisionController implements ContactListener {
     public void postUpdate() {
         if (!state.inBounds(state.getPlayer().getPlayerHead())) {
             removed.add(state.getPlayer().getPlayerHead());
+            audio.play("companionDeath");
         }
         for (Minion m : state.getMinions()) {
             if (m.getHealth() <= 0) {
@@ -337,7 +346,8 @@ public class CollisionController implements ContactListener {
 //                if (p instanceof StrawberryProjectile) {
 //                    ProjectilePools.strawberryPool.free((StrawberryProjectile) p);
 //                }
-                if (p.getObstacle().getBody() != null && p.getObstacle().getBody().getWorld() != null) {
+                if (p.getObstacle().getBody() != null
+                    && p.getObstacle().getBody().getWorld() != null) {
                     p.getObstacle().setActive(false);
                     p.getObstacle().markRemoved(true);
                     p.getObstacle().deactivatePhysics(world);
@@ -365,6 +375,7 @@ public class CollisionController implements ContactListener {
                             ObstacleSprite s = (ObstacleSprite) b1.getUserData();
                             coinsAdded.add(s);
                             removed.add(s);
+                            audio.play("minion");
                         }
                     }
                 }
@@ -378,11 +389,16 @@ public class CollisionController implements ContactListener {
     public void bossHit(Body b) {
         for (Boss boss : state.getBosses()) {
             if (boss.getObstacle().getBody() == b) {
+                if (boss.getHealth() > 0) {
+                    audio.play(boss.getName() + "Hit");
+                }
                 boss.removeHealth(1);
                 boss.setDamage(true);
                 if (boss.getHealth() <= 0) {
+                    audio.play(boss.getName() + "Death");
                     removed.add((ObstacleSprite) b.getUserData());
                 }
+
             }
         }
     }

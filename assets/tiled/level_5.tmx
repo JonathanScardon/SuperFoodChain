@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="1" height="1" tilewidth="1280" tileheight="720" infinite="0" nextlayerid="12" nextobjectid="79">
- <objectgroup id="6" name="boss">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="1" height="1" tilewidth="1280" tileheight="720" infinite="0" nextlayerid="12" nextobjectid="87">
+ <objectgroup id="6" name="boss" class="bossLayer">
+  <properties>
+   <property name="maxMinions" type="int" value="4"/>
+  </properties>
   <object id="5" name="mouse" type="boss" x="57.1602" y="1057.72" width="77.0899" height="88.6667">
    <properties>
     <property name="attack0" type="object" value="7"/>
@@ -221,6 +224,34 @@
     <property name="warnDuration" type="float" value="2"/>
    </properties>
   </object>
+  <object id="83" type="minionSpawn" x="-54.7578" y="-38.801">
+   <properties>
+    <property name="antSpawnProportion" type="float" value="1"/>
+    <property name="cricketSpawnProportion" type="float" value="0"/>
+    <property name="spiderSpawnProportion" type="float" value="0"/>
+   </properties>
+  </object>
+  <object id="84" type="minionSpawn" x="1327.61" y="-38.801">
+   <properties>
+    <property name="antSpawnProportion" type="float" value="1"/>
+    <property name="cricketSpawnProportion" type="float" value="0"/>
+    <property name="spiderSpawnProportion" type="float" value="0"/>
+   </properties>
+  </object>
+  <object id="85" type="minionSpawn" x="1330.01" y="747.016">
+   <properties>
+    <property name="antSpawnProportion" type="float" value="1"/>
+    <property name="cricketSpawnProportion" type="float" value="0"/>
+    <property name="spiderSpawnProportion" type="float" value="0"/>
+   </properties>
+  </object>
+  <object id="86" type="minionSpawn" x="-73.924" y="768.578">
+   <properties>
+    <property name="antSpawnProportion" type="float" value="1"/>
+    <property name="cricketSpawnProportion" type="float" value="0"/>
+    <property name="spiderSpawnProportion" type="float" value="0"/>
+   </properties>
+  </object>
  </objectgroup>
  <objectgroup id="10" name="companion" class="companionLayer">
   <properties>
@@ -247,41 +278,5 @@
   <object id="68" type="companionSpawn" x="661.432" y="543.642"/>
   <object id="71" type="companionSpawn" x="525.521" y="446.995"/>
   <object id="72" type="companionSpawn" x="841.136" y="450.015"/>
- </objectgroup>
- <objectgroup id="11" name="minion" class="minionLayer">
-  <properties>
-   <property name="antSpawnProportion" type="float" value="1"/>
-   <property name="cricketSpawnProportion" type="float" value="1"/>
-   <property name="maxMinions" type="int" value="4"/>
-   <property name="spiderSpawnProportion" type="float" value="0"/>
-  </properties>
-  <object id="56" type="minionSpawn" x="-35.9368" y="-33.541">
-   <properties>
-    <property name="antSpawnProportion" type="float" value="1"/>
-    <property name="cricketSpawnProportion" type="float" value="0"/>
-    <property name="spiderSpawnProportion" type="float" value="0"/>
-   </properties>
-  </object>
-  <object id="58" type="minionSpawn" x="1346.43" y="-33.541">
-   <properties>
-    <property name="antSpawnProportion" type="float" value="1"/>
-    <property name="cricketSpawnProportion" type="float" value="0"/>
-    <property name="spiderSpawnProportion" type="float" value="0"/>
-   </properties>
-  </object>
-  <object id="60" type="minionSpawn" x="1348.83" y="752.276">
-   <properties>
-    <property name="antSpawnProportion" type="float" value="1"/>
-    <property name="cricketSpawnProportion" type="float" value="0"/>
-    <property name="spiderSpawnProportion" type="float" value="0"/>
-   </properties>
-  </object>
-  <object id="62" type="minionSpawn" x="-55.103" y="773.838">
-   <properties>
-    <property name="antSpawnProportion" type="float" value="1"/>
-    <property name="cricketSpawnProportion" type="float" value="0"/>
-    <property name="spiderSpawnProportion" type="float" value="0"/>
-   </properties>
-  </object>
  </objectgroup>
 </map>

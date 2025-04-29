@@ -154,7 +154,7 @@
                     "value": 0
                 }
             ],
-            "name": "minionLayer",
+            "name": "bossLayer",
             "type": "class",
             "useAs": [
                 "property",
@@ -171,6 +171,11 @@
                     "name": "antSpawnProportion",
                     "type": "float",
                     "value": 0
+                },
+                {
+                    "name": "bossOnly",
+                    "type": "bool",
+                    "value": false
                 },
                 {
                     "name": "cricketSpawnProportion",
