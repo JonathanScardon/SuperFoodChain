@@ -18,7 +18,7 @@ import edu.cornell.gdiac.graphics.TextLayout;
 import java.awt.Point;
 import java.awt.PointerInfo;
 
-public class LevelSelect implements Screen {
+public class CompanionHandbookScene implements Screen {
 
     /**
      * Reference to the GDX root
@@ -30,19 +30,17 @@ public class LevelSelect implements Screen {
     private Button arrowRight;
     private Button arrowLeft;
 
+    private Button backButton;
     private Button settingsButton;
-    private Button handbookButton;
-    private Button homeButton;
 
     private Texture plate;
-    private LevelButton[] page1;
-    private LevelButton[] page2;
     private float wait = 0.0f;
     private int unlocked;
     private GameAudio audio;
     private Camera camera;
     private int currPage;
     private int totalPages;
+    private Texture[] pages;
 
     private float moveGoal;
 
@@ -53,77 +51,48 @@ public class LevelSelect implements Screen {
     private boolean settingsOn;
 
 
-    public LevelSelect(final GDXRoot game, AssetDirectory assets) {
+    public CompanionHandbookScene(final GDXRoot game, AssetDirectory assets) {
         this.game = game;
         settingsScreen = new Settings();
         settingsOn = false;
         audio = new GameAudio(assets);
 
-        background = new Texture("images/LevelSelectBackground.png");
-        tray = new Texture("images/Tray.png");
-        plate = new Texture("images/LevelSelectPlate.png");
         Texture arrow = new Texture("images/LevelSelectArrow.png");
         arrowRight = new Button(1280 - arrow.getWidth() * 1.5f, 720 / 2f - arrow.getHeight() / 2f,
             arrow, plate, 2);
         arrowLeft = new Button(arrow.getWidth() * 1.5f, 720 / 2f - arrow.getHeight() / 2f,
             arrow, plate, 0, true);
 
-        Texture home = new Texture("images/HomeButton.png");
-        Texture settings = new Texture("images/NextButton.png");
-        Texture handbook = new Texture("images/HandbookButton.png");
-        Texture homeHover = new Texture("images/HomeButtonHover.png");
-        Texture settingsHover = new Texture("images/NextButtonHover.png");
-        Texture handbookHover = new Texture("images/HandbookButtonHover.png");
+        Texture page;
+        pages = new Texture[5];
+        for (int i = 0; i < pages.length; i++) {
+            page = assets.getEntry("Handbook" + i, Texture.class);
+            pages[i] = page;
+        }
 
-        float x = 1280 / 2f - tray.getWidth() / 2f;
-        float y = 720 / 2f - tray.getHeight() / 2f;
+        Texture back = new Texture("images/NextButton.png");
+        Texture settings = new Texture("images/HandbookButton.png");
+        Texture backHover = new Texture("images/NextButtonHover.png");
+        Texture settingsHover = new Texture("images/HandbookButtonHover.png");
+
         float buttonSize = 78;
-        float height = y;
-        float gap = 20;
-        float span = (buttonSize * 3) + (gap * 2);
+        float gap = 100;
 
-        homeButton = new Button(x + (tray.getWidth() / 2f - span / 2), height,
-            home, homeHover, -1, buttonSize, buttonSize);
-        handbookButton = new Button(homeButton.posX + homeButton.width + gap, height,
-            handbook, handbookHover, 0, buttonSize, buttonSize);
-        settingsButton = new Button(handbookButton.posX + handbookButton.width + gap, height,
+        backButton = new Button(gap, 720 - gap,
+            back, backHover, -1, buttonSize, buttonSize, true);
+        settingsButton = new Button(1280 - gap, 720 - gap,
             settings, settingsHover, 0, buttonSize, buttonSize);
 
         unlocked = assets.getEntry("save", JsonValue.class)
-            .getInt("max_level_unlocked");
+            .getInt("companions_unlocked");
 
         title = new TextLayout("Select Level", assets.getEntry("lpc", BitmapFont.class));
-        page1 = new LevelButton[6];
-        page2 = new LevelButton[6];
+
         currPage = 1;
-        totalPages = 3;
+        //totalPages = 3;
 
         camera = game.viewport.getCamera();
         moveGoal = camera.position.x;
-
-        gap = 50;
-        float spanHorizontal = plate.getWidth() * 3 + (gap * 2);
-        float spanVertical = plate.getHeight() * 2 + gap;
-
-        int level = 1;
-
-        y = (720 / 2f) + spanVertical / 2f - plate.getHeight();
-        for (int i = 1; i <= page1.length / 3; i++) {
-            x = 1280 / 2f - spanHorizontal / 2f;
-            for (int j = 1; j <= 3; j++) {
-                LevelButton b = new LevelButton(x, y, level, assets);
-                page1[level - 1] = b;
-                b = new LevelButton(x + 1280, y, level + 6, assets);
-                page2[level - 1] = b;
-                x = x + plate.getWidth() + gap;
-                level++;
-            }
-            y = y - plate.getHeight() - gap;
-        }
-        for (int i = 0; i < page1.length; i++) {
-            page1[i].setLocked(i >= unlocked);
-            page2[i].setLocked(i + 6 >= unlocked);
-        }
     }
 
     public void update(float delta) {
@@ -142,15 +111,8 @@ public class LevelSelect implements Screen {
         } else {
             arrowLeft.update(delta);
             arrowRight.update(delta);
-            homeButton.update(delta);
-            handbookButton.update(delta);
+            backButton.update(delta);
             settingsButton.update(delta);
-            for (Button b : page1) {
-                b.update(delta);
-            }
-            for (Button b : page2) {
-                b.update(delta);
-            }
 
             if (!settingsOn) {
                 if (currPage == 1) {
@@ -162,26 +124,9 @@ public class LevelSelect implements Screen {
                     leftArrow();
                 }
 
-                for (LevelButton b : page1) {
-                    if (b.isPressed() && !b.getLocked()) {
-                        audio.play("clickLevel");
-                        game.exitScreen(this, b.getExitCode());
-                    }
-                }
-                for (LevelButton b : page2) {
-                    if (b.isPressed() && !b.getLocked()) {
-                        audio.play("click");
-                        game.exitScreen(this, b.getExitCode());
-                    }
-                }
-
-                if (homeButton.isPressed()) {
+                if (backButton.isPressed()) {
                     audio.play("click");
-                    game.exitScreen(this, homeButton.getExitCode());
-                }
-                if (handbookButton.isPressed()) {
-                    audio.play("click");
-                    game.exitScreen(this, handbookButton.getExitCode());
+                    game.exitScreen(this, backButton.getExitCode());
                 }
                 if (settingsButton.isPressed()) {
                     audio.play("click");
@@ -204,45 +149,27 @@ public class LevelSelect implements Screen {
 
         game.batch.begin();
         game.batch.setColor(Color.WHITE);
-        for (int i = 0; i < totalPages; i++) {
-            game.batch.draw(background, (1280 * i), 0, 1280, 720);
-            game.batch.draw(tray, (1280 * i) + 1280 / 2f - tray.getWidth() / 2f,
-                720 / 2f - tray.getHeight() / 2f);
-            Affine2 trans = new Affine2();
-            trans.setToTrnScl((1280 * i) + 1280 / 2f - title.getWidth() / 2f,
-                720 / 2f + tray.getHeight() / 2f, 3f, 3f);
-            game.batch.drawText(title, trans);
+        for (int i = 0; i <= unlocked; i++) {
+            if (moving) {
+                game.batch.draw(pages[i], (1280 * i), 0, 1280, 720);
+            } else {
+                if (i == currPage - 1) {
+                    game.batch.draw(pages[i], (1280 * i), 0, 1280, 720);
+                }
+            }
         }
 
-        if (moving) {
-            for (Button b : page1) {
-                b.draw(game.batch, true);
-            }
-            for (Button b : page2) {
-                b.draw(game.batch, true);
-            }
-        } else {
-            if (currPage == 1) {
-                for (Button b : page1) {
-                    b.draw(game.batch, true);
-                }
-            } else if (currPage == 2) {
-                for (Button b : page2) {
-                    b.draw(game.batch, true);
-                }
-            }
-        }
-        homeButton.draw(game.batch, true);
-        handbookButton.draw(game.batch, true);
-        settingsButton.draw(game.batch, true);
+        backButton.draw(game.batch, !settingsOn);
+        settingsButton.draw(game.batch, !settingsOn);
 
         if (currPage == 1) {
-            arrowRight.draw(game.batch, true);
-        } else if (currPage == 2) {
-            arrowRight.draw(game.batch, true);
-            arrowLeft.draw(game.batch, true);
-        } else if (currPage == 3) {
-            arrowLeft.draw(game.batch, true);
+            arrowRight.draw(game.batch, !settingsOn);
+
+        } else if (currPage == unlocked) {
+            arrowLeft.draw(game.batch, !settingsOn);
+        } else {
+            arrowRight.draw(game.batch, !settingsOn);
+            arrowLeft.draw(game.batch, !settingsOn);
         }
 
         if (settingsOn) {
@@ -278,8 +205,7 @@ public class LevelSelect implements Screen {
         camera.position.x += moveSpeed;
         arrowLeft.setPosition(arrowLeft.posX + moveSpeed, arrowLeft.posY);
         arrowRight.setPosition(arrowRight.posX + moveSpeed, arrowRight.posY);
-        homeButton.setPosition(homeButton.posX + moveSpeed, homeButton.posY);
-        handbookButton.setPosition(handbookButton.posX + moveSpeed, handbookButton.posY);
+        backButton.setPosition(backButton.posX + moveSpeed, backButton.posY);
         settingsButton.setPosition(settingsButton.posX + moveSpeed, settingsButton.posY);
     }
 
@@ -323,3 +249,4 @@ public class LevelSelect implements Screen {
         wait = 0.25f;
     }
 }
+

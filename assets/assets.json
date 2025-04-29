@@ -188,7 +188,12 @@
           68
         ]
       }
-    }
+    },
+    "Handbook0": "images/HandbookAvocado.png",
+    "Handbook1": "images/HandbookAvocado.png",
+    "Handbook2": "images/HandbookAvocado.png",
+    "Handbook3": "images/HandbookAvocado.png",
+    "Handbook4": "images/HandbookAvocado.png"
   },
   "fonts": {
     "lpc": {

@@ -69,6 +69,19 @@ public class Button {
     }
 
     public Button(float x, float y, Texture texture, Texture hover, int exitCode, float width,
+        float height, boolean flip) {
+        posX = x;
+        posY = y;
+        this.texture = texture;
+        this.width = -width;
+        this.height = height;
+        this.exitCode = exitCode;
+        text = new TextLayout("", new BitmapFont());
+        this.hover = hover;
+        this.flip = flip;
+    }
+
+    public Button(float x, float y, Texture texture, Texture hover, int exitCode, float width,
         float height,
         String name, BitmapFont font) {
         posX = x;
