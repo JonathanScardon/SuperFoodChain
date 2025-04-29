@@ -23,7 +23,7 @@ public class Coin extends ObstacleSprite {
     private static float animationSpeed;
 
     // How long the coin should persist for
-    protected static int life;
+    protected int life;
     private float size;
 
     private SpriteSheet plusOne;
