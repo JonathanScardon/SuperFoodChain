@@ -103,6 +103,10 @@ public class GameScene implements Screen {
      * Index of next companion spawn location
      */
     int companionSpawnIdx;
+    /**
+     * How much time has passed in the level
+     */
+    private static float time;
 
     /**
      * Random number generator
@@ -212,6 +216,7 @@ public class GameScene implements Screen {
         paused = false;
         state.reset();
         winGame = false;
+        time = 0;
 
         bosses = state.getBosses();
         bossControls = state.getBossControls();
@@ -311,6 +316,7 @@ public class GameScene implements Screen {
         }
 
         if (c != null) {
+            c.setCost(c.getCost() + (int)Math.floor(time/10));
             companions.add(c);
             companionSpawnIdx++;
         }
@@ -495,6 +501,8 @@ public class GameScene implements Screen {
                 }
             }
         }
+        time += delta;
+        System.out.println(time);
     }
 
 
