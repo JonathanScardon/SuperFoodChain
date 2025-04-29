@@ -1,5 +1,7 @@
 {
   "textures": {
+    "levelsBackground": "images/LevelSelectBackground.png",
+    "levelsTray": "images/LevelSelectTray.png",
     "coin": {
       "file": "images/coin.png",
       "sprites": {
@@ -189,11 +191,64 @@
         ]
       }
     },
-    "Handbook0": "images/HandbookAvocado.png",
-    "Handbook1": "images/HandbookAvocado.png",
-    "Handbook2": "images/HandbookAvocado.png",
-    "Handbook3": "images/HandbookAvocado.png",
-    "Handbook4": "images/HandbookAvocado.png"
+    "arrow": "images/NextButton.png",
+    "arrowHover": "images/NextButtonHover.png",
+    "settings": "images/HandbookButton.png",
+    "settingsHover": "images/HandbookButtonHover.png",
+    "home": "images/HomeButton.png",
+    "homeHover": "images/HomeButtonHover.png",
+    "handbook": "images/HandbookButton.png",
+    "handbookHover": "images/HandbookButtonHover.png",
+    "Handbook0": {
+      "file": "images/HandbookAvocado.png",
+      "sprites": {
+        "animation": {
+          "rows": 1,
+          "cols": 2,
+          "size": 2
+        }
+      }
+    },
+    "Handbook1": {
+      "file": "images/HandbookAvocado.png",
+      "sprites": {
+        "animation": {
+          "rows": 1,
+          "cols": 2,
+          "size": 2
+        }
+      }
+    },
+    "Handbook2": {
+      "file": "images/HandbookAvocado.png",
+      "sprites": {
+        "animation": {
+          "rows": 1,
+          "cols": 2,
+          "size": 2
+        }
+      }
+    },
+    "Handbook3": {
+      "file": "images/HandbookAvocado.png",
+      "sprites": {
+        "animation": {
+          "rows": 1,
+          "cols": 2,
+          "size": 2
+        }
+      }
+    },
+    "Handbook4": {
+      "file": "images/HandbookAvocado.png",
+      "sprites": {
+        "animation": {
+          "rows": 1,
+          "cols": 2,
+          "size": 2
+        }
+      }
+    }
   },
   "fonts": {
     "lpc": {
