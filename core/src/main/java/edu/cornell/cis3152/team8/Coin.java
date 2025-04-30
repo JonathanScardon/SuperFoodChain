@@ -129,7 +129,7 @@ public class Coin extends ObstacleSprite {
     @Override
     public void update(float delta) {
         if (sprite != null) {
-            animationFrame += animationSpeed;
+            animationFrame += currAnimationSpeed;
             if (!collected && animationFrame >= sprite.getSize()) {
                 animationFrame -= sprite.getSize();
             }

@@ -3,23 +3,32 @@ package edu.cornell.cis3152.team8.projectiles;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.physics.box2d.World;
 import edu.cornell.cis3152.team8.Projectile;
+import edu.cornell.gdiac.assets.AssetDirectory;
 import edu.cornell.gdiac.graphics.SpriteBatch;
 
 /**
  * Pineapple Projectile for the Pineapple companion.
- *
- * The pineapple projectile should be shot towards nearest enemy and explode upon impact,
- * damaging other enemies in nearby radius.
+ * <p>
+ * The pineapple projectile should be shot towards nearest enemy and explode upon impact, damaging
+ * other enemies in nearby radius.
  */
 public class PineappleProjectile extends Projectile {
+
     private static Texture texture; // art asset to be associated with the projectile
 
     public PineappleProjectile(float x, float y, float vx, float vy, World world) {
-        super(x,y,vx,vy,world);
+        super(x, y, vx, vy, world);
 
         if (texture == null) {
             texture = new Texture("images/Projectile_Pineapple.png");
         }
+    }
+
+    /**
+     * Sets Pineapple Projectile assets
+     */
+    public static void setAssets(AssetDirectory assets) {
+        texture = assets.getEntry("pineappleProjectile", Texture.class);
     }
 
     @Override
