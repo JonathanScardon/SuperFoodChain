@@ -2,9 +2,13 @@ package edu.cornell.cis3152.team8;
 
 import com.badlogic.gdx.physics.box2d.World;
 
+import edu.cornell.cis3152.team8.minions.Ant;
+import edu.cornell.cis3152.team8.minions.Cricket;
+import edu.cornell.cis3152.team8.minions.Spider;
 import java.util.Random;
 
 public class MinionSpawnPoint {
+
     private static final Random rand = new Random();
     private final float x;
     private final float y;
@@ -18,7 +22,8 @@ public class MinionSpawnPoint {
     private final World world;
     private final Player player;
 
-    public MinionSpawnPoint(GameState state, float x, float y, boolean bossOnly, float antSpawnProportion, float cricketSpawnProportion, float spiderSpawnProportion) {
+    public MinionSpawnPoint(GameState state, float x, float y, boolean bossOnly,
+        float antSpawnProportion, float cricketSpawnProportion, float spiderSpawnProportion) {
         this.gameState = state;
         this.world = state.getWorld();
         this.player = state.getPlayer();
@@ -26,7 +31,8 @@ public class MinionSpawnPoint {
         this.y = y;
         this.bossOnly = bossOnly;
 
-        float totalSpawnProportion = antSpawnProportion + cricketSpawnProportion + spiderSpawnProportion;
+        float totalSpawnProportion =
+            antSpawnProportion + cricketSpawnProportion + spiderSpawnProportion;
 
         if (totalSpawnProportion <= 0) {
             throw new RuntimeException("Total minion spawn proportions less than 0");
@@ -36,7 +42,9 @@ public class MinionSpawnPoint {
         this.spiderSpawnRate = spiderSpawnProportion / totalSpawnProportion;
         this.antSpawnRate = 1 - (this.cricketSpawnRate + this.spiderSpawnRate);
 
-        if (this.cricketSpawnRate < 0 || this.spiderSpawnRate < 0 || this.antSpawnRate < 0 || this.cricketSpawnRate + this.spiderSpawnRate + this.antSpawnRate > 1 || this.cricketSpawnRate + this.spiderSpawnRate + this.antSpawnRate <= 0) {
+        if (this.cricketSpawnRate < 0 || this.spiderSpawnRate < 0 || this.antSpawnRate < 0
+            || this.cricketSpawnRate + this.spiderSpawnRate + this.antSpawnRate > 1
+            || this.cricketSpawnRate + this.spiderSpawnRate + this.antSpawnRate <= 0) {
             throw new RuntimeException("Invalid minion spawn proportions");
         }
     }
@@ -65,6 +73,7 @@ public class MinionSpawnPoint {
 
     /**
      * Returns whether this spawn point is only triggered by the boss and not automatically
+     *
      * @return true if this spawn point is only for the boss, false otherwise
      */
     public boolean isBossOnly() {

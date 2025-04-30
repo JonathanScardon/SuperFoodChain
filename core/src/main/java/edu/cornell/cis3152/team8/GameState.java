@@ -14,6 +14,9 @@ import edu.cornell.cis3152.team8.companions.Durian;
 import edu.cornell.cis3152.team8.companions.Garlic;
 import edu.cornell.cis3152.team8.companions.Pineapple;
 import edu.cornell.cis3152.team8.companions.Strawberry;
+import edu.cornell.cis3152.team8.minions.Ant;
+import edu.cornell.cis3152.team8.minions.Cricket;
+import edu.cornell.cis3152.team8.minions.Spider;
 import edu.cornell.gdiac.assets.*;
 import edu.cornell.gdiac.graphics.*;
 import com.badlogic.gdx.physics.box2d.World;
@@ -164,15 +167,29 @@ public class GameState {
      * @param assets The AssetDirectory of this GameState
      */
     private void setAssets(AssetDirectory assets) {
-        Companion.setAssets(assets);
+        //Coin
         Coin.setAssets(assets);
+
+        //Companions
+        Companion.setAssets(assets);
         Avocado.setAssets(assets);
         BlueRaspberry.setAssets(assets);
         Durian.setAssets(assets);
         Garlic.setAssets(assets);
         Pineapple.setAssets(assets);
         Strawberry.setAssets(assets);
+
+        //Minions
+        Minion.setAssets(assets);
+        Ant.setAssets(assets);
+        Cricket.setAssets(assets);
+        Spider.setAssets(assets);
+
+        //Bosses
+
+        //Projectiles
     }
+
 
     public void update() {
 //        Boss b = bosses.get(0);
