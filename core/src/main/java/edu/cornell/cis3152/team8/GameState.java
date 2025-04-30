@@ -11,6 +11,8 @@ import com.badlogic.gdx.utils.JsonValue;
 import edu.cornell.cis3152.team8.companions.Avocado;
 import edu.cornell.cis3152.team8.companions.BlueRaspberry;
 import edu.cornell.cis3152.team8.companions.Durian;
+import edu.cornell.cis3152.team8.companions.Garlic;
+import edu.cornell.cis3152.team8.companions.Pineapple;
 import edu.cornell.cis3152.team8.companions.Strawberry;
 import edu.cornell.gdiac.assets.*;
 import edu.cornell.gdiac.graphics.*;
@@ -120,12 +122,7 @@ public class GameState {
         minionSpawns = new Array<>();
         companionSpawns = new Array<>();
 
-        Boss.setConstants(bossConstants);
-        Companion.setConstants(companionConstants);
-        Strawberry.setConstants(strawberryConstants);
-        Avocado.setConstants(avocadoConstants);
-        BlueRaspberry.setConstants(blueRaspberryConstants);
-        Durian.setConstants(durianConstants);
+        setConstants(this.constants);
 
         mouseIdleSprite = assets.getEntry("IdleMouse.animation", SpriteSheet.class);
         mouseDashSprite = assets.getEntry("DashMouse.animation", SpriteSheet.class);
@@ -141,7 +138,40 @@ public class GameState {
 
         dead = new Array<>();
 
+        setAssets(assets);
+
         reset();
+    }
+
+    /**
+     * Sets constants
+     *
+     * @param constants The JsonValue of this GameState
+     */
+    private void setConstants(JsonValue constants) {
+        Coin.setConstants(constants.get("coin"));
+        Boss.setConstants(constants.get("boss"));
+        Companion.setConstants(constants.get("companion"));
+        Avocado.setConstants(constants.get("avocado"));
+        BlueRaspberry.setConstants(constants.get("blueRaspberry"));
+        Durian.setConstants(constants.get("durian"));
+        Strawberry.setConstants(constants.get("strawberry"));
+    }
+
+    /**
+     * Sets assets
+     *
+     * @param assets The AssetDirectory of this GameState
+     */
+    private void setAssets(AssetDirectory assets) {
+        Companion.setAssets(assets);
+        Coin.setAssets(assets);
+        Avocado.setAssets(assets);
+        BlueRaspberry.setAssets(assets);
+        Durian.setAssets(assets);
+        Garlic.setAssets(assets);
+        Pineapple.setAssets(assets);
+        Strawberry.setAssets(assets);
     }
 
     public void update() {

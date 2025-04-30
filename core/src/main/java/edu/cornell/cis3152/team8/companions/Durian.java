@@ -7,6 +7,7 @@ import com.badlogic.gdx.utils.JsonValue;
 import edu.cornell.cis3152.team8.Companion;
 import edu.cornell.cis3152.team8.projectiles.DurianProjectile;
 import edu.cornell.cis3152.team8.GameState;
+import edu.cornell.gdiac.assets.AssetDirectory;
 import edu.cornell.gdiac.graphics.SpriteSheet;
 
 public class Durian extends Companion {
@@ -16,7 +17,7 @@ public class Durian extends Companion {
     private static float ANIMATION_SPEED;
     private static int NUM_ATTACKS;
     private static float PROJECTILE_SPEED;
-
+    private static SpriteSheet texture;
 
     public Durian(float x, float y, int id, World world) {
         super(x, y, id, world);
@@ -26,6 +27,8 @@ public class Durian extends Companion {
         setCooldown(COOLDOWN);
 
         animationSpeed = ANIMATION_SPEED;
+
+        setSpriteSheet(texture);
     }
 
     /**
@@ -37,6 +40,13 @@ public class Durian extends Companion {
         ANIMATION_SPEED = constants.getFloat("animationSpeed", 0.25f);
         NUM_ATTACKS = constants.getInt("numAttacks", 8);
         PROJECTILE_SPEED = constants.getFloat("projectileSpeed", 8f);
+    }
+
+    /**
+     * Sets Durian assets
+     */
+    public static void setAssets(AssetDirectory assets) {
+        texture = assets.getEntry("DURIAN.animation", SpriteSheet.class);
     }
 
     @Override

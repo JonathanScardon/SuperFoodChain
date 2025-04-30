@@ -5,12 +5,14 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 import edu.cornell.cis3152.team8.*;
 import edu.cornell.cis3152.team8.projectiles.PineappleProjectile;
+import edu.cornell.gdiac.assets.AssetDirectory;
 import edu.cornell.gdiac.graphics.SpriteSheet;
 
 public class Pineapple extends Companion {
 
     float dx = 0.0f;
     float dy = 0.0f;
+    private static SpriteSheet texture;
 
     public Pineapple(float x, float y, int id, World world) {
         super(x, y, id, world);
@@ -21,6 +23,14 @@ public class Pineapple extends Companion {
 //        origin.y = 117.5f;
         animationSpeed = 0.25f;
 //        size = 0.4f;
+        setSpriteSheet(texture);
+    }
+
+    /**
+     * Sets Pineapple assets
+     */
+    public static void setAssets(AssetDirectory assets) {
+        texture = assets.getEntry("PINEAPPLE.animation", SpriteSheet.class);
     }
 
     @Override

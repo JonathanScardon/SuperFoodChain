@@ -16,6 +16,7 @@ public class Avocado extends Companion {
     private static int COOLDOWN;
     private static float ANIMATION_SPEED;
     private static float COOLDOWN_REDUCTION_RATE;
+    private static SpriteSheet texture;
 
 
     public Avocado(float x, float y, int id, World world) {
@@ -25,6 +26,8 @@ public class Avocado extends Companion {
         setCooldown(COOLDOWN);
 
         animationSpeed = ANIMATION_SPEED;
+
+        setSpriteSheet(texture);
     }
 
     /**
@@ -35,6 +38,13 @@ public class Avocado extends Companion {
         COOLDOWN = constants.getInt("cooldown", 7);
         ANIMATION_SPEED = constants.getFloat("animationSpeed", 0.25f);
         COOLDOWN_REDUCTION_RATE = constants.getFloat("cooldownReductionRate", 5.0f);
+    }
+
+    /**
+     * Sets Avocado assets
+     */
+    public static void setAssets(AssetDirectory assets) {
+        texture = assets.getEntry("AVOCADO.animation", SpriteSheet.class);
     }
 
     @Override

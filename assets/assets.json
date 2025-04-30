@@ -7,8 +7,18 @@
       "sprites": {
         "animation": {
           "rows": 1,
-          "cols": 4,
-          "size": 4
+          "cols": 22,
+          "size": 22
+        }
+      }
+    },
+    "plusOne": {
+      "file": "images/+1.png",
+      "sprites": {
+        "animation": {
+          "rows": 1,
+          "cols": 6,
+          "size": 6
         }
       }
     },

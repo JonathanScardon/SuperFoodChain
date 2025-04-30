@@ -8,6 +8,7 @@ import com.badlogic.gdx.utils.JsonValue;
 import edu.cornell.cis3152.team8.Companion;
 import edu.cornell.cis3152.team8.GameState;
 import edu.cornell.cis3152.team8.projectiles.StrawberryProjectile;
+import edu.cornell.gdiac.assets.AssetDirectory;
 import edu.cornell.gdiac.graphics.SpriteSheet;
 
 public class Strawberry extends Companion {
@@ -27,6 +28,7 @@ public class Strawberry extends Companion {
      */
     private float dx = 0.0f;
     private float dy = 0.0f;
+    private static SpriteSheet texture;
 
     public Strawberry(float x, float y, int id, World world) {
         super(x, y, id, world);
@@ -36,6 +38,7 @@ public class Strawberry extends Companion {
         setCooldown(COOLDOWN);
 
         animationSpeed = ANIMATION_SPEED;
+        setSpriteSheet(texture);
     }
 
     /**
@@ -48,6 +51,13 @@ public class Strawberry extends Companion {
         NUM_PROJECTILES = constants.getInt("numProjectiles", 3);
         DELAY_PER_SHOT = constants.getInt("delayPerShot", 100);
         PROJECTILE_SPEED = constants.getFloat("projectileSpeed", 7f);
+    }
+
+    /**
+     * Sets Strawberry assets
+     */
+    public static void setAssets(AssetDirectory assets) {
+        texture = assets.getEntry("STRAWBERRY.animation", SpriteSheet.class);
     }
 
     @Override
