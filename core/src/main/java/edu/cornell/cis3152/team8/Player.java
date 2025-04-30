@@ -2,6 +2,7 @@ package edu.cornell.cis3152.team8;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.math.*;
 import com.badlogic.gdx.physics.box2d.Filter;
 import com.badlogic.gdx.physics.box2d.World;
@@ -9,6 +10,7 @@ import com.badlogic.gdx.utils.JsonValue;
 import edu.cornell.cis3152.team8.companions.BlueRaspberry;
 import edu.cornell.cis3152.team8.companions.Durian;
 import edu.cornell.cis3152.team8.companions.Strawberry;
+import edu.cornell.gdiac.assets.AssetDirectory;
 import edu.cornell.gdiac.graphics.*;
 import edu.cornell.gdiac.physics2.ObstacleSprite;
 
@@ -52,10 +54,10 @@ public class Player {
         }
 
         /**
-         * Updates the head of the buffer, ensuring that members of the chain are reading
-         * from the correct positions when the player's head dies
+         * Updates the head of the buffer, ensuring that members of the chain are reading from the
+         * correct positions when the player's head dies
          */
-        public void updateHead(){
+        public void updateHead() {
             head = (head - DELAY + capacity) % capacity;
         }
 
@@ -137,13 +139,8 @@ public class Player {
         this.attacking = false;
         this.shield = false;
         ticks = 0;
-        headDirStill = new Texture("images/UI_HeadIndicator_Still.PNG");
-        headDirUp = new Texture("images/UI_HeadIndicator_Up.PNG");
-        headDirDown = new Texture("images/UI_HeadIndicator_Down.PNG");
-        headDirLeft = new Texture("images/UI_HeadIndicator_Left.PNG");
-        headDirRight = new Texture("images/UI_HeadIndicator_Right.PNG");
 
-        current = headDirUp;
+        current = headDirStill;
         originX = 0;
         originY = 0;
         transform = new Affine2();
@@ -151,6 +148,14 @@ public class Player {
         calculateDelay();
 
         this.controlBuffer = new CircularBuffer(MAX_COMPANIONS * DELAY);
+    }
+
+    public void setAssets(AssetDirectory assets) {
+        headDirStill = assets.getEntry("headDirStill", Texture.class);
+        headDirUp = assets.getEntry("headDirUp", Texture.class);
+        headDirDown = assets.getEntry("headDirDown", Texture.class);
+        headDirLeft = assets.getEntry("headDirLeft", Texture.class);
+        headDirRight = assets.getEntry("headDirRight", Texture.class);
     }
 
     /**
@@ -181,7 +186,8 @@ public class Player {
         }
 
         Companion head = this.getPlayerHead();
-        controlBuffer.add(head.getObstacle().getX(), head.getObstacle().getY(), head.getDirection());
+        controlBuffer.add(head.getObstacle().getX(), head.getObstacle().getY(),
+            head.getDirection());
 
         for (int i = 0; i < companions.size(); i++) {
             Companion c = companions.get(i);
@@ -199,10 +205,9 @@ public class Player {
             }
         }
 
-
         for (Companion c : companions) {
             c.animationFrame = getPlayerHead().animationFrame;
-            if (c.getAnimator() != null) {
+            if (c.getAnimator() != null && c.isMoving()) {
                 c.animationFrame += c.animationSpeed;
                 if (c.animationFrame >= c.getAnimator().getSize()) {
                     c.animationFrame -= c.getAnimator().getSize() - 1;
@@ -254,6 +259,7 @@ public class Player {
 
     /**
      * Draw the desired position and direction for each companion other than the head
+     *
      * @param batch the SpriteBatch to draw with
      */
     public void drawDebug(SpriteBatch batch) {
@@ -409,7 +415,7 @@ public class Player {
             companion.setCollected(true);
         }
         //allowed to add a companion if we are starting the level
-        else if (companions.isEmpty()){
+        else if (companions.isEmpty()) {
             companions.add(companion);
             companion.setCollected(true);
         }
@@ -428,8 +434,8 @@ public class Player {
         }
 
         //lose speed boost gained from Blue Raspberry
-        if (companion.getCompanionType() == Companion.CompanionType.BLUE_RASPBERRY){
-            ((BlueRaspberry)companion).loseAbility();
+        if (companion.getCompanionType() == Companion.CompanionType.BLUE_RASPBERRY) {
+            ((BlueRaspberry) companion).loseAbility();
         }
 
         //no catch up needed when head is removed (no gap is created in the chain)

@@ -8,7 +8,7 @@ import edu.cornell.cis3152.team8.projectiles.PineappleProjectile;
 import edu.cornell.gdiac.graphics.SpriteSheet;
 
 public class Pineapple extends Companion {
-    Texture texture;
+
     float dx = 0.0f;
     float dy = 0.0f;
 
@@ -18,9 +18,6 @@ public class Pineapple extends Companion {
         setCost(4);
         setCooldown(7);
 //        radius = 1;
-        texture = new Texture("images/Pineapple.png");
-        SpriteSheet pineapple = new SpriteSheet(texture, 1, 8);
-        setSpriteSheet(pineapple);
 //        origin.y = 117.5f;
         animationSpeed = 0.25f;
 //        size = 0.4f;
@@ -39,7 +36,7 @@ public class Pineapple extends Companion {
 //            PineappleProjectile projectile = ProjectilePools.pineapplePool.obtain();
 //            projectile.getObstacle().setActive(true);
 //            projectile.reset();
-            PineappleProjectile projectile = new PineappleProjectile(0,0,0, 0, state.getWorld());
+            PineappleProjectile projectile = new PineappleProjectile(0, 0, 0, 0, state.getWorld());
             projectile.getObstacle().setX(obstacle.getX());
             projectile.getObstacle().setY(obstacle.getY());
 //            float vx = (float) Math.toRadians(dx);

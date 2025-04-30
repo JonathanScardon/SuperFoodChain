@@ -6,6 +6,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Filter;
 import com.badlogic.gdx.physics.box2d.World;
+import edu.cornell.gdiac.assets.AssetDirectory;
 import edu.cornell.gdiac.graphics.SpriteBatch;
 import edu.cornell.gdiac.graphics.SpriteSheet;
 import edu.cornell.gdiac.physics2.CapsuleObstacle;
@@ -77,7 +78,7 @@ public abstract class Companion extends ObstacleSprite {
     private float size;
     private boolean remove;
     private boolean moving;
-    private SpriteSheet deadCompanion;
+    private static SpriteSheet deadCompanion;
 
     public Companion(float x, float y, int id, World world) {
         super(new CapsuleObstacle(x / UNIT_SCALE, y / UNIT_SCALE, 0.8f, 0.8f), true);
@@ -96,9 +97,6 @@ public abstract class Companion extends ObstacleSprite {
         moving = false;
         dead = false;
         deathExpirationTimer = DEATH_EXPIRATION_TIMER;
-
-        Texture texture = new Texture("images/Companion_Death_Universal.png");
-        deadCompanion = new SpriteSheet(texture, 1, 6);
 
         obstacle = getObstacle();
         obstacle.setName("companion");
@@ -130,6 +128,13 @@ public abstract class Companion extends ObstacleSprite {
         DEATH_EXPIRATION_TIMER = constants.getFloat("deathExpirationTimer", 3.0f);
         DEATH_ANIMATION_SPEED = constants.getFloat("deathAnimationSpeed", 0.1f);
         UNIT_SCALE = constants.getFloat("unitScale", 64f);
+    }
+
+    public void setAssets(AssetDirectory assets) {
+        deadCompanion = assets.getEntry("companionDeath.animation", SpriteSheet.class);
+        setSpriteSheet(
+            assets.getEntry(getCompanionType().name() + ".animation", SpriteSheet.class));
+
     }
 
     // accessors
@@ -260,6 +265,7 @@ public abstract class Companion extends ObstacleSprite {
             return;
         }
         highlight = false;
+        moving = false;
 
         // Determine how we are moving.
         boolean movingLeft = controlCode == 1;
@@ -329,7 +335,8 @@ public abstract class Companion extends ObstacleSprite {
 
         SpriteBatch.computeTransform(transform, sprite.getRegionWidth() / 2.0f,
             sprite.getRegionHeight() / 2.0f, obstacle.getPosition().x * UNIT_SCALE,
-            obstacle.getPosition().y * UNIT_SCALE + 16f, 0.0f, size / UNIT_SCALE, size / UNIT_SCALE);
+            obstacle.getPosition().y * UNIT_SCALE + 16f, 0.0f, size / UNIT_SCALE,
+            size / UNIT_SCALE);
 
         batch.draw(sprite, transform);
         batch.setColor(Color.WHITE);
@@ -339,21 +346,21 @@ public abstract class Companion extends ObstacleSprite {
     /**
      * Returns player's speed (including boost)
      */
-    public static float getSpeed(){
+    public static float getSpeed() {
         return MOVE_SPEED + SPEED_BOOST;
     }
 
     /**
      * @param boost increase to SPEED_BOOST
      */
-    public static void increaseBoost(float boost){
+    public static void increaseBoost(float boost) {
         SPEED_BOOST += boost;
     }
 
     /**
      * @param boost decrease to SPEED_BOOST
      */
-    public static void decreaseBoost(float boost){
+    public static void decreaseBoost(float boost) {
         SPEED_BOOST -= boost;
     }
 
@@ -361,7 +368,7 @@ public abstract class Companion extends ObstacleSprite {
     /**
      * Resets the speed boost to 0
      */
-    public static void resetBoost(){
+    public static void resetBoost() {
         SPEED_BOOST = 0;
     }
 
@@ -410,6 +417,10 @@ public abstract class Companion extends ObstacleSprite {
 
     public boolean getTrash() {
         return deathExpirationTimer < 0.0;
+    }
+
+    public boolean isMoving() {
+        return moving;
     }
 
 }

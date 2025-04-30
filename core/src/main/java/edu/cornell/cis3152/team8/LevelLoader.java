@@ -214,7 +214,7 @@ public class LevelLoader {
      * @param controller the boss that will execute the attack
      */
     private BossAttackPattern createAttack(MapObject obj, BossController controller,
-                                           Player player) {
+        Player player) {
         String attackType = obj.getProperties().get("attackType", String.class);
         MapProperties props = obj.getProperties();
 
@@ -264,7 +264,8 @@ public class LevelLoader {
         int spawnId;
         MinionSpawnPoint spawn;
         while (props.containsKey("minion" + spawnIdx)) {
-            spawnId = props.get("minion" + spawnIdx, MapObject.class).getProperties().get("id", Integer.class);
+            spawnId = props.get("minion" + spawnIdx, MapObject.class).getProperties()
+                .get("id", Integer.class);
             spawn = minionSpawns.get(spawnId);
             attack.addMinionSpawnPoint(spawn);
 
@@ -289,6 +290,7 @@ public class LevelLoader {
         String companionType = props.get("companionType", String.class);
 
         Player player = new Player(x, y, state.getWorld());
+        player.setAssets(assets);
 
         Companion head = switch (companionType) {
             case "strawberry" -> new Strawberry(x, y, 0, state.getWorld());
@@ -297,6 +299,7 @@ public class LevelLoader {
             case "blueRaspberry" -> new BlueRaspberry(x, y, 0, state.getWorld());
             default -> null;
         };
+        head.setAssets(assets);
         player.addCompanion(head);
 
         Companion.resetBoost();
@@ -338,7 +341,8 @@ public class LevelLoader {
         float cricketSpawnProportion = props.get("cricketSpawnProportion", 0f, Float.class);
         float spiderSpawnProportion = props.get("spiderSpawnProportion", 0f, Float.class);
 
-        MinionSpawnPoint spawn = new MinionSpawnPoint(state, x, y, bossOnly, antSpawnProportion, cricketSpawnProportion, spiderSpawnProportion);
+        MinionSpawnPoint spawn = new MinionSpawnPoint(state, x, y, bossOnly, antSpawnProportion,
+            cricketSpawnProportion, spiderSpawnProportion);
 
         state.getMinionSpawns().add(spawn);
         this.minionSpawns.put(id, spawn);

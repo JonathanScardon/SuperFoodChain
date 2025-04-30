@@ -17,7 +17,6 @@ public class Durian extends Companion {
     private static int NUM_ATTACKS;
     private static float PROJECTILE_SPEED;
 
-    private Texture texture;
 
     public Durian(float x, float y, int id, World world) {
         super(x, y, id, world);
@@ -26,14 +25,12 @@ public class Durian extends Companion {
         setCost(COST);
         setCooldown(COOLDOWN);
 
-        texture = new Texture("images/Durian.png");
-        SpriteSheet durian = new SpriteSheet(texture, 1, 8);
-        setSpriteSheet(durian);
-
         animationSpeed = ANIMATION_SPEED;
     }
 
-    /** Loads Durian-specific constants from JSON */
+    /**
+     * Loads Durian-specific constants from JSON
+     */
     public static void setConstants(JsonValue constants) {
         COST = constants.getInt("cost", 1);
         COOLDOWN = constants.getInt("cooldown", 2);
