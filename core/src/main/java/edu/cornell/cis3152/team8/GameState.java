@@ -17,6 +17,10 @@ import edu.cornell.cis3152.team8.companions.Strawberry;
 import edu.cornell.cis3152.team8.minions.Ant;
 import edu.cornell.cis3152.team8.minions.Cricket;
 import edu.cornell.cis3152.team8.minions.Spider;
+import edu.cornell.cis3152.team8.projectiles.DurianProjectile;
+import edu.cornell.cis3152.team8.projectiles.GarlicProjectile;
+import edu.cornell.cis3152.team8.projectiles.PineappleProjectile;
+import edu.cornell.cis3152.team8.projectiles.StrawberryProjectile;
 import edu.cornell.gdiac.assets.*;
 import edu.cornell.gdiac.graphics.*;
 import com.badlogic.gdx.physics.box2d.World;
@@ -182,6 +186,12 @@ public class GameState {
         Pineapple.setAssets(assets);
         Strawberry.setAssets(assets);
 
+        //Projectiles
+        DurianProjectile.setAssets(assets);
+        GarlicProjectile.setAssets(assets);
+        PineappleProjectile.setAssets(assets);
+        StrawberryProjectile.setAssets(assets);
+
         //Minions
         Minion.setAssets(assets);
         Ant.setAssets(assets);
@@ -190,7 +200,6 @@ public class GameState {
 
         //Bosses
 
-        //Projectiles
     }
 
 
