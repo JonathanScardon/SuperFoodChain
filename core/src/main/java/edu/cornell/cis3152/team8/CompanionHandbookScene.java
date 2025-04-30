@@ -57,7 +57,6 @@ public class CompanionHandbookScene extends MultiPageScene {
     @Override
     public void update(float delta) {
         //Update animation frame
-        System.out.println(animationFrame);
         animationFrame += animationSpeed;
         if (animationFrame >= pages[0].getSize()) {
             animationFrame -= pages[0].getSize();

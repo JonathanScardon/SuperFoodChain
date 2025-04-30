@@ -122,7 +122,22 @@
         }
       }
     },
-    "blue raspberry": {
+    "headDirStill": "images/UI_HeadIndicator_Still.PNG",
+    "headDirUp": "images/UI_HeadIndicator_Up.PNG",
+    "headDirDown": "images/UI_HeadIndicator_Down.PNG",
+    "headDirLeft": "images/UI_HeadIndicator_Left.PNG",
+    "headDirRight": "images/UI_HeadIndicator_Right.PNG",
+    "AVOCADO": {
+      "file": "images/Avocado.png",
+      "sprites": {
+        "animation": {
+          "rows": 1,
+          "cols": 8,
+          "size": 8
+        }
+      }
+    },
+    "BLUE_RASPBERRY": {
       "file": "images/BlueRaspberry.png",
       "sprites": {
         "animation": {
@@ -132,7 +147,7 @@
         }
       }
     },
-    "durian": {
+    "DURIAN": {
       "file": "images/Durian.png",
       "sprites": {
         "animation": {
@@ -142,7 +157,17 @@
         }
       }
     },
-    "pineapple": {
+    "GARLIC": {
+      "file": "images/Garlic.png",
+      "sprites": {
+        "animation": {
+          "rows": 1,
+          "cols": 7,
+          "size": 7
+        }
+      }
+    },
+    "PINEAPPLE": {
       "file": "images/Pineapple.png",
       "sprites": {
         "animation": {
@@ -152,13 +177,23 @@
         }
       }
     },
-    "strawberry": {
+    "STRAWBERRY": {
       "file": "images/Strawberry.png",
       "sprites": {
         "animation": {
           "rows": 1,
           "cols": 8,
           "size": 8
+        }
+      }
+    },
+    "companionDeath": {
+      "file": "images/Companion_Death_Universal.png",
+      "sprites": {
+        "animation": {
+          "rows": 1,
+          "cols": 6,
+          "size": 6
         }
       }
     },

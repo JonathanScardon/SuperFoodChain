@@ -15,7 +15,6 @@ public class BlueRaspberry extends Companion {
     private static float ANIMATION_SPEED;
     private static float BOOST;
 
-    private Texture texture;
     private boolean usedBoost;
 
     /**
@@ -31,15 +30,13 @@ public class BlueRaspberry extends Companion {
         setCost(COST);
         setCooldown(COOLDOWN);
 
-        texture = new Texture("images/BlueRaspberry.png");
-        SpriteSheet blueRaspberry = new SpriteSheet(texture, 1, 8);
-        setSpriteSheet(blueRaspberry);
-
         animationSpeed = ANIMATION_SPEED;
         usedBoost = false;
     }
 
-    /** Loads BlueRaspberry-specific constants from JSON */
+    /**
+     * Loads BlueRaspberry-specific constants from JSON
+     */
     public static void setConstants(JsonValue constants) {
         COST = constants.getInt("cost", 1);
         COOLDOWN = constants.getInt("cooldown", 7);

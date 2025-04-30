@@ -4,7 +4,6 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.utils.JsonValue;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import edu.cornell.gdiac.assets.AssetDirectory;
 import edu.cornell.gdiac.graphics.SpriteBatch;
@@ -26,7 +25,7 @@ public class GDXRoot extends Game implements ScreenListener {
     private LoadingScene loadingScene;
     private GameScene gameScene;
     private MainMenuScene menuScene;
-    private LevelSelect levelSelectScene;
+    private LevelSelectScene levelSelectScene;
     private CompanionHandbookScene handbookScene;
     private String prev;
 
@@ -105,7 +104,7 @@ public class GDXRoot extends Game implements ScreenListener {
         } else if (screen == menuScene) {
             menuScene.dispose();
             if (exitCode == 0) {
-                levelSelectScene = new LevelSelect(this, directory);
+                levelSelectScene = new LevelSelectScene(this, directory);
                 this.setScreen(levelSelectScene);
             } else {
                 Gdx.app.exit();

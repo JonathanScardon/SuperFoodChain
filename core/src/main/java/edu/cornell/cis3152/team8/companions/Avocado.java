@@ -7,6 +7,7 @@ import com.badlogic.gdx.utils.JsonValue;
 import edu.cornell.cis3152.team8.Companion;
 import edu.cornell.cis3152.team8.GameState;
 import edu.cornell.cis3152.team8.Player;
+import edu.cornell.gdiac.assets.AssetDirectory;
 import edu.cornell.gdiac.graphics.SpriteSheet;
 
 public class Avocado extends Companion {
@@ -16,7 +17,6 @@ public class Avocado extends Companion {
     private static float ANIMATION_SPEED;
     private static float COOLDOWN_REDUCTION_RATE;
 
-    private Texture texture;
 
     public Avocado(float x, float y, int id, World world) {
         super(x, y, id, world);
@@ -24,14 +24,12 @@ public class Avocado extends Companion {
         setCost(COST);
         setCooldown(COOLDOWN);
 
-        texture = new Texture("images/Avocado.png");
-        SpriteSheet avocado = new SpriteSheet(texture, 1, 8);
-        setSpriteSheet(avocado);
-
         animationSpeed = ANIMATION_SPEED;
     }
 
-    /** Loads Avocado-specific constants from JSON */
+    /**
+     * Loads Avocado-specific constants from JSON
+     */
     public static void setConstants(JsonValue constants) {
         COST = constants.getInt("cost", 0);
         COOLDOWN = constants.getInt("cooldown", 7);

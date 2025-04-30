@@ -4,7 +4,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.JsonValue;
 import edu.cornell.gdiac.assets.AssetDirectory;
 
-public class LevelSelect extends MultiPageScene {
+public class LevelSelectScene extends MultiPageScene {
 
     /**
      * Background textures
@@ -25,7 +25,7 @@ public class LevelSelect extends MultiPageScene {
     private final Button homeButton;
 
 
-    public LevelSelect(final GDXRoot game, AssetDirectory assets) {
+    public LevelSelectScene(final GDXRoot game, AssetDirectory assets) {
         super(game, assets);
 
         //Constants

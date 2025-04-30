@@ -317,6 +317,7 @@ public class GameScene implements Screen {
         }
 
         if (c != null) {
+            c.setAssets(assets);
             c.setCost(c.getCost() + (int) Math.floor(time / 10));
             companions.add(c);
             companionSpawnIdx++;
@@ -503,7 +504,7 @@ public class GameScene implements Screen {
             }
         }
         time += delta;
-        System.out.println(time);
+        //System.out.println(time);
     }
 
 

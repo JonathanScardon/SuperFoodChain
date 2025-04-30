@@ -11,6 +11,7 @@ import edu.cornell.cis3152.team8.projectiles.StrawberryProjectile;
 import edu.cornell.gdiac.graphics.SpriteSheet;
 
 public class Strawberry extends Companion {
+
     private static int COST;
     private static int COOLDOWN;
     private static float ANIMATION_SPEED;
@@ -20,11 +21,10 @@ public class Strawberry extends Companion {
 
     /**
      * Constructs a Strawberry at the given position
-
+     *
      * @param x The x-coordinate of the object
      * @param y The y-coordinate of the object
      */
-    private Texture texture;
     private float dx = 0.0f;
     private float dy = 0.0f;
 
@@ -35,15 +35,12 @@ public class Strawberry extends Companion {
         setCost(COST);
         setCooldown(COOLDOWN);
 
-        texture = new Texture("images/Strawberry.png");
-        SpriteSheet strawberry = new SpriteSheet(texture, 1, 8);
-        setSpriteSheet(strawberry);
-
         animationSpeed = ANIMATION_SPEED;
-        glow = new Texture("images/StrawberryGlow.png");
     }
 
-    /** Loads Strawberry-specific constants from JSON */
+    /**
+     * Loads Strawberry-specific constants from JSON
+     */
     public static void setConstants(JsonValue constants) {
         COST = constants.getInt("cost", 2);
         COOLDOWN = constants.getInt("cooldown", 4);
@@ -70,8 +67,10 @@ public class Strawberry extends Companion {
                 Timer.schedule(new Timer.Task() {
                     @Override
                     public void run() {
-                        StrawberryProjectile projectile = new StrawberryProjectile(0, 0, 0, 0, state.getWorld());
-                        projectile.getObstacle().setLinearVelocity(new Vector2(dx * PROJECTILE_SPEED, dy * PROJECTILE_SPEED));
+                        StrawberryProjectile projectile = new StrawberryProjectile(0, 0, 0, 0,
+                            state.getWorld());
+                        projectile.getObstacle().setLinearVelocity(
+                            new Vector2(dx * PROJECTILE_SPEED, dy * PROJECTILE_SPEED));
                         projectile.getObstacle().setX(obstacle.getX());
                         projectile.getObstacle().setY(obstacle.getY());
                         state.getActiveProjectiles().add(projectile);
