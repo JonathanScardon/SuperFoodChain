@@ -15,6 +15,8 @@ public class StrawberryProjectile extends Projectile {
 
     private static Texture texture; // Make texture static so it's shared
 
+    private float angle;
+
     public StrawberryProjectile(float x, float y, float vx, float vy, World world) {
         // Call the parent constructor (in Projectile)
         super(x, y, vx, vy, world);
@@ -33,12 +35,20 @@ public class StrawberryProjectile extends Projectile {
     @Override
     public void draw(SpriteBatch batch) {
         if (obstacle.isActive()) {
-            batch.draw(texture, obstacle.getX() * 64f - 16, obstacle.getY() * 64f - 16, 32, 32);
+            SpriteBatch.computeTransform(transform, sprite.getRegionWidth() / 2.0f,
+                sprite.getRegionHeight() / 2.0f,
+                obstacle.getX() * units - 16, obstacle.getY() * units - 16, angle + 90, 0.2f,
+                0.2f);
+            batch.draw(texture, transform);
         }
     }
 
     @Override
     public void update(float delta) {
         super.update(delta);
+    }
+
+    public void setAngle(float a) {
+        angle = a;
     }
 }

@@ -110,13 +110,6 @@ public class GameState {
     public GameState(JsonValue constants, AssetDirectory assets) {
         this.constants = constants;
 
-        JsonValue bossConstants = this.constants.get("boss");
-        JsonValue companionConstants = this.constants.get("companion");
-        JsonValue strawberryConstants = this.constants.get("strawberry");
-        JsonValue avocadoConstants = this.constants.get("avocado");
-        JsonValue blueRaspberryConstants = this.constants.get("blueRaspberry");
-        JsonValue durianConstants = this.constants.get("durian");
-
         audio = new GameAudio(assets);
 
         companions = new Array<>();

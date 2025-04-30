@@ -10,6 +10,7 @@ import edu.cornell.gdiac.graphics.SpriteSheet;
 public class DurianProjectile extends Projectile {
 
     private static Texture texture;
+    private float angle;
 
     //TODO: Change asset in json to durian spike
     public DurianProjectile(float x, float y, float vx, float vy, World world) {
@@ -28,12 +29,20 @@ public class DurianProjectile extends Projectile {
     @Override
     public void draw(SpriteBatch batch) {
         if (obstacle.isActive()) {
-            batch.draw(texture, obstacle.getX() * 64f - 16, obstacle.getY() * 64f - 16, 32, 32);
+            SpriteBatch.computeTransform(transform, sprite.getRegionWidth() / 2.0f,
+                sprite.getRegionHeight() / 2.0f,
+                obstacle.getX() * units, obstacle.getY() * units, angle + 90, 0.15f,
+                0.15f);
+            batch.draw(texture, transform);
         }
     }
 
     @Override
     public void update(float delta) {
         super.update(delta);
+    }
+
+    public void setAngle(float a) {
+        angle = a;
     }
 }

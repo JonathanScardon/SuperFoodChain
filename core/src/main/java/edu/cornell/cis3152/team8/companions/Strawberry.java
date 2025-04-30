@@ -70,7 +70,6 @@ public class Strawberry extends Companion {
         Vector2 directionalVector = utilities.autoshoot(state, obstacle.getPosition());
         dx = directionalVector.x;
         dy = directionalVector.y;
-
         if (dx != 0.0f || dy != 0.0f) {
             for (int i = 0; i < NUM_PROJECTILES; i++) {
                 final int delay = i * DELAY_PER_SHOT;
@@ -79,10 +78,13 @@ public class Strawberry extends Companion {
                     public void run() {
                         StrawberryProjectile projectile = new StrawberryProjectile(0, 0, 0, 0,
                             state.getWorld());
+
                         projectile.getObstacle().setLinearVelocity(
                             new Vector2(dx * PROJECTILE_SPEED, dy * PROJECTILE_SPEED));
                         projectile.getObstacle().setX(obstacle.getX());
                         projectile.getObstacle().setY(obstacle.getY());
+                        projectile.setAngle((float) Math.toDegrees(
+                            Math.atan2(dy * PROJECTILE_SPEED, dx * PROJECTILE_SPEED)));
                         state.getActiveProjectiles().add(projectile);
                     }
                 }, delay / 1000f);
