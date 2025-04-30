@@ -54,10 +54,11 @@ public class Durian extends Companion {
         double angleStep = Math.toRadians(360.0 / NUM_ATTACKS);
         for (int i = 0; i < NUM_ATTACKS; i++) {
             DurianProjectile projectile = new DurianProjectile(0, 0, 0, 0, state.getWorld());
-            projectile.getObstacle().setLinearVelocity(new Vector2(
-                (float) Math.cos(angleStep * i) * PROJECTILE_SPEED,
-                (float) Math.sin(angleStep * i) * PROJECTILE_SPEED
-            ));
+            float dx = (float) Math.cos(angleStep * i) * PROJECTILE_SPEED;
+            float dy = (float) Math.sin(angleStep * i) * PROJECTILE_SPEED;
+            projectile.getObstacle().setLinearVelocity(new Vector2(dx, dy));
+            projectile.setAngle((float) Math.toDegrees(
+                Math.atan2(dy, dx)));
             projectile.getObstacle().setX(obstacle.getX());
             projectile.getObstacle().setY(obstacle.getY());
             state.getActiveProjectiles().add(projectile);

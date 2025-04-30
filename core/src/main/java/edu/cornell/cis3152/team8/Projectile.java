@@ -12,6 +12,7 @@ import edu.cornell.gdiac.physics2.CapsuleObstacle;
 import edu.cornell.gdiac.physics2.ObstacleSprite;
 
 public abstract class Projectile extends ObstacleSprite {
+
     /// CONSTANTS (defined by the JSON file)
     // Scale of the image
     private static float imageScale;
@@ -33,7 +34,7 @@ public abstract class Projectile extends ObstacleSprite {
      * Radius of the object (used for collisions)
      */
     protected float radius;
-    private static final float units = 64f;
+    protected static final float units = 64f;
 
     // public static void setConstants (JsonValue constants) {
     // imageScale = constants.getFloat("imageScale");
@@ -50,7 +51,7 @@ public abstract class Projectile extends ObstacleSprite {
      */
     public Projectile(float x, float y, float vx, float vy, World world) {
         // Parent constructor
-        super(new CapsuleObstacle(x/units, y/units, 0.5f, 0.5f), true);
+        super(new CapsuleObstacle(x / units, y / units, 0.5f, 0.5f), true);
 
         // Attributes below are placeholder values since setConstants isn't implemented
         // yet
@@ -68,7 +69,6 @@ public abstract class Projectile extends ObstacleSprite {
         animeFrame = 0.0f;
         // Set current life to max allowable at initialization
         life = maxLife;
-
 
         obstacle = getObstacle();
         obstacle.setName("projectile");
@@ -88,7 +88,7 @@ public abstract class Projectile extends ObstacleSprite {
         obstacle.setFilterData(filter);
 
         float size = radius * units;
-        mesh.set(-size/2.0f,-size/2.0f,size,size);
+        mesh.set(-size / 2.0f, -size / 2.0f, size, size);
     }
 
     /**
@@ -171,8 +171,9 @@ public abstract class Projectile extends ObstacleSprite {
     public void draw(SpriteBatch batch) {
         sprite.setFrame((int) animeFrame);
         // need to override because we pass in imageScale instead of 1.0f - need to put in size/radius instead?
-        SpriteBatch.computeTransform(transform, sprite.getRegionWidth()/2.0f, sprite.getRegionHeight()/2.0f,
-                obstacle.getX() * units, obstacle.getY() * units, 0.0f, radius, radius);
+        SpriteBatch.computeTransform(transform, sprite.getRegionWidth() / 2.0f,
+            sprite.getRegionHeight() / 2.0f,
+            obstacle.getX() * units, obstacle.getY() * units, 0.0f, radius, radius);
         batch.setColor(Color.WHITE);
         batch.draw(sprite, transform);
     }
