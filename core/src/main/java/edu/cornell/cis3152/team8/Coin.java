@@ -1,8 +1,6 @@
 package edu.cornell.cis3152.team8;
 
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.math.*;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Filter;
 import com.badlogic.gdx.physics.box2d.World;
@@ -15,26 +13,34 @@ import edu.cornell.gdiac.physics2.ObstacleSprite;
 public class Coin extends ObstacleSprite {
 
     /**
-     * Current animation frame for this coin
+     * Visual
      */
+    private static SpriteSheet texture;
+    private static SpriteSheet plusOne;
     private float animationFrame;
-    /**
-     * How fast we change frames
-     */
     private static float animationSpeed;
     private static float deathAnimationSpeed;
+    private float currAnimationSpeed;
 
-    // How long the coin should persist for
-    protected static int life;
     private static float size;
+    private float alpha; //For disappearing
 
-    private static SpriteSheet plusOne;
+    /**
+     * How long the coin should persist for
+     */
+    private static int life;
+    private int currLife;
 
-    private static SpriteSheet texture;
+    /**
+     * Collection and removal info
+     */
     private boolean collected;
     boolean remove;
-    private static final float units = 64f;
 
+    /**
+     * Physics units
+     */
+    private static final float units = 64f;
 
     /**
      * Constructs a Coin at the given position
@@ -47,6 +53,9 @@ public class Coin extends ObstacleSprite {
         super(new CapsuleObstacle(x, y, 0.8f, 0.8f), true);
         collected = false;
         remove = false;
+        alpha = 1f;
+        currLife = life;
+        currAnimationSpeed = animationSpeed;
 
         obstacle = getObstacle();
         obstacle.setName("coin");
@@ -64,10 +73,6 @@ public class Coin extends ObstacleSprite {
         filter.maskBits = CollisionController.PLAYER_CATEGORY;
         obstacle.setFilterData(filter);
 
-        //setConstants(constants);
-        animationSpeed = 0.5f;
-        life = 300;
-        size = 0.3f * units;
         mesh.set(-size / 2.0f, -size / 2.0f, size, size);
 
         setSpriteSheet(texture);
@@ -101,21 +106,27 @@ public class Coin extends ObstacleSprite {
      * @return life value
      */
     public int getLife() {
-        return life;
+        return currLife;
     }
 
-
-    @Override
     /**
-     * Updates the state of this Coin.
+     * The coin is no longer needed once it is collected or disappeared.
      *
-     * This method is only intended to update values that change local state
-     * in well-defined ways, like position or a cooldown value. It does not
-     * handle collisions (which are determined by the CollisionController). It
-     * is not intended to interact with other objects in any way at all.
+     * @return whether the coin should be removed from the world
+     */
+    public boolean shouldRemove() {
+        return remove;
+    }
+
+    /**
+     * Updates the state of this Coin. This method is only intended to update values that change
+     * local state in well-defined ways, like position or a cooldown value. It does not handle
+     * collisions (which are determined by the CollisionController). It is not intended to interact
+     * with other objects in any way at all.
      *
      * @param delta Number of seconds since last animation frame
      */
+    @Override
     public void update(float delta) {
         if (sprite != null) {
             animationFrame += animationSpeed;
@@ -123,7 +134,11 @@ public class Coin extends ObstacleSprite {
                 animationFrame -= sprite.getSize();
             }
         }
-        life--;
+        currLife--;
+        if (currLife < 0) {
+            alpha -= delta;
+
+        }
     }
 
     /**
@@ -136,18 +151,16 @@ public class Coin extends ObstacleSprite {
             sprite.getRegionHeight() / 2.0f, obstacle.getPosition().x * units,
             obstacle.getPosition().y * units, 0.0f, size / units, size / units);
         if (!obstacle.isActive()) { // if destroyed...
-            if (life <= 0) {
-                animationFrame = 0;
-                animationSpeed = deathAnimationSpeed;
-                batch.setColor(Color.BLACK);
+            if (currLife <= 0) {
+                batch.setColor(1, 1, 1, alpha);
             } else if (!collected) {
                 animationFrame = 0;
-                animationSpeed = deathAnimationSpeed;
+                currAnimationSpeed = deathAnimationSpeed;
                 collected = true;
 
                 setSpriteSheet(plusOne);
             }
-            if (animationFrame < sprite.getSize()) { // and animation is not over
+            if (animationFrame < sprite.getSize() && alpha > 0) { // and animation is not over
                 sprite.setFrame((int) animationFrame);
                 batch.draw(sprite, transform); //
             } else {
@@ -160,7 +173,5 @@ public class Coin extends ObstacleSprite {
         batch.setColor(Color.WHITE);
     }
 
-    public boolean shouldRemove() {
-        return remove;
-    }
+
 }

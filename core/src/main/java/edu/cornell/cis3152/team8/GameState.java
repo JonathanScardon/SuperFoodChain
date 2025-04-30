@@ -170,6 +170,9 @@ public class GameState {
         //Coin
         Coin.setAssets(assets);
 
+        //Player
+        Player.setAssets(assets);
+
         //Companions
         Companion.setAssets(assets);
         Avocado.setAssets(assets);

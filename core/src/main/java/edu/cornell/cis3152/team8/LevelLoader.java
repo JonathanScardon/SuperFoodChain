@@ -290,7 +290,6 @@ public class LevelLoader {
         String companionType = props.get("companionType", String.class);
 
         Player player = new Player(x, y, state.getWorld());
-        player.setAssets(assets);
 
         Companion head = switch (companionType) {
             case "strawberry" -> new Strawberry(x, y, 0, state.getWorld());
@@ -299,7 +298,6 @@ public class LevelLoader {
             case "blueRaspberry" -> new BlueRaspberry(x, y, 0, state.getWorld());
             default -> null;
         };
-        head.setAssets(assets);
         player.addCompanion(head);
 
         Companion.resetBoost();

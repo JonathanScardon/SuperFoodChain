@@ -122,11 +122,11 @@ public class Player {
     private long ticks;
 
     private Texture current;
-    private Texture headDirStill;
-    private Texture headDirUp;
-    private Texture headDirDown;
-    private Texture headDirLeft;
-    private Texture headDirRight;
+    private static Texture headDirStill;
+    private static Texture headDirUp;
+    private static Texture headDirDown;
+    private static Texture headDirLeft;
+    private static Texture headDirRight;
 
     private float originX;
     private float originY;
@@ -150,7 +150,7 @@ public class Player {
         this.controlBuffer = new CircularBuffer(MAX_COMPANIONS * DELAY);
     }
 
-    public void setAssets(AssetDirectory assets) {
+    public static void setAssets(AssetDirectory assets) {
         headDirStill = assets.getEntry("headDirStill", Texture.class);
         headDirUp = assets.getEntry("headDirUp", Texture.class);
         headDirDown = assets.getEntry("headDirDown", Texture.class);
