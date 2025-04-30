@@ -7,6 +7,7 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Filter;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.JsonValue;
+import edu.cornell.gdiac.assets.AssetDirectory;
 import edu.cornell.gdiac.graphics.*;
 import edu.cornell.gdiac.physics2.CapsuleObstacle;
 import edu.cornell.gdiac.physics2.ObstacleSprite;
@@ -21,12 +22,15 @@ public class Coin extends ObstacleSprite {
      * How fast we change frames
      */
     private static float animationSpeed;
+    private static float deathAnimationSpeed;
 
     // How long the coin should persist for
-    protected int life;
-    private float size;
+    protected static int life;
+    private static float size;
 
-    private SpriteSheet plusOne;
+    private static SpriteSheet plusOne;
+
+    private static SpriteSheet texture;
     private boolean collected;
     boolean remove;
     private static final float units = 64f;
@@ -41,16 +45,8 @@ public class Coin extends ObstacleSprite {
     public Coin(float x, float y, World world) {
         // taking in the minion position which is already in units --> change for initCoins
         super(new CapsuleObstacle(x, y, 0.8f, 0.8f), true);
-
-        Texture texture = new Texture("images/coin.png");
-        SpriteSheet coin = new SpriteSheet(texture, 1, 22);
-        setSpriteSheet(coin);
         collected = false;
-        plusOne = new SpriteSheet(new Texture("images/+1.png"), 1, 6);
-        animationSpeed = 0.5f;
-        life = 300;
         remove = false;
-        //setConstants(constants);
 
         obstacle = getObstacle();
         obstacle.setName("coin");
@@ -68,8 +64,13 @@ public class Coin extends ObstacleSprite {
         filter.maskBits = CollisionController.PLAYER_CATEGORY;
         obstacle.setFilterData(filter);
 
+        //setConstants(constants);
+        animationSpeed = 0.5f;
+        life = 300;
         size = 0.3f * units;
         mesh.set(-size / 2.0f, -size / 2.0f, size, size);
+
+        setSpriteSheet(texture);
     }
 
     /**
@@ -77,9 +78,21 @@ public class Coin extends ObstacleSprite {
      *
      * @param constants The JsonValue of the object
      */
-    private void setConstants(JsonValue constants) {
-//        this.constants = constants;
-        animationSpeed = constants.getFloat("animation speed");
+    public static void setConstants(JsonValue constants) {
+        life = constants.getInt("life");
+        size = constants.getFloat("size") * units;
+        animationSpeed = constants.getFloat("animationSpeed");
+        deathAnimationSpeed = constants.getFloat("deathAnimationSpeed");
+    }
+
+    /**
+     * Sets assets for this Coin
+     *
+     * @param assets The AssetDirectory of the object
+     */
+    public static void setAssets(AssetDirectory assets) {
+        plusOne = assets.getEntry("plusOne.animation", SpriteSheet.class);
+        texture = assets.getEntry("coin.animation", SpriteSheet.class);
     }
 
     /**
@@ -125,12 +138,11 @@ public class Coin extends ObstacleSprite {
         if (!obstacle.isActive()) { // if destroyed...
             if (life <= 0) {
                 animationFrame = 0;
-                animationSpeed = 0.15f;
+                animationSpeed = deathAnimationSpeed;
                 batch.setColor(Color.BLACK);
-            }
-            else if (!collected) {
+            } else if (!collected) {
                 animationFrame = 0;
-                animationSpeed = 0.15f;
+                animationSpeed = deathAnimationSpeed;
                 collected = true;
 
                 setSpriteSheet(plusOne);

@@ -3,12 +3,16 @@ package edu.cornell.cis3152.team8.companions;
 import com.badlogic.gdx.physics.box2d.World;
 import edu.cornell.cis3152.team8.*;
 import edu.cornell.cis3152.team8.projectiles.GarlicProjectile;
+import edu.cornell.gdiac.assets.AssetDirectory;
+import edu.cornell.gdiac.graphics.SpriteSheet;
 
 public class Garlic extends Companion {
 
+    private static SpriteSheet texture;
+
     /**
      * Constructs a Garlic at the given position
-
+     *
      * @param x The x-coordinate of the object
      * @param y The y-coordinate of the object
      */
@@ -18,6 +22,15 @@ public class Garlic extends Companion {
         setCompanionType(CompanionType.GARLIC);
         setCost(5);
         setCooldown(5);
+
+        setSpriteSheet(texture);
+    }
+
+    /**
+     * Sets Garlic assets
+     */
+    public static void setAssets(AssetDirectory assets) {
+        texture = assets.getEntry("GARLIC.animation", SpriteSheet.class);
     }
 
 
@@ -38,14 +51,11 @@ public class Garlic extends Companion {
 
         if (forwardDirection == InputController.CONTROL_MOVE_DOWN) {
             fireAngle = 90.0f;
-        }
-        else if (forwardDirection == InputController.CONTROL_MOVE_LEFT) {
+        } else if (forwardDirection == InputController.CONTROL_MOVE_LEFT) {
             fireAngle = 180.0f;
-        }
-        else if (forwardDirection == InputController.CONTROL_MOVE_UP) {
+        } else if (forwardDirection == InputController.CONTROL_MOVE_UP) {
             fireAngle = 270.0f;
         }
-
 
         projectile.getObstacle().setVX((float) Math.cos(Math.toRadians(fireAngle)));
         projectile.getObstacle().setVY((float) Math.sin(Math.toRadians(fireAngle)));
@@ -56,5 +66,7 @@ public class Garlic extends Companion {
         state.getActiveProjectiles().add(projectile);
 
         coolDown(false, 0);
-    };
+    }
+
+    ;
 }

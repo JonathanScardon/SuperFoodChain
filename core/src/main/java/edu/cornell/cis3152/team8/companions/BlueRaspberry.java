@@ -6,6 +6,7 @@ import com.badlogic.gdx.utils.JsonValue;
 import edu.cornell.cis3152.team8.Companion;
 import edu.cornell.cis3152.team8.GameState;
 import edu.cornell.cis3152.team8.Player;
+import edu.cornell.gdiac.assets.AssetDirectory;
 import edu.cornell.gdiac.graphics.SpriteSheet;
 
 public class BlueRaspberry extends Companion {
@@ -14,8 +15,8 @@ public class BlueRaspberry extends Companion {
     private static int COOLDOWN;
     private static float ANIMATION_SPEED;
     private static float BOOST;
-
     private boolean usedBoost;
+    private static SpriteSheet texture;
 
     /**
      * Constructor for Blue Raspberry companion
@@ -32,6 +33,8 @@ public class BlueRaspberry extends Companion {
 
         animationSpeed = ANIMATION_SPEED;
         usedBoost = false;
+
+        setSpriteSheet(texture);
     }
 
     /**
@@ -42,6 +45,13 @@ public class BlueRaspberry extends Companion {
         COOLDOWN = constants.getInt("cooldown", 7);
         ANIMATION_SPEED = constants.getFloat("animationSpeed", 0.25f);
         BOOST = constants.getFloat("boost", 25f);
+    }
+
+    /**
+     * Sets BlueRaspberry assets
+     */
+    public static void setAssets(AssetDirectory assets) {
+        texture = assets.getEntry("BLUE_RASPBERRY.animation", SpriteSheet.class);
     }
 
     @Override

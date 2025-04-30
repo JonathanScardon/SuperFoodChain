@@ -1,43 +1,49 @@
 {
-    "boss": {
-        "speedDamp": 0.75,
-        "idleDuration": 5,
-        "epsilon": 0.01,
-        "animationSpeed": 0.1
-    },
-    "companion": {
-        "moveSpeed": 150,
-        "speedBoost": 0,
-        "cooldown": 5,
-        "deathExpirationTimer": 3.0,
-        "deathAnimationSpeed": 0.1,
-        "unitScale": 64
-    },
-    "strawberry": {
-        "cost": 2,
-        "cooldown": 4,
-        "animationSpeed": 0.25,
-        "numProjectiles": 3,
-        "delayPerShot": 100,
-        "projectileSpeed": 7
-    },
-    "avocado": {
-        "cost": 0,
-        "cooldown": 7,
-        "animationSpeed": 0.25,
-        "cooldownReductionRate": 5.0
-    },
-    "blueRaspberry": {
-        "cost": 1,
-        "cooldown": 7,
-        "animationSpeed": 0.25,
-        "boost": 25
-    },
-    "durian": {
-        "cost": 1,
-        "cooldown": 2,
-        "animationSpeed": 0.25,
-        "numAttacks": 8,
-        "projectileSpeed": 8
-    }
+  "boss": {
+    "speedDamp": 0.75,
+    "idleDuration": 5,
+    "epsilon": 0.01,
+    "animationSpeed": 0.1
+  },
+  "companion": {
+    "moveSpeed": 150,
+    "speedBoost": 0,
+    "cooldown": 5,
+    "deathExpirationTimer": 3.0,
+    "deathAnimationSpeed": 0.1,
+    "unitScale": 64
+  },
+  "strawberry": {
+    "cost": 2,
+    "cooldown": 4,
+    "animationSpeed": 0.25,
+    "numProjectiles": 3,
+    "delayPerShot": 100,
+    "projectileSpeed": 7
+  },
+  "avocado": {
+    "cost": 0,
+    "cooldown": 7,
+    "animationSpeed": 0.25,
+    "cooldownReductionRate": 5.0
+  },
+  "blueRaspberry": {
+    "cost": 1,
+    "cooldown": 7,
+    "animationSpeed": 0.25,
+    "boost": 25
+  },
+  "durian": {
+    "cost": 1,
+    "cooldown": 2,
+    "animationSpeed": 0.25,
+    "numAttacks": 8,
+    "projectileSpeed": 8
+  },
+  "coin": {
+    "life": 300,
+    "size": 0.3,
+    "animationSpeed": 0.5,
+    "deathAnimationSpeed": 0.15
+  }
 }
