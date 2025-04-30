@@ -8,6 +8,7 @@ import com.badlogic.gdx.physics.box2d.Filter;
 import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.JsonReader;
 import com.badlogic.gdx.utils.JsonValue;
+import edu.cornell.gdiac.assets.AssetDirectory;
 import edu.cornell.gdiac.assets.ParserUtils;
 import edu.cornell.gdiac.graphics.*;
 import edu.cornell.gdiac.physics2.BoxObstacle;
@@ -25,7 +26,7 @@ public class Minion extends ObstacleSprite {
     private boolean damage;
     protected float animationSpeed;
     protected float animationFrame;
-    protected SpriteSheet deadMinion;
+    protected static SpriteSheet deadMinion;
     private boolean dead;
 
     //Minion constants
@@ -87,6 +88,15 @@ public class Minion extends ObstacleSprite {
     private void setConstants(JsonValue constants) {
         health = constants.getInt("health");
         moveSpeed = 1;
+    }
+
+    /**
+     * Sets death asset
+     *
+     * @param assets The AssetDirectory of this game
+     */
+    public static void setAssets(AssetDirectory assets) {
+        deadMinion = assets.getEntry("minionDeath.animation", SpriteSheet.class);
     }
 
     /**

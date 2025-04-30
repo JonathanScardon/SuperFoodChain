@@ -1,13 +1,17 @@
-package edu.cornell.cis3152.team8;
+package edu.cornell.cis3152.team8.minions;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
+import edu.cornell.cis3152.team8.Minion;
+import edu.cornell.cis3152.team8.Player;
+import edu.cornell.gdiac.assets.AssetDirectory;
 import edu.cornell.gdiac.graphics.SpriteSheet;
 
 public class Spider extends Minion {
 
+    private static SpriteSheet texture;
     private Vector2 direction;
     private static final float ALIVE_DURATION = 5f; // alive_duration of 5 seconds
     private float aliveTimer;
@@ -23,7 +27,15 @@ public class Spider extends Minion {
         Vector2 spawnPos = new Vector2(x, y);
         Vector2 playerPos = new Vector2(player.getPlayerHead().getObstacle().getPosition()).scl(
             units);
-        direction = playerPos.sub(spawnPos).nor();
+
+        setSpriteSheet(texture);
+    }
+
+    /**
+     * Sets Strawberry assets
+     */
+    public static void setAssets(AssetDirectory assets) {
+        texture = assets.getEntry("spider.animation", SpriteSheet.class);
     }
 
     @Override

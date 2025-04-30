@@ -1,12 +1,17 @@
-package edu.cornell.cis3152.team8;
+package edu.cornell.cis3152.team8.minions;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
+import edu.cornell.cis3152.team8.Minion;
+import edu.cornell.cis3152.team8.Player;
+import edu.cornell.gdiac.assets.AssetDirectory;
 import edu.cornell.gdiac.graphics.SpriteSheet;
 
 public class Cricket extends Minion {
+
+    private static SpriteSheet texture;
 
     private enum State {WAIT, HOP}
 
@@ -16,13 +21,21 @@ public class Cricket extends Minion {
 
     public Cricket(float x, float y, World world, Player player) {
         super(x, y, world, player);
-        setSpriteSheet(new SpriteSheet(new Texture("images/Cricket.png"), 1, 2));
         this.player = player;
         this.state = State.WAIT;
         this.waitTimer = WAIT_DURATION;
         health = 2;
         animationSpeed = 0.15f;
         size = 0.3f * units;
+
+        setSpriteSheet(texture);
+    }
+
+    /**
+     * Sets Cricket assets
+     */
+    public static void setAssets(AssetDirectory assets) {
+        texture = assets.getEntry("cricket.animation", SpriteSheet.class);
     }
 
     @Override

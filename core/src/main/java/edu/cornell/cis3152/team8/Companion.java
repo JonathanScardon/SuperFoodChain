@@ -130,6 +130,11 @@ public abstract class Companion extends ObstacleSprite {
         UNIT_SCALE = constants.getFloat("unitScale", 64f);
     }
 
+    /**
+     * Sets death asset
+     *
+     * @param assets The AssetDirectory of this game
+     */
     public static void setAssets(AssetDirectory assets) {
         deadCompanion = assets.getEntry("companionDeath.animation", SpriteSheet.class);
     }
