@@ -109,6 +109,9 @@ public class CompanionHandbookScene extends MultiPageScene {
 
     public void reset() {
         super.reset();
+        float gap = 100;
+        backButton.setPosition(gap, 720 - gap);
+        settingsButton.setPosition(1280 - gap, 720 - gap);
         audio.play("handbook");
     }
 }
