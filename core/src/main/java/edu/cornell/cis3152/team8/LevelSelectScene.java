@@ -211,6 +211,14 @@ public class LevelSelectScene extends MultiPageScene {
     @Override
     public void reset() {
         super.reset();
+        float x = 1280 / 2f - tray.getWidth() / 2f;
+        float y = 720 / 2f - tray.getHeight() / 2f;
+        float buttonSize = 78;
+        float gap = 20; // The distance between the buttons
+        float span = (buttonSize * 3) + (gap * 2);
+        homeButton.setPosition(x + (tray.getWidth() / 2f - span / 2), y);
+        handbookButton.setPosition(homeButton.posX + homeButton.width + gap, y);
+        settingsButton.setPosition(handbookButton.posX + handbookButton.width + gap, y);
         audio.play("levels");
     }
 
