@@ -37,7 +37,7 @@ public class Button {
      */
     private int exitCode;
     private boolean pressed = false;
-    private float resetWait = 1;
+    private float resetWait = 0.25f;
 
     public Button(float x, float y, Texture texture, Texture hover, int exitCode) {
         posX = x;
@@ -116,7 +116,7 @@ public class Button {
             resetWait -= delta;
         }
         if (resetWait <= 0) {
-            resetWait = 1f;
+            resetWait = 0.25f;
             pressed = false;
         }
     }
@@ -156,7 +156,7 @@ public class Button {
     /**
      * @return true if the mouse is over this Button
      */
-    public boolean isHovering() {
+    protected boolean isHovering() {
         int x;
         if (posX > 1280 && posX < 2560) {
             x = Gdx.input.getX() + 1280;

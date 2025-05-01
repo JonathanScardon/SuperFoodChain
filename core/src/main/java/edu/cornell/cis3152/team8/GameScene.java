@@ -86,6 +86,7 @@ public class GameScene implements Screen {
     private Texture cost;
     private Texture costGrey;
     private BitmapFont font;
+    private static Color fontColor = new Color(89f / 255, 43f / 255, 34f / 255, 100f);
 
 
     /**
@@ -267,7 +268,7 @@ public class GameScene implements Screen {
             "Settings");
         handbookButtonPause = new Button(x, resetButton.posY,
             button,
-            buttonHover, 1, buttonWidth,
+            buttonHover, 3, buttonWidth,
             buttonHeight,
             "Handbook");
         levelsButton = new Button(x,
@@ -422,6 +423,17 @@ public class GameScene implements Screen {
         delta = Math.min(delta, 0.25f);
         state.getWorld().step(delta, 6, 2);
 
+        resumeButton.update(delta);
+        resetButton.update(delta);
+        levelsButton.update(delta);
+        settingsButton.update(delta);
+        handbookButtonPause.update(delta);
+        exitButton.update(delta);
+        homeButton.update(delta);
+        nextButton.update(delta);
+        replayButton.update(delta);
+        handbookButton.update(delta);
+
         setStart();
         //System.out.println("Update" + bosses);
         winGame = true;
@@ -445,14 +457,14 @@ public class GameScene implements Screen {
         }
 
         if (winGame || loseGame) {
-            if (replayButton.isHovering() && Gdx.input.isTouched()) {
+            if (replayButton.isPressed()) {
                 state.getAudio().play("click");
                 reset();
-            } else if (homeButton.isHovering() && Gdx.input.isTouched()) {
+            } else if (homeButton.isPressed()) {
                 state.getAudio().play("click");
                 dispose();
                 game.exitScreen(this, homeButton.getExitCode());
-            } else if (nextButton.isHovering() && Gdx.input.isTouched() && winGame) {
+            } else if (nextButton.isPressed() && winGame) {
                 state.getAudio().play("click");
                 dispose();
                 game.exitScreen(this, nextButton.getExitCode());
@@ -542,24 +554,28 @@ public class GameScene implements Screen {
                 paused = true;
             }
             if (paused) {
-                if (resumeButton.isHovering() && Gdx.input.isTouched()) {
+                if (resumeButton.isPressed()) {
                     state.getAudio().play("click");
                     paused = false;
-                } else if (resetButton.isHovering() && Gdx.input.isTouched()) {
+                } else if (resetButton.isPressed()) {
                     state.getAudio().play("click");
                     reset();
                     paused = false;
-                } else if (levelsButton.isHovering() && Gdx.input.isTouched()) {
+                } else if (exitButton.isPressed()) {
+                    state.getAudio().play("click");
+                    Gdx.app.exit();
+                } else if (levelsButton.isPressed()) {
                     state.getAudio().play("click");
                     dispose();
                     game.exitScreen(this, levelsButton.getExitCode());
-                } else if (settingsButton.isHovering() && Gdx.input.isTouched()) {
+                } else if (handbookButtonPause.isPressed()) {
+                    state.getAudio().play("click");
+                    //Do not dispose to so can return to level
+                    game.exitScreen(this, handbookButtonPause.getExitCode());
+                } else if (settingsButton.isPressed()) {
                     state.getAudio().play("click");
                     settingsOn = true;
                     settingsScreen.update();
-                } else if (exitButton.isHovering() && Gdx.input.isTouched()) {
-                    state.getAudio().play("click");
-                    Gdx.app.exit();
                 }
                 if (settingsOn && Gdx.input.isKeyPressed(Keys.ESCAPE)) {
                     settingsOn = false;
@@ -614,12 +630,11 @@ public class GameScene implements Screen {
         for (Companion c : companions) {
             TextLayout compCost = new TextLayout(c.getCost() + "", font);
             TextLayout pressE = new TextLayout("E", font);
-            //temp UI
 
             if (!player.companions.contains(c)) {
 
                 if (player.getCoins() >= c.getCost()) {
-                    font.setColor(Color.BROWN);
+                    font.setColor(fontColor);
                     game.batch.draw(this.cost,
                         c.getObstacle().getX() * 64f - this.cost.getWidth() / 2f,
                         c.getObstacle().getY() * 64f + 40f);
@@ -741,6 +756,7 @@ public class GameScene implements Screen {
     }
 
     private void drawPause() {
+        font.setColor(fontColor);
         game.batch.setBlendMode(BlendMode.ALPHA_BLEND);
         game.batch.draw(dim, 0, 0);
         game.batch.draw(pauseBackground, screenWidth / 2f - pauseBackground.getWidth() / 2f,
