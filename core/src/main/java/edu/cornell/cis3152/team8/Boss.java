@@ -33,6 +33,8 @@ public class Boss extends ObstacleSprite {
      * How fast we change frames
      */
     private static float animationSpeed;
+    private static float deathAnimationSpeed;
+    private float curranimationSpeed;
 
     // local properties
     /**
@@ -85,6 +87,7 @@ public class Boss extends ObstacleSprite {
         SPEED_DAMP = constants.getFloat("speedDamp", 0.75f);
         EPSILON = constants.getFloat("epsilon", 0.01f);
         animationSpeed = constants.getFloat("animationSpeed", 0.1f);
+        deathAnimationSpeed = constants.getFloat("deathAnimationSpeed", 0.1f);
     }
 
     private static final float PHYSICS_UNITS = 64f;
@@ -102,6 +105,7 @@ public class Boss extends ObstacleSprite {
         animationMap = new HashMap<>();
         dead = false;
         remove = false;
+        curranimationSpeed = animationSpeed;
 
         obstacle = getObstacle();
         obstacle.setName("boss");
@@ -186,8 +190,8 @@ public class Boss extends ObstacleSprite {
             obstacle.setLinearVelocity(new Vector2());
         }
 
-        if (sprite != null && controlCode != InputController.CONTROL_NO_ACTION) {
-            animeframe += animationSpeed;
+        if (sprite != null && (controlCode != InputController.CONTROL_NO_ACTION || dead)) {
+            animeframe += curranimationSpeed;
             if (animeframe >= sprite.getSize() && getObstacle().isActive()) {
                 animeframe -= sprite.getSize();
             }
@@ -222,11 +226,10 @@ public class Boss extends ObstacleSprite {
         if (!obstacle.isActive()) { // if destroyed...
             if (!dead) {
                 animeframe = 0;
-                animationSpeed = 0.1f;
+                curranimationSpeed = deathAnimationSpeed;
                 dead = true;
                 setAnimation("death");
             }
-
             if (animeframe < sprite.getSize()) { // and animation is not over
                 sprite.setFrame((int) animeframe);
                 batch.draw(sprite, transform);// draw dead boss
