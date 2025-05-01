@@ -15,6 +15,7 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.JsonValue;
 import edu.cornell.cis3152.team8.companions.*;
 import edu.cornell.gdiac.assets.AssetDirectory;
+import edu.cornell.gdiac.graphics.SpriteBatch;
 import edu.cornell.gdiac.graphics.SpriteBatch.BlendMode;
 import edu.cornell.gdiac.graphics.TextLayout;
 import edu.cornell.gdiac.physics2.ObstacleSprite;
@@ -87,6 +88,7 @@ public class GameScene implements Screen {
     private Texture costGrey;
     private BitmapFont font;
     private static Color fontColor = new Color(89f / 255, 43f / 255, 34f / 255, 100f);
+    private Affine2 transform;
 
 
     /**
@@ -177,6 +179,8 @@ public class GameScene implements Screen {
      */
     private int level;
 
+    private static float PHYSICS_UNITS = 64f;
+
     /**
      * Creates a GameScene
      *
@@ -184,48 +188,48 @@ public class GameScene implements Screen {
      */
     public GameScene(final GDXRoot game, AssetDirectory assets, int level) {
         this.game = game;
+        this.state = new GameState(assets.getEntry("constants", JsonValue.class), assets);
+        this.level = level;
 
         screenWidth = 1280;
         screenHeight = 720;
 
-        coinCounter = assets.getEntry("coinCounter", Texture.class);
-        this.state = new GameState(assets.getEntry("constants", JsonValue.class), assets);
-        this.level = level;
+        reset();
 
-        hpBack = assets.getEntry("hp.back", TextureRegion.class);
-        hpLeft = assets.getEntry("hp.foreleft", TextureRegion.class);
-        hpMiddle = assets.getEntry("hp.foreground", TextureRegion.class);
-        hpRight = assets.getEntry("hp.foreright", TextureRegion.class);
-
-        minions = state.getMinions();
-        companions = state.getCompanions();
-        dead = state.getDead();
-
+        //Backgrounds
         dim = assets.getEntry("dim", Texture.class);
-
         backgroundTexture = assets.getEntry("gameBackground", Texture.class);
         pauseBackground = assets.getEntry("pauseBackground", Texture.class);
-        createButtons(assets);
-
         win = assets.getEntry("win", Texture.class);
         mouseLose = assets.getEntry("ratLose", Texture.class);
         chopsticksLose = assets.getEntry("chopsticksLose", Texture.class);
-        cost = assets.getEntry("costUI", Texture.class);
-        costGrey = assets.getEntry("costUIGrey", Texture.class);
 
+        //UI
         font = assets.getEntry("lpcBig", BitmapFont.class);
-
-        settingsScreen = new Settings();
-
         bossNames = new Array<>();
         bossStartHealths = new Array<>();
-        everything = new Array<>();
-        reset();
         for (Boss b : bosses) {
             bossNames.add(new TextLayout(b.getName(), font));
             bossStartHealths.add(b.getStartHealth());
         }
         numBosses = bosses.size;
+        hpBack = assets.getEntry("hp.back", TextureRegion.class);
+        hpLeft = assets.getEntry("hp.foreleft", TextureRegion.class);
+        hpMiddle = assets.getEntry("hp.foreground", TextureRegion.class);
+        hpRight = assets.getEntry("hp.foreright", TextureRegion.class);
+        coinCounter = assets.getEntry("coinCounter", Texture.class);
+        cost = assets.getEntry("costUI", Texture.class);
+        costGrey = assets.getEntry("costUIGrey", Texture.class);
+
+        transform = new Affine2();
+
+        everything = new Array<>();
+
+        dead = state.getDead();
+
+        settingsScreen = new Settings();
+
+        createButtons(assets);
     }
 
     private void createButtons(AssetDirectory assets) {
@@ -305,6 +309,9 @@ public class GameScene implements Screen {
         winGame = false;
         loseGame = false;
         time = 0;
+
+        minions = state.getMinions();
+        companions = state.getCompanions();
 
         bosses = state.getBosses();
         bossControls = state.getBossControls();
@@ -627,36 +634,45 @@ public class GameScene implements Screen {
         }
 
         // UI Last
+
+        //Companion costs
         for (Companion c : companions) {
             TextLayout compCost = new TextLayout(c.getCost() + "", font);
             TextLayout pressE = new TextLayout("E", font);
-
+            float numScale = 0.6f;
             if (!player.companions.contains(c)) {
-
                 if (player.getCoins() >= c.getCost()) {
                     font.setColor(fontColor);
-                    game.batch.draw(this.cost,
-                        c.getObstacle().getX() * 64f - this.cost.getWidth() / 2f,
-                        c.getObstacle().getY() * 64f + 40f);
+                    game.batch.draw(cost,
+                        c.getObstacle().getX() * PHYSICS_UNITS - cost.getWidth() / 2f,
+                        c.getObstacle().getY() * PHYSICS_UNITS + 40f);
                 } else {
                     game.batch.draw(costGrey,
-                        c.getObstacle().getX() * 64f - costGrey.getWidth() / 2f,
-                        c.getObstacle().getY() * 64f + 40f);
+                        c.getObstacle().getX() * PHYSICS_UNITS - costGrey.getWidth() / 2f,
+                        c.getObstacle().getY() * PHYSICS_UNITS + 40f);
                 }
-                game.batch.drawText(compCost, c.getObstacle().getX() * 64f + 12f,
-                    c.getObstacle().getY() * 64f + 53f);
+                SpriteBatch.computeTransform(transform, compCost.getWidth() / 2.0f,
+                    0,
+                    c.getObstacle().getX() * PHYSICS_UNITS + 12f,
+                    c.getObstacle().getY() * PHYSICS_UNITS + 53f, 0.0f,
+                    numScale, numScale);
+                game.batch.drawText(compCost, transform);
                 font.setColor(Color.WHITE);
                 if (c.highlight) {
-                    game.batch.drawText(pressE, c.getObstacle().getX() * 64f,
-                        c.getObstacle().getY() * 64f + 35f);
+                    game.batch.drawText(pressE, c.getObstacle().getX() * PHYSICS_UNITS,
+                        c.getObstacle().getY() * PHYSICS_UNITS + 35f);
                 }
             }
         }
-
         // Coin Counter
+        float numScale = 0.7f;
         TextLayout coinCount = new TextLayout("" + player.getCoins(), font);
+        //To shrink the number
+        SpriteBatch.computeTransform(transform, coinCount.getWidth() / 2.0f,
+            coinCount.getFont().getXHeight() / 2.0f, 1150,
+            83, 0.0f, numScale, numScale);
         game.batch.draw(coinCounter, 1050, 50);
-        game.batch.drawText(coinCount, 1150f, 79f);
+        game.batch.drawText(coinCount, transform);
 
         drawHPBars();
 
