@@ -79,6 +79,7 @@ public class CompanionHandbookScene extends MultiPageScene {
     protected void processButtons() {
         if (backButton.isPressed()) {
             audio.play("click");
+            audio.stopMusic();
             game.exitScreen(this, backButton.getExitCode());
         }
     }
@@ -104,6 +105,11 @@ public class CompanionHandbookScene extends MultiPageScene {
         } else { //Otherwise only draw current page
             game.batch.draw(pages[currPage - 1], (1280 * (currPage - 1)), 0, 1280, 720);
         }
+    }
+
+    public void reset() {
+        super.reset();
+        audio.play("handbook");
     }
 }
 
