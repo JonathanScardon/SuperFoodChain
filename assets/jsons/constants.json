@@ -3,7 +3,8 @@
     "speedDamp": 0.75,
     "idleDuration": 5,
     "epsilon": 0.01,
-    "animationSpeed": 0.1
+    "animationSpeed": 0.1,
+    "deathAnimationSpeed": 0.01
   },
   "companion": {
     "moveSpeed": 150,

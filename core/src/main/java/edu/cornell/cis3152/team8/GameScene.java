@@ -18,6 +18,7 @@ import edu.cornell.gdiac.assets.AssetDirectory;
 import edu.cornell.gdiac.graphics.SpriteBatch;
 import edu.cornell.gdiac.graphics.SpriteBatch.BlendMode;
 import edu.cornell.gdiac.graphics.TextLayout;
+import edu.cornell.gdiac.physics2.Obstacle;
 import edu.cornell.gdiac.physics2.ObstacleSprite;
 
 /**
@@ -519,21 +520,15 @@ public class GameScene implements Screen {
                 p.update(delta);
 //                 System.out.println(p.getObstacle().getPosition());
             }
-//             System.out.println();
 
             // System.out.println(player.position);
-            // moves enemies - assume always moving (no CONTROL_NO_ACTION)
+            // moves enemies - assume always moving
             for (int i = 0; i < minions.size; i++) {
                 if (minions.get(i).getObstacle().isActive()) {
-                    // System.out.println("CONTROL " + i);
-                    //int action = minionControls.get(i).getAction();
-                    // System.out.println("Id: " + i + " (" + action + ")");
                     minions.get(i).update(true);
                 } else {
                     if (minions.get(i).shouldRemove()) {
-                        // used to be m.getID but minionControls above needs i
                         minions.removeIndex(i);
-                        //minionControls.removeIndex(i);
                     }
                 }
             }
@@ -546,17 +541,10 @@ public class GameScene implements Screen {
                 }
                 bosses.get(i).update(delta, bossControls.get(i).getAction());
             }
-            //
-            // // player chain moves
-            int a = playerControls.getAction();
-            // System.out.println(a);
-            player.update(delta, a);
 
-            // // if board isn't updating then no point
-            // state.getLevel().update();
-            //
-            // // projectiles update
-            // //state.getProjectiles().update();
+            // player chain moves
+            int a = playerControls.getAction();
+            player.update(delta, a);
 
             for (Coin c : coins) {
                 c.update(delta);
@@ -623,7 +611,7 @@ public class GameScene implements Screen {
                     ((Companion) o).update(delta, 0);
                     o.draw(game.batch);
                 }
-                case "boss" -> {
+                case "mouse", "chef", "chopsticks" -> {
                     ((Boss) o).update(delta, 0);
                     ((Boss) o).draw(game.batch, delta);
                 }
@@ -714,12 +702,27 @@ public class GameScene implements Screen {
         font.setColor(Color.WHITE);
 
         if (loseGame) {
-            drawLose();
+            for (ObstacleSprite o : dead) {
+                String type = o.getName();
+                if (type.equals("player")) {
+                    if (((Companion) o).shouldRemove()) {
+                        drawLose();
+                    }
+                }
+            }
         }
 
         if (winGame) {
-            drawWin();
+            for (ObstacleSprite o : dead) {
+                String type = o.getName();
+                if (type.equals("mouse") || type.equals("chef") || type.equals("chopsticks")) {
+                    if (((Boss) o).shouldRemove()) {
+                        drawWin();
+                    }
+                }
+            }
         }
+
         if (paused && !settingsOn) {
             drawPause();
         }
