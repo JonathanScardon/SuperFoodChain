@@ -1,7 +1,6 @@
 package edu.cornell.cis3152.team8;
 
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import edu.cornell.gdiac.assets.AssetDirectory;
 import edu.cornell.gdiac.graphics.SpriteBatch;
 import edu.cornell.gdiac.graphics.SpriteBatch.BlendMode;
@@ -24,33 +23,28 @@ public class LevelButton extends Button {
      */
     private boolean locked;
 
-    /**
-     * The font for the number
-     */
-    private final BitmapFont font;
-
     public LevelButton(float x, float y, int exitCode, AssetDirectory assets) {
         super(x, y, assets.getEntry("plate", Texture.class),
             assets.getEntry("plateHover", Texture.class), exitCode);
         lock = assets.getEntry("lock", Texture.class);
-        font = assets.getEntry("lpcBig", BitmapFont.class);
         this.number = new TextLayout(exitCode + "", font);
         locked = true;
     }
 
     @Override
     public void draw(SpriteBatch batch, boolean allowHover) {
-        if (isHovering() && !locked) {
-            batch.setBlendMode(BlendMode.ADDITIVE); //draw hover state
-        }
-        batch.draw(texture, posX, posY, width, height);
         batch.setBlendMode(BlendMode.ALPHA_BLEND);
+
+        if (isHovering() && !locked) {
+            batch.draw(hover, posX, posY, width, height); //draw hover state
+        } else {
+            batch.draw(texture, posX, posY, width, height); //draw normally
+        }
 
         if (locked) { //draw lock
             batch.draw(lock, posX + (width / 2f - lock.getWidth() / 2f),
                 posY + (height / 2f - lock.getHeight() / 2f));
         } else { //draw number
-            font.setColor(fontColor);
             SpriteBatch.computeTransform(transform, 0,
                 0, posX + (width / 2f),
                 posY + (height / 2f), 0.0f, 1f, 1f);

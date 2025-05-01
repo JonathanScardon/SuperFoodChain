@@ -32,7 +32,6 @@ public class MainMenuScene implements Screen {
         Button.setAssets(assets);
 
         this.game = game;
-        BitmapFont font = assets.getEntry("lpcBig", BitmapFont.class);
         background = assets.getEntry("menuBackground", Texture.class);
         Texture button = assets.getEntry("button", Texture.class);
         Texture buttonHover = assets.getEntry("buttonHover", Texture.class);

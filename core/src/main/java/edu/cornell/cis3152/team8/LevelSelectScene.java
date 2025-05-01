@@ -24,12 +24,18 @@ public class LevelSelectScene extends MultiPageScene {
     private final Button handbookButton;
     private final Button homeButton;
 
+    /**
+     * The number of unlocked levels
+     */
+    private int unlocked;
+
 
     public LevelSelectScene(final GDXRoot game, AssetDirectory assets) {
         super(game, assets);
 
         //Constants
         totalPages = 3;
+        unlockedPages = totalPages;
 
         //Background textures
         background = assets.getEntry("levelsBackground", Texture.class);

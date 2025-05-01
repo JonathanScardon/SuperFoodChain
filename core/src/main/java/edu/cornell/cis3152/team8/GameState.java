@@ -165,7 +165,7 @@ public class GameState {
      */
     private void setAssets(AssetDirectory assets) {
         //Button
-        Button.setAssets(assets);
+        //Button.setAssets(assets);
 
         //Coin
         Coin.setAssets(assets);
