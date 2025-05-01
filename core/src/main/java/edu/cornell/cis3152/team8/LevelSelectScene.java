@@ -29,7 +29,6 @@ public class LevelSelectScene extends MultiPageScene {
      */
     private int unlocked;
 
-
     public LevelSelectScene(final GDXRoot game, AssetDirectory assets) {
         super(game, assets);
 
@@ -120,21 +119,25 @@ public class LevelSelectScene extends MultiPageScene {
         for (LevelButton b : page1) {
             if (b.isPressed() && b.getUnlocked()) {
                 audio.play("clickLevel");
+                audio.stopMusic();
                 game.exitScreen(this, b.getExitCode());
             }
         }
         for (LevelButton b : page2) {
             if (b.isPressed() && b.getUnlocked()) {
                 audio.play("click");
+                audio.stopMusic();
                 game.exitScreen(this, b.getExitCode());
             }
         }
         if (homeButton.isPressed()) {
             audio.play("click");
+            audio.stopMusic();
             game.exitScreen(this, homeButton.getExitCode());
         }
         if (handbookButton.isPressed()) {
             audio.play("click");
+            audio.stopMusic();
             game.exitScreen(this, handbookButton.getExitCode());
         }
     }
@@ -203,6 +206,12 @@ public class LevelSelectScene extends MultiPageScene {
                 }
             }
         }
+    }
+
+    @Override
+    public void reset() {
+        super.reset();
+        audio.play("levels");
     }
 
 }

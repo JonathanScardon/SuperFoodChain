@@ -266,7 +266,8 @@ public abstract class MultiPageScene implements Screen {
 
     }
 
-    public void resetWait() {
+    public void reset() {
+        currPage = 1;
         currWait = waitTime;
     }
 }
