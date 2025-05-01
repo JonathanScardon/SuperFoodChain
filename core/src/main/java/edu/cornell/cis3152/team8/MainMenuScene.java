@@ -29,15 +29,17 @@ public class MainMenuScene implements Screen {
     private GameAudio audio;
 
     public MainMenuScene(final GDXRoot game, AssetDirectory assets) {
+        Button.setAssets(assets);
+
         this.game = game;
         BitmapFont font = assets.getEntry("lpcBig", BitmapFont.class);
-        background = new Texture("images/Menu.png");
-        Texture button = new Texture("images/Button.png");
-        Texture buttonDark = new Texture("images/ButtonDark.png");
+        background = assets.getEntry("menuBackground", Texture.class);
+        Texture button = assets.getEntry("button", Texture.class);
+        Texture buttonHover = assets.getEntry("buttonHover", Texture.class);
 
-        playButton = new Button(806, 320, button, buttonDark, 0, 429, 100, "Play", font);
-        settingsButton = new Button(806, 220, button, buttonDark, 0, 429, 100, "Settings", font);
-        exitButton = new Button(806, 120, button, buttonDark, 0, 429, 100, "Exit", font);
+        playButton = new Button(806, 320, button, buttonHover, 0, 429, 100, "Play");
+        settingsButton = new Button(806, 220, button, buttonHover, 0, 429, 100, "Settings");
+        exitButton = new Button(806, 120, button, buttonHover, 0, 429, 100, "Exit");
         settingsScreen = new Settings();
 
         audio = new GameAudio(assets);

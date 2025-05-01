@@ -164,6 +164,9 @@ public class GameState {
      * @param assets The AssetDirectory of this GameState
      */
     private void setAssets(AssetDirectory assets) {
+        //Button
+        Button.setAssets(assets);
+
         //Coin
         Coin.setAssets(assets);
 

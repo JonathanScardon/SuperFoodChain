@@ -5,8 +5,10 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.math.Affine2;
+import edu.cornell.gdiac.assets.AssetDirectory;
 import edu.cornell.gdiac.graphics.SpriteBatch;
 import edu.cornell.gdiac.graphics.SpriteBatch.BlendMode;
+import edu.cornell.gdiac.graphics.SpriteSheet;
 import edu.cornell.gdiac.graphics.TextLayout;
 
 public class Button {
@@ -27,7 +29,8 @@ public class Button {
     private final TextLayout text;
     private boolean flip = false;
     protected Affine2 transform = new Affine2();
-    protected Color fontColor = new Color(89f / 255, 43f / 255, 34f / 255, 100f);
+    protected static BitmapFont font;
+    protected static Color fontColor = new Color(89f / 255, 43f / 255, 34f / 255, 100f);
 
     /**
      * Pressing logic
@@ -43,7 +46,7 @@ public class Button {
         width = texture.getWidth();
         height = texture.getHeight();
         this.exitCode = exitCode;
-        text = new TextLayout("", new BitmapFont());
+        text = new TextLayout("", font);
         this.hover = hover;
     }
 
@@ -54,7 +57,7 @@ public class Button {
         width = -texture.getWidth();
         height = texture.getHeight();
         this.exitCode = exitCode;
-        text = new TextLayout("", new BitmapFont());
+        text = new TextLayout("", font);
         this.hover = hover;
         this.flip = flip;
     }
@@ -67,7 +70,7 @@ public class Button {
         this.width = width;
         this.height = height;
         this.exitCode = exitCode;
-        text = new TextLayout("", new BitmapFont());
+        text = new TextLayout("", font);
         this.hover = hover;
     }
 
@@ -79,25 +82,31 @@ public class Button {
         this.width = -width;
         this.height = height;
         this.exitCode = exitCode;
-        text = new TextLayout("", new BitmapFont());
+        text = new TextLayout("", font);
         this.hover = hover;
         this.flip = flip;
     }
 
     public Button(float x, float y, Texture texture, Texture hover, int exitCode, float width,
         float height,
-        String name, BitmapFont font) {
+        String name) {
         posX = x;
         posY = y;
         this.texture = texture;
         this.width = width;
         this.height = height;
         this.exitCode = exitCode;
-        font.setColor(new Color(89f / 255, 43f / 255, 34f / 255, 100f));
         text = new TextLayout(name, font);
         this.hover = hover;
     }
 
+    /**
+     * Sets button font
+     */
+    public static void setAssets(AssetDirectory assets) {
+        font = assets.getEntry("lpcBig", BitmapFont.class);
+        font.setColor(fontColor);
+    }
 
     /**
      * Allows time between button presses

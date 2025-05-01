@@ -32,36 +32,70 @@ public class GameScene implements Screen {
      * Reference to the GDX root
      */
     private final GDXRoot game;
-    private final Texture dim;
-    private final Texture pauseBackground;
-    private final Button resumeButton;
-    private final Button resetButton;
-
-    private final Button levelsButton;
-    private final Button settingsButton;
-    private final Button exitButton;
-    private final Button homeButton;
-    private final Button nextButton;
-    private final Button replayButton;
-    private final Button handbookButton;
-
-
-    private final Settings settingsScreen;
-
-    private final Texture win;
-    private final Texture mouseLose;
-    private final Texture chopsticksLose;
-
-    private Array<TextLayout> bossNames;
-    private Array<Float> bossStartHealths;
-
-    private int numBosses;
-
-    private float companionAddTimer = 3.0f;
     /**
      * Reference to the game session
      */
     private GameState state;
+
+    protected World world;
+
+    /**
+     * The screen size
+     */
+    private float screenWidth;
+    private float screenHeight;
+
+    /**
+     * Backgrounds/Foregrounds
+     */
+    private final Texture dim;
+    private final Texture pauseBackground;
+    private final Texture win;
+    private Texture backgroundTexture;
+    private final Texture mouseLose;
+    private final Texture chopsticksLose;
+
+    /**
+     * Buttons
+     */
+    private Button resumeButton;
+    private Button resetButton;
+    private Button levelsButton;
+    private Button settingsButton;
+    private Button handbookButtonPause;
+
+    private Button exitButton;
+    private Button homeButton;
+    private Button nextButton;
+    private Button replayButton;
+    private Button handbookButton;
+
+    /**
+     * UI
+     */
+    //Bosses
+    private Array<TextLayout> bossNames;
+    private Array<Float> bossStartHealths;
+    private int numBosses;
+    private TextureRegion hpBack;
+    private TextureRegion hpLeft;
+    private TextureRegion hpMiddle;
+    private TextureRegion hpRight;
+    //Coins
+    private Texture coinCounter;
+    private Texture cost;
+    private Texture costGrey;
+    private BitmapFont font;
+
+
+    /**
+     * Settings and Pausing
+     */
+    private final Settings settingsScreen;
+    private boolean settingsOn;
+    private boolean paused;
+
+    private float companionAddTimer = 3.0f;
 
     /**
      * Companions in the chain
@@ -82,10 +116,15 @@ public class GameScene implements Screen {
      * Companions in the level
      */
     private Array<Companion> companions;
-
+    /**
+     * Coins in the level
+     */
     private Array<Coin> coins;
+    /**
+     * Projectiles in the level
+     */
     private Array<Projectile> projectiles;
-    protected World world;
+
 
     /**
      * A list of possible minion spawn locations, shuffled after it is looped through
@@ -109,42 +148,33 @@ public class GameScene implements Screen {
     private static float time;
 
     /**
-     * Random number generator
-     */
-    private static final Random rand = new Random();
-
-    /**
      * List of all the input controllers
      */
     protected InputController playerControls;
-    //protected Array<MinionController> minionControls;
     protected Array<BossController> bossControls;
 
-    private boolean start;
-    private boolean reset;
-    private boolean debug;
-    private Array<ObstacleSprite> everything;
 
-
-    private boolean background;
-    // Loaded assets
     /**
-     * The constants defining the game behavior
+     * Drawing
      */
-    private JsonValue constants;
+    private Array<ObstacleSprite> everything; //All active obstacles
+    private Array<ObstacleSprite> dead; //All dead obstacles
+    private boolean debug;
 
-    private Texture backgroundTexture;
-    private Texture coinCounter;
-    private boolean paused;
-    private boolean settingsOn;
-    private Array<ObstacleSprite> dead;
-
-    private int level;
-    private BitmapFont font;
-    private AssetDirectory assets;
+    /**
+     * Whether the level has started
+     */
+    private boolean start;
+    /**
+     * Whether the level has ended
+     */
     private boolean winGame;
-    private Texture cost;
-    private Texture costGrey;
+    private boolean loseGame;
+
+    /**
+     * This level's number
+     */
+    private int level;
 
     /**
      * Creates a GameScene
@@ -153,50 +183,36 @@ public class GameScene implements Screen {
      */
     public GameScene(final GDXRoot game, AssetDirectory assets, int level) {
         this.game = game;
-        this.assets = assets;
-        coinCounter = new Texture("images/coin-counter.png");
-        constants = assets.getEntry("constants", JsonValue.class);
-        //System.out.println(constants);
-        this.state = new GameState(constants, assets);
+
+        screenWidth = 1280;
+        screenHeight = 720;
+
+        coinCounter = assets.getEntry("coinCounter", Texture.class);
+        this.state = new GameState(assets.getEntry("constants", JsonValue.class), assets);
         this.level = level;
+
+        hpBack = assets.getEntry("hp.back", TextureRegion.class);
+        hpLeft = assets.getEntry("hp.foreleft", TextureRegion.class);
+        hpMiddle = assets.getEntry("hp.foreground", TextureRegion.class);
+        hpRight = assets.getEntry("hp.foreright", TextureRegion.class);
 
         minions = state.getMinions();
         companions = state.getCompanions();
         dead = state.getDead();
 
-        dim = new Texture("images/dim.png");
-        //backgroundTexture = new Texture("images/temp_background.png");
-        backgroundTexture = new Texture("images/background_angled.png");
-        pauseBackground = new Texture("images/PauseBackground.png");
-        Texture button = new Texture("images/Button.png");
-        Texture buttonDark = new Texture("images/ButtonDark.png");
-        Texture replay = new Texture("images/ReplayButton.png");
-        Texture home = new Texture("images/HomeButton.png");
-        Texture next = new Texture("images/NextButton.png");
-        Texture handbook = new Texture("images/HandbookButton.png");
-        Texture replayHover = new Texture("images/ReplayButtonHover.png");
-        Texture homeHover = new Texture("images/HomeButtonHover.png");
-        Texture nextHover = new Texture("images/NextButtonHover.png");
-        Texture handbookHover = new Texture("images/HandbookButtonHover.png");
+        dim = assets.getEntry("dim", Texture.class);
 
-        win = new Texture("images/Win.png");
-        mouseLose = new Texture("images/LoseRat.png");
-        chopsticksLose = new Texture("images/LoseChopsticks.png");
-        cost = new Texture("images/cost-ui.png");
-        costGrey = new Texture("images/grayed-cost-ui.png");
+        backgroundTexture = assets.getEntry("gameBackground", Texture.class);
+        pauseBackground = assets.getEntry("pauseBackground", Texture.class);
+        createButtons(assets);
+
+        win = assets.getEntry("win", Texture.class);
+        mouseLose = assets.getEntry("ratLose", Texture.class);
+        chopsticksLose = assets.getEntry("chopsticksLose", Texture.class);
+        cost = assets.getEntry("costUI", Texture.class);
+        costGrey = assets.getEntry("costUIGrey", Texture.class);
 
         font = assets.getEntry("lpcBig", BitmapFont.class);
-        resumeButton = new Button(506, 452, button, buttonDark, 0, 280, 63, "Resume", font);
-        resetButton = new Button(506, 381, button, buttonDark, 0, 280, 63, "Reset", font);
-        levelsButton = new Button(506, 310, button, buttonDark, 1, 280, 63, "Levels", font);
-        settingsButton = new Button(506, 239, button, buttonDark, 0, 280, 63, "Settings", font);
-        exitButton = new Button(506, 160, button, buttonDark, 0, 280, 63, "Exit", font);
-        font = assets.getEntry("lpc", BitmapFont.class);
-
-        replayButton = new Button(0, 0, replay, replayHover, 0, 78, 78);
-        homeButton = new Button(0, 0, home, homeHover, 1, 78, 78);
-        nextButton = new Button(0, 0, next, nextHover, 2, 78, 78);
-        handbookButton = new Button(0, 0, handbook, handbookHover, 3, 78, 78);
 
         settingsScreen = new Settings();
 
@@ -211,12 +227,82 @@ public class GameScene implements Screen {
         numBosses = bosses.size;
     }
 
+    private void createButtons(AssetDirectory assets) {
+        //Paused game buttons
+        int numRowButtons = 2;
+        int numColButtons = 3;
+        float buttonWidth = 250;
+        float buttonHeight = 70;
+        float paddingX = 50;
+        float paddingY = 100;
+        float gapX =
+            ((pauseBackground.getWidth() - paddingX * 2) - (numRowButtons * buttonWidth)) / (
+                numRowButtons - 1);
+        float gapY =
+            ((pauseBackground.getHeight() - paddingY * 2) - (numColButtons * buttonHeight)) / (
+                numColButtons - 1);
+        float spanX = (buttonWidth * numRowButtons) + (gapX * (numRowButtons - 1));
+        float spanY = (buttonHeight * numColButtons) + (gapY * (numColButtons - 1));
+
+        float x = (screenWidth / 2f - spanX / 2f) + paddingX;
+        float y = (screenHeight / 2f - spanY / 2f) - paddingY / 4;
+
+        Texture button = assets.getEntry("button", Texture.class);
+        Texture buttonHover = assets.getEntry("buttonHover", Texture.class);
+
+        exitButton = new Button(x, y, button, buttonHover,
+            0,
+            buttonWidth, buttonHeight, "Exit");
+        resetButton = new Button(x, exitButton.posY + (gapY + buttonHeight), button, buttonHover,
+            0, buttonWidth, buttonHeight,
+            "Reset");
+        resumeButton = new Button(x, resetButton.posY + (gapY + buttonHeight), button, buttonHover,
+            0, buttonWidth, buttonHeight,
+            "Resume");
+
+        x = (screenWidth / 2f + spanX / 2f) - paddingX - buttonWidth;
+
+        settingsButton = new Button(x, exitButton.posY, button,
+            buttonHover, 0, buttonWidth, buttonHeight,
+            "Settings");
+        handbookButtonPause = new Button(x, resetButton.posY,
+            button,
+            buttonHover, 1, buttonWidth,
+            buttonHeight,
+            "Handbook");
+        levelsButton = new Button(x,
+            resumeButton.posY, button,
+            buttonHover,
+            1, buttonWidth, buttonHeight,
+            "Levels");
+
+        // Win/Lose buttons
+        buttonWidth = 78;
+        buttonHeight = 78;
+
+        button = assets.getEntry("replay", Texture.class);
+        buttonHover = assets.getEntry("replayHover", Texture.class);
+        replayButton = new Button(0, 0, button, buttonHover, 0, buttonWidth, buttonHeight);
+
+        button = assets.getEntry("home", Texture.class);
+        buttonHover = assets.getEntry("homeHover", Texture.class);
+        homeButton = new Button(0, 0, button, buttonHover, 1, buttonWidth, buttonHeight);
+
+        button = assets.getEntry("arrow", Texture.class);
+        buttonHover = assets.getEntry("arrowNext", Texture.class);
+        nextButton = new Button(0, 0, button, buttonHover, 2, buttonWidth, buttonHeight);
+
+        button = assets.getEntry("handbook", Texture.class);
+        buttonHover = assets.getEntry("handbookHover", Texture.class);
+        handbookButton = new Button(0, 0, button, buttonHover, 3, buttonWidth, buttonHeight);
+    }
+
     private void reset() {
-        start = false;
-        reset = true;
-        paused = false;
         state.reset();
+        start = false;
+        paused = false;
         winGame = false;
+        loseGame = false;
         time = 0;
 
         bosses = state.getBosses();
@@ -230,7 +316,6 @@ public class GameScene implements Screen {
         player = state.getPlayer();
         playerControls = new PlayerController(player);
         state.setMinions(minions);
-        //minionControls = state.getMinionControls();
 
         minionSpawns = state.getMinionSpawns();
         companionSpawns = state.getCompanionSpawns();
@@ -317,7 +402,6 @@ public class GameScene implements Screen {
         }
 
         if (c != null) {
-            c.setAssets(assets);
             c.setCost(c.getCost() + (int) Math.floor(time / 10));
             companions.add(c);
             companionSpawnIdx++;
@@ -338,21 +422,18 @@ public class GameScene implements Screen {
         delta = Math.min(delta, 0.25f);
         state.getWorld().step(delta, 6, 2);
 
-//        if (Gdx.input.isKeyPressed(Keys.R) && !reset) {
-//            reset();
-//        }
-
         setStart();
         //System.out.println("Update" + bosses);
         winGame = true;
+
         for (Boss b : bosses) {
             if (b.getObstacle().isActive()) {
                 winGame = false;
-                break;
             }
         }
+        loseGame = !player.isAlive();
 
-        if (paused || winGame || !player.isAlive()) {
+        if (paused || winGame || loseGame) {
             state.getAudio().stopSfx();
             for (Minion m : minions) {
                 m.update(false);
@@ -363,7 +444,7 @@ public class GameScene implements Screen {
             }
         }
 
-        if (winGame) {
+        if (winGame || loseGame) {
             if (replayButton.isHovering() && Gdx.input.isTouched()) {
                 state.getAudio().play("click");
                 reset();
@@ -371,27 +452,13 @@ public class GameScene implements Screen {
                 state.getAudio().play("click");
                 dispose();
                 game.exitScreen(this, homeButton.getExitCode());
-            } else if (nextButton.isHovering() && Gdx.input.isTouched()) {
+            } else if (nextButton.isHovering() && Gdx.input.isTouched() && winGame) {
                 state.getAudio().play("click");
                 dispose();
                 game.exitScreen(this, nextButton.getExitCode());
             } else if (handbookButton.isPressed()) {
                 state.getAudio().play("click");
-                //dispose();
-                game.exitScreen(this, handbookButton.getExitCode());
-            }
-        }
-        if (!player.isAlive()) {
-            if (replayButton.isHovering() && Gdx.input.isTouched()) {
-                state.getAudio().play("click");
-                reset();
-            } else if (homeButton.isHovering() && Gdx.input.isTouched()) {
-                state.getAudio().play("click");
-                dispose();
-                game.exitScreen(this, homeButton.getExitCode());
-            } else if (handbookButton.isPressed()) {
-                state.getAudio().play("click");
-                //dispose();
+                //Do not dispose to so can return to level
                 game.exitScreen(this, handbookButton.getExitCode());
             }
         }
@@ -399,10 +466,6 @@ public class GameScene implements Screen {
         if (Gdx.input.isKeyPressed(Keys.D)) {
             debug = true;
         }
-
-//        if (!player.isAlive() || winGame) {
-//            return;
-//        }
 
         if (start && !paused && !winGame && player.isAlive()) {
             state.update();
@@ -512,7 +575,7 @@ public class GameScene implements Screen {
         ScreenUtils.clear(Color.WHITE);
 
         game.batch.begin();
-        game.batch.draw(backgroundTexture, 0, 0, 1280, 720);
+        game.batch.draw(backgroundTexture, 0, 0, screenWidth, screenHeight);
 
         // draw
         drawOrder(delta);
@@ -610,7 +673,7 @@ public class GameScene implements Screen {
 
         font.setColor(Color.WHITE);
 
-        if (!player.isAlive()) {
+        if (loseGame) {
             drawLose();
         }
 
@@ -628,8 +691,8 @@ public class GameScene implements Screen {
     }
 
     private void drawLose() {
-        float loseX = 1280 / 2f - mouseLose.getWidth() / 2f;
-        float loseY = 720 / 2f - mouseLose.getHeight() / 2f;
+        float loseX = screenWidth / 2f - mouseLose.getWidth() / 2f;
+        float loseY = screenHeight / 2f - mouseLose.getHeight() / 2f;
         game.batch.draw(dim, 0, 0);
         if (bosses.get(0).getName().equals("mouse")) {
             game.batch.draw(mouseLose, loseX, loseY);
@@ -651,8 +714,8 @@ public class GameScene implements Screen {
     }
 
     private void drawWin() {
-        float winX = 1280 / 2f - win.getWidth() / 2f;
-        float winY = 720 / 2f - win.getHeight() / 2f;
+        float winX = screenWidth / 2f - win.getWidth() / 2f;
+        float winY = screenHeight / 2f - win.getHeight() / 2f;
         game.batch.draw(dim, 0, 0);
         game.batch.draw(win, winX, winY);
         float height = winY + replayButton.height / 2f;
@@ -674,17 +737,18 @@ public class GameScene implements Screen {
         if (Gdx.input.isKeyPressed(Keys.UP) || Gdx.input.isKeyPressed(Keys.DOWN) ||
             Gdx.input.isKeyPressed(Keys.LEFT) || Gdx.input.isKeyPressed(Keys.RIGHT)) {
             start = true;
-            reset = false;
         }
     }
 
     private void drawPause() {
         game.batch.setBlendMode(BlendMode.ALPHA_BLEND);
         game.batch.draw(dim, 0, 0);
-        game.batch.draw(pauseBackground, 111.5f, 60.1f);
+        game.batch.draw(pauseBackground, screenWidth / 2f - pauseBackground.getWidth() / 2f,
+            screenHeight / 2f - pauseBackground.getHeight() / 2f);
         resumeButton.draw(game.batch, true);
         resetButton.draw(game.batch, true);
         levelsButton.draw(game.batch, true);
+        handbookButtonPause.draw(game.batch, true);
         settingsButton.draw(game.batch, true);
         exitButton.draw(game.batch, true);
         font.setColor(Color.WHITE);
@@ -705,32 +769,29 @@ public class GameScene implements Screen {
                     cx = 662;
                 }
             }
-            TextureRegion region1, region2, region3;
             float ratio = bosses.get(i).getHealth() / bossStartHealths.get(i);
             game.batch.drawText(bossNames.get(i), cx + (w / 2 - (bossNames.get(i).getWidth() / 2)),
                 cy + 50);
 
             // "3-patch" the background
             game.batch.setColor(Color.WHITE);
-            region1 = assets.getEntry("progress.back", TextureRegion.class);
-            game.batch.draw(region1, cx, cy, region1.getRegionWidth(),
-                region1.getRegionHeight());
+            game.batch.draw(hpBack, cx, cy, hpBack.getRegionWidth(),
+                hpBack.getRegionHeight());
 
             // "3-patch" the foreground
 
             if (ratio > 0) {
-                region1 = assets.getEntry("progress.foreleft", TextureRegion.class);
-                game.batch.draw(region1, cx, cy, region1.getRegionWidth(),
-                    region1.getRegionHeight());
-                region2 = assets.getEntry("progress.foreright", TextureRegion.class);
-                float span = ratio * (w - (region1.getRegionWidth() + region2.getRegionWidth()));
 
-                game.batch.draw(region2, cx + region1.getRegionWidth() + span, cy,
-                    region2.getRegionWidth(), region2.getRegionHeight());
+                game.batch.draw(hpLeft, cx, cy, hpLeft.getRegionWidth(),
+                    hpLeft.getRegionHeight());
 
-                region3 = assets.getEntry("progress.foreground", TextureRegion.class);
-                game.batch.draw(region3, cx + region1.getRegionWidth(), cy,
-                    span, region3.getRegionHeight());
+                float span = ratio * (w - (hpLeft.getRegionWidth() + hpRight.getRegionWidth()));
+
+                game.batch.draw(hpRight, cx + hpLeft.getRegionWidth() + span, cy,
+                    hpRight.getRegionWidth(), hpRight.getRegionHeight());
+
+                game.batch.draw(hpMiddle, cx + hpLeft.getRegionWidth(), cy,
+                    span, hpMiddle.getRegionHeight());
             }
         }
     }
@@ -791,8 +852,8 @@ public class GameScene implements Screen {
             everything.add(c);
         }
 
-        everything.sort((o1, o2) -> Float.compare(720 - o1.getObstacle().getY(),
-            720 - o2.getObstacle().getY()));
+        everything.sort((o1, o2) -> Float.compare(screenHeight - o1.getObstacle().getY(),
+            screenHeight - o2.getObstacle().getY()));
 
         // draw movement indicator first
         player.draw(game.batch);

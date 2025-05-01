@@ -1,7 +1,83 @@
 {
   "textures": {
+    "dim": "images/dim.png",
+    "menuBackground": "images/Menu.png",
     "levelsBackground": "images/LevelSelectBackground.png",
     "levelsTray": "images/LevelSelectTray.png",
+    "gameBackground": "images/background_angled.png",
+    "pauseBackground": "images/PauseBackground.png",
+    "win": "images/Win.png",
+    "ratLose": "images/LoseRat.png",
+    "chefLose": "images/LoseChopsticks.png",
+    "chopsticksLose": "images/LoseChopsticks.png",
+    "button": "images/Button.png",
+    "buttonHover": "images/ButtonHover.png",
+    "plate": "images/LevelSelectPlate.png",
+    "plateHover": "images/LevelSelectPlate.png",
+    "lock": "images/Lock.png",
+    "arrow": "images/NextButton.png",
+    "arrowHover": "images/NextButtonHover.png",
+    "handbook": "images/HandbookButton.png",
+    "handbookHover": "images/HandbookButtonHover.png",
+    "home": "images/HomeButton.png",
+    "homeHover": "images/HomeButtonHover.png",
+    "replay": "images/ReplayButton.png",
+    "replayHover": "images/ReplayButtonHover.png",
+    "settings": "images/HandbookButton.png",
+    "settingsHover": "images/HandbookButtonHover.png",
+    "coinCounter": "images/coin-counter.png",
+    "costUI": "images/cost-ui.png",
+    "costUIGrey": "images/grayed-cost-ui.png",
+    "Handbook0": {
+      "file": "images/HandbookAvocado.png",
+      "sprites": {
+        "animation": {
+          "rows": 1,
+          "cols": 2,
+          "size": 2
+        }
+      }
+    },
+    "Handbook1": {
+      "file": "images/HandbookAvocado.png",
+      "sprites": {
+        "animation": {
+          "rows": 1,
+          "cols": 2,
+          "size": 2
+        }
+      }
+    },
+    "Handbook2": {
+      "file": "images/HandbookAvocado.png",
+      "sprites": {
+        "animation": {
+          "rows": 1,
+          "cols": 2,
+          "size": 2
+        }
+      }
+    },
+    "Handbook3": {
+      "file": "images/HandbookAvocado.png",
+      "sprites": {
+        "animation": {
+          "rows": 1,
+          "cols": 2,
+          "size": 2
+        }
+      }
+    },
+    "Handbook4": {
+      "file": "images/HandbookAvocado.png",
+      "sprites": {
+        "animation": {
+          "rows": 1,
+          "cols": 2,
+          "size": 2
+        }
+      }
+    },
     "coin": {
       "file": "images/coin.png",
       "sprites": {
@@ -251,7 +327,7 @@
         }
       }
     },
-    "progress": {
+    "hp": {
       "file": "images/hpBar.png",
       "atlas": {
         "back": [
@@ -278,67 +354,6 @@
           523,
           68
         ]
-      }
-    },
-    "plate": "images/LevelSelectPlate.png",
-    "plateHover": "images/LevelSelectPlate.png",
-    "lock": "images/Lock.png",
-    "arrow": "images/NextButton.png",
-    "arrowHover": "images/NextButtonHover.png",
-    "settings": "images/HandbookButton.png",
-    "settingsHover": "images/HandbookButtonHover.png",
-    "home": "images/HomeButton.png",
-    "homeHover": "images/HomeButtonHover.png",
-    "handbook": "images/HandbookButton.png",
-    "handbookHover": "images/HandbookButtonHover.png",
-    "Handbook0": {
-      "file": "images/HandbookAvocado.png",
-      "sprites": {
-        "animation": {
-          "rows": 1,
-          "cols": 2,
-          "size": 2
-        }
-      }
-    },
-    "Handbook1": {
-      "file": "images/HandbookAvocado.png",
-      "sprites": {
-        "animation": {
-          "rows": 1,
-          "cols": 2,
-          "size": 2
-        }
-      }
-    },
-    "Handbook2": {
-      "file": "images/HandbookAvocado.png",
-      "sprites": {
-        "animation": {
-          "rows": 1,
-          "cols": 2,
-          "size": 2
-        }
-      }
-    },
-    "Handbook3": {
-      "file": "images/HandbookAvocado.png",
-      "sprites": {
-        "animation": {
-          "rows": 1,
-          "cols": 2,
-          "size": 2
-        }
-      }
-    },
-    "Handbook4": {
-      "file": "images/HandbookAvocado.png",
-      "sprites": {
-        "animation": {
-          "rows": 1,
-          "cols": 2,
-          "size": 2
-        }
       }
     }
   },
