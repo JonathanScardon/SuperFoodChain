@@ -46,5 +46,26 @@
     "size": 0.3,
     "animationSpeed": 0.5,
     "deathAnimationSpeed": 0.15
+  },
+  "ant": {
+    "moveSpeed": 1,
+    "health": 2,
+    "animationSpeed": 0.15,
+    "size": 0.3
+  },
+  "cricket": {
+    "waitDuration": 2,
+    "hopDuration": 0.3,
+    "hopSpeed": 5,
+    "health": 2,
+    "animationSpeed": 0.15,
+    "size": 0.3
+  },
+  "spider":{
+    "aliveDuration": 5,
+    "moveSpeed": 7,
+    "health": 1,
+    "animationSpeed": 0.15,
+    "size": 0.3
   }
 }
