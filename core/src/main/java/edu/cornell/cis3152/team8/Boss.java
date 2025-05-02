@@ -1,7 +1,6 @@
 package edu.cornell.cis3152.team8;
 
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Filter;
@@ -41,7 +40,6 @@ public class Boss extends ObstacleSprite {
      * Map of animation name to the sprite sheet associated with it
      */
     private Map<String, SpriteSheet> animationMap;
-
     /**
      * Current angle of the sprite
      */
@@ -65,17 +63,11 @@ public class Boss extends ObstacleSprite {
     private boolean damage;
     private boolean dead;
 
-    public enum BossType {
-        MOUSE,
-        CHEF,
-        CHOPSTICKS
-    }
-
     protected float health;
     private final float startHealth;
 
     private String state;
-    private String name;
+    private final String name;
     private boolean remove;
 
     /**
@@ -132,10 +124,6 @@ public class Boss extends ObstacleSprite {
     public void update(float delta, int controlCode) {
         if (getObstacle().isActive()) {
             // Determine how we are moving.
-//        boolean movingLeft = (controlCode & InputController.CONTROL_MOVE_LEFT) != 0;
-//        boolean movingRight = (controlCode & InputController.CONTROL_MOVE_RIGHT) != 0;
-//        boolean movingUp = (controlCode & InputController.CONTROL_MOVE_UP) != 0;
-//        boolean movingDown = (controlCode & InputController.CONTROL_MOVE_DOWN) != 0;
             boolean movingLeft = controlCode == InputController.CONTROL_MOVE_LEFT;
             boolean movingRight = controlCode == InputController.CONTROL_MOVE_RIGHT;
             boolean movingUp = controlCode == InputController.CONTROL_MOVE_UP;
