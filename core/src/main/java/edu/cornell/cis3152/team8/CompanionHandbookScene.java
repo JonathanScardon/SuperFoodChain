@@ -50,7 +50,7 @@ public class CompanionHandbookScene extends MultiPageScene {
             back, backHover, -1, buttonSize, buttonSize, true);
         settingsButton.setPosition(1280 - gap, 720 - gap);
 
-        unlocked = assets.getEntry("save", JsonValue.class)
+        unlockedPages = assets.getEntry("save", JsonValue.class)
             .getInt("companions_unlocked");
     }
 
@@ -79,6 +79,7 @@ public class CompanionHandbookScene extends MultiPageScene {
     protected void processButtons() {
         if (backButton.isPressed()) {
             audio.play("click");
+            audio.stopMusic();
             game.exitScreen(this, backButton.getExitCode());
         }
     }
@@ -98,12 +99,20 @@ public class CompanionHandbookScene extends MultiPageScene {
     @Override
     protected void drawPages() {
         if (moving) { //Draw all unlocked pages if screen is moving
-            for (int i = 0; i <= unlocked; i++) {
+            for (int i = 0; i <= unlockedPages; i++) {
                 game.batch.draw(pages[i], (1280 * i), 0, 1280, 720);
             }
         } else { //Otherwise only draw current page
             game.batch.draw(pages[currPage - 1], (1280 * (currPage - 1)), 0, 1280, 720);
         }
+    }
+
+    public void reset() {
+        super.reset();
+        float gap = 100;
+        backButton.setPosition(gap, 720 - gap);
+        settingsButton.setPosition(1280 - gap, 720 - gap);
+        audio.play("handbook");
     }
 }
 

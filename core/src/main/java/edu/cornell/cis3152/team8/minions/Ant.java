@@ -3,13 +3,17 @@ package edu.cornell.cis3152.team8.minions;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.utils.JsonValue;
 import edu.cornell.cis3152.team8.Minion;
 import edu.cornell.cis3152.team8.Player;
 import edu.cornell.gdiac.assets.AssetDirectory;
 import edu.cornell.gdiac.graphics.SpriteSheet;
 
 public class Ant extends Minion {
-
+    private static float MOVE_SPEED;
+    private static int HEALTH;
+    private static float ANIMATION_SPEED;
+    private static float SIZE;
     private static SpriteSheet texture;
 
     /**
@@ -22,12 +26,23 @@ public class Ant extends Minion {
      */
     public Ant(float x, float y, World world, Player player) {
         super(x, y, world, player);
-        moveSpeed = 1f;
-        health = 2;
-        animationSpeed = 0.15f;
-        size = 0.3f * units;
+        moveSpeed = MOVE_SPEED;
+        health = HEALTH;
+        animationSpeed = ANIMATION_SPEED;
+        size = SIZE;
 
         setSpriteSheet(texture);
+    }
+
+    /**
+     * Sets Ant constants
+     * @param constants attributes that describe ant minion characteristics like hp, movespeed, etc.
+     */
+    public static void setConstants(JsonValue constants) {
+        MOVE_SPEED = constants.getFloat("moveSpeed", 1f);
+        HEALTH = constants.getInt("health", 2);
+        ANIMATION_SPEED = constants.getFloat("animationSpeed", 0.15f);
+        SIZE = constants.getFloat("size", 0.3f) * units; // ensure size on-screen is multiplied by physics units
     }
 
     /**
