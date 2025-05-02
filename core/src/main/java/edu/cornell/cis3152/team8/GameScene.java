@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -18,7 +19,6 @@ import edu.cornell.gdiac.assets.AssetDirectory;
 import edu.cornell.gdiac.graphics.SpriteBatch;
 import edu.cornell.gdiac.graphics.SpriteBatch.BlendMode;
 import edu.cornell.gdiac.graphics.TextLayout;
-import edu.cornell.gdiac.physics2.Obstacle;
 import edu.cornell.gdiac.physics2.ObstacleSprite;
 
 /**
@@ -39,14 +39,18 @@ public class GameScene implements Screen {
      * Reference to the game session
      */
     private final GameState state;
+    /**
+     * The drawing camera for this scene
+     */
+    private OrthographicCamera camera;
 
     protected World world;
 
     /**
      * The screen size
      */
-    private final float screenWidth;
-    private final float screenHeight;
+    private float screenWidth;
+    private float screenHeight;
 
     /**
      * Backgrounds/Foregrounds
@@ -101,8 +105,6 @@ public class GameScene implements Screen {
     private final Settings settingsScreen;
     private boolean settingsOn;
     private boolean paused;
-
-    private float companionAddTimer = 3.0f;
 
     /**
      * Companions in the chain
@@ -164,8 +166,8 @@ public class GameScene implements Screen {
     /**
      * Drawing
      */
-    private final Array<ObstacleSprite> everything; //All active obstacles
-    private final Array<ObstacleSprite> dead; //All dead obstacles
+    private final Array<ObstacleSprite> everything; // All active obstacles
+    private final Array<ObstacleSprite> dead; // All dead obstacles
     private boolean debug;
 
     /**
@@ -594,7 +596,7 @@ public class GameScene implements Screen {
     public void draw(float delta) {
         ScreenUtils.clear(Color.WHITE);
 
-        game.batch.begin();
+        game.batch.begin(camera);
         game.batch.draw(backgroundTexture, 0, 0, screenWidth, screenHeight);
 
         // draw
@@ -876,9 +878,26 @@ public class GameScene implements Screen {
         this.draw(delta);
     }
 
+    /**
+     * Called when the Screen is resized.
+     * <p>
+     * This can happen at any point during a non-paused state but will never happen before a call to
+     * show().
+     *
+     * @param width  The new width in pixels
+     * @param height The new height in pixels
+     */
     @Override
     public void resize(int width, int height) {
-
+        this.screenWidth = width;
+        this.screenHeight = height;
+        if (camera == null) {
+            camera = new OrthographicCamera(width, height);
+            camera.position.set(width / 2f, height / 2f, 0);
+            camera.update();
+        } else {
+            camera.setToOrtho(false, width, height);
+        }
     }
 
     @Override
@@ -935,6 +954,13 @@ public class GameScene implements Screen {
         }
 
         everything.clear();
+    }
+
+    /**
+     * @return The camera used in this scene
+     */
+    public OrthographicCamera getCamera() {
+        return camera;
     }
 
     public void resetMusic() {

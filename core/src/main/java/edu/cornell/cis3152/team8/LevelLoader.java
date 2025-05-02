@@ -3,7 +3,6 @@ package edu.cornell.cis3152.team8;
 import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
 import com.badlogic.gdx.maps.tiled.*;
 import com.badlogic.gdx.maps.*;
-import com.badlogic.gdx.maps.tiled.objects.TiledMapTileMapObject;
 import com.badlogic.gdx.math.Vector2;
 import edu.cornell.cis3152.team8.companions.Avocado;
 import edu.cornell.cis3152.team8.companions.BlueRaspberry;
@@ -158,7 +157,6 @@ public class LevelLoader {
 
         Boss boss = null;
         BossController bossController = null;
-        int id = props.get("id", Integer.class);
         float x = props.get("x", Float.class) / PHYSICS_UNITS;
         float y = props.get("y", Float.class) / PHYSICS_UNITS;
         int health = props.get("health", 0, Integer.class);
@@ -197,7 +195,7 @@ public class LevelLoader {
         BossAttackPattern attack;
         while (props.containsKey("attack" + attackIdx)) {
             attackObj = props.get("attack" + attackIdx, MapObject.class);
-            attack = createAttack(attackObj, bossController, state.getPlayer());
+            attack = createAttack(attackObj, bossController, state.getPlayer(), scene);
             bossController.addAttackPattern(attack);
 
             attackIdx++;
@@ -214,12 +212,11 @@ public class LevelLoader {
      * @param controller the boss that will execute the attack
      */
     private BossAttackPattern createAttack(MapObject obj, BossController controller,
-        Player player) {
+        Player player, GameScene scene) {
         String attackType = obj.getProperties().get("attackType", String.class);
         MapProperties props = obj.getProperties();
 
         BossAttackPattern attack = null;
-        int id = props.get("id", Integer.class);
         float x = props.get("x", Float.class) / PHYSICS_UNITS;
         float y = props.get("y", Float.class) / PHYSICS_UNITS;
         float warnDuration = props.get("warnDuration", 0f, Float.class);
@@ -253,6 +250,9 @@ public class LevelLoader {
                 attack = new SnatchAttackPattern(controller, warnDuration, attackDuration,
                     idleWarnSprite, player);
                 break;
+            case "camera":
+                attack = new CameraAttackPattern(controller, x, y, warnDuration, scene.getCamera());
+                break;
         }
 
         if (attack == null) {
@@ -284,7 +284,6 @@ public class LevelLoader {
     private void createPlayer(MapObject obj, GameState state) {
         MapProperties props = obj.getProperties();
 
-        int id = props.get("id", Integer.class);
         float x = props.get("x", Float.class);
         float y = props.get("y", Float.class);
         String companionType = props.get("companionType", String.class);
@@ -314,7 +313,6 @@ public class LevelLoader {
     private void createCompanionSpawn(MapObject obj, GameState state) {
         MapProperties props = obj.getProperties();
 
-        int id = props.get("id", Integer.class);
         float x = props.get("x", Float.class);
         float y = props.get("y", Float.class);
 
