@@ -156,6 +156,9 @@ public class GameState {
         BlueRaspberry.setConstants(constants.get("blueRaspberry"));
         Durian.setConstants(constants.get("durian"));
         Strawberry.setConstants(constants.get("strawberry"));
+        Ant.setConstants(constants.get("ant"));
+        Cricket.setConstants(constants.get("cricket"));
+        Spider.setConstants(constants.get("spider"));
     }
 
     /**
@@ -165,7 +168,7 @@ public class GameState {
      */
     private void setAssets(AssetDirectory assets) {
         //Button
-        Button.setAssets(assets);
+        //Button.setAssets(assets);
 
         //Coin
         Coin.setAssets(assets);

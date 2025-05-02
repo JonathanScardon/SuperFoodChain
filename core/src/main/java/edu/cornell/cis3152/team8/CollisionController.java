@@ -321,7 +321,7 @@ public class CollisionController implements ContactListener {
         }
 //        for (Boss b : state.getBosses()) {
 //            if (!b.getObstacle().isActive()) {
-//                state.getBosses().removeValue(b, false);
+//                //state.getBosses().removeValue(b, false);
 //            }
 //        }
         for (ObstacleSprite o : state.getDead()) {

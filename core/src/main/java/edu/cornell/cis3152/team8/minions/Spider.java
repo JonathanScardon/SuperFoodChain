@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.utils.JsonValue;
 import edu.cornell.cis3152.team8.Minion;
 import edu.cornell.cis3152.team8.Player;
 import edu.cornell.gdiac.assets.AssetDirectory;
@@ -13,22 +14,38 @@ public class Spider extends Minion {
 
     private static SpriteSheet texture;
     private Vector2 direction;
-    private static final float ALIVE_DURATION = 5f; // alive_duration of 5 seconds
+    private static float ALIVE_DURATION; // alive_duration of 5 seconds
     private float aliveTimer;
+    private static float MOVE_SPEED;
+    private static int HEALTH;
+    private static float ANIMATION_SPEED;
+    private static float SIZE;
 
     public Spider(float x, float y, World world, Player player) {
         super(x, y, world, player);
         setSpriteSheet(new SpriteSheet(new Texture("images/Spider.png"), 1, 3));
         this.aliveTimer = ALIVE_DURATION;
-        moveSpeed = 7;
-        health = 1;
-        animationSpeed = 0.15f;
-        size = 0.3f * units;
+        moveSpeed = MOVE_SPEED;
+        health = HEALTH;
+        animationSpeed = ANIMATION_SPEED;
+        size = SIZE * units;
         Vector2 spawnPos = new Vector2(x, y);
         Vector2 playerPos = new Vector2(player.getPlayerHead().getObstacle().getPosition()).scl(
             units);
 
         setSpriteSheet(texture);
+    }
+
+    /**
+     * Sets Spider constants
+     * @param constants attributes that describe spider characteristics like hp, movespeed, etc.
+     */
+    public static void setConstants(JsonValue constants) {
+        ALIVE_DURATION = constants.getFloat("aliveDuration", 5f);
+        MOVE_SPEED = constants.getFloat("moveSpeed", 7);
+        HEALTH = constants.getInt("health", 1);
+        ANIMATION_SPEED = constants.getFloat("animationSpeed", 0.15f);
+        SIZE = constants.getFloat("size", 0.3f);
     }
 
     /**

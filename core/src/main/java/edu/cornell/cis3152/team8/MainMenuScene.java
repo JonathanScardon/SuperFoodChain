@@ -32,7 +32,6 @@ public class MainMenuScene implements Screen {
         Button.setAssets(assets);
 
         this.game = game;
-        BitmapFont font = assets.getEntry("lpcBig", BitmapFont.class);
         background = assets.getEntry("menuBackground", Texture.class);
         Texture button = assets.getEntry("button", Texture.class);
         Texture buttonHover = assets.getEntry("buttonHover", Texture.class);
@@ -52,6 +51,7 @@ public class MainMenuScene implements Screen {
         if (!settingsOn) {
             if (playButton.isPressed()) {
                 audio.play("click");
+                audio.stopMusic();
                 game.exitScreen(this, 0);
                 dispose();
             }
@@ -62,8 +62,9 @@ public class MainMenuScene implements Screen {
             }
             if (exitButton.isPressed()) {
                 audio.play("click");
-                game.exitScreen(this, 1);
+                audio.stopMusic();
                 dispose();
+                game.exitScreen(this, 1);
             }
         } else if (Gdx.input.isKeyPressed(Keys.ESCAPE)) {
             settingsOn = false;
@@ -87,6 +88,10 @@ public class MainMenuScene implements Screen {
         }
 
         game.batch.end();
+    }
+
+    public void reset() {
+        audio.play("menu");
     }
 
     @Override

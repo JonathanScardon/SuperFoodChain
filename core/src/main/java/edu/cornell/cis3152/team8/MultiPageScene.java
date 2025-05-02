@@ -17,11 +17,6 @@ public abstract class MultiPageScene implements Screen {
     protected final GDXRoot game;
 
     /**
-     * The number of unlocked pages
-     */
-    protected int unlocked;
-
-    /**
      * Arrow buttons
      */
     protected final Button arrowRight;
@@ -31,7 +26,9 @@ public abstract class MultiPageScene implements Screen {
      * Page switching info
      */
     protected int currPage;
+    protected int unlockedPages;
     protected int totalPages;
+
     protected final float moveSpeed;
     private float moveGoal;
     protected boolean moving = false;
@@ -111,9 +108,9 @@ public abstract class MultiPageScene implements Screen {
 
             if (!settingsOn) { //Level page off when settings is on
                 //Process arrows when on screen
-                if (currPage == 1) {
+                if (currPage == 1 && unlockedPages > 1) {
                     rightArrow();
-                } else if (currPage == totalPages) {
+                } else if (currPage == unlockedPages && unlockedPages > 1) {
                     leftArrow();
                 } else {
                     leftArrow();
@@ -153,7 +150,7 @@ public abstract class MultiPageScene implements Screen {
 
         if (currPage == 1) {
             arrowRight.draw(game.batch, !settingsOn);
-        } else if (currPage == totalPages) {
+        } else if (currPage == unlockedPages) {
             arrowLeft.draw(game.batch, !settingsOn);
         } else {
             arrowLeft.draw(game.batch, !settingsOn);
@@ -269,7 +266,16 @@ public abstract class MultiPageScene implements Screen {
 
     }
 
-    public void resetWait() {
+    public void reset() {
+        camera.position.x = 1280 / 2f;
+        camera.position.y = 720 / 2f;
+        arrowLeft.setExitCode(0);
+        arrowRight.setExitCode(2);
+        float buttonSize = 78;
+        arrowRight.setPosition(1280 - buttonSize * 2f, 720 / 2f - buttonSize / 2f);
+        arrowLeft.setPosition(buttonSize * 2f, 720 / 2f - buttonSize / 2f);
+        settingsButton.setPosition(-50, -50);
+        currPage = 1;
         currWait = waitTime;
     }
 }
