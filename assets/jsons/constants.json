@@ -67,5 +67,13 @@
     "health": 1,
     "animationSpeed": 0.15,
     "size": 0.3
+  },
+  "strawberryProjectile": {
+    "maxLife": 60,
+    "attack": 1
+  },
+  "durianProjectile": {
+    "maxLife": 15,
+    "attack": 2
   }
 }
