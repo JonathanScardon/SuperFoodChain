@@ -671,6 +671,15 @@ public class GameScene implements Screen {
             }
         }
 
+        // Coin collection UI
+        for (ObstacleSprite o : dead) {
+            String type = o.getName();
+            if (type.equals("coin")) {
+                o.update(delta);
+                o.draw(game.batch);
+            }
+        }
+
         if (debug) {
             // Draw the outlines
             Array<ObstacleSprite> sprites = new Array<>();
@@ -703,15 +712,6 @@ public class GameScene implements Screen {
         game.batch.drawText(coinCount, transform);
 
         drawHPBars();
-
-        // Coin collection UI
-        for (ObstacleSprite o : dead) {
-            String type = o.getName();
-            if (type.equals("coin")) {
-                o.update(delta);
-                o.draw(game.batch);
-            }
-        }
 
         font.setColor(Color.WHITE);
 
