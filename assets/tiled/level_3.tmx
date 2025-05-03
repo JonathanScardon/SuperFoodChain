@@ -25,6 +25,7 @@
    <properties>
     <property name="attackDuration" type="float" value="3"/>
     <property name="attackType" propertytype="attackType" value="idle"/>
+    <property name="flipHorizontal" type="bool" value="false"/>
     <property name="warnDuration" type="float" value="2"/>
    </properties>
   </object>
