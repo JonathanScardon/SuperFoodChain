@@ -48,10 +48,14 @@ public class BossController implements InputController {
     }
 
     /**
-     * Starts the current attack of the boss If there are no attacks left, resets the current attack
-     * index to 0
+     * Starts the current attack of the boss. If there are no attacks left, resets the current attack
+     * index to 0. If the boss has no attack patterns, does nothing.
      */
     public void startAttack() {
+        if (this.attackPatterns.size == 0) {
+            return; // we don't have any attacks to start
+        }
+
         if (boss.getObstacle().isActive()) {
             if (curAttackIdx >= this.attackPatterns.size) {
                 curAttackIdx = 0;
@@ -71,18 +75,19 @@ public class BossController implements InputController {
 
     public boolean update(float delta) {
         //boolean to see if an attack started
-        boolean started;
+        boolean started = false;
 
         // if we finished the current attack do the next one in the queue
-        if (this.attackPatterns.get(curAttackIdx).isEnded()) {
-            curAttackIdx++;
-            this.startAttack();
-            started = true;
-        } else {
-            started = false;
+        if (this.attackPatterns.size > 0) {
+            if (this.attackPatterns.get(curAttackIdx).isEnded()) {
+                curAttackIdx++;
+                this.startAttack();
+                started = true;
+            }
+            this.attackPatterns.get(curAttackIdx).update(delta);
+            attackName = attackPatterns.get(curAttackIdx).getName();
         }
-        this.attackPatterns.get(curAttackIdx).update(delta);
-        attackName = attackPatterns.get(curAttackIdx).getName();
+
         return started;
     }
 

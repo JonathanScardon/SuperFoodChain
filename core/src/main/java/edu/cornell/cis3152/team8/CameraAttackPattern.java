@@ -29,6 +29,7 @@ public class CameraAttackPattern extends BossAttackPattern {
         this.warnTime = 0f;
 
         originalPosition.set(camera.position);
+        boss.setAnimation("camera");
     }
 
     @Override

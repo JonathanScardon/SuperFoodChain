@@ -968,7 +968,7 @@ public class GameScene implements Screen {
         for (ObstacleSprite o : everything) {
             switch (o.getName()) {
                 case "minion", "companion", "coin", "player" -> o.draw(game.batch);
-                case "mouse", "chopsticks" -> ((Boss) o).draw(game.batch, delta);
+                case "mouse", "chef", "chopsticks" -> ((Boss) o).draw(game.batch, delta);
             }
         }
 

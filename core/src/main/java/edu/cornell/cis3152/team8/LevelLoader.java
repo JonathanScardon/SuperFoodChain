@@ -35,6 +35,8 @@ public class LevelLoader {
     private SpriteSheet chopsticksIdleSprite;
     private SpriteSheet chopsticksDashSprite;
 
+    private SpriteSheet chefIdleSprite;
+
     // warning sprites
     private SpriteSheet idleWarnSprite;
     private SpriteSheet dashWarnVerticalSprite;
@@ -82,6 +84,8 @@ public class LevelLoader {
 
         chopsticksIdleSprite = assets.getEntry("idleChopsticks.animation", SpriteSheet.class);
         chopsticksDashSprite = assets.getEntry("dashChopsticks.animation", SpriteSheet.class);
+
+        chefIdleSprite = assets.getEntry("idleChef.animation", SpriteSheet.class);
 
         idleWarnSprite = assets.getEntry("idleWarn.animation", SpriteSheet.class);
         dashWarnVerticalSprite = assets.getEntry("dashWarnVertical.animation", SpriteSheet.class);
@@ -156,7 +160,7 @@ public class LevelLoader {
         MapProperties props = obj.getProperties();
 
         Boss boss = null;
-        BossController bossController = null;
+        BossController bossController;
         float x = props.get("x", Float.class) / PHYSICS_UNITS;
         float y = props.get("y", Float.class) / PHYSICS_UNITS;
         int health = props.get("health", 0, Integer.class);
@@ -170,9 +174,6 @@ public class LevelLoader {
                 boss.addAnimation("dashHorizontal", mouseDashHorizontalSprite);
                 boss.addAnimation("spin", mouseSpinSprite);
                 boss.addAnimation("death", mouseDeathSprite);
-                bossController = new BossController(boss, state);
-                break;
-            case "chef":
                 break;
             case "chopsticks":
                 boss = new Boss(x, y, health, bossType, state.getWorld());
@@ -180,13 +181,19 @@ public class LevelLoader {
                 boss.addAnimation("idle", chopsticksIdleSprite);
                 boss.addAnimation("snatch", chopsticksDashSprite);
                 boss.addAnimation("death", mouseDeathSprite);
-                bossController = new BossController(boss, state);
+                break;
+            case "chef":
+                boss = new Boss(x, y, health, bossType, state.getWorld());
+                boss.addAnimation("default", chefIdleSprite);
+                boss.addAnimation("idle", chefIdleSprite);
+                boss.addAnimation("death", mouseDeathSprite);
                 break;
         }
 
         if (boss == null) {
             throw new RuntimeException("Boss creation failed");
         }
+        bossController = new BossController(boss, state);
         boss.setAnimation("default");
 
         // get all attacks
@@ -226,7 +233,8 @@ public class LevelLoader {
         switch (attackType) {
             case "idle":
                 attackDuration = props.get("attackDuration", 0f, Float.class);
-                attack = new IdleAttackPattern(controller, x, y, warnDuration, attackDuration,
+                Boolean flipHorizontal = props.get("flipHorizontal", Boolean.class);
+                attack = new IdleAttackPattern(controller, x, y, warnDuration, attackDuration, flipHorizontal,
                     idleWarnSprite);
                 break;
             case "dash":
