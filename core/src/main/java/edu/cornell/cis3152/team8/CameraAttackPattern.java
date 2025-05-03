@@ -46,9 +46,11 @@ public class CameraAttackPattern extends BossAttackPattern {
                 if (t >= 1f) {
                     state = AttackState.ATTACK;
                 }
+                break;
             case ATTACK:
                 this.spawnMinions();
                 state = AttackState.ENDED;
+                break;
         }
     }
 }

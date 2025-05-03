@@ -251,7 +251,7 @@ public class LevelLoader {
                     idleWarnSprite, player);
                 break;
             case "camera":
-                attack = new CameraAttackPattern(controller, x, y, warnDuration, scene.getCamera());
+                attack = new CameraAttackPattern(controller, x * PHYSICS_UNITS, y * PHYSICS_UNITS, warnDuration, scene.getCamera());
                 break;
         }
 

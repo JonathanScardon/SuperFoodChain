@@ -200,6 +200,7 @@ public class GameScene implements Screen {
 
         screenWidth = 1280;
         screenHeight = 720;
+        resize((int) screenWidth, (int) screenHeight);
 
         reset();
 
