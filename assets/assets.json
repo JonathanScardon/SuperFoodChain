@@ -283,10 +283,10 @@
         }
       }
     },
-    "durianProjectile": "images/Projectile_Pineapple.png",
+    "durianProjectile": "images/projectile_durian.png",
     "garlicProjectile": "images/Projectile_Pineapple.png",
     "pineappleProjectile": "images/Projectile_Pineapple.png",
-    "strawberryProjectile": "images/Strawberry_Seed.png",
+    "strawberryProjectile": "images/sb_projectile_fix.png",
     "ant": {
       "file": "images/Ant.png",
       "sprites": {
