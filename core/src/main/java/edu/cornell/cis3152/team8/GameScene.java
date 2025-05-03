@@ -40,9 +40,13 @@ public class GameScene implements Screen {
      */
     private final GameState state;
     /**
-     * The drawing camera for this scene
+     * The drawing camera for the objects in this scene
      */
-    private OrthographicCamera camera;
+    private OrthographicCamera worldCamera;
+    /**
+     * The drawing camera for the UI in this scene
+     */
+    private OrthographicCamera uiCamera;
 
     protected World world;
 
@@ -597,7 +601,9 @@ public class GameScene implements Screen {
     public void draw(float delta) {
         ScreenUtils.clear(Color.WHITE);
 
-        game.batch.begin(camera);
+        // World rendering
+        game.batch.setProjectionMatrix(worldCamera.combined);
+        game.batch.begin(worldCamera);
         game.batch.draw(backgroundTexture, 0, 0, screenWidth, screenHeight);
 
         // draw
@@ -664,6 +670,28 @@ public class GameScene implements Screen {
                 }
             }
         }
+
+        if (debug) {
+            // Draw the outlines
+            Array<ObstacleSprite> sprites = new Array<>();
+            for (Companion c : player.companions) {
+                sprites.add(c);
+            }
+            sprites.addAll(minions);
+            sprites.addAll(coins);
+            sprites.addAll(companions);
+            sprites.addAll(bosses);
+            sprites.addAll(projectiles);
+            for (ObstacleSprite obj : sprites) {
+                obj.drawDebug(game.batch);
+            }
+            player.drawDebug(game.batch);
+        }
+
+        game.batch.end();
+
+        game.batch.setProjectionMatrix(uiCamera.combined);
+        game.batch.begin(uiCamera);
         // Coin Counter
         float numScale = 0.7f;
         TextLayout coinCount = new TextLayout("" + player.getCoins(), font);
@@ -683,23 +711,6 @@ public class GameScene implements Screen {
                 o.update(delta);
                 o.draw(game.batch);
             }
-        }
-
-        if (debug) {
-            // Draw the outlines
-            Array<ObstacleSprite> sprites = new Array<>();
-            for (Companion c : player.companions) {
-                sprites.add(c);
-            }
-            sprites.addAll(minions);
-            sprites.addAll(coins);
-            sprites.addAll(companions);
-            sprites.addAll(bosses);
-            sprites.addAll(projectiles);
-            for (ObstacleSprite obj : sprites) {
-                obj.drawDebug(game.batch);
-            }
-            player.drawDebug(game.batch);
         }
 
         font.setColor(Color.WHITE);
@@ -892,12 +903,19 @@ public class GameScene implements Screen {
     public void resize(int width, int height) {
         this.screenWidth = width;
         this.screenHeight = height;
-        if (camera == null) {
-            camera = new OrthographicCamera(width, height);
-            camera.position.set(width / 2f, height / 2f, 0);
-            camera.update();
+        if (worldCamera == null) {
+            worldCamera = new OrthographicCamera(width, height);
+            worldCamera.position.set(width / 2f, height / 2f, 0);
+            worldCamera.update();
         } else {
-            camera.setToOrtho(false, width, height);
+            worldCamera.setToOrtho(false, width, height);
+        }
+        if (uiCamera == null) {
+            uiCamera = new OrthographicCamera(width, height);
+            uiCamera.position.set(width / 2f, height / 2f, 0);
+            uiCamera.update();
+        } else {
+            uiCamera.setToOrtho(false, width, height);
         }
     }
 
@@ -960,8 +978,8 @@ public class GameScene implements Screen {
     /**
      * @return The camera used in this scene
      */
-    public OrthographicCamera getCamera() {
-        return camera;
+    public OrthographicCamera getWorldCamera() {
+        return worldCamera;
     }
 
     public void resetMusic() {
