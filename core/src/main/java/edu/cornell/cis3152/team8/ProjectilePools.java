@@ -2,6 +2,7 @@ package edu.cornell.cis3152.team8;
 
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Pool;
+import edu.cornell.cis3152.team8.projectiles.DurianProjectile;
 import edu.cornell.cis3152.team8.projectiles.GarlicProjectile;
 import edu.cornell.cis3152.team8.projectiles.PineappleProjectile;
 import edu.cornell.cis3152.team8.projectiles.StrawberryProjectile;
@@ -29,10 +30,10 @@ public class ProjectilePools {
         }
     };
 
-    public static final Pool<PineappleProjectile> pineapplePool = new Pool<PineappleProjectile>() {
+    public static final Pool<DurianProjectile> durianPool = new Pool<DurianProjectile>() {
         @Override
-        protected PineappleProjectile newObject() {
-            return new PineappleProjectile(0, 0, 0, 0, world);
+        protected DurianProjectile newObject() {
+            return new DurianProjectile(0, 0, 0, 0, world);
         }
     };
 }

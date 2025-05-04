@@ -133,12 +133,10 @@ public abstract class Projectile extends ObstacleSprite {
     public void reset() {
         life = maxLife;
         animeFrame = 0.0f;
-        getObstacle().setActive(false);
-        getObstacle().getBody().setActive(false);
         // Reset physics state without destroying
         getObstacle().getBody().setLinearVelocity(0, 0);
         getObstacle().getBody().setTransform(0, 0, 0);
-        getObstacle().markRemoved(true);
+        getObstacle().getBody().setActive(false);
     }
 
     /**
