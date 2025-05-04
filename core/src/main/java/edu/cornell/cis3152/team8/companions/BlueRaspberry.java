@@ -28,6 +28,7 @@ public class BlueRaspberry extends Companion {
         super(x, y, id, world);
         setCompanionType(CompanionType.BLUE_RASPBERRY);
 
+        setOriginalCost(COST);
         setCost(COST);
         setCooldown(COOLDOWN);
 
