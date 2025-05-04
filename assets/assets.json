@@ -149,12 +149,12 @@
             }
         },
         "idleChopsticks": {
-            "file": "images/Boss_Chopsticks_Static.png",
+            "file": "images/Boss_Chopsticks_Idle.PNG",
             "sprites": {
                 "animation": {
                     "rows": 1,
-                    "cols": 1,
-                    "size": 1
+                    "cols": 4,
+                    "size": 4
                 }
             }
         },
