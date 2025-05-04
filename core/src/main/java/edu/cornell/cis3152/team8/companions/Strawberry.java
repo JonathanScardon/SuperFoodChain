@@ -7,6 +7,7 @@ import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.JsonValue;
 import edu.cornell.cis3152.team8.Companion;
 import edu.cornell.cis3152.team8.GameState;
+import edu.cornell.cis3152.team8.ProjectilePools;
 import edu.cornell.cis3152.team8.projectiles.StrawberryProjectile;
 import edu.cornell.gdiac.assets.AssetDirectory;
 import edu.cornell.gdiac.graphics.SpriteSheet;
@@ -34,6 +35,7 @@ public class Strawberry extends Companion {
         super(x, y, id, world);
         setCompanionType(CompanionType.STRAWBERRY);
 
+        setOriginalCost(COST);
         setCost(COST);
         setCooldown(COOLDOWN);
 
@@ -76,8 +78,10 @@ public class Strawberry extends Companion {
                 Timer.schedule(new Timer.Task() {
                     @Override
                     public void run() {
-                        StrawberryProjectile projectile = new StrawberryProjectile(0, 0, 0, 0,
-                            state.getWorld());
+//                        StrawberryProjectile projectile = new StrawberryProjectile(0, 0, 0, 0,
+//                            state.getWorld());
+                        StrawberryProjectile projectile = ProjectilePools.strawberryPool.obtain();
+                        projectile.getObstacle().getBody().setActive(true);
 
                         projectile.getObstacle().setLinearVelocity(
                             new Vector2(dx * PROJECTILE_SPEED, dy * PROJECTILE_SPEED));
