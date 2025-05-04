@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="1" height="1" tilewidth="1280" tileheight="720" infinite="0" nextlayerid="9" nextobjectid="29">
+ <objectgroup id="3" name="companion">
+  <properties>
+   <property name="maxAvocado" type="int" value="0"/>
+   <property name="maxBlueRaspberry" type="int" value="0"/>
+   <property name="maxCompanions" type="int" value="1"/>
+   <property name="maxDurian" type="int" value="1"/>
+   <property name="maxPineapple" type="int" value="0"/>
+   <property name="maxStrawberry" type="int" value="0"/>
+  </properties>
+  <object id="1" name="player" type="playerSpawn" x="654.575" y="328.935" width="24.247" height="24.8575"/>
+  <object id="6" name="Strawberry" type="companionSpawn" x="1098.78" y="122.075"/>
+ </objectgroup>
+ <objectgroup id="4" name="boss" class="bossLayer">
+  <object id="9" name="mouse" type="boss" x="1151.82" y="1005.25">
+   <properties>
+    <property name="attack0" type="object" value="11"/>
+    <property name="attack1" type="object" value="19"/>
+    <property name="attack2" type="object" value="25"/>
+    <property name="attack3" type="object" value="26"/>
+    <property name="attack4" type="object" value="27"/>
+    <property name="attack5" type="object" value="28"/>
+    <property name="bossType" propertytype="bossType" value="mouse"/>
+    <property name="health" type="int" value="10"/>
+   </properties>
+  </object>
+  <object id="11" name="idle" type="attack" x="760.811" y="1262.56">
+   <properties>
+    <property name="attackDuration" type="float" value="20"/>
+    <property name="attackType" propertytype="attackType" value="idle"/>
+    <property name="minion0" type="object" value="15"/>
+    <property name="minion1" type="object" value="14"/>
+    <property name="warnDuration" type="float" value="2"/>
+   </properties>
+  </object>
+  <object id="14" name="Ant" type="minionSpawn" x="1243.01" y="344.935"/>
+  <object id="15" name="Ant" type="minionSpawn" x="71.473" y="344.935"/>
+  <object id="19" name="idle" type="attack" x="666.949" y="341.402">
+   <properties>
+    <property name="attackDuration" type="float" value="2"/>
+    <property name="attackType" propertytype="attackType" value="idle"/>
+    <property name="minion1" type="object" value="21"/>
+    <property name="minion2" type="object" value="24"/>
+    <property name="minion3" type="object" value="23"/>
+    <property name="minion4" type="object" value="22"/>
+    <property name="warnDuration" type="float" value="2"/>
+   </properties>
+  </object>
+  <object id="21" type="minionSpawn" x="1230.65" y="44.5046"/>
+  <object id="22" type="minionSpawn" x="40.6347" y="40.6347"/>
+  <object id="23" type="minionSpawn" x="30.9598" y="677.245"/>
+  <object id="24" type="minionSpawn" x="1244.2" y="684.985"/>
+  <object id="25" name="dash" type="attack" x="-82.56" y="349.68">
+   <properties>
+    <property name="attackType" value="dash"/>
+    <property name="dir" value="right"/>
+    <property name="moveSpeed" type="float" value="250"/>
+    <property name="warnDuration" type="float" value="2"/>
+   </properties>
+  </object>
+  <object id="26" name="dash" type="attack" x="636.23" y="-89.85">
+   <properties>
+    <property name="attackType" value="dash"/>
+    <property name="dir" value="down"/>
+    <property name="moveSpeed" type="float" value="250"/>
+    <property name="warnDuration" type="float" value="2"/>
+   </properties>
+  </object>
+  <object id="27" name="dash" type="attack" x="1407.18" y="344.83">
+   <properties>
+    <property name="attackType" value="dash"/>
+    <property name="dir" value="left"/>
+    <property name="moveSpeed" type="float" value="250"/>
+    <property name="warnDuration" type="float" value="2"/>
+   </properties>
+  </object>
+  <object id="28" name="dash" type="attack" x="628.95" y="811.07">
+   <properties>
+    <property name="attackType" value="dash"/>
+    <property name="dir" value="up"/>
+    <property name="moveSpeed" type="float" value="250"/>
+    <property name="warnDuration" type="float" value="2"/>
+   </properties>
+  </object>
+ </objectgroup>
+</map>
