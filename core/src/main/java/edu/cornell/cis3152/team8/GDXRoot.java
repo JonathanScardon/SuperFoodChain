@@ -28,6 +28,8 @@ public class GDXRoot extends Game implements ScreenListener {
     private LevelSelectScene levelSelectScene;
     private CompanionHandbookScene handbookScene;
     private String prev;
+    public GameAudio audio;
+    public Settings settings;
 
     @Override
     public void create() {
@@ -98,6 +100,8 @@ public class GDXRoot extends Game implements ScreenListener {
             loadingScene.dispose();
             loadingScene = null;
 
+            audio = new GameAudio(directory);
+            settings = new Settings(this);
             menuScene = new MainMenuScene(this, directory);
             levelSelectScene = new LevelSelectScene(this, directory);
             handbookScene = new CompanionHandbookScene(this, directory);

@@ -165,7 +165,6 @@ public class Button {
         } else {
             x = Gdx.input.getX();
         }
-
         int y = 720 - Gdx.input.getY();
         if (flip) {
             return x <= posX && x >= posX + width && y >= posY
@@ -174,6 +173,7 @@ public class Button {
             return x >= posX && x <= posX + width && y >= posY
                 && y <= posY + height;
         }
+
     }
 
     /**

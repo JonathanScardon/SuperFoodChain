@@ -103,6 +103,15 @@ public class GameAudio {
         music.setVolume(volume);
     }
 
+    public float getSfxVolume() {
+        return sfxVolume;
+    }
+
+    public float getMusicVolume() {
+        return musicVolume;
+    }
+
+
     public void play(String name) {
         switch (name) {
             case ("click") -> {

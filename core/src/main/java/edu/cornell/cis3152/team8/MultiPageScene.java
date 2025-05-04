@@ -36,7 +36,7 @@ public abstract class MultiPageScene implements Screen {
     /**
      * Settings
      */
-    private final Settings settingsScreen;
+    private static Settings settingsScreen;
     protected boolean settingsOn;
     protected Button settingsButton;
 
@@ -49,7 +49,7 @@ public abstract class MultiPageScene implements Screen {
     /**
      * The audio controller
      */
-    protected final GameAudio audio;
+    protected GameAudio audio;
 
     /**
      * The scene camera
@@ -58,9 +58,9 @@ public abstract class MultiPageScene implements Screen {
 
     public MultiPageScene(final GDXRoot game, AssetDirectory assets) {
         this.game = game;
-        settingsScreen = new Settings();
+        settingsScreen = game.settings;
         settingsOn = false;
-        audio = new GameAudio(assets);
+        audio = game.audio;
 
         //Constants
         moveSpeed = 40f;
@@ -121,9 +121,9 @@ public abstract class MultiPageScene implements Screen {
                 if (settingsButton.isPressed()) {
                     audio.play("click");
                     settingsOn = true;
-                    settingsScreen.update();
                 }
             }
+            settingsScreen.update(delta, settingsOn);
             //Exit settings with escape
             if (settingsOn && Gdx.input.isKeyPressed(Keys.ESCAPE)) {
                 settingsOn = false;

@@ -72,8 +72,6 @@ public class CollisionController implements ContactListener {
         this.state = state;
         this.world = state.getWorld();
         audio = state.getAudio();
-//         this.minionControls = minionControls;
-//         this.deadCompanions = deadCompanions;
     }
 
     // Contact Listener Methods
@@ -102,8 +100,7 @@ public class CollisionController implements ContactListener {
 //                System.out.println("P-P CONTACT IS HAPPENING");
                 if (state.getPlayer().getPlayerHead().getObstacle().getBody() == b1) {
                     removed.add(s1);
-                }
-                else {
+                } else {
                     removed.add(s2);
                 }
             }
@@ -134,8 +131,7 @@ public class CollisionController implements ContactListener {
                 if (c1 == BOSS_CATEGORY) {
                     removed.add(s2);
                     bossHit(b1);
-                }
-                else {
+                } else {
                     removed.add(s1);
                     bossHit(b2);
                 }
