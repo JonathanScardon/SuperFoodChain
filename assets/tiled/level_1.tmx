@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="1" height="1" tilewidth="1280" tileheight="720" infinite="0" nextlayerid="5" nextobjectid="27">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="1" height="1" tilewidth="1280" tileheight="720" infinite="0" nextlayerid="5" nextobjectid="29">
  <objectgroup id="2" name="boss" class="bossLayer">
   <properties>
    <property name="maxMinions" type="int" value="4"/>
@@ -19,6 +19,7 @@
    <properties>
     <property name="attackDuration" type="float" value="2"/>
     <property name="attackType" value="idle"/>
+    <property name="flipHorizontal" type="bool" value="false"/>
     <property name="warnDuration" type="float" value="2"/>
    </properties>
   </object>

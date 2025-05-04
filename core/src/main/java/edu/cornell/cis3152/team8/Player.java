@@ -400,7 +400,7 @@ public class Player {
         filter.categoryBits = CollisionController.PLAYER_CATEGORY;
         filter.maskBits =
             CollisionController.MINION_CATEGORY | CollisionController.COMPANION_CATEGORY
-                | CollisionController.COIN_CATEGORY | CollisionController.BOSS_CATEGORY;
+                | CollisionController.COIN_CATEGORY | CollisionController.BOSS_CATEGORY | CollisionController.PLAYER_CATEGORY;
         companion.getObstacle().setFilterData(filter);
 
         CircularBuffer.PositionAndDirection tail = controlBuffer.getSnapshot(companions.size());

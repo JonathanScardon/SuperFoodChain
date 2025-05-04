@@ -99,52 +99,60 @@ public class GDXRoot extends Game implements ScreenListener {
             loadingScene = null;
 
             menuScene = new MainMenuScene(this, directory);
+            levelSelectScene = new LevelSelectScene(this, directory);
             handbookScene = new CompanionHandbookScene(this, directory);
+            menuScene.reset();
             setScreen(menuScene);
         } else if (screen == menuScene) {
             menuScene.dispose();
-            if (exitCode == 0) {
-                levelSelectScene = new LevelSelectScene(this, directory);
+            if (exitCode == 0) { //Level select
+                levelSelectScene.reset();
                 this.setScreen(levelSelectScene);
-            } else {
+            } else { //Exit program
+                dispose();
                 Gdx.app.exit();
             }
-            levelSelectScene.resetWait();
-            setScreen(levelSelectScene);
         } else if (screen == levelSelectScene) {
             levelSelectScene.dispose();
             if (exitCode == -1) {
+                menuScene.reset();
                 setScreen(menuScene);
             } else if (exitCode == 0) {
                 prev = "levels";
+                handbookScene.reset();
                 setScreen(handbookScene);
             } else {
                 gameScene = new GameScene(this, directory, exitCode);
+                gameScene.resetMusic();
                 this.setScreen(gameScene);
             }
         } else if (screen == gameScene) {
             if (exitCode == 1) {
-                levelSelectScene.resetWait();
+                levelSelectScene.reset();
                 setScreen(levelSelectScene);
             } else if (exitCode == 2) {
                 int next = gameScene.getLevel() + 1;
                 gameScene = new GameScene(this, directory, next);
+                gameScene.resetMusic();
                 setScreen(gameScene);
             } else if (exitCode == 3) {
                 prev = "game";
+                handbookScene.reset();
                 setScreen(handbookScene);
             }
         } else if (screen == handbookScene) {
             handbookScene.dispose();
             if (exitCode == -1) {
                 if (prev.equals("levels")) {
+                    levelSelectScene.reset();
                     setScreen(levelSelectScene);
                 } else if (prev.equals("game")) {
+                    gameScene.resetMusic();
                     setScreen(gameScene);
                 }
             }
-
         } else {
+            dispose();
             Gdx.app.exit();
         }
     }

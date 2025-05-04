@@ -13,12 +13,13 @@ public class IdleAttackPattern extends BossAttackPattern {
     private final float idleX, idleY;
     private final float warnDuration;
     private final float attackDuration;
+    private final boolean flipHorizontal;
 
     private float warnTime;
     private float attackTime;
 
     public IdleAttackPattern(BossController controller, float x, float y, float warnDuration,
-        float attackDuration, SpriteSheet warnSprite) {
+                             float attackDuration, boolean flipHorizontal, SpriteSheet warnSprite) {
         super(controller);
 
         attackName = "idle";
@@ -26,11 +27,10 @@ public class IdleAttackPattern extends BossAttackPattern {
         this.idleY = y;
         this.warnDuration = warnDuration;
         this.attackDuration = attackDuration;
+        this.flipHorizontal = flipHorizontal;
 
         this.warnPattern = new BossWarnPattern(this.idleX, this.idleY);
         this.warnPattern.setSpriteSheet(warnSprite);
-
-
     }
 
     @Override
@@ -54,6 +54,7 @@ public class IdleAttackPattern extends BossAttackPattern {
 
         boss.getObstacle().setX(this.idleX);
         boss.getObstacle().setY(this.idleY);
+        boss.flipHorizontal = flipHorizontal;
         attackTime = attackDuration;
 
         this.spawnMinions();

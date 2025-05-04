@@ -2,6 +2,7 @@ package edu.cornell.cis3152.team8.projectiles;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.utils.JsonValue;
 import edu.cornell.cis3152.team8.Projectile;
 import edu.cornell.gdiac.assets.AssetDirectory;
 import edu.cornell.gdiac.graphics.SpriteBatch;
@@ -12,7 +13,8 @@ import edu.cornell.gdiac.graphics.SpriteBatch;
  * The projectile should be shooting a set amount of projectiles in random directions
  */
 public class StrawberryProjectile extends Projectile {
-
+    private static int MAX_LIFE;
+    private static int ATTACK;
     private static Texture texture; // Make texture static so it's shared
 
     private float angle;
@@ -20,13 +22,23 @@ public class StrawberryProjectile extends Projectile {
     public StrawberryProjectile(float x, float y, float vx, float vy, World world) {
         // Call the parent constructor (in Projectile)
         super(x, y, vx, vy, world);
-        maxLife = 60;
+        maxLife = MAX_LIFE;
         life = maxLife;
-        setAttack(1);
+        setAttack(ATTACK);
     }
 
     /**
-     * Sets Durian Projectile assets
+     * Sets Strawberry projectile constants
+     *
+     * @param constants json associated with strawberry projectiles
+     */
+    public static void setConstants(JsonValue constants) {
+        MAX_LIFE = constants.getInt("maxLife", 60);
+        ATTACK = constants.getInt("attack", 1);
+    }
+
+    /**
+     * Sets Strawberry projectile assets
      */
     public static void setAssets(AssetDirectory assets) {
         texture = assets.getEntry("strawberryProjectile", Texture.class);

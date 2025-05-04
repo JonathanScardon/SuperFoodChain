@@ -156,8 +156,8 @@ public class Coin extends ObstacleSprite {
             } else if (!collected) {
                 animationFrame = 0;
                 currAnimationSpeed = deathAnimationSpeed;
-                collected = true;
 
+                collected = true;
                 setSpriteSheet(plusOne);
             }
             if (animationFrame < sprite.getSize() && alpha > 0) { // and animation is not over

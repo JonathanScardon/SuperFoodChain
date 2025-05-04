@@ -9,12 +9,10 @@ import edu.cornell.gdiac.audio.SoundEffect;
 
 public class GameAudio {
 
-    private SoundEffect[] menuSfx;
-    private SoundEffect[] gameSfx;
-    private AudioSource[] menuMusic;
-    private AudioSource[] gameMusic;
+    private final SoundEffect[] menuSfx;
+    private final SoundEffect[] gameSfx;
 
-    private MusicQueue music;
+    private final MusicQueue music;
 
     private static float sfxVolume;
     private static float musicVolume;
@@ -24,9 +22,7 @@ public class GameAudio {
 
     public GameAudio(AssetDirectory assets) {
         menuSfx = new SoundEffect[2];
-        gameSfx = new SoundEffect[13];
-        menuMusic = new AudioSource[3];
-        gameMusic = new AudioSource[6];
+        gameSfx = new SoundEffect[17];
 
         menuSfx[0] = assets.getEntry("click", SoundEffect.class);
         menuSfx[1] = assets.getEntry("clickLevel", SoundEffect.class);
@@ -35,38 +31,61 @@ public class GameAudio {
         gameSfx[1] = assets.getEntry("durian", SoundEffect.class);
         gameSfx[2] = assets.getEntry("pineapple", SoundEffect.class);
         gameSfx[3] = assets.getEntry("strawberry", SoundEffect.class);
-        gameSfx[4] = assets.getEntry("mouseAttack", SoundEffect.class);
-        gameSfx[5] = assets.getEntry("chefAttack", SoundEffect.class);
-        gameSfx[6] = assets.getEntry("chopsticksAttack", SoundEffect.class);
-        gameSfx[7] = assets.getEntry("mouseDeath", SoundEffect.class);
-        gameSfx[8] = assets.getEntry("chefDeath", SoundEffect.class);
-        gameSfx[9] = assets.getEntry("chopsticksDeath", SoundEffect.class);
-        gameSfx[10] = assets.getEntry("minionDeath", SoundEffect.class);
-        gameSfx[11] = assets.getEntry("companionDeath", SoundEffect.class);
-        gameSfx[12] = assets.getEntry("companionRecruitment", SoundEffect.class);
-
-        menuMusic[0] = assets.getEntry("menu", AudioSource.class);
-        menuMusic[1] = assets.getEntry("levels", AudioSource.class);
-        menuMusic[2] = assets.getEntry("handbook", AudioSource.class);
-
-        gameMusic[0] = assets.getEntry("preLevel", AudioSource.class);
-        gameMusic[1] = assets.getEntry("mouseLevel", AudioSource.class);
-        gameMusic[2] = assets.getEntry("chefLevel", AudioSource.class);
-        gameMusic[3] = assets.getEntry("chopsticksLevel", AudioSource.class);
-        gameMusic[4] = assets.getEntry("win", AudioSource.class);
-        gameMusic[5] = assets.getEntry("lose", AudioSource.class);
+        gameSfx[4] = assets.getEntry("dashAttack", SoundEffect.class);
+        gameSfx[5] = assets.getEntry("spinAttack", SoundEffect.class);
+        gameSfx[6] = assets.getEntry("chopAttack", SoundEffect.class);
+        gameSfx[7] = assets.getEntry("snatchAttack", SoundEffect.class);
+        gameSfx[8] = assets.getEntry("ratHit", SoundEffect.class);
+        gameSfx[9] = assets.getEntry("chefHit", SoundEffect.class);
+        gameSfx[10] = assets.getEntry("chopsticksHit", SoundEffect.class);
+        gameSfx[11] = assets.getEntry("ratDeath", SoundEffect.class);
+        gameSfx[12] = assets.getEntry("chefDeath", SoundEffect.class);
+        gameSfx[13] = assets.getEntry("chopsticksDeath", SoundEffect.class);
+        gameSfx[14] = assets.getEntry("minionDeath", SoundEffect.class);
+        gameSfx[15] = assets.getEntry("companionDeath", SoundEffect.class);
+        gameSfx[16] = assets.getEntry("companionRecruitment", SoundEffect.class);
 
         AudioEngine engine = (AudioEngine) Gdx.audio;
         music = engine.newMusicQueue(false, 44100);
-        music.addSource(menuMusic[0]);
-        music.addSource(menuMusic[1]);
-        music.addSource(menuMusic[2]);
-        music.addSource(gameMusic[0]);
-        music.addSource(gameMusic[1]);
-        music.addSource(gameMusic[2]);
-        music.addSource(gameMusic[3]);
-        music.addSource(gameMusic[4]);
-        music.addSource(gameMusic[5]);
+        //menus
+        music.addSource(assets.getEntry("menu", AudioSource.class));
+        music.addSource(assets.getEntry("levels", AudioSource.class));
+        music.addSource(assets.getEntry("handbook", AudioSource.class));
+
+        //game
+        music.addSource(assets.getEntry("preLevel", AudioSource.class));
+        music.addSource(assets.getEntry("ratLevel", AudioSource.class));
+        music.addSource(assets.getEntry("chefLevel", AudioSource.class));
+        music.addSource(assets.getEntry("chopsticksLevel", AudioSource.class));
+        music.addSource(assets.getEntry("twoRatLevel", AudioSource.class));
+        music.addSource(assets.getEntry("twoChefLevel", AudioSource.class));
+        music.addSource(assets.getEntry("twoChopsticksLevel", AudioSource.class));
+        music.addSource(assets.getEntry("ratChefLevel", AudioSource.class));
+        music.addSource(assets.getEntry("ratChopsticksLevel", AudioSource.class));
+        music.addSource(assets.getEntry("chefChopsticksLevel", AudioSource.class));
+        music.addSource(assets.getEntry("bossRushMode", AudioSource.class));
+        music.addSource(assets.getEntry("machineGunMode", AudioSource.class));
+        music.addSource(assets.getEntry("win", AudioSource.class));
+        music.addSource(assets.getEntry("lose", AudioSource.class));
+
+        music.setOnTransitionListener(new MusicQueue.OnTransitionListener() {
+            @Override
+            public void onLoopback(MusicQueue buffer, AudioSource source) {
+                // Do nothing
+            }
+
+            @Override
+            public void onTransition(MusicQueue buffer, AudioSource source1, AudioSource source2) {
+                //Loop
+                music.play();
+                music.jumpToSource(currMusic);
+            }
+
+            @Override
+            public void onCompletion(MusicQueue buffer, AudioSource source) {
+
+            }
+        });
 
         sfxVolume = 1.0f;
         musicVolume = 1.0f;
@@ -81,13 +100,10 @@ public class GameAudio {
 
     public void setMusicVolume(float volume) {
         musicVolume = volume;
+        music.setVolume(volume);
     }
 
     public void play(String name) {
-//        if (currSfx < menuSfx.length) {
-//            menuSfx[currSfx].stop();
-//        }
-//        gameSfx[currSfx].stop();
         switch (name) {
             case ("click") -> {
                 menuSfx[0].play(sfxVolume);
@@ -105,7 +121,7 @@ public class GameAudio {
                 gameSfx[1].play(sfxVolume);
                 currSfx = 1;
             }
-            case ("pineapple") -> {
+            case ("PINEAPPLE") -> {
                 gameSfx[2].play(sfxVolume);
                 currSfx = 2;
             }
@@ -118,55 +134,159 @@ public class GameAudio {
                 currSfx = 4;
             }
             case ("spin") -> {
-                gameSfx[4].play(sfxVolume);
-                currSfx = 4;
-            }
-            case ("chefAttack") -> {
                 gameSfx[5].play(sfxVolume);
                 currSfx = 5;
             }
-            case ("snatch") -> {
+            case ("chop") -> {
                 gameSfx[6].play(sfxVolume);
                 currSfx = 6;
             }
-            case ("mouseHit") -> {
+            case ("snatch") -> {
                 gameSfx[7].play(sfxVolume);
                 currSfx = 7;
+            }
+            case ("ratHit") -> {
+                gameSfx[8].play(sfxVolume);
+                currSfx = 8;
             }
             case ("chefHit") -> {
-                gameSfx[8].play(sfxVolume);
-                currSfx = 8;
+                gameSfx[9].play(sfxVolume);
+                currSfx = 9;
             }
             case ("chopsticksHit") -> {
-                gameSfx[9].play(sfxVolume);
-                currSfx = 9;
-            }
-            case ("mouseDeath") -> {
-                gameSfx[7].play(sfxVolume);
-                currSfx = 7;
-            }
-            case ("chefDeath") -> {
-                gameSfx[8].play(sfxVolume);
-                currSfx = 8;
-            }
-            case ("chopsticksDeath") -> {
-                gameSfx[9].play(sfxVolume);
-                currSfx = 9;
-            }
-            case ("minion") -> {
                 gameSfx[10].play(sfxVolume);
                 currSfx = 10;
             }
-            case ("companionDeath") -> {
+            case ("ratDeath") -> {
                 gameSfx[11].play(sfxVolume);
                 currSfx = 11;
             }
-            case ("companionRecruitment") -> {
+            case ("chefDeath") -> {
                 gameSfx[12].play(sfxVolume);
                 currSfx = 12;
-                // case ("menu") -> menuMusic.play
             }
+            case ("chopsticksDeath") -> {
+                gameSfx[13].play(sfxVolume);
+                currSfx = 13;
+            }
+            case ("minion") -> {
+                gameSfx[14].play(sfxVolume);
+                currSfx = 14;
+            }
+            case ("companionDeath") -> {
+                gameSfx[15].play(sfxVolume);
+                currSfx = 15;
+            }
+            case ("companionRecruitment") -> {
+                gameSfx[16].play(sfxVolume);
+                currSfx = 16;
 
+            }
+            case ("menu") -> {
+                music.pause();
+                music.play();
+                music.jumpToSource(0);
+                currMusic = 0;
+
+            }
+            case ("levels") -> {
+                music.pause();
+                music.play();
+                music.jumpToSource(1);
+                currMusic = 1;
+
+            }
+            case ("handbook") -> {
+                music.pause();
+                music.play();
+                music.jumpToSource(2);
+                currMusic = 2;
+            }
+            case ("preLevel") -> {
+                music.pause();
+                music.play();
+                music.jumpToSource(3);
+                currMusic = 3;
+            }
+            //TODO: REBRAND TO RAT
+            case ("mouse") -> {
+                music.pause();
+                music.play();
+                music.jumpToSource(4);
+                currMusic = 4;
+            }
+            case ("chef") -> {
+                music.pause();
+                music.play();
+                music.jumpToSource(5);
+                currMusic = 5;
+            }
+            case ("chopsticks") -> {
+                music.pause();
+                music.play();
+                music.jumpToSource(6);
+                currMusic = 6;
+            }
+            case ("mousemouse") -> {
+                music.pause();
+                music.play();
+                music.jumpToSource(7);
+                currMusic = 7;
+            }
+            case ("chefchef") -> {
+                music.pause();
+                music.play();
+                music.jumpToSource(8);
+                currMusic = 8;
+            }
+            case ("chopstickschopsticks") -> {
+                music.pause();
+                music.play();
+                music.jumpToSource(9);
+                currMusic = 9;
+            }
+            case ("mousechef"), ("chefmouse") -> {
+                music.pause();
+                music.play();
+                music.jumpToSource(10);
+                currMusic = 10;
+            }
+            case ("mousechopsticks"), ("chopsticksmouse") -> {
+                music.pause();
+                music.play();
+                music.jumpToSource(11);
+                currMusic = 11;
+            }
+            case ("chefchopsticks"), ("chopstickschef") -> {
+                music.pause();
+                music.play();
+                music.jumpToSource(12);
+                currMusic = 12;
+            }
+            case ("bossRush") -> {
+                music.pause();
+                music.play();
+                music.jumpToSource(13);
+                currMusic = 13;
+            }
+            case ("machineGun") -> {
+                music.pause();
+                music.play();
+                music.jumpToSource(14);
+                currMusic = 14;
+            }
+            case ("win") -> {
+                music.pause();
+                music.play();
+                music.jumpToSource(15);
+                currMusic = 15;
+            }
+            case ("lose") -> {
+                music.pause();
+                music.play();
+                music.jumpToSource(16);
+                currMusic = 16;
+            }
         }
     }
 
@@ -177,4 +297,10 @@ public class GameAudio {
             }
         }
     }
+
+    public void stopMusic() {
+        music.pause();
+    }
+
+
 }

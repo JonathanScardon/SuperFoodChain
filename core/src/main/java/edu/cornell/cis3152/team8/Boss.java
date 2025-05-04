@@ -1,7 +1,6 @@
 package edu.cornell.cis3152.team8;
 
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Filter;
@@ -33,13 +32,14 @@ public class Boss extends ObstacleSprite {
      * How fast we change frames
      */
     private static float animationSpeed;
+    private static float deathAnimationSpeed;
+    private float curranimationSpeed;
 
     // local properties
     /**
      * Map of animation name to the sprite sheet associated with it
      */
     private Map<String, SpriteSheet> animationMap;
-
     /**
      * Current angle of the sprite
      */
@@ -63,17 +63,11 @@ public class Boss extends ObstacleSprite {
     private boolean damage;
     private boolean dead;
 
-    public enum BossType {
-        MOUSE,
-        CHEF,
-        CHOPSTICKS
-    }
-
     protected float health;
     private final float startHealth;
 
     private String state;
-    private String name;
+    private final String name;
     private boolean remove;
 
     /**
@@ -85,6 +79,7 @@ public class Boss extends ObstacleSprite {
         SPEED_DAMP = constants.getFloat("speedDamp", 0.75f);
         EPSILON = constants.getFloat("epsilon", 0.01f);
         animationSpeed = constants.getFloat("animationSpeed", 0.1f);
+        deathAnimationSpeed = constants.getFloat("deathAnimationSpeed", 0.1f);
     }
 
     private static final float PHYSICS_UNITS = 64f;
@@ -102,6 +97,7 @@ public class Boss extends ObstacleSprite {
         animationMap = new HashMap<>();
         dead = false;
         remove = false;
+        curranimationSpeed = animationSpeed;
 
         obstacle = getObstacle();
         obstacle.setName("boss");
@@ -128,10 +124,6 @@ public class Boss extends ObstacleSprite {
     public void update(float delta, int controlCode) {
         if (getObstacle().isActive()) {
             // Determine how we are moving.
-//        boolean movingLeft = (controlCode & InputController.CONTROL_MOVE_LEFT) != 0;
-//        boolean movingRight = (controlCode & InputController.CONTROL_MOVE_RIGHT) != 0;
-//        boolean movingUp = (controlCode & InputController.CONTROL_MOVE_UP) != 0;
-//        boolean movingDown = (controlCode & InputController.CONTROL_MOVE_DOWN) != 0;
             boolean movingLeft = controlCode == InputController.CONTROL_MOVE_LEFT;
             boolean movingRight = controlCode == InputController.CONTROL_MOVE_RIGHT;
             boolean movingUp = controlCode == InputController.CONTROL_MOVE_UP;
@@ -186,8 +178,8 @@ public class Boss extends ObstacleSprite {
             obstacle.setLinearVelocity(new Vector2());
         }
 
-        if (sprite != null && controlCode != InputController.CONTROL_NO_ACTION) {
-            animeframe += animationSpeed;
+        if (sprite != null && (controlCode != InputController.CONTROL_NO_ACTION || dead)) {
+            animeframe += curranimationSpeed;
             if (animeframe >= sprite.getSize() && getObstacle().isActive()) {
                 animeframe -= sprite.getSize();
             }
@@ -222,11 +214,10 @@ public class Boss extends ObstacleSprite {
         if (!obstacle.isActive()) { // if destroyed...
             if (!dead) {
                 animeframe = 0;
-                animationSpeed = 0.1f;
+                curranimationSpeed = deathAnimationSpeed;
                 dead = true;
                 setAnimation("death");
             }
-
             if (animeframe < sprite.getSize()) { // and animation is not over
                 sprite.setFrame((int) animeframe);
                 batch.draw(sprite, transform);// draw dead boss

@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -20,10 +21,6 @@ import edu.cornell.gdiac.graphics.SpriteBatch.BlendMode;
 import edu.cornell.gdiac.graphics.TextLayout;
 import edu.cornell.gdiac.physics2.ObstacleSprite;
 
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.Random;
-
 /**
  * The screen for the actual gameplay in the game Heavily inspired by the Optimization lab
  */
@@ -33,10 +30,23 @@ public class GameScene implements Screen {
      * Reference to the GDX root
      */
     private final GDXRoot game;
+
+    /**
+     * Reference to the game audio
+     */
+    private final GameAudio audio;
     /**
      * Reference to the game session
      */
-    private GameState state;
+    private final GameState state;
+    /**
+     * The drawing camera for the objects in this scene
+     */
+    private OrthographicCamera worldCamera;
+    /**
+     * The drawing camera for the UI in this scene
+     */
+    private OrthographicCamera uiCamera;
 
     protected World world;
 
@@ -52,7 +62,7 @@ public class GameScene implements Screen {
     private final Texture dim;
     private final Texture pauseBackground;
     private final Texture win;
-    private Texture backgroundTexture;
+    private final Texture backgroundTexture;
     private final Texture mouseLose;
     private final Texture chopsticksLose;
 
@@ -75,20 +85,22 @@ public class GameScene implements Screen {
      * UI
      */
     //Bosses
-    private Array<TextLayout> bossNames;
-    private Array<Float> bossStartHealths;
-    private int numBosses;
-    private TextureRegion hpBack;
-    private TextureRegion hpLeft;
-    private TextureRegion hpMiddle;
-    private TextureRegion hpRight;
+    private final Array<TextLayout> bossNames;
+    private final Array<Float> bossStartHealths;
+    private final int numBosses;
+    private final TextureRegion hpBack;
+    private final TextureRegion hpLeft;
+    private final TextureRegion hpMiddle;
+    private final TextureRegion hpRight;
     //Coins
-    private Texture coinCounter;
-    private Texture cost;
-    private Texture costGrey;
-    private BitmapFont font;
-    private static Color fontColor = new Color(89f / 255, 43f / 255, 34f / 255, 100f);
-    private Affine2 transform;
+    private final Texture coinCounter;
+    private final Texture cost;
+    private final Texture costGrey;
+    private final BitmapFont font;
+    private static final Color fontColor = new Color(89f / 255, 43f / 255, 34f / 255, 100f);
+    private final Affine2 transform;
+
+    private final StringBuilder levelMusic;
 
 
     /**
@@ -97,8 +109,6 @@ public class GameScene implements Screen {
     private final Settings settingsScreen;
     private boolean settingsOn;
     private boolean paused;
-
-    private float companionAddTimer = 3.0f;
 
     /**
      * Companions in the chain
@@ -160,8 +170,8 @@ public class GameScene implements Screen {
     /**
      * Drawing
      */
-    private Array<ObstacleSprite> everything; //All active obstacles
-    private Array<ObstacleSprite> dead; //All dead obstacles
+    private final Array<ObstacleSprite> everything; // All active obstacles
+    private final Array<ObstacleSprite> dead; // All dead obstacles
     private boolean debug;
 
     /**
@@ -177,9 +187,9 @@ public class GameScene implements Screen {
     /**
      * This level's number
      */
-    private int level;
+    private final int level;
 
-    private static float PHYSICS_UNITS = 64f;
+    private final static float PHYSICS_UNITS = 64f;
 
     /**
      * Creates a GameScene
@@ -190,9 +200,11 @@ public class GameScene implements Screen {
         this.game = game;
         this.state = new GameState(assets.getEntry("constants", JsonValue.class), assets);
         this.level = level;
+        audio = new GameAudio(assets);
 
         screenWidth = 1280;
         screenHeight = 720;
+        resize((int) screenWidth, (int) screenHeight);
 
         reset();
 
@@ -227,6 +239,11 @@ public class GameScene implements Screen {
 
         dead = state.getDead();
 
+        levelMusic = new StringBuilder();
+        for (TextLayout name : bossNames) {
+            levelMusic.append(name.getText());
+        }
+
         settingsScreen = new Settings();
 
         createButtons(assets);
@@ -260,7 +277,7 @@ public class GameScene implements Screen {
             buttonWidth, buttonHeight, "Exit");
         resetButton = new Button(x, exitButton.posY + (gapY + buttonHeight), button, buttonHover,
             0, buttonWidth, buttonHeight,
-            "Reset");
+            "Restart");
         resumeButton = new Button(x, resetButton.posY + (gapY + buttonHeight), button, buttonHover,
             0, buttonWidth, buttonHeight,
             "Resume");
@@ -338,6 +355,8 @@ public class GameScene implements Screen {
         for (BossController bc : bossControls) {
             bc.startAttack();
         }
+
+        audio.play("preLevel");
     }
 
 
@@ -443,14 +462,8 @@ public class GameScene implements Screen {
 
         setStart();
         //System.out.println("Update" + bosses);
-        winGame = true;
-
-        for (Boss b : bosses) {
-            if (b.getObstacle().isActive()) {
-                winGame = false;
-            }
-        }
-        loseGame = !player.isAlive();
+        setWin();
+        setLose();
 
         if (paused || winGame || loseGame) {
             state.getAudio().stopSfx();
@@ -470,14 +483,17 @@ public class GameScene implements Screen {
             } else if (homeButton.isPressed()) {
                 state.getAudio().play("click");
                 dispose();
+                audio.stopMusic();
                 game.exitScreen(this, homeButton.getExitCode());
             } else if (nextButton.isPressed() && winGame) {
                 state.getAudio().play("click");
                 dispose();
+                audio.stopMusic();
                 game.exitScreen(this, nextButton.getExitCode());
             } else if (handbookButton.isPressed()) {
                 state.getAudio().play("click");
                 //Do not dispose to so can return to level
+                audio.stopMusic();
                 game.exitScreen(this, handbookButton.getExitCode());
             }
         }
@@ -511,21 +527,15 @@ public class GameScene implements Screen {
                 p.update(delta);
 //                 System.out.println(p.getObstacle().getPosition());
             }
-//             System.out.println();
 
             // System.out.println(player.position);
-            // moves enemies - assume always moving (no CONTROL_NO_ACTION)
+            // moves enemies - assume always moving
             for (int i = 0; i < minions.size; i++) {
                 if (minions.get(i).getObstacle().isActive()) {
-                    // System.out.println("CONTROL " + i);
-                    //int action = minionControls.get(i).getAction();
-                    // System.out.println("Id: " + i + " (" + action + ")");
                     minions.get(i).update(true);
                 } else {
                     if (minions.get(i).shouldRemove()) {
-                        // used to be m.getID but minionControls above needs i
                         minions.removeIndex(i);
-                        //minionControls.removeIndex(i);
                     }
                 }
             }
@@ -538,17 +548,10 @@ public class GameScene implements Screen {
                 }
                 bosses.get(i).update(delta, bossControls.get(i).getAction());
             }
-            //
-            // // player chain moves
-            int a = playerControls.getAction();
-            // System.out.println(a);
-            player.update(delta, a);
 
-            // // if board isn't updating then no point
-            // state.getLevel().update();
-            //
-            // // projectiles update
-            // //state.getProjectiles().update();
+            // player chain moves
+            int a = playerControls.getAction();
+            player.update(delta, a);
 
             for (Coin c : coins) {
                 c.update(delta);
@@ -570,6 +573,7 @@ public class GameScene implements Screen {
                     paused = false;
                 } else if (exitButton.isPressed()) {
                     state.getAudio().play("click");
+                    dispose();
                     Gdx.app.exit();
                 } else if (levelsButton.isPressed()) {
                     state.getAudio().play("click");
@@ -597,7 +601,9 @@ public class GameScene implements Screen {
     public void draw(float delta) {
         ScreenUtils.clear(Color.WHITE);
 
-        game.batch.begin();
+        // World rendering
+        game.batch.setProjectionMatrix(worldCamera.combined);
+        game.batch.begin(worldCamera);
         game.batch.draw(backgroundTexture, 0, 0, screenWidth, screenHeight);
 
         // draw
@@ -614,7 +620,7 @@ public class GameScene implements Screen {
                     ((Companion) o).update(delta, 0);
                     o.draw(game.batch);
                 }
-                case "boss" -> {
+                case "mouse", "chef", "chopsticks" -> {
                     ((Boss) o).update(delta, 0);
                     ((Boss) o).draw(game.batch, delta);
                 }
@@ -664,17 +670,6 @@ public class GameScene implements Screen {
                 }
             }
         }
-        // Coin Counter
-        float numScale = 0.7f;
-        TextLayout coinCount = new TextLayout("" + player.getCoins(), font);
-        //To shrink the number
-        SpriteBatch.computeTransform(transform, coinCount.getWidth() / 2.0f,
-            coinCount.getFont().getXHeight() / 2.0f, 1150,
-            83, 0.0f, numScale, numScale);
-        game.batch.draw(coinCounter, 1050, 50);
-        game.batch.drawText(coinCount, transform);
-
-        drawHPBars();
 
         // Coin collection UI
         for (ObstacleSprite o : dead) {
@@ -702,15 +697,46 @@ public class GameScene implements Screen {
             player.drawDebug(game.batch);
         }
 
+        game.batch.end();
+
+        game.batch.setProjectionMatrix(uiCamera.combined);
+        game.batch.begin(uiCamera);
+        // Coin Counter
+        float numScale = 0.7f;
+        TextLayout coinCount = new TextLayout("" + player.getCoins(), font);
+        //To shrink the number
+        SpriteBatch.computeTransform(transform, coinCount.getWidth() / 2.0f,
+            coinCount.getFont().getXHeight() / 2.0f, 1150,
+            83, 0.0f, numScale, numScale);
+        game.batch.draw(coinCounter, 1050, 50);
+        game.batch.drawText(coinCount, transform);
+
+        drawHPBars();
+
         font.setColor(Color.WHITE);
 
         if (loseGame) {
-            drawLose();
+            for (ObstacleSprite o : dead) {
+                String type = o.getName();
+                if (type.equals("player")) {
+                    if (((Companion) o).shouldRemove()) {
+                        drawLose();
+                    }
+                }
+            }
         }
 
         if (winGame) {
-            drawWin();
+            for (ObstacleSprite o : dead) {
+                String type = o.getName();
+                if (type.equals("mouse") || type.equals("chef") || type.equals("chopsticks")) {
+                    if (((Boss) o).shouldRemove()) {
+                        drawWin();
+                    }
+                }
+            }
         }
+
         if (paused && !settingsOn) {
             drawPause();
         }
@@ -765,9 +791,10 @@ public class GameScene implements Screen {
     }
 
     private void setStart() {
-        if (Gdx.input.isKeyPressed(Keys.UP) || Gdx.input.isKeyPressed(Keys.DOWN) ||
-            Gdx.input.isKeyPressed(Keys.LEFT) || Gdx.input.isKeyPressed(Keys.RIGHT)) {
+        if ((Gdx.input.isKeyPressed(Keys.UP) || Gdx.input.isKeyPressed(Keys.DOWN) ||
+            Gdx.input.isKeyPressed(Keys.LEFT) || Gdx.input.isKeyPressed(Keys.RIGHT)) && !start) {
             start = true;
+            audio.play(levelMusic.toString());
         }
     }
 
@@ -828,6 +855,30 @@ public class GameScene implements Screen {
         }
     }
 
+    //To only play sound once.
+    private void setWin() {
+        if (!winGame) { //Only play sound once
+            winGame = true;
+            for (Boss b : bosses) {
+                if (b.getObstacle().isActive()) {
+                    winGame = false;
+                }
+            }
+            if (winGame) {
+                audio.play("win");
+            }
+        }
+    }
+
+    private void setLose() {
+        if (!loseGame) { //Only play sound once
+            loseGame = !player.isAlive();
+            if (loseGame) {
+                audio.play("lose");
+            }
+        }
+    }
+
     @Override
     public void show() {
 
@@ -839,9 +890,33 @@ public class GameScene implements Screen {
         this.draw(delta);
     }
 
+    /**
+     * Called when the Screen is resized.
+     * <p>
+     * This can happen at any point during a non-paused state but will never happen before a call to
+     * show().
+     *
+     * @param width  The new width in pixels
+     * @param height The new height in pixels
+     */
     @Override
     public void resize(int width, int height) {
-
+        this.screenWidth = width;
+        this.screenHeight = height;
+        if (worldCamera == null) {
+            worldCamera = new OrthographicCamera(width, height);
+            worldCamera.position.set(width / 2f, height / 2f, 0);
+            worldCamera.update();
+        } else {
+            worldCamera.setToOrtho(false, width, height);
+        }
+        if (uiCamera == null) {
+            uiCamera = new OrthographicCamera(width, height);
+            uiCamera.position.set(width / 2f, height / 2f, 0);
+            uiCamera.update();
+        } else {
+            uiCamera.setToOrtho(false, width, height);
+        }
     }
 
     @Override
@@ -893,10 +968,30 @@ public class GameScene implements Screen {
         for (ObstacleSprite o : everything) {
             switch (o.getName()) {
                 case "minion", "companion", "coin", "player" -> o.draw(game.batch);
-                case "mouse", "chopsticks" -> ((Boss) o).draw(game.batch, delta);
+                case "mouse", "chef", "chopsticks" -> ((Boss) o).draw(game.batch, delta);
             }
         }
 
         everything.clear();
+    }
+
+    /**
+     * @return The camera used in this scene
+     */
+    public OrthographicCamera getWorldCamera() {
+        return worldCamera;
+    }
+
+    public void resetMusic() {
+        if (winGame) {
+            audio.play("win");
+        } else if (loseGame) {
+            audio.play("lose");
+        } else if (start) {
+            audio.play(levelMusic.toString());
+        } else {
+            audio.play("preLevel");
+        }
+
     }
 }

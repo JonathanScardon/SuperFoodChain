@@ -3,7 +3,6 @@ package edu.cornell.cis3152.team8;
 import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
 import com.badlogic.gdx.maps.tiled.*;
 import com.badlogic.gdx.maps.*;
-import com.badlogic.gdx.maps.tiled.objects.TiledMapTileMapObject;
 import com.badlogic.gdx.math.Vector2;
 import edu.cornell.cis3152.team8.companions.Avocado;
 import edu.cornell.cis3152.team8.companions.BlueRaspberry;
@@ -35,6 +34,8 @@ public class LevelLoader {
 
     private SpriteSheet chopsticksIdleSprite;
     private SpriteSheet chopsticksDashSprite;
+
+    private SpriteSheet chefIdleSprite;
 
     // warning sprites
     private SpriteSheet idleWarnSprite;
@@ -83,6 +84,8 @@ public class LevelLoader {
 
         chopsticksIdleSprite = assets.getEntry("idleChopsticks.animation", SpriteSheet.class);
         chopsticksDashSprite = assets.getEntry("dashChopsticks.animation", SpriteSheet.class);
+
+        chefIdleSprite = assets.getEntry("idleChef.animation", SpriteSheet.class);
 
         idleWarnSprite = assets.getEntry("idleWarn.animation", SpriteSheet.class);
         dashWarnVerticalSprite = assets.getEntry("dashWarnVertical.animation", SpriteSheet.class);
@@ -157,8 +160,7 @@ public class LevelLoader {
         MapProperties props = obj.getProperties();
 
         Boss boss = null;
-        BossController bossController = null;
-        int id = props.get("id", Integer.class);
+        BossController bossController;
         float x = props.get("x", Float.class) / PHYSICS_UNITS;
         float y = props.get("y", Float.class) / PHYSICS_UNITS;
         int health = props.get("health", 0, Integer.class);
@@ -172,9 +174,6 @@ public class LevelLoader {
                 boss.addAnimation("dashHorizontal", mouseDashHorizontalSprite);
                 boss.addAnimation("spin", mouseSpinSprite);
                 boss.addAnimation("death", mouseDeathSprite);
-                bossController = new BossController(boss, state);
-                break;
-            case "chef":
                 break;
             case "chopsticks":
                 boss = new Boss(x, y, health, bossType, state.getWorld());
@@ -182,13 +181,19 @@ public class LevelLoader {
                 boss.addAnimation("idle", chopsticksIdleSprite);
                 boss.addAnimation("snatch", chopsticksDashSprite);
                 boss.addAnimation("death", mouseDeathSprite);
-                bossController = new BossController(boss, state);
+                break;
+            case "chef":
+                boss = new Boss(x, y, health, bossType, state.getWorld());
+                boss.addAnimation("default", chefIdleSprite);
+                boss.addAnimation("idle", chefIdleSprite);
+                boss.addAnimation("death", mouseDeathSprite);
                 break;
         }
 
         if (boss == null) {
             throw new RuntimeException("Boss creation failed");
         }
+        bossController = new BossController(boss, state);
         boss.setAnimation("default");
 
         // get all attacks
@@ -197,7 +202,7 @@ public class LevelLoader {
         BossAttackPattern attack;
         while (props.containsKey("attack" + attackIdx)) {
             attackObj = props.get("attack" + attackIdx, MapObject.class);
-            attack = createAttack(attackObj, bossController, state.getPlayer());
+            attack = createAttack(attackObj, bossController, state.getPlayer(), scene);
             bossController.addAttackPattern(attack);
 
             attackIdx++;
@@ -214,12 +219,11 @@ public class LevelLoader {
      * @param controller the boss that will execute the attack
      */
     private BossAttackPattern createAttack(MapObject obj, BossController controller,
-        Player player) {
+        Player player, GameScene scene) {
         String attackType = obj.getProperties().get("attackType", String.class);
         MapProperties props = obj.getProperties();
 
         BossAttackPattern attack = null;
-        int id = props.get("id", Integer.class);
         float x = props.get("x", Float.class) / PHYSICS_UNITS;
         float y = props.get("y", Float.class) / PHYSICS_UNITS;
         float warnDuration = props.get("warnDuration", 0f, Float.class);
@@ -229,7 +233,8 @@ public class LevelLoader {
         switch (attackType) {
             case "idle":
                 attackDuration = props.get("attackDuration", 0f, Float.class);
-                attack = new IdleAttackPattern(controller, x, y, warnDuration, attackDuration,
+                Boolean flipHorizontal = props.get("flipHorizontal", Boolean.class);
+                attack = new IdleAttackPattern(controller, x, y, warnDuration, attackDuration, flipHorizontal,
                     idleWarnSprite);
                 break;
             case "dash":
@@ -252,6 +257,9 @@ public class LevelLoader {
                 attackDuration = props.get("attackDuration", 0f, Float.class);
                 attack = new SnatchAttackPattern(controller, warnDuration, attackDuration,
                     idleWarnSprite, player);
+                break;
+            case "camera":
+                attack = new CameraAttackPattern(controller, x * PHYSICS_UNITS, y * PHYSICS_UNITS, warnDuration, scene.getWorldCamera());
                 break;
         }
 
@@ -284,7 +292,6 @@ public class LevelLoader {
     private void createPlayer(MapObject obj, GameState state) {
         MapProperties props = obj.getProperties();
 
-        int id = props.get("id", Integer.class);
         float x = props.get("x", Float.class);
         float y = props.get("y", Float.class);
         String companionType = props.get("companionType", String.class);
@@ -314,7 +321,6 @@ public class LevelLoader {
     private void createCompanionSpawn(MapObject obj, GameState state) {
         MapProperties props = obj.getProperties();
 
-        int id = props.get("id", Integer.class);
         float x = props.get("x", Float.class);
         float y = props.get("y", Float.class);
 
