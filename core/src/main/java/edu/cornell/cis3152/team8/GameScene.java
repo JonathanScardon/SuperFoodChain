@@ -336,6 +336,7 @@ public class GameScene implements Screen {
         coins = state.getCoins();
 
         projectiles = state.getActiveProjectiles();
+        ProjectilePools.initialize(world);
 
         LevelLoader.getInstance().load(this, "tiled/level_" + level + ".tmx");
         player = state.getPlayer();
@@ -429,7 +430,7 @@ public class GameScene implements Screen {
         }
 
         if (c != null) {
-            c.setCost(c.getCost() + (int) Math.floor(time / 10));
+//            c.setCost(c.getCost() + (int) Math.floor(time / 10));
             companions.add(c);
             companionSpawnIdx++;
         }
@@ -509,8 +510,10 @@ public class GameScene implements Screen {
 
             for (int i = 0; i < companions.size; i++) {
                 companions.get(i).setId(i);
+                companions.get(i).setCost(companions.get(i).getOriginalCost() * (int)Math.ceil(player.companions.size() / 3.0f));
             }
 
+            // Player Companions use Ability
             for (Companion c : player.companions) {
                 if (c.getObstacle().isActive()) {
                     if (c.canUse()) {

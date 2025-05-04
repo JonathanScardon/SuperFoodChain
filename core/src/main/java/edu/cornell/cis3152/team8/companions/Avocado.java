@@ -22,6 +22,8 @@ public class Avocado extends Companion {
     public Avocado(float x, float y, int id, World world) {
         super(x, y, id, world);
         setCompanionType(CompanionType.AVOCADO);
+
+        setOriginalCost(COST);
         setCost(COST);
         setCooldown(COOLDOWN);
 
