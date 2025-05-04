@@ -1,5 +1,6 @@
 package edu.cornell.cis3152.team8;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.JsonValue;
 import edu.cornell.gdiac.assets.AssetDirectory;
@@ -102,6 +103,9 @@ public class LevelSelectScene extends MultiPageScene {
             page2[i].setLocked(i + 6 >= unlocked);
         }
         super.update(delta);
+        // System.out.println(Gdx.input.getX());
+//        System.out.println(page1[0].posX);
+//        System.out.println(page1[0].isHovering());
     }
 
     @Override
@@ -117,14 +121,14 @@ public class LevelSelectScene extends MultiPageScene {
      */
     protected void processButtons() {
         for (LevelButton b : page1) {
-            if (b.isPressed() && b.getUnlocked()) {
+            if (b.isPressed() && b.getUnlocked() && currPage == 1) {
                 audio.play("clickLevel");
                 audio.stopMusic();
                 game.exitScreen(this, b.getExitCode());
             }
         }
         for (LevelButton b : page2) {
-            if (b.isPressed() && b.getUnlocked()) {
+            if (b.isPressed() && b.getUnlocked() && currPage == 2) {
                 audio.play("click");
                 audio.stopMusic();
                 game.exitScreen(this, b.getExitCode());

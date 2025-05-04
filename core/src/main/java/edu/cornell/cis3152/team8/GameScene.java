@@ -34,7 +34,7 @@ public class GameScene implements Screen {
     /**
      * Reference to the game audio
      */
-    private final GameAudio audio;
+    private GameAudio audio;
     /**
      * Reference to the game session
      */
@@ -106,7 +106,7 @@ public class GameScene implements Screen {
     /**
      * Settings and Pausing
      */
-    private final Settings settingsScreen;
+    private static Settings settingsScreen;
     private boolean settingsOn;
     private boolean paused;
 
@@ -200,7 +200,8 @@ public class GameScene implements Screen {
         this.game = game;
         this.state = new GameState(assets.getEntry("constants", JsonValue.class), assets);
         this.level = level;
-        audio = new GameAudio(assets);
+        audio = game.audio;
+        state.setAudio(audio);
 
         screenWidth = 1280;
         screenHeight = 720;
@@ -244,7 +245,7 @@ public class GameScene implements Screen {
             levelMusic.append(name.getText());
         }
 
-        settingsScreen = new Settings();
+        settingsScreen = game.settings;
 
         createButtons(assets);
     }
@@ -466,7 +467,7 @@ public class GameScene implements Screen {
         setLose();
 
         if (paused || winGame || loseGame) {
-            state.getAudio().stopSfx();
+            audio.stopSfx();
             for (Minion m : minions) {
                 m.update(false);
             }
@@ -476,22 +477,22 @@ public class GameScene implements Screen {
             }
         }
 
-        if (winGame || loseGame) {
+        if (winGame || loseGame && !settingsOn) {
             if (replayButton.isPressed()) {
-                state.getAudio().play("click");
+                audio.play("click");
                 reset();
             } else if (homeButton.isPressed()) {
-                state.getAudio().play("click");
+                audio.play("click");
                 dispose();
                 audio.stopMusic();
                 game.exitScreen(this, homeButton.getExitCode());
             } else if (nextButton.isPressed() && winGame) {
-                state.getAudio().play("click");
+                audio.play("click");
                 dispose();
                 audio.stopMusic();
                 game.exitScreen(this, nextButton.getExitCode());
             } else if (handbookButton.isPressed()) {
-                state.getAudio().play("click");
+                audio.play("click");
                 //Do not dispose to so can return to level
                 audio.stopMusic();
                 game.exitScreen(this, handbookButton.getExitCode());
@@ -515,7 +516,7 @@ public class GameScene implements Screen {
                 if (c.getObstacle().isActive()) {
                     if (c.canUse()) {
                         c.useAbility(state);
-                        state.getAudio().play(c.getCompanionType().name());
+                        audio.play(c.getCompanionType().name());
                     } else {
                         c.coolDown(true, delta);
                     }
@@ -544,7 +545,7 @@ public class GameScene implements Screen {
             for (int i = 0; i < bosses.size; i++) {
                 boolean play = bossControls.get(i).update(delta);
                 if (play) {
-                    state.getAudio().play(bossControls.get(i).getAttackName());
+                    audio.play(bossControls.get(i).getAttackName());
                 }
                 bosses.get(i).update(delta, bossControls.get(i).getAction());
             }
@@ -563,36 +564,38 @@ public class GameScene implements Screen {
             if (Gdx.input.isKeyPressed(Keys.ESCAPE) && !paused) {
                 paused = true;
             }
-            if (paused) {
+            if (paused && !settingsOn) {
                 if (resumeButton.isPressed()) {
-                    state.getAudio().play("click");
+                    audio.play("click");
                     paused = false;
                 } else if (resetButton.isPressed()) {
-                    state.getAudio().play("click");
+                    audio.play("click");
                     reset();
                     paused = false;
                 } else if (exitButton.isPressed()) {
-                    state.getAudio().play("click");
+                    audio.play("click");
+                    audio.stopMusic();
                     dispose();
                     Gdx.app.exit();
                 } else if (levelsButton.isPressed()) {
-                    state.getAudio().play("click");
+                    audio.play("click");
                     dispose();
                     game.exitScreen(this, levelsButton.getExitCode());
                 } else if (handbookButtonPause.isPressed()) {
-                    state.getAudio().play("click");
-                    //Do not dispose to so can return to level
+                    audio.play("click");
+                    //Do not dispose so can return to level
                     game.exitScreen(this, handbookButtonPause.getExitCode());
                 } else if (settingsButton.isPressed()) {
-                    state.getAudio().play("click");
+                    audio.play("click");
                     settingsOn = true;
-                    settingsScreen.update();
                 }
-                if (settingsOn && Gdx.input.isKeyPressed(Keys.ESCAPE)) {
-                    settingsOn = false;
-                }
+
+            }
+            if (settingsOn && Gdx.input.isKeyPressed(Keys.ESCAPE)) {
+                settingsOn = false;
             }
         }
+        settingsScreen.update(delta, settingsOn);
         time += delta;
         //System.out.println(time);
     }

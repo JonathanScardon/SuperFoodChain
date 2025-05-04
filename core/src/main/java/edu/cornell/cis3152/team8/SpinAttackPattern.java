@@ -125,7 +125,10 @@ public class SpinAttackPattern extends BossAttackPattern {
                             boss.setAnimation("spin");
                             boss.setAnimationFrame(0);
                         }
-                        setControlCode();
+                        if (warnTime > warnDuration
+                            / 2f) { // Stop picking new location after half of the warning time
+                            setControlCode();
+                        }
                         warnPattern.getObstacle().setX(controller.boss.getObstacle().getX());
                         warnPattern.getObstacle().setY(controller.boss.getObstacle().getY());
                         warnTime -= delta;

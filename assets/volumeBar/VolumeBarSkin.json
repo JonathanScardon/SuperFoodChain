@@ -1,0 +1,9 @@
+{
+"com.badlogic.gdx.scenes.scene2d.ui.Slider$SliderStyle": {
+	"default-horizontal": {
+		"background": "VolumeBack",
+		"knob": "VolumeKnob",
+		"knobBefore": "Test"
+	}
+}
+}
