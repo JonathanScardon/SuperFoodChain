@@ -627,7 +627,7 @@ public class GameScene implements Screen {
                     o.draw(game.batch);
                 }
                 case "mouse", "chef", "chopsticks" -> {
-                    ((Boss) o).update(delta, 0);
+                    ((Boss) o).update(delta, InputController.CONTROL_NO_ACTION);
                     ((Boss) o).draw(game.batch, delta);
                 }
             }

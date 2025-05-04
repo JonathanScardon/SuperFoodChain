@@ -39,7 +39,7 @@ public class Boss extends ObstacleSprite {
     /**
      * Map of animation name to the sprite sheet associated with it
      */
-    private Map<String, SpriteSheet> animationMap;
+    private final Map<String, SpriteSheet> animationMap;
     /**
      * Current angle of the sprite
      */
@@ -185,7 +185,7 @@ public class Boss extends ObstacleSprite {
             obstacle.setLinearVelocity(new Vector2());
         }
 
-        if (sprite != null && (controlCode != InputController.CONTROL_NO_ACTION || dead)) {
+        if (sprite != null) {
             animeframe += curranimationSpeed;
             if (animeframe >= sprite.getSize() && getObstacle().isActive()) {
                 animeframe -= sprite.getSize();
