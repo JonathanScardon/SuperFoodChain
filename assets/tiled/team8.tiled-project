@@ -43,7 +43,9 @@
             "values": [
                 "idle",
                 "dash",
-                "snatch"
+                "snatch",
+                "spin",
+                "camera"
             ],
             "valuesAsFlags": false
         },
@@ -69,6 +71,25 @@
             "useAs": [
                 "property",
                 "object",
+                "project"
+            ]
+        },
+        {
+            "color": "#ffa0a0a4",
+            "drawFill": true,
+            "id": 9,
+            "members": [
+                {
+                    "name": "maxMinions",
+                    "type": "int",
+                    "value": 0
+                }
+            ],
+            "name": "bossLayer",
+            "type": "class",
+            "useAs": [
+                "property",
+                "layer",
                 "project"
             ]
         },
@@ -142,25 +163,6 @@
                 "right"
             ],
             "valuesAsFlags": false
-        },
-        {
-            "color": "#ffa0a0a4",
-            "drawFill": true,
-            "id": 9,
-            "members": [
-                {
-                    "name": "maxMinions",
-                    "type": "int",
-                    "value": 0
-                }
-            ],
-            "name": "bossLayer",
-            "type": "class",
-            "useAs": [
-                "property",
-                "layer",
-                "project"
-            ]
         },
         {
             "color": "#ffa0a0a4",

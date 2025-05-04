@@ -81,7 +81,7 @@ public abstract class Companion extends ObstacleSprite {
     private static SpriteSheet deadCompanion;
 
     public Companion(float x, float y, int id, World world) {
-        super(new CapsuleObstacle(x / UNIT_SCALE, y / UNIT_SCALE, 0.8f, 0.8f), true);
+        super(new CapsuleObstacle(x / UNIT_SCALE, y / UNIT_SCALE, 0.6f, 0.6f), true);
 
         cost = 0;
         cooldown = DEFAULT_COOLDOWN;

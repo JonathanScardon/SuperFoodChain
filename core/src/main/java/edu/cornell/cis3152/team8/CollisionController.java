@@ -97,6 +97,17 @@ public class CollisionController implements ContactListener {
 
             // Player Collisions
 
+            // Player and Player
+            if (c1 == PLAYER_CATEGORY && c2 == PLAYER_CATEGORY) {
+//                System.out.println("P-P CONTACT IS HAPPENING");
+                if (state.getPlayer().getPlayerHead().getObstacle().getBody() == b1) {
+                    removed.add(s1);
+                }
+                else {
+                    removed.add(s2);
+                }
+            }
+
             // Player and Minion
             if ((c1 == PLAYER_CATEGORY && c2 == MINION_CATEGORY) || (c2 == PLAYER_CATEGORY
                 && c1 == MINION_CATEGORY)) {
@@ -119,24 +130,17 @@ public class CollisionController implements ContactListener {
             else if ((c1 == PLAYER_CATEGORY && c2 == BOSS_CATEGORY) || (c2 == PLAYER_CATEGORY
                 && c1 == BOSS_CATEGORY)) {
 //                System.out.println("P-B CONTACT IS HAPPENING");
-                if (state.getPlayer().hasShield()) {
-                    state.getPlayer().setShield(false);
-//                    System.out.println("BOSS HIT");
-                    if (c1 == BOSS_CATEGORY) {
-                        bossHit(b1);
-                    } else {
-                        bossHit(b2);
-                    }
-                    audio.play("mouseDeath");
-                } else {
-//                    System.out.println("DEATH");
-                    if (c1 == PLAYER_CATEGORY) {
-                        removed.add(s1);
-                    } else {
-                        removed.add(s2);
-                    }
-                    audio.play("companionDeath");
+//                System.out.println("BOSS HIT");
+                if (c1 == BOSS_CATEGORY) {
+                    removed.add(s2);
+                    bossHit(b1);
                 }
+                else {
+                    removed.add(s1);
+                    bossHit(b2);
+                }
+                audio.play("mouseDeath");
+                audio.play("companionDeath");
             }
 
             // Player and Coin
@@ -317,7 +321,7 @@ public class CollisionController implements ContactListener {
         }
 //        for (Boss b : state.getBosses()) {
 //            if (!b.getObstacle().isActive()) {
-//                state.getBosses().removeValue(b, false);
+//                //state.getBosses().removeValue(b, false);
 //            }
 //        }
         for (ObstacleSprite o : state.getDead()) {

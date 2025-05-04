@@ -29,7 +29,6 @@ public class LevelSelectScene extends MultiPageScene {
      */
     private int unlocked;
 
-
     public LevelSelectScene(final GDXRoot game, AssetDirectory assets) {
         super(game, assets);
 
@@ -120,21 +119,25 @@ public class LevelSelectScene extends MultiPageScene {
         for (LevelButton b : page1) {
             if (b.isPressed() && b.getUnlocked()) {
                 audio.play("clickLevel");
+                audio.stopMusic();
                 game.exitScreen(this, b.getExitCode());
             }
         }
         for (LevelButton b : page2) {
             if (b.isPressed() && b.getUnlocked()) {
                 audio.play("click");
+                audio.stopMusic();
                 game.exitScreen(this, b.getExitCode());
             }
         }
         if (homeButton.isPressed()) {
             audio.play("click");
+            audio.stopMusic();
             game.exitScreen(this, homeButton.getExitCode());
         }
         if (handbookButton.isPressed()) {
             audio.play("click");
+            audio.stopMusic();
             game.exitScreen(this, handbookButton.getExitCode());
         }
     }
@@ -203,6 +206,20 @@ public class LevelSelectScene extends MultiPageScene {
                 }
             }
         }
+    }
+
+    @Override
+    public void reset() {
+        super.reset();
+        float x = 1280 / 2f - tray.getWidth() / 2f;
+        float y = 720 / 2f - tray.getHeight() / 2f;
+        float buttonSize = 78;
+        float gap = 20; // The distance between the buttons
+        float span = (buttonSize * 3) + (gap * 2);
+        homeButton.setPosition(x + (tray.getWidth() / 2f - span / 2), y);
+        handbookButton.setPosition(homeButton.posX + homeButton.width + gap, y);
+        settingsButton.setPosition(handbookButton.posX + handbookButton.width + gap, y);
+        audio.play("levels");
     }
 
 }

@@ -159,6 +159,8 @@ public class GameState {
         Ant.setConstants(constants.get("ant"));
         Cricket.setConstants(constants.get("cricket"));
         Spider.setConstants(constants.get("spider"));
+        StrawberryProjectile.setConstants(constants.get("strawberryProjectile"));
+        DurianProjectile.setConstants(constants.get("durianProjectile"));
     }
 
     /**

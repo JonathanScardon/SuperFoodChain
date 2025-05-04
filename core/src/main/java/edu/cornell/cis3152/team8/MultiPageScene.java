@@ -266,7 +266,16 @@ public abstract class MultiPageScene implements Screen {
 
     }
 
-    public void resetWait() {
+    public void reset() {
+        camera.position.x = 1280 / 2f;
+        camera.position.y = 720 / 2f;
+        arrowLeft.setExitCode(0);
+        arrowRight.setExitCode(2);
+        float buttonSize = 78;
+        arrowRight.setPosition(1280 - buttonSize * 2f, 720 / 2f - buttonSize / 2f);
+        arrowLeft.setPosition(buttonSize * 2f, 720 / 2f - buttonSize / 2f);
+        settingsButton.setPosition(-50, -50);
+        currPage = 1;
         currWait = waitTime;
     }
 }
