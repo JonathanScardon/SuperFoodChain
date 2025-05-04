@@ -1,432 +1,426 @@
 {
-  "textures": {
-    "dim": "images/dim.png",
-    "menuBackground": "images/Menu.png",
-    "levelsBackground": "images/LevelSelectBackground.png",
-    "levelsTray": "images/LevelSelectTray.png",
-    "settingsBackground": "images/SettingsBackground.png",
-    "gameBackground": "images/background_angled.png",
-    "pauseBackground": "images/PauseBackground.png",
-    "win": "images/Win.png",
-    "ratLose": "images/LoseRat.png",
-    "chefLose": "images/LoseChopsticks.png",
-    "chopsticksLose": "images/LoseChopsticks.png",
-    "volumeOutline": "images/VolumeOutline.png",
-    "volumeBackground": "images/VolumeBack.png",
-    "volumeInside": "images/VolumeInside.png",
-    "volumeKnob": "images/VolumeKnob.png",
-    "button": "images/Button.png",
-    "buttonHover": "images/ButtonHover.png",
-    "plate": "images/ButtonPlate.png",
-    "plateHover": "images/ButtonPlateHover.png",
-    "lock": "images/Lock.png",
-    "arrow": "images/ButtonNext.png",
-    "arrowHover": "images/ButtonNextHover.png",
-    "handbook": "images/ButtonHandbook.png",
-    "handbookHover": "images/ButtonHandbookHover.png",
-    "home": "images/ButtonHome.png",
-    "homeHover": "images/ButtonHomeHover.png",
-    "music": "images/ButtonMusic.png",
-    "musicHover": "images/ButtonMusic.png",
-    "replay": "images/ButtonReplay.png",
-    "replayHover": "images/ButtonReplayHover.png",
-    "settings": "images/ButtonSettings.png",
-    "settingsHover": "images/ButtonSettingsHover.png",
-    "sfx": "images/ButtonSfx.png",
-    "sfxHover": "images/ButtonSfx.png",
-    "coinCounter": "images/coin-counter.png",
-    "costUI": "images/cost-ui.png",
-    "costUIGrey": "images/grayed-cost-ui.png",
-    "Handbook0": {
-      "file": "images/HandbookAvocado.png",
-      "sprites": {
-        "animation": {
-          "rows": 1,
-          "cols": 2,
-          "size": 2
+    "textures": {
+        "dim": "images/dim.png",
+        "menuBackground": "images/Menu.png",
+        "levelsBackground": "images/LevelSelectBackground.png",
+        "levelsTray": "images/LevelSelectTray.png",
+        "gameBackground": "images/background_angled.png",
+        "pauseBackground": "images/PauseBackground.png",
+        "win": "images/Win.png",
+        "ratLose": "images/LoseRat.png",
+        "chefLose": "images/LoseChopsticks.png",
+        "chopsticksLose": "images/LoseChopsticks.png",
+        "button": "images/Button.png",
+        "buttonHover": "images/ButtonHover.png",
+        "plate": "images/ButtonPlate.png",
+        "plateHover": "images/ButtonPlateHover.png",
+        "lock": "images/Lock.png",
+        "arrow": "images/ButtonNext.png",
+        "arrowHover": "images/ButtonNextHover.png",
+        "handbook": "images/ButtonHandbook.png",
+        "handbookHover": "images/ButtonHandbookHover.png",
+        "home": "images/ButtonHome.png",
+        "homeHover": "images/ButtonHomeHover.png",
+        "replay": "images/ButtonReplay.png",
+        "replayHover": "images/ButtonReplayHover.png",
+        "settings": "images/ButtonSettings.png",
+        "settingsHover": "images/ButtonSettingsHover.png",
+        "sfx": "images/IconSfx.png",
+        "music": "images/IconMusic.png",
+        "settingsBackground": "images/SettingsBackground.png",
+        "coinCounter": "images/coin-counter.png",
+        "costUI": "images/cost-ui.png",
+        "costUIGrey": "images/grayed-cost-ui.png",
+        "Handbook0": {
+            "file": "images/HandbookAvocado.png",
+            "sprites": {
+                "animation": {
+                    "rows": 1,
+                    "cols": 2,
+                    "size": 2
+                }
+            }
+        },
+        "Handbook1": {
+            "file": "images/HandbookAvocado.png",
+            "sprites": {
+                "animation": {
+                    "rows": 1,
+                    "cols": 2,
+                    "size": 2
+                }
+            }
+        },
+        "Handbook2": {
+            "file": "images/HandbookAvocado.png",
+            "sprites": {
+                "animation": {
+                    "rows": 1,
+                    "cols": 2,
+                    "size": 2
+                }
+            }
+        },
+        "Handbook3": {
+            "file": "images/HandbookAvocado.png",
+            "sprites": {
+                "animation": {
+                    "rows": 1,
+                    "cols": 2,
+                    "size": 2
+                }
+            }
+        },
+        "Handbook4": {
+            "file": "images/HandbookAvocado.png",
+            "sprites": {
+                "animation": {
+                    "rows": 1,
+                    "cols": 2,
+                    "size": 2
+                }
+            }
+        },
+        "coin": {
+            "file": "images/coin.png",
+            "sprites": {
+                "animation": {
+                    "rows": 1,
+                    "cols": 22,
+                    "size": 22
+                }
+            }
+        },
+        "plusOne": {
+            "file": "images/+1.png",
+            "sprites": {
+                "animation": {
+                    "rows": 1,
+                    "cols": 6,
+                    "size": 6
+                }
+            }
+        },
+        "idleMouse": {
+            "file": "images/Boss_Rat_IdleStatic.png",
+            "sprites": {
+                "animation": {
+                    "rows": 1,
+                    "cols": 1,
+                    "size": 1
+                }
+            }
+        },
+        "dashMouseVertical": {
+            "file": "images/Boss_Rat_RunDown.png",
+            "sprites": {
+                "animation": {
+                    "rows": 1,
+                    "cols": 5,
+                    "size": 5
+                }
+            }
+        },
+        "dashMouseHorizontal": {
+            "file": "images/Boss_Rat_RunHorizontal.png",
+            "sprites": {
+                "animation": {
+                    "rows": 1,
+                    "cols": 5,
+                    "size": 5
+                }
+            }
+        },
+        "spinMouse": {
+            "file": "images/MouseSpin.png",
+            "sprites": {
+                "animation": {
+                    "rows": 1,
+                    "cols": 4,
+                    "size": 4
+                }
+            }
+        },
+        "deathMouse": {
+            "file": "images/MouseDeath.png",
+            "sprites": {
+                "animation": {
+                    "rows": 1,
+                    "cols": 6,
+                    "size": 6
+                }
+            }
+        },
+        "idleChopsticks": {
+            "file": "images/Boss_Chopsticks_Idle.PNG",
+            "sprites": {
+                "animation": {
+                    "rows": 1,
+                    "cols": 4,
+                    "size": 4
+                }
+            }
+        },
+        "dashChopsticks": {
+            "file": "images/Boss_Chopstick_Dash.png",
+            "sprites": {
+                "animation": {
+                    "rows": 1,
+                    "cols": 4,
+                    "size": 4
+                }
+            }
+        },
+        "idleChef": {
+            "file": "images/Boss_Chef_Idle_Fix.png",
+            "sprites": {
+                "animation": {
+                    "rows": 1,
+                    "cols": 5,
+                    "size": 5
+                }
+            }
+        },
+        "dashWarnVertical": {
+            "file": "images/DashWarnVertical.png",
+            "sprites": {
+                "animation": {
+                    "rows": 1,
+                    "cols": 2,
+                    "size": 2
+                }
+            }
+        },
+        "dashWarnHorizontal": {
+            "file": "images/DashWarnHorizontal.png",
+            "sprites": {
+                "animation": {
+                    "rows": 2,
+                    "cols": 1,
+                    "size": 2
+                }
+            }
+        },
+        "spinWarn": {
+            "file": "images/SpinWarn.png",
+            "sprites": {
+                "animation": {
+                    "rows": 1,
+                    "cols": 2,
+                    "size": 2
+                }
+            }
+        },
+        "idleWarn": {
+            "file": "images/idleWarn.png",
+            "sprites": {
+                "animation": {
+                    "rows": 1,
+                    "cols": 2,
+                    "size": 2
+                }
+            }
+        },
+        "headDirStill": "images/UI_HeadIndicator_Still.PNG",
+        "headDirUp": "images/UI_HeadIndicator_Up.PNG",
+        "headDirDown": "images/UI_HeadIndicator_Down.PNG",
+        "headDirLeft": "images/UI_HeadIndicator_Left.PNG",
+        "headDirRight": "images/UI_HeadIndicator_Right.PNG",
+        "AVOCADO": {
+            "file": "images/Avocado.png",
+            "sprites": {
+                "animation": {
+                    "rows": 1,
+                    "cols": 8,
+                    "size": 8
+                }
+            }
+        },
+        "BLUE_RASPBERRY": {
+            "file": "images/BlueRaspberry.png",
+            "sprites": {
+                "animation": {
+                    "rows": 1,
+                    "cols": 8,
+                    "size": 8
+                }
+            }
+        },
+        "DURIAN": {
+            "file": "images/Durian.png",
+            "sprites": {
+                "animation": {
+                    "rows": 1,
+                    "cols": 8,
+                    "size": 8
+                }
+            }
+        },
+        "GARLIC": {
+            "file": "images/Garlic.png",
+            "sprites": {
+                "animation": {
+                    "rows": 1,
+                    "cols": 7,
+                    "size": 7
+                }
+            }
+        },
+        "PINEAPPLE": {
+            "file": "images/Pineapple.png",
+            "sprites": {
+                "animation": {
+                    "rows": 1,
+                    "cols": 8,
+                    "size": 8
+                }
+            }
+        },
+        "STRAWBERRY": {
+            "file": "images/Strawberry.png",
+            "sprites": {
+                "animation": {
+                    "rows": 1,
+                    "cols": 8,
+                    "size": 8
+                }
+            }
+        },
+        "companionDeath": {
+            "file": "images/Companion_Death_Universal.png",
+            "sprites": {
+                "animation": {
+                    "rows": 1,
+                    "cols": 6,
+                    "size": 6
+                }
+            }
+        },
+        "durianProjectile": "images/Projectile_Pineapple.png",
+        "garlicProjectile": "images/Projectile_Pineapple.png",
+        "pineappleProjectile": "images/Projectile_Pineapple.png",
+        "strawberryProjectile": "images/Strawberry_Seed.png",
+        "ant": {
+            "file": "images/Ant.png",
+            "sprites": {
+                "animation": {
+                    "rows": 1,
+                    "cols": 3,
+                    "size": 3
+                }
+            }
+        },
+        "cricket": {
+            "file": "images/Cricket.png",
+            "sprites": {
+                "animation": {
+                    "rows": 1,
+                    "cols": 2,
+                    "size": 2
+                }
+            }
+        },
+        "spider": {
+            "file": "images/Spider.png",
+            "sprites": {
+                "animation": {
+                    "rows": 1,
+                    "cols": 3,
+                    "size": 3
+                }
+            }
+        },
+        "minionDeath": {
+            "file": "images/Companion_Death_Universal.png",
+            "sprites": {
+                "animation": {
+                    "rows": 1,
+                    "cols": 6,
+                    "size": 6
+                }
+            }
+        },
+        "hp": {
+            "file": "images/hpBar.png",
+            "atlas": {
+                "back": [
+                    0,
+                    0,
+                    523,
+                    33
+                ],
+                "foreground": [
+                    27,
+                    34,
+                    496,
+                    68
+                ],
+                "foreleft": [
+                    0,
+                    34,
+                    27,
+                    68
+                ],
+                "foreright": [
+                    496,
+                    34,
+                    523,
+                    68
+                ]
+            }
         }
-      }
     },
-    "Handbook1": {
-      "file": "images/HandbookAvocado.png",
-      "sprites": {
-        "animation": {
-          "rows": 1,
-          "cols": 2,
-          "size": 2
+    "fonts": {
+        "lpc": {
+            "file": "fonts/LPC.ttf",
+            "size": 25
+        },
+        "lpcBig": {
+            "file": "fonts/LPC.ttf",
+            "size": 40
         }
-      }
     },
-    "Handbook2": {
-      "file": "images/HandbookAvocado.png",
-      "sprites": {
-        "animation": {
-          "rows": 1,
-          "cols": 2,
-          "size": 2
-        }
-      }
+    "jsons": {
+        "constants": "jsons/constants.json",
+        "save": "jsons/savedGame.json"
     },
-    "Handbook3": {
-      "file": "images/HandbookAvocado.png",
-      "sprites": {
-        "animation": {
-          "rows": 1,
-          "cols": 2,
-          "size": 2
-        }
-      }
+    "soundfx": {
+        "click": "sounds/click.wav",
+        "clickLevel": "sounds/clickLevel.wav",
+        "coin": "sounds/collectCoin.wav",
+        "durian": "sounds/durianAttack.wav",
+        "strawberry": "sounds/strawberryAttack.wav",
+        "dashAttack": "sounds/ratAttack.wav",
+        "spinAttack": "sounds/ratAttack.wav",
+        "chopAttack": "sounds/chefAttack.wav",
+        "snatchAttack": "sounds/chopsticksAttack.wav",
+        "ratHit": "sounds/ratDeath.wav",
+        "chefHit": "sounds/chefDeath.wav",
+        "chopsticksHit": "sounds/chopsticksDeath.wav",
+        "ratDeath": "sounds/ratDeath.wav",
+        "chefDeath": "sounds/chefDeath.wav",
+        "chopsticksDeath": "sounds/chopsticksDeath.wav",
+        "minionDeath": "sounds/minionDeath.wav",
+        "companionDeath": "sounds/companionDeath.wav",
+        "companionRecruitment": "sounds/collectCompanion.wav"
     },
-    "Handbook4": {
-      "file": "images/HandbookAvocado.png",
-      "sprites": {
-        "animation": {
-          "rows": 1,
-          "cols": 2,
-          "size": 2
-        }
-      }
-    },
-    "coin": {
-      "file": "images/coin.png",
-      "sprites": {
-        "animation": {
-          "rows": 1,
-          "cols": 22,
-          "size": 22
-        }
-      }
-    },
-    "plusOne": {
-      "file": "images/+1.png",
-      "sprites": {
-        "animation": {
-          "rows": 1,
-          "cols": 6,
-          "size": 6
-        }
-      }
-    },
-    "idleMouse": {
-      "file": "images/Boss_Rat_IdleStatic.png",
-      "sprites": {
-        "animation": {
-          "rows": 1,
-          "cols": 1,
-          "size": 1
-        }
-      }
-    },
-    "dashMouseVertical": {
-      "file": "images/Boss_Rat_RunDown.png",
-      "sprites": {
-        "animation": {
-          "rows": 1,
-          "cols": 5,
-          "size": 5
-        }
-      }
-    },
-    "dashMouseHorizontal": {
-      "file": "images/Boss_Rat_RunHorizontal.png",
-      "sprites": {
-        "animation": {
-          "rows": 1,
-          "cols": 5,
-          "size": 5
-        }
-      }
-    },
-    "spinMouse": {
-      "file": "images/MouseSpin.png",
-      "sprites": {
-        "animation": {
-          "rows": 1,
-          "cols": 4,
-          "size": 4
-        }
-      }
-    },
-    "deathMouse": {
-      "file": "images/MouseDeath.png",
-      "sprites": {
-        "animation": {
-          "rows": 1,
-          "cols": 6,
-          "size": 6
-        }
-      }
-    },
-    "idleChopsticks": {
-      "file": "images/Boss_Chopsticks_Static.png",
-      "sprites": {
-        "animation": {
-          "rows": 1,
-          "cols": 1,
-          "size": 1
-        }
-      }
-    },
-    "dashChopsticks": {
-      "file": "images/Boss_Chopstick_Dash.png",
-      "sprites": {
-        "animation": {
-          "rows": 1,
-          "cols": 4,
-          "size": 4
-        }
-      }
-    },
-    "idleChef": {
-      "file": "images/Boss_Chef_Idle_Fix.png",
-      "sprites": {
-        "animation": {
-          "rows": 1,
-          "cols": 5,
-          "size": 5
-        }
-      }
-    },
-    "dashWarnVertical": {
-      "file": "images/DashWarnVertical.png",
-      "sprites": {
-        "animation": {
-          "rows": 1,
-          "cols": 2,
-          "size": 2
-        }
-      }
-    },
-    "dashWarnHorizontal": {
-      "file": "images/DashWarnHorizontal.png",
-      "sprites": {
-        "animation": {
-          "rows": 2,
-          "cols": 1,
-          "size": 2
-        }
-      }
-    },
-    "spinWarn": {
-      "file": "images/SpinWarn.png",
-      "sprites": {
-        "animation": {
-          "rows": 1,
-          "cols": 2,
-          "size": 2
-        }
-      }
-    },
-    "idleWarn": {
-      "file": "images/idleWarn.png",
-      "sprites": {
-        "animation": {
-          "rows": 1,
-          "cols": 2,
-          "size": 2
-        }
-      }
-    },
-    "headDirStill": "images/UI_HeadIndicator_Still.PNG",
-    "headDirUp": "images/UI_HeadIndicator_Up.PNG",
-    "headDirDown": "images/UI_HeadIndicator_Down.PNG",
-    "headDirLeft": "images/UI_HeadIndicator_Left.PNG",
-    "headDirRight": "images/UI_HeadIndicator_Right.PNG",
-    "AVOCADO": {
-      "file": "images/Avocado.png",
-      "sprites": {
-        "animation": {
-          "rows": 1,
-          "cols": 8,
-          "size": 8
-        }
-      }
-    },
-    "BLUE_RASPBERRY": {
-      "file": "images/BlueRaspberry.png",
-      "sprites": {
-        "animation": {
-          "rows": 1,
-          "cols": 8,
-          "size": 8
-        }
-      }
-    },
-    "DURIAN": {
-      "file": "images/Durian.png",
-      "sprites": {
-        "animation": {
-          "rows": 1,
-          "cols": 8,
-          "size": 8
-        }
-      }
-    },
-    "GARLIC": {
-      "file": "images/Garlic.png",
-      "sprites": {
-        "animation": {
-          "rows": 1,
-          "cols": 7,
-          "size": 7
-        }
-      }
-    },
-    "PINEAPPLE": {
-      "file": "images/Pineapple.png",
-      "sprites": {
-        "animation": {
-          "rows": 1,
-          "cols": 8,
-          "size": 8
-        }
-      }
-    },
-    "STRAWBERRY": {
-      "file": "images/Strawberry.png",
-      "sprites": {
-        "animation": {
-          "rows": 1,
-          "cols": 8,
-          "size": 8
-        }
-      }
-    },
-    "companionDeath": {
-      "file": "images/Companion_Death_Universal.png",
-      "sprites": {
-        "animation": {
-          "rows": 1,
-          "cols": 6,
-          "size": 6
-        }
-      }
-    },
-    "durianProjectile": "images/Projectile_Pineapple.png",
-    "garlicProjectile": "images/Projectile_Pineapple.png",
-    "pineappleProjectile": "images/Projectile_Pineapple.png",
-    "strawberryProjectile": "images/Strawberry_Seed.png",
-    "ant": {
-      "file": "images/Ant.png",
-      "sprites": {
-        "animation": {
-          "rows": 1,
-          "cols": 3,
-          "size": 3
-        }
-      }
-    },
-    "cricket": {
-      "file": "images/Cricket.png",
-      "sprites": {
-        "animation": {
-          "rows": 1,
-          "cols": 2,
-          "size": 2
-        }
-      }
-    },
-    "spider": {
-      "file": "images/Spider.png",
-      "sprites": {
-        "animation": {
-          "rows": 1,
-          "cols": 3,
-          "size": 3
-        }
-      }
-    },
-    "minionDeath": {
-      "file": "images/Companion_Death_Universal.png",
-      "sprites": {
-        "animation": {
-          "rows": 1,
-          "cols": 6,
-          "size": 6
-        }
-      }
-    },
-    "hp": {
-      "file": "images/hpBar.png",
-      "atlas": {
-        "back": [
-          0,
-          0,
-          523,
-          33
-        ],
-        "foreground": [
-          27,
-          34,
-          496,
-          68
-        ],
-        "foreleft": [
-          0,
-          34,
-          27,
-          68
-        ],
-        "foreright": [
-          496,
-          34,
-          523,
-          68
-        ]
-      }
+    "samples": {
+        "menu": "sounds/menu.ogg",
+        "levels": "sounds/levels.ogg",
+        "handbook": "sounds/handbook.ogg",
+        "preLevel": "sounds/preLevel.ogg",
+        "ratLevel": "sounds/mouseLevel.ogg",
+        "chefLevel": "sounds/chefLevel.ogg",
+        "chopsticksLevel": "sounds/chopsticksLevel.ogg",
+        "twoRatLevel": "sounds/mouseLevel.ogg",
+        "twoChefLevel": "sounds/chefLevel.ogg",
+        "twoChopsticksLevel": "sounds/chopsticksLevel.ogg",
+        "ratChefLevel": "sounds/mouseLevel.ogg",
+        "ratChopsticksLevel": "sounds/chefLevel.ogg",
+        "chefChopsticksLevel": "sounds/chopsticksLevel.ogg",
+        "bossRushMode": "sounds/chopsticksLevel.ogg",
+        "machineGunMode": "sounds/chopsticksLevel.ogg",
+        "win": "sounds/win.ogg",
+        "lose": "sounds/lose.ogg"
     }
-  },
-  "fonts": {
-    "lpc": {
-      "file": "fonts/LPC.ttf",
-      "size": 25
-    },
-    "lpcBig": {
-      "file": "fonts/LPC.ttf",
-      "size": 40
-    }
-  },
-  "jsons": {
-    "constants": "jsons/constants.json",
-    "save": "jsons/savedGame.json"
-  },
-  "soundfx": {
-    "click": "sounds/click.wav",
-    "clickLevel": "sounds/clickLevel.wav",
-    "coin": "sounds/collectCoin.wav",
-    "durian": "sounds/durianAttack.wav",
-    "strawberry": "sounds/strawberryAttack.wav",
-    "dashAttack": "sounds/ratAttack.wav",
-    "spinAttack": "sounds/ratAttack.wav",
-    "chopAttack": "sounds/chefAttack.wav",
-    "snatchAttack": "sounds/chopsticksAttack.wav",
-    "ratHit": "sounds/ratDeath.wav",
-    "chefHit": "sounds/chefDeath.wav",
-    "chopsticksHit": "sounds/chopsticksDeath.wav",
-    "ratDeath": "sounds/ratDeath.wav",
-    "chefDeath": "sounds/chefDeath.wav",
-    "chopsticksDeath": "sounds/chopsticksDeath.wav",
-    "minionDeath": "sounds/minionDeath.wav",
-    "companionDeath": "sounds/companionDeath.wav",
-    "companionRecruitment": "sounds/collectCompanion.wav"
-  },
-  "samples": {
-    "menu": "sounds/menu.ogg",
-    "levels": "sounds/levels.ogg",
-    "handbook": "sounds/handbook.ogg",
-    "preLevel": "sounds/preLevel.ogg",
-    "ratLevel": "sounds/mouseLevel.ogg",
-    "chefLevel": "sounds/chefLevel.ogg",
-    "chopsticksLevel": "sounds/chopsticksLevel.ogg",
-    "twoRatLevel": "sounds/mouseLevel.ogg",
-    "twoChefLevel": "sounds/chefLevel.ogg",
-    "twoChopsticksLevel": "sounds/chopsticksLevel.ogg",
-    "ratChefLevel": "sounds/mouseLevel.ogg",
-    "ratChopsticksLevel": "sounds/chefLevel.ogg",
-    "chefChopsticksLevel": "sounds/chopsticksLevel.ogg",
-    "bossRushMode": "sounds/chopsticksLevel.ogg",
-    "machineGunMode": "sounds/chopsticksLevel.ogg",
-    "win": "sounds/win.ogg",
-    "lose": "sounds/lose.ogg"
-  }
 }
