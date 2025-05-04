@@ -45,6 +45,10 @@ public class Boss extends ObstacleSprite {
      */
     protected float angle;
     /**
+     * Scale of the sprite
+     */
+    protected Vector2 spriteScale;
+    /**
      * Whether the sprite is flipped in each direction
      */
     protected boolean flipVertical;
@@ -84,8 +88,9 @@ public class Boss extends ObstacleSprite {
 
     private static final float PHYSICS_UNITS = 64f;
 
-    public Boss(float x, float y, int health, String name, World world) {
-        super(new CapsuleObstacle(x, y, 1.5f, 1.5f), true);
+    public Boss(float x, float y, float width, float height, int health, String name, World world) {
+        super(new CapsuleObstacle(x, y, width, height), true);
+
         this.health = health;
         startHealth = health;
         this.name = name;
@@ -98,6 +103,8 @@ public class Boss extends ObstacleSprite {
         dead = false;
         remove = false;
         curranimationSpeed = animationSpeed;
+
+        spriteScale = new Vector2(0.4f, 0.4f);
 
         obstacle = getObstacle();
         obstacle.setName("boss");
@@ -206,10 +213,12 @@ public class Boss extends ObstacleSprite {
      * @param batch The sprite batch
      */
     public void draw(SpriteBatch batch, float delta) {
+        float scaleX = spriteScale.x * (flipHorizontal ? -1 : 1);
+        float scaleY = spriteScale.y * (flipVertical ? -1 : 1);
         SpriteBatch.computeTransform(transform, sprite.getRegionWidth() / 2.0f,
             sprite.getRegionHeight() / 2.0f, obstacle.getPosition().x * PHYSICS_UNITS,
-            obstacle.getPosition().y * PHYSICS_UNITS, angle, 0.4f * (flipHorizontal ? -1 : 1),
-            0.4f * (flipVertical ? -1 : 1));
+            obstacle.getPosition().y * PHYSICS_UNITS, angle, scaleX,
+            scaleY);
 
         if (!obstacle.isActive()) { // if destroyed...
             if (!dead) {
