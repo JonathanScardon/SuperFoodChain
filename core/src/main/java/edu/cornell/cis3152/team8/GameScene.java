@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Affine2;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
@@ -609,12 +610,11 @@ public class GameScene implements Screen {
     public void draw(float delta) {
         ScreenUtils.clear(Color.WHITE);
 
-        // World rendering
+        // Draw background first
         game.batch.setProjectionMatrix(worldCamera.combined);
         game.batch.begin(worldCamera);
         game.batch.draw(backgroundTexture, 0, 0, screenWidth, screenHeight);
 
-        // draw
         drawOrder(delta);
 
         for (ObstacleSprite o : dead) {
@@ -646,10 +646,27 @@ public class GameScene implements Screen {
         for (Boss b : bosses) {
             b.setDamage(false);
         }
+        game.batch.end();
 
-        // UI Last
+        // Draw warning sprite borders
+        game.shape.setProjectionMatrix(worldCamera.combined);
+        game.shape.begin(ShapeRenderer.ShapeType.Filled);
 
-        //Companion costs
+        for (Boss b : bosses) {
+            b.drawWarningBorders(game.shape);
+        }
+
+        game.shape.end();
+
+        // Draw game objects
+        game.batch.begin(worldCamera);
+
+        // Warning symbols
+        for (Boss b : bosses) {
+            b.drawWarningIcons(game.batch);
+        }
+
+        // Companion costs
         for (Companion c : companions) {
             TextLayout compCost = new TextLayout(c.getCost() + "", font);
             TextLayout pressE = new TextLayout("E", font);
@@ -707,6 +724,7 @@ public class GameScene implements Screen {
 
         game.batch.end();
 
+        // Draw UI elements that follow the camera
         game.batch.setProjectionMatrix(uiCamera.combined);
         game.batch.begin(uiCamera);
         // Coin Counter

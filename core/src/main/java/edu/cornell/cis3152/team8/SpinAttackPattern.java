@@ -38,7 +38,7 @@ public class SpinAttackPattern extends BossAttackPattern {
         this.moveSpeed = moveSpeed;
         startX = 640 / PHYSICS_UNITS;
         startY = 360 / PHYSICS_UNITS;
-        warnPattern = new BossWarnPattern(0, 0);
+        warnPattern = new BossWarnPattern(0, 0, 0, 0);
         warnPattern.setSpriteSheet(warnSprite);
         this.boss.warnPatterns.add(warnPattern);
 
@@ -127,15 +127,14 @@ public class SpinAttackPattern extends BossAttackPattern {
                             / 2f) { // Stop picking new location after half of the warning time
                             setControlCode();
                         }
-                        warnPattern.getObstacle().setX(controller.boss.getObstacle().getX());
-                        warnPattern.getObstacle().setY(controller.boss.getObstacle().getY());
+                        warnPattern.setPosition(controller.boss.getObstacle().getX(), controller.boss.getObstacle().getY());
                         warnTime -= delta;
                     } else {
                         attack();
                     }
                 }
                 case ATTACK -> {
-                    boss.angle += 45;
+                    boss.getObstacle().setAngle(boss.getObstacle().getAngle() + 45);
                     if (atWall()) {
                         state = AttackState.ENDED;
                         boss.moveSpeed = origMoveSpeed;
@@ -181,38 +180,38 @@ public class SpinAttackPattern extends BossAttackPattern {
             && pPos.x <= bPos.x + gap) {
             if (bPos.y < pPos.y) {
                 controlCode = CONTROL_MOVE_UP;
-                warnPattern.getObstacle().setAngle(90f);
+                warnPattern.setAngle(90f);
             } else if (bPos.y == pPos.y) {
                 controlCode = CONTROL_NO_ACTION;
-                warnPattern.getObstacle().setAngle(0f);
+                warnPattern.setAngle(0f);
             } else {
                 controlCode = CONTROL_MOVE_DOWN;
-                warnPattern.getObstacle().setAngle(-90f);
+                warnPattern.setAngle(-90f);
             }
         } else if (bPos.x < pPos.x) {
             if (pPos.y >= bPos.y - gap
                 && pPos.y <= bPos.y + gap) {
                 controlCode = CONTROL_MOVE_RIGHT;
-                warnPattern.getObstacle().setAngle(0f);
+                warnPattern.setAngle(0f);
             } else if (bPos.y < pPos.y) {
                 this.controlCode = CONTROL_MOVE_RIGHT_UP;
-                warnPattern.getObstacle().setAngle(45f);
+                warnPattern.setAngle(45f);
             } else {
                 controlCode = CONTROL_MOVE_RIGHT_DOWN;
-                warnPattern.getObstacle().setAngle(-45f);
+                warnPattern.setAngle(-45f);
             }
 
         } else {
             if (pPos.y >= bPos.y - gap
                 && pPos.y <= bPos.y + gap) {
                 controlCode = CONTROL_MOVE_LEFT;
-                warnPattern.getObstacle().setAngle(180f);
+                warnPattern.setAngle(180f);
             } else if (bPos.y < pPos.y) {
                 controlCode = CONTROL_MOVE_LEFT_UP;
-                warnPattern.getObstacle().setAngle(135f);
+                warnPattern.setAngle(135f);
             } else {
                 controlCode = CONTROL_MOVE_LEFT_DOWN;
-                warnPattern.getObstacle().setAngle(-135f);
+                warnPattern.setAngle(-135f);
             }
         }
     }

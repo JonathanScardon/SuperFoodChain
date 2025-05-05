@@ -5,6 +5,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.JsonValue;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import edu.cornell.gdiac.assets.AssetDirectory;
@@ -22,6 +23,7 @@ public class GDXRoot extends Game implements ScreenListener {
 
     public FitViewport viewport;
     public SpriteBatch batch;
+    public ShapeRenderer shape;
     public BitmapFont font;
 
     // The screens in the game
@@ -39,6 +41,7 @@ public class GDXRoot extends Game implements ScreenListener {
     @Override
     public void create() {
         batch = new SpriteBatch();
+        shape = new ShapeRenderer();
         font = new BitmapFont();
         viewport = new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         save = Gdx.app.getPreferences("Save");
