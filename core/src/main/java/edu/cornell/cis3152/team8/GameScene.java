@@ -93,10 +93,16 @@ public class GameScene implements Screen {
     private final TextureRegion hpLeft;
     private final TextureRegion hpMiddle;
     private final TextureRegion hpRight;
+    private final Texture ratIcon;
+    private final Texture chefIcon;
+    private final Texture chopsticksIcon;
+    private final Color bossTint1;
+    private final Color bossTint2;
+
     //Coins
     private final Texture coinCounter;
     private final Texture cost;
-    private final Texture costGrey;
+    private final Texture costGray;
     private final BitmapFont font;
     private static final Color fontColor = new Color(89f / 255, 43f / 255, 34f / 255, 100f);
     private final Affine2 transform;
@@ -231,9 +237,16 @@ public class GameScene implements Screen {
         hpLeft = assets.getEntry("hp.foreleft", TextureRegion.class);
         hpMiddle = assets.getEntry("hp.foreground", TextureRegion.class);
         hpRight = assets.getEntry("hp.foreright", TextureRegion.class);
+        ratIcon = assets.getEntry("ratIcon", Texture.class);
+        chefIcon = assets.getEntry("chefIcon", Texture.class);
+        chopsticksIcon = assets.getEntry("chopsticksIcon", Texture.class);
+        //TODO: Change colors
+        bossTint1 = new Color(0.8f, 0.8f, 1, 1f);
+        bossTint2 = new Color(1, 0.8f, 0.8f, 1f);
+
         coinCounter = assets.getEntry("coinCounter", Texture.class);
         cost = assets.getEntry("costUI", Texture.class);
-        costGrey = assets.getEntry("costUIGrey", Texture.class);
+        costGray = assets.getEntry("costUIGray", Texture.class);
 
         transform = new Affine2();
 
@@ -678,8 +691,8 @@ public class GameScene implements Screen {
                         c.getObstacle().getX() * PHYSICS_UNITS - cost.getWidth() / 2f,
                         c.getObstacle().getY() * PHYSICS_UNITS + 40f);
                 } else {
-                    game.batch.draw(costGrey,
-                        c.getObstacle().getX() * PHYSICS_UNITS - costGrey.getWidth() / 2f,
+                    game.batch.draw(costGray,
+                        c.getObstacle().getX() * PHYSICS_UNITS - costGray.getWidth() / 2f,
                         c.getObstacle().getY() * PHYSICS_UNITS + 40f);
                 }
                 SpriteBatch.computeTransform(transform, compCost.getWidth() / 2.0f,
@@ -733,7 +746,7 @@ public class GameScene implements Screen {
         //To shrink the number
         SpriteBatch.computeTransform(transform, coinCount.getWidth() / 2.0f,
             coinCount.getFont().getXHeight() / 2.0f, 1150,
-            83, 0.0f, numScale, numScale);
+            85, 0.0f, numScale, numScale);
         game.batch.draw(coinCounter, 1050, 50);
         game.batch.drawText(coinCount, transform);
 
@@ -781,6 +794,8 @@ public class GameScene implements Screen {
             game.batch.draw(mouseLose, loseX, loseY);
         } else if (bosses.get(0).getName().equals("chopsticks")) {
             game.batch.draw(chopsticksLose, loseX, loseY);
+        } else if (bosses.get(0).getName().equals("chef")) {
+            game.batch.draw(chopsticksLose, loseX, loseY); //TODO: change texture
         }
         float height = loseY + replayButton.height / 2f;
         float gap = 40;
@@ -843,21 +858,41 @@ public class GameScene implements Screen {
         float w = 523;
         float cx;
         float cy = 650;
+        float padding = 10;
+        float center = (ratIcon.getWidth() + padding + w) / 2;
 
         for (int i = 0; i < numBosses; i++) {
             if (numBosses == 1) {
-                cx = 367;
+                cx = screenWidth / 2 - center;
             } else {
                 if (i == 0) {
-                    cx = 71;
+                    if (bossNames.get(0).getText().equals(bossNames.get(1).getText())) {
+                        game.batch.setColor(bossTint1);
+                    }
+                    cx = screenWidth / 2 - (center * 2) - padding;
                 } else {
-                    cx = 662;
+                    if (bossNames.get(0).getText().equals(bossNames.get(1).getText())) {
+                        game.batch.setColor(bossTint2);
+                    }
+                    cx = screenWidth / 2 + padding;
                 }
             }
             float ratio = bosses.get(i).getHealth() / bossStartHealths.get(i);
-            game.batch.drawText(bossNames.get(i), cx + (w / 2 - (bossNames.get(i).getWidth() / 2)),
+            Texture icon;
+            if (bossNames.get(i).getText().equals("mouse")) {
+                icon = ratIcon;
+            } else if (bossNames.get(i).getText().equals("chef")) {
+                icon = chefIcon;
+            } else {
+                icon = chopsticksIcon;
+            }
+            game.batch.draw(icon, cx, cy + hpBack.getRegionHeight() / 2f - (icon.getHeight() / 2f));
+            game.batch.setColor(Color.WHITE);
+            game.batch.drawText(bossNames.get(i),
+                cx + icon.getWidth() + padding + (w / 2 - (bossNames.get(i).getWidth() / 2)),
                 cy + 50);
 
+            cx += icon.getWidth() + padding;
             // "3-patch" the background
             game.batch.setColor(Color.WHITE);
             game.batch.draw(hpBack, cx, cy, hpBack.getRegionWidth(),
@@ -1005,7 +1040,19 @@ public class GameScene implements Screen {
         for (ObstacleSprite o : everything) {
             switch (o.getName()) {
                 case "minion", "companion", "coin", "player" -> o.draw(game.batch);
-                case "mouse", "chef", "chopsticks" -> ((Boss) o).draw(game.batch, delta);
+                case "mouse", "chef", "chopsticks" -> {
+                    if (bosses.size == 2 && !bosses.get(0).getState()
+                        .equals("spinning") && bossNames.get(0).getText()
+                        .equals(bossNames.get(1).getText())) {
+                        if (o.equals(bosses.get(0))) {
+                            game.batch.setColor(bossTint1);
+                        } else {
+                            game.batch.setColor(bossTint2);
+                        }
+                    }
+                    ((Boss) o).draw(game.batch, delta);
+                    game.batch.setColor(Color.WHITE);
+                }
             }
         }
 
