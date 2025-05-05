@@ -40,6 +40,8 @@ public class SpinAttackPattern extends BossAttackPattern {
         startY = 360 / PHYSICS_UNITS;
         warnPattern = new BossWarnPattern(0, 0);
         warnPattern.setSpriteSheet(warnSprite);
+        this.boss.warnPatterns.add(warnPattern);
+
         this.warnSprite = warnSprite;
         actionSet = false;
         this.gamestate = gamestate;
@@ -90,10 +92,7 @@ public class SpinAttackPattern extends BossAttackPattern {
         setControlCode();
         warnTime = warnDuration;
         warnPattern.active = true;
-        boss.curWarn = warnPattern;
         setControlCode();
-
-
     }
 
     public void attack() {
@@ -104,7 +103,6 @@ public class SpinAttackPattern extends BossAttackPattern {
             origMoveSpeed = boss.moveSpeed;
             boss.moveSpeed = moveSpeed;
             warnPattern.active = false;
-            boss.curWarn = null;
             this.spawnMinions();
         }
     }

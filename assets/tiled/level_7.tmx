@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="1" height="1" tilewidth="1280" tileheight="720" infinite="0" nextlayerid="5" nextobjectid="30">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="1" height="1" tilewidth="1280" tileheight="720" infinite="0" nextlayerid="5" nextobjectid="34">
  <objectgroup id="2" name="boss" class="bossLayer">
   <properties>
    <property name="maxMinions" type="int" value="4"/>
@@ -10,6 +10,7 @@
     <property name="attack1" type="object" value="23"/>
     <property name="attack2" type="object" value="26"/>
     <property name="attack3" type="object" value="25"/>
+    <property name="attack4" type="object" value="30"/>
     <property name="bossType" propertytype="bossType" value="chef"/>
     <property name="health" type="int" value="20"/>
    </properties>
@@ -71,6 +72,28 @@
     <property name="attackDuration" type="float" value="1"/>
     <property name="attackType" propertytype="attackType" value="idle"/>
     <property name="flipHorizontal" type="bool" value="false"/>
+    <property name="warnDuration" type="float" value="2"/>
+   </properties>
+  </object>
+  <object id="30" name="multi" type="attack" x="1142.34" y="945.255">
+   <properties>
+    <property name="attack0" type="object" value="32"/>
+    <property name="attack1" type="object" value="33"/>
+    <property name="attackType" propertytype="attackType" value="multi"/>
+    <property name="warnDuration" type="float" value="0"/>
+   </properties>
+  </object>
+  <object id="32" name="camera" type="attack" x="654.336" y="187.182">
+   <properties>
+    <property name="attackType" propertytype="attackType" value="camera"/>
+    <property name="warnDuration" type="float" value="1"/>
+   </properties>
+  </object>
+  <object id="33" name="dash" type="attack" x="653.285" y="-62.0438">
+   <properties>
+    <property name="attackType" value="dash"/>
+    <property name="dir" value="down"/>
+    <property name="moveSpeed" type="float" value="250"/>
     <property name="warnDuration" type="float" value="2"/>
    </properties>
   </object>

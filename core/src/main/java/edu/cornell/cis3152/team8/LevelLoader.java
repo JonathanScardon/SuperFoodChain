@@ -4,6 +4,7 @@ import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
 import com.badlogic.gdx.maps.tiled.*;
 import com.badlogic.gdx.maps.*;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.Array;
 import edu.cornell.cis3152.team8.companions.Avocado;
 import edu.cornell.cis3152.team8.companions.BlueRaspberry;
 import edu.cornell.cis3152.team8.companions.Durian;
@@ -236,7 +237,7 @@ public class LevelLoader {
         switch (attackType) {
             case "idle":
                 attackDuration = props.get("attackDuration", 0f, Float.class);
-                Boolean flipHorizontal = props.get("flipHorizontal", Boolean.class);
+                Boolean flipHorizontal = props.get("flipHorizontal", false, Boolean.class);
                 attack = new IdleAttackPattern(controller, x, y, warnDuration, attackDuration, flipHorizontal,
                     idleWarnSprite);
                 break;
@@ -263,6 +264,23 @@ public class LevelLoader {
                 break;
             case "camera":
                 attack = new CameraAttackPattern(controller, x * PHYSICS_UNITS, y * PHYSICS_UNITS, warnDuration, scene.getWorldCamera());
+                break;
+            case "multi":
+                Array<BossAttackPattern> attackPatterns = new Array<>();
+
+                // get all attacks
+                int attackIdx = 0;
+                MapObject attackObj;
+                BossAttackPattern subAttack;
+                while (props.containsKey("attack" + attackIdx)) {
+                    attackObj = props.get("attack" + attackIdx, MapObject.class);
+                    attack = createAttack(attackObj, controller, state.getPlayer(), scene);
+                    attackPatterns.add(attack);
+
+                    attackIdx++;
+                }
+
+                attack = new MultiAttackPattern(controller, warnDuration, attackPatterns, idleWarnSprite);
                 break;
         }
 

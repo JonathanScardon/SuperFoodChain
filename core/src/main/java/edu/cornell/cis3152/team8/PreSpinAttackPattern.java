@@ -45,6 +45,7 @@ public class PreSpinAttackPattern extends BossAttackPattern {
             default -> throw new IllegalArgumentException("Unknown direction: " + dir);
         }
         this.warnPattern.setSpriteSheet(warnSprite);
+        this.boss.warnPatterns.add(warnPattern);
     }
 
     @Override
@@ -53,7 +54,6 @@ public class PreSpinAttackPattern extends BossAttackPattern {
         boss.setAnimation("dashHorizontal");
         warnTime = warnDuration;
         warnPattern.active = true;
-        boss.curWarn = warnPattern;
     }
 
     public void attack() {

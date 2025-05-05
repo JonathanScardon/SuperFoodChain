@@ -31,6 +31,7 @@ public class IdleAttackPattern extends BossAttackPattern {
 
         this.warnPattern = new BossWarnPattern(this.idleX, this.idleY);
         this.warnPattern.setSpriteSheet(warnSprite);
+        this.boss.warnPatterns.add(this.warnPattern);
     }
 
     @Override
@@ -46,7 +47,6 @@ public class IdleAttackPattern extends BossAttackPattern {
         attackTime = attackDuration;
 
         warnPattern.active = true;
-        boss.curWarn = warnPattern;
     }
 
     public void attack() {
@@ -61,7 +61,6 @@ public class IdleAttackPattern extends BossAttackPattern {
         this.spawnMinions();
 
         warnPattern.active = false;
-        boss.curWarn = null;
     }
 
     @Override
