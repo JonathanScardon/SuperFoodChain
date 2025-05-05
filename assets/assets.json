@@ -30,7 +30,10 @@
     "settingsBackground": "images/SettingsBackground.png",
     "coinCounter": "images/coin-counter.png",
     "costUI": "images/cost-ui.png",
-    "costUIGrey": "images/grayed-cost-ui.png",
+    "costUIGray": "images/cost-ui-gray.png",
+    "ratIcon": "images/icon-rat.png",
+    "chefIcon": "images/icon-chef.png",
+    "chopsticksIcon": "images/icon-chopsticks.png",
     "Handbook0": {
       "file": "images/HandbookAvocado.png",
       "sprites": {
