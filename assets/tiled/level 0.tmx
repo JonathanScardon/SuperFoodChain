@@ -17,10 +17,6 @@
    <properties>
     <property name="attack0" type="object" value="11"/>
     <property name="attack1" type="object" value="19"/>
-    <property name="attack2" type="object" value="25"/>
-    <property name="attack3" type="object" value="26"/>
-    <property name="attack4" type="object" value="27"/>
-    <property name="attack5" type="object" value="28"/>
     <property name="bossType" propertytype="bossType" value="mouse"/>
     <property name="health" type="int" value="10"/>
    </properties>
@@ -38,7 +34,7 @@
   <object id="15" name="Ant" type="minionSpawn" x="71.473" y="344.935"/>
   <object id="19" name="idle" type="attack" x="666.949" y="341.402">
    <properties>
-    <property name="attackDuration" type="float" value="2"/>
+    <property name="attackDuration" type="float" value="500"/>
     <property name="attackType" propertytype="attackType" value="idle"/>
     <property name="minion1" type="object" value="21"/>
     <property name="minion2" type="object" value="24"/>
@@ -51,37 +47,5 @@
   <object id="22" type="minionSpawn" x="40.6347" y="40.6347"/>
   <object id="23" type="minionSpawn" x="30.9598" y="677.245"/>
   <object id="24" type="minionSpawn" x="1244.2" y="684.985"/>
-  <object id="25" name="dash" type="attack" x="-82.56" y="349.68">
-   <properties>
-    <property name="attackType" value="dash"/>
-    <property name="dir" value="right"/>
-    <property name="moveSpeed" type="float" value="250"/>
-    <property name="warnDuration" type="float" value="2"/>
-   </properties>
-  </object>
-  <object id="26" name="dash" type="attack" x="636.23" y="-89.85">
-   <properties>
-    <property name="attackType" value="dash"/>
-    <property name="dir" value="down"/>
-    <property name="moveSpeed" type="float" value="250"/>
-    <property name="warnDuration" type="float" value="2"/>
-   </properties>
-  </object>
-  <object id="27" name="dash" type="attack" x="1407.18" y="344.83">
-   <properties>
-    <property name="attackType" value="dash"/>
-    <property name="dir" value="left"/>
-    <property name="moveSpeed" type="float" value="250"/>
-    <property name="warnDuration" type="float" value="2"/>
-   </properties>
-  </object>
-  <object id="28" name="dash" type="attack" x="628.95" y="811.07">
-   <properties>
-    <property name="attackType" value="dash"/>
-    <property name="dir" value="up"/>
-    <property name="moveSpeed" type="float" value="250"/>
-    <property name="warnDuration" type="float" value="2"/>
-   </properties>
-  </object>
  </objectgroup>
 </map>
