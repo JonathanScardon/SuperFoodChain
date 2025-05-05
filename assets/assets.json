@@ -21,12 +21,20 @@
     "handbookHover": "images/ButtonHandbookHover.png",
     "home": "images/ButtonHome.png",
     "homeHover": "images/ButtonHomeHover.png",
+    "music": "images/ButtonMusic.png",
+    "musicHover": "images/ButtonMusicHover.png",
+    "musicMute": "images/ButtonMusicMute.png",
+    "musicHoverMute": "images/ButtonMusicHoverMute.png",
     "replay": "images/ButtonReplay.png",
     "replayHover": "images/ButtonReplayHover.png",
     "settings": "images/ButtonSettings.png",
     "settingsHover": "images/ButtonSettingsHover.png",
-    "sfx": "images/IconSfx.png",
-    "music": "images/IconMusic.png",
+    "sfx": "images/ButtonSfx.png",
+    "sfxHover": "images/ButtonSfxHover.png",
+    "sfxMute": "images/ButtonSfxMute.png",
+    "sfxHoverMute": "images/ButtonSfxHoverMute.png",
+    "x": "images/ButtonX.png",
+    "xHover": "images/ButtonXHover.png",
     "settingsBackground": "images/SettingsBackground.png",
     "coinCounter": "images/coin-counter.png",
     "costUI": "images/cost-ui.png",
@@ -175,14 +183,14 @@
       }
     },
     "warnChopsticks": {
-        "file": "images/Boss_Chopstick_Warn.png",
-        "sprites": {
-          "animation": {
-            "rows": 1,
-            "cols": 4,
-            "size": 4
-          }
+      "file": "images/Boss_Chopstick_Warn.png",
+      "sprites": {
+        "animation": {
+          "rows": 1,
+          "cols": 4,
+          "size": 4
         }
+      }
     },
     "idleChef": {
       "file": "images/Boss_Chef_Idle_Fix.png",
@@ -234,16 +242,16 @@
         }
       }
     },
-      "warnIcon" : {
-          "file": "images/Warning_Symbol_UI.png",
-          "sprites": {
-              "animation": {
-                  "rows": 1,
-                  "cols": 2,
-                  "size": 2
-              }
-          }
-      },
+    "warnIcon": {
+      "file": "images/Warning_Symbol_UI.png",
+      "sprites": {
+        "animation": {
+          "rows": 1,
+          "cols": 2,
+          "size": 2
+        }
+      }
+    },
     "headDirStill": "images/UI_HeadIndicator_Still.PNG",
     "headDirUp": "images/UI_HeadIndicator_Up.PNG",
     "headDirDown": "images/UI_HeadIndicator_Down.PNG",
