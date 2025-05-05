@@ -5,10 +5,15 @@
       "minfilter": "linear",
       "magfilter": "linear"
     },
-    "play": {
-      "file": "loading/play.png",
-      "minfilter": "linear",
-      "magfilter": "linear"
+    "companion hop": {
+      "file": "images/loadingCompanions.png",
+      "sprites": {
+        "animation": {
+          "rows": 1,
+          "cols": 7,
+          "size": 7
+        }
+      }
     },
     "progress": {
       "file": "loading/progress.png",
@@ -45,7 +50,8 @@
       "height": 576,
       "bar.width": 0.66,
       "bar.height": 0.25,
-      "button.scale": 0.75
+      "button.scale": 0.75,
+      "animation speed": 0.1
     }
   }
 }

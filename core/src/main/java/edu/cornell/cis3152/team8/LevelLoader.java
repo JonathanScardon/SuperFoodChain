@@ -4,6 +4,7 @@ import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
 import com.badlogic.gdx.maps.tiled.*;
 import com.badlogic.gdx.maps.*;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.Array;
 import edu.cornell.cis3152.team8.companions.Avocado;
 import edu.cornell.cis3152.team8.companions.BlueRaspberry;
 import edu.cornell.cis3152.team8.companions.Durian;
@@ -39,9 +40,7 @@ public class LevelLoader {
     private SpriteSheet chefIdleSprite;
 
     // warning sprites
-    private SpriteSheet idleWarnSprite;
-    private SpriteSheet dashWarnVerticalSprite;
-    private SpriteSheet dashWarnHorizontalSprite;
+    private SpriteSheet warnIconSprite;
     private SpriteSheet spinWarnSprite;
 
     // map of ids to minion spawn points
@@ -89,10 +88,7 @@ public class LevelLoader {
 
         chefIdleSprite = assets.getEntry("idleChef.animation", SpriteSheet.class);
 
-        idleWarnSprite = assets.getEntry("idleWarn.animation", SpriteSheet.class);
-        dashWarnVerticalSprite = assets.getEntry("dashWarnVertical.animation", SpriteSheet.class);
-        dashWarnHorizontalSprite = assets.getEntry("dashWarnHorizontal.animation",
-            SpriteSheet.class);
+        warnIconSprite = assets.getEntry("warnIcon.animation", SpriteSheet.class);
         spinWarnSprite = assets.getEntry("spinWarn.animation", SpriteSheet.class);
 
         TiledMap map = this.mapLoader.load(path);
@@ -225,7 +221,7 @@ public class LevelLoader {
      * @param controller the boss that will execute the attack
      */
     private BossAttackPattern createAttack(MapObject obj, BossController controller,
-        Player player, GameScene scene) {
+                                           Player player, GameScene scene) {
         String attackType = obj.getProperties().get("attackType", String.class);
         MapProperties props = obj.getProperties();
 
@@ -239,20 +235,15 @@ public class LevelLoader {
         switch (attackType) {
             case "idle":
                 attackDuration = props.get("attackDuration", 0f, Float.class);
-                Boolean flipHorizontal = props.get("flipHorizontal", Boolean.class);
+                Boolean flipHorizontal = props.get("flipHorizontal", false, Boolean.class);
                 attack = new IdleAttackPattern(controller, x, y, warnDuration, attackDuration, flipHorizontal,
-                    idleWarnSprite);
+                    warnIconSprite);
                 break;
             case "dash":
                 String dir = props.get("dir", String.class);
                 moveSpeed = props.get("moveSpeed", 0f, Float.class);
-                if (dir.equals("up") || dir.equals("down")) {
-                    attack = new DashAttackPattern(controller, x, y, dir, warnDuration, moveSpeed,
-                        dashWarnVerticalSprite);
-                } else if (dir.equals("left") || dir.equals("right")) {
-                    attack = new DashAttackPattern(controller, x, y, dir, warnDuration, moveSpeed,
-                        dashWarnHorizontalSprite);
-                }
+                attack = new DashAttackPattern(controller, x, y, dir, warnDuration, moveSpeed,
+                    warnIconSprite);
                 break;
             case "spin":
                 moveSpeed = props.get("moveSpeed", 0f, Float.class);
@@ -262,10 +253,27 @@ public class LevelLoader {
             case "snatch":
                 attackDuration = props.get("attackDuration", 0f, Float.class);
                 attack = new SnatchAttackPattern(controller, warnDuration, attackDuration,
-                    idleWarnSprite, player);
+                    warnIconSprite, player);
                 break;
             case "camera":
                 attack = new CameraAttackPattern(controller, x * PHYSICS_UNITS, y * PHYSICS_UNITS, warnDuration, scene.getWorldCamera());
+                break;
+            case "multi":
+                Array<BossAttackPattern> attackPatterns = new Array<>();
+
+                // get all attacks
+                int attackIdx = 0;
+                MapObject attackObj;
+                BossAttackPattern subAttack;
+                while (props.containsKey("attack" + attackIdx)) {
+                    attackObj = props.get("attack" + attackIdx, MapObject.class);
+                    attack = createAttack(attackObj, controller, state.getPlayer(), scene);
+                    attackPatterns.add(attack);
+
+                    attackIdx++;
+                }
+
+                attack = new MultiAttackPattern(controller, warnDuration, attackPatterns, warnIconSprite);
                 break;
         }
 
