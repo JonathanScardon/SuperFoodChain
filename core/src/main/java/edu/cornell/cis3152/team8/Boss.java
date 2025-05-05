@@ -31,9 +31,8 @@ public class Boss extends ObstacleSprite {
     /**
      * How fast we change frames
      */
-    private static float animationSpeed;
+    private float animationSpeed;
     private static float deathAnimationSpeed;
-    private float curranimationSpeed;
 
     // local properties
     /**
@@ -82,7 +81,6 @@ public class Boss extends ObstacleSprite {
     public static void setConstants(JsonValue constants) {
         SPEED_DAMP = constants.getFloat("speedDamp", 0.75f);
         EPSILON = constants.getFloat("epsilon", 0.01f);
-        animationSpeed = constants.getFloat("animationSpeed", 0.1f);
         deathAnimationSpeed = constants.getFloat("deathAnimationSpeed", 0.1f);
     }
 
@@ -102,7 +100,7 @@ public class Boss extends ObstacleSprite {
         animationMap = new HashMap<>();
         dead = false;
         remove = false;
-        curranimationSpeed = animationSpeed;
+        animationSpeed = 0.1f;
 
         spriteScale = new Vector2(0.4f, 0.4f);
 
@@ -186,7 +184,7 @@ public class Boss extends ObstacleSprite {
         }
 
         if (sprite != null) {
-            animeframe += curranimationSpeed;
+            animeframe += animationSpeed;
             if (animeframe >= sprite.getSize() && getObstacle().isActive()) {
                 animeframe -= sprite.getSize();
             }
@@ -223,9 +221,8 @@ public class Boss extends ObstacleSprite {
         if (!obstacle.isActive()) { // if destroyed...
             if (!dead) {
                 animeframe = 0;
-                curranimationSpeed = deathAnimationSpeed;
                 dead = true;
-                setAnimation("death");
+                setAnimation("death", deathAnimationSpeed);
             }
             if (animeframe < sprite.getSize()) { // and animation is not over
                 sprite.setFrame((int) animeframe);
@@ -280,8 +277,9 @@ public class Boss extends ObstacleSprite {
      * found, it just sets it to the default sprite sheet
      *
      * @param name the name of the animation we want to use
+     * @param animationSpeed the speed of the animation
      */
-    public void setAnimation(String name) {
+    public void setAnimation(String name, float animationSpeed) {
         animeframe = 0;
         if (!animationMap.containsKey(name)) {
             // sprite sheet not found, using default
@@ -290,7 +288,12 @@ public class Boss extends ObstacleSprite {
         if (!animationMap.containsKey("default")) {
             throw new RuntimeException("Boss does not have a default animation");
         }
+        this.animationSpeed = animationSpeed;
         this.setSpriteSheet(animationMap.get(name));
+    }
+
+    public void setAnimation(String name) {
+        setAnimation(name, animationSpeed);
     }
 
     public void setAnimationSpeed(float speed) {

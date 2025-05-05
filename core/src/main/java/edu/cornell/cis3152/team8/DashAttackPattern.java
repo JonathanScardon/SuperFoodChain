@@ -86,11 +86,10 @@ public class DashAttackPattern extends BossAttackPattern {
                 break;
         }
 
-        // TODO: this should be moved to attack() if we have a separate warn animation
         if (controlCode == CONTROL_MOVE_UP || controlCode == CONTROL_MOVE_DOWN) {
-            boss.setAnimation("dashVertical");
+            boss.setAnimation("dashVertical", 0f);
         } else if (controlCode == CONTROL_MOVE_LEFT || controlCode == CONTROL_MOVE_RIGHT) {
-            boss.setAnimation("dashHorizontal");
+            boss.setAnimation("dashHorizontal", 0f);
         }
 
         warnTime = warnDuration;
@@ -103,6 +102,12 @@ public class DashAttackPattern extends BossAttackPattern {
         controller.setAction(controlCode);
         origMoveSpeed = boss.moveSpeed;
         boss.moveSpeed = moveSpeed;
+
+        if (controlCode == CONTROL_MOVE_UP || controlCode == CONTROL_MOVE_DOWN) {
+            boss.setAnimation("dashVertical", 0.1f);
+        } else if (controlCode == CONTROL_MOVE_LEFT || controlCode == CONTROL_MOVE_RIGHT) {
+            boss.setAnimation("dashHorizontal", 0.1f);
+        }
 
         this.spawnMinions();
 
