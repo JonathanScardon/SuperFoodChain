@@ -5,8 +5,10 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.JsonValue;
 import edu.cornell.cis3152.team8.Companion;
+import edu.cornell.cis3152.team8.ProjectilePools;
 import edu.cornell.cis3152.team8.projectiles.DurianProjectile;
 import edu.cornell.cis3152.team8.GameState;
+import edu.cornell.cis3152.team8.projectiles.StrawberryProjectile;
 import edu.cornell.gdiac.assets.AssetDirectory;
 import edu.cornell.gdiac.graphics.SpriteSheet;
 
@@ -23,6 +25,7 @@ public class Durian extends Companion {
         super(x, y, id, world);
         setCompanionType(CompanionType.DURIAN);
 
+        setOriginalCost(COST);
         setCost(COST);
         setCooldown(COOLDOWN);
 
@@ -53,7 +56,9 @@ public class Durian extends Companion {
     public void useAbility(GameState state) {
         double angleStep = Math.toRadians(360.0 / NUM_ATTACKS);
         for (int i = 0; i < NUM_ATTACKS; i++) {
-            DurianProjectile projectile = new DurianProjectile(0, 0, 0, 0, state.getWorld());
+            DurianProjectile projectile = ProjectilePools.durianPool.obtain();
+            projectile.getObstacle().getBody().setActive(true);
+
             float dx = (float) Math.cos(angleStep * i) * PROJECTILE_SPEED;
             float dy = (float) Math.sin(angleStep * i) * PROJECTILE_SPEED;
             projectile.getObstacle().setLinearVelocity(new Vector2(dx, dy));

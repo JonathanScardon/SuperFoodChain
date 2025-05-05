@@ -36,7 +36,7 @@ public abstract class MultiPageScene implements Screen {
     /**
      * Settings
      */
-    private final Settings settingsScreen;
+    private static Settings settingsScreen;
     protected boolean settingsOn;
     protected Button settingsButton;
 
@@ -49,7 +49,7 @@ public abstract class MultiPageScene implements Screen {
     /**
      * The audio controller
      */
-    protected final GameAudio audio;
+    protected GameAudio audio;
 
     /**
      * The scene camera
@@ -58,9 +58,9 @@ public abstract class MultiPageScene implements Screen {
 
     public MultiPageScene(final GDXRoot game, AssetDirectory assets) {
         this.game = game;
-        settingsScreen = new Settings();
+        settingsScreen = game.settings;
         settingsOn = false;
-        audio = new GameAudio(assets);
+        audio = game.audio;
 
         //Constants
         moveSpeed = 40f;
@@ -108,22 +108,24 @@ public abstract class MultiPageScene implements Screen {
 
             if (!settingsOn) { //Level page off when settings is on
                 //Process arrows when on screen
-                if (currPage == 1 && unlockedPages > 1) {
-                    rightArrow();
-                } else if (currPage == unlockedPages && unlockedPages > 1) {
-                    leftArrow();
-                } else {
-                    leftArrow();
-                    rightArrow();
+                if (unlockedPages > 1) {
+                    if (currPage == 1) {
+                        rightArrow();
+                    } else if (currPage == unlockedPages) {
+                        leftArrow();
+                    } else {
+                        leftArrow();
+                        rightArrow();
+                    }
                 }
                 //Process user inputs
                 processButtons();
                 if (settingsButton.isPressed()) {
                     audio.play("click");
                     settingsOn = true;
-                    settingsScreen.update();
                 }
             }
+            settingsScreen.update(delta, settingsOn);
             //Exit settings with escape
             if (settingsOn && Gdx.input.isKeyPressed(Keys.ESCAPE)) {
                 settingsOn = false;
@@ -148,17 +150,19 @@ public abstract class MultiPageScene implements Screen {
         //Always draw navigation buttons
         drawButtons();
 
-        if (currPage == 1) {
-            arrowRight.draw(game.batch, !settingsOn);
-        } else if (currPage == unlockedPages) {
-            arrowLeft.draw(game.batch, !settingsOn);
-        } else {
-            arrowLeft.draw(game.batch, !settingsOn);
-            arrowRight.draw(game.batch, !settingsOn);
+        if (unlockedPages > 1) {
+            if (currPage == 1) {
+                arrowRight.draw(game.batch, !settingsOn);
+            } else if (currPage == unlockedPages) {
+                arrowLeft.draw(game.batch, !settingsOn);
+            } else {
+                arrowLeft.draw(game.batch, !settingsOn);
+                arrowRight.draw(game.batch, !settingsOn);
+            }
         }
 
         if (settingsOn) {
-            settingsScreen.draw(game.batch, currPage);
+            settingsScreen.draw(currPage);
         }
 
         game.batch.end();

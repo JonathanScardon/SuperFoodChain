@@ -7,34 +7,11 @@
   <object id="5" name="mouse" type="boss" x="57.1602" y="1057.72" width="77.0899" height="88.6667">
    <properties>
     <property name="attack0" type="object" value="7"/>
-    <property name="attack1" type="object" value="14"/>
-    <property name="attack10" type="object" value="7"/>
-    <property name="attack11" type="object" value="78"/>
-    <property name="attack12" type="object" value="75"/>
-    <property name="attack13" type="object" value="75"/>
-    <property name="attack14" type="object" value="75"/>
-    <property name="attack15" type="object" value="75"/>
-    <property name="attack16" type="object" value="7"/>
-    <property name="attack17" type="object" value="28"/>
-    <property name="attack18" type="object" value="32"/>
-    <property name="attack19" type="object" value="29"/>
-    <property name="attack2" type="object" value="9"/>
-    <property name="attack20" type="object" value="31"/>
-    <property name="attack21" type="object" value="30"/>
-    <property name="attack22" type="object" value="33"/>
-    <property name="attack23" type="object" value="7"/>
-    <property name="attack24" type="object" value="78"/>
-    <property name="attack25" type="object" value="75"/>
-    <property name="attack26" type="object" value="75"/>
-    <property name="attack27" type="object" value="75"/>
-    <property name="attack28" type="object" value="75"/>
-    <property name="attack3" type="object" value="15"/>
-    <property name="attack4" type="object" value="16"/>
-    <property name="attack5" type="object" value="17"/>
-    <property name="attack6" type="object" value="18"/>
-    <property name="attack7" type="object" value="19"/>
-    <property name="attack8" type="object" value="20"/>
-    <property name="attack9" type="object" value="21"/>
+    <property name="attack1" type="object" value="78"/>
+    <property name="attack2" type="object" value="75"/>
+    <property name="attack3" type="object" value="75"/>
+    <property name="attack4" type="object" value="75"/>
+    <property name="attack5" type="object" value="75"/>
     <property name="bossType" value="mouse"/>
     <property name="health" type="int" value="20"/>
    </properties>
@@ -42,39 +19,16 @@
   <object id="77" name="mouse" type="boss" x="1165.03" y="1043.14" width="77.0899" height="88.6667">
    <properties>
     <property name="attack0" type="object" value="74"/>
-    <property name="attack1" type="object" value="21"/>
-    <property name="attack10" type="object" value="74"/>
-    <property name="attack11" type="object" value="78"/>
-    <property name="attack12" type="object" value="75"/>
-    <property name="attack13" type="object" value="75"/>
-    <property name="attack14" type="object" value="75"/>
-    <property name="attack15" type="object" value="75"/>
-    <property name="attack16" type="object" value="74"/>
-    <property name="attack17" type="object" value="33"/>
-    <property name="attack18" type="object" value="30"/>
-    <property name="attack19" type="object" value="31"/>
-    <property name="attack2" type="object" value="20"/>
-    <property name="attack20" type="object" value="29"/>
-    <property name="attack21" type="object" value="32"/>
-    <property name="attack22" type="object" value="28"/>
-    <property name="attack23" type="object" value="7"/>
-    <property name="attack24" type="object" value="78"/>
-    <property name="attack25" type="object" value="75"/>
-    <property name="attack26" type="object" value="75"/>
-    <property name="attack27" type="object" value="75"/>
-    <property name="attack28" type="object" value="75"/>
-    <property name="attack3" type="object" value="19"/>
-    <property name="attack4" type="object" value="18"/>
-    <property name="attack5" type="object" value="17"/>
-    <property name="attack6" type="object" value="16"/>
-    <property name="attack7" type="object" value="15"/>
-    <property name="attack8" type="object" value="9"/>
-    <property name="attack9" type="object" value="14"/>
+    <property name="attack1" type="object" value="78"/>
+    <property name="attack2" type="object" value="75"/>
+    <property name="attack3" type="object" value="75"/>
+    <property name="attack4" type="object" value="75"/>
+    <property name="attack5" type="object" value="75"/>
     <property name="bossType" value="mouse"/>
     <property name="health" type="int" value="20"/>
    </properties>
   </object>
-  <object id="7" name="idle1" type="attack" x="438.834" y="360">
+  <object id="7" name="idle1" type="attack" x="425" y="360">
    <properties>
     <property name="attackDuration" type="float" value="2"/>
     <property name="attackType" value="idle"/>
@@ -82,7 +36,7 @@
     <property name="warnDuration" type="float" value="2"/>
    </properties>
   </object>
-  <object id="74" name="idle2" type="attack" x="806.181" y="362.915">
+  <object id="74" name="idle2" type="attack" x="855" y="360">
    <properties>
     <property name="attackDuration" type="float" value="2"/>
     <property name="attackType" value="idle"/>

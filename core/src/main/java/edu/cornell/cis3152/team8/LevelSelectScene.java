@@ -1,5 +1,6 @@
 package edu.cornell.cis3152.team8;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.JsonValue;
 import edu.cornell.gdiac.assets.AssetDirectory;
@@ -89,19 +90,23 @@ public class LevelSelectScene extends MultiPageScene {
             }
             y = y - levelButtonHeight - gap;
         }
-
-        unlocked = assets.getEntry("save", JsonValue.class)
-            .getInt("max_level_unlocked");
+//         unlocked = assets.getEntry("save", JsonValue.class)
+//            .getInt("max_level_unlocked");
+//
     }
 
     @Override
     public void update(float delta) {
         //Set level lock states
+        unlocked = game.save.getInteger("unlockedLevels");
         for (int i = 0; i < page1.length; i++) {
             page1[i].setLocked(i >= unlocked);
             page2[i].setLocked(i + 6 >= unlocked);
         }
         super.update(delta);
+        // System.out.println(Gdx.input.getX());
+//        System.out.println(page1[0].posX);
+//        System.out.println(page1[0].isHovering());
     }
 
     @Override
@@ -117,14 +122,14 @@ public class LevelSelectScene extends MultiPageScene {
      */
     protected void processButtons() {
         for (LevelButton b : page1) {
-            if (b.isPressed() && b.getUnlocked()) {
+            if (b.isPressed() && b.getUnlocked() && currPage == 1) {
                 audio.play("clickLevel");
                 audio.stopMusic();
                 game.exitScreen(this, b.getExitCode());
             }
         }
         for (LevelButton b : page2) {
-            if (b.isPressed() && b.getUnlocked()) {
+            if (b.isPressed() && b.getUnlocked() && currPage == 2) {
                 audio.play("click");
                 audio.stopMusic();
                 game.exitScreen(this, b.getExitCode());
@@ -216,6 +221,7 @@ public class LevelSelectScene extends MultiPageScene {
         float buttonSize = 78;
         float gap = 20; // The distance between the buttons
         float span = (buttonSize * 3) + (gap * 2);
+        settingsOn = false;
         homeButton.setPosition(x + (tray.getWidth() / 2f - span / 2), y);
         handbookButton.setPosition(homeButton.posX + homeButton.width + gap, y);
         settingsButton.setPosition(handbookButton.posX + handbookButton.width + gap, y);

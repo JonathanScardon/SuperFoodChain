@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Affine2;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
@@ -34,7 +35,7 @@ public class GameScene implements Screen {
     /**
      * Reference to the game audio
      */
-    private final GameAudio audio;
+    private GameAudio audio;
     /**
      * Reference to the game session
      */
@@ -92,10 +93,16 @@ public class GameScene implements Screen {
     private final TextureRegion hpLeft;
     private final TextureRegion hpMiddle;
     private final TextureRegion hpRight;
+    private final Texture ratIcon;
+    private final Texture chefIcon;
+    private final Texture chopsticksIcon;
+    private final Color bossTint1;
+    private final Color bossTint2;
+
     //Coins
     private final Texture coinCounter;
     private final Texture cost;
-    private final Texture costGrey;
+    private final Texture costGray;
     private final BitmapFont font;
     private static final Color fontColor = new Color(89f / 255, 43f / 255, 34f / 255, 100f);
     private final Affine2 transform;
@@ -106,7 +113,7 @@ public class GameScene implements Screen {
     /**
      * Settings and Pausing
      */
-    private final Settings settingsScreen;
+    private static Settings settingsScreen;
     private boolean settingsOn;
     private boolean paused;
 
@@ -200,7 +207,8 @@ public class GameScene implements Screen {
         this.game = game;
         this.state = new GameState(assets.getEntry("constants", JsonValue.class), assets);
         this.level = level;
-        audio = new GameAudio(assets);
+        audio = game.audio;
+        state.setAudio(audio);
 
         screenWidth = 1280;
         screenHeight = 720;
@@ -229,9 +237,16 @@ public class GameScene implements Screen {
         hpLeft = assets.getEntry("hp.foreleft", TextureRegion.class);
         hpMiddle = assets.getEntry("hp.foreground", TextureRegion.class);
         hpRight = assets.getEntry("hp.foreright", TextureRegion.class);
+        ratIcon = assets.getEntry("ratIcon", Texture.class);
+        chefIcon = assets.getEntry("chefIcon", Texture.class);
+        chopsticksIcon = assets.getEntry("chopsticksIcon", Texture.class);
+        //TODO: Change colors
+        bossTint1 = new Color(0.8f, 0.8f, 1, 1f);
+        bossTint2 = new Color(1, 0.8f, 0.8f, 1f);
+
         coinCounter = assets.getEntry("coinCounter", Texture.class);
         cost = assets.getEntry("costUI", Texture.class);
-        costGrey = assets.getEntry("costUIGrey", Texture.class);
+        costGray = assets.getEntry("costUIGray", Texture.class);
 
         transform = new Affine2();
 
@@ -244,9 +259,10 @@ public class GameScene implements Screen {
             levelMusic.append(name.getText());
         }
 
-        settingsScreen = new Settings();
+        settingsScreen = game.settings;
 
         createButtons(assets);
+        unlockHandbook();
     }
 
     private void createButtons(AssetDirectory assets) {
@@ -311,7 +327,7 @@ public class GameScene implements Screen {
         homeButton = new Button(0, 0, button, buttonHover, 1, buttonWidth, buttonHeight);
 
         button = assets.getEntry("arrow", Texture.class);
-        buttonHover = assets.getEntry("arrowNext", Texture.class);
+        buttonHover = assets.getEntry("arrowHover", Texture.class);
         nextButton = new Button(0, 0, button, buttonHover, 2, buttonWidth, buttonHeight);
 
         button = assets.getEntry("handbook", Texture.class);
@@ -336,6 +352,7 @@ public class GameScene implements Screen {
         coins = state.getCoins();
 
         projectiles = state.getActiveProjectiles();
+        ProjectilePools.initialize(world);
 
         LevelLoader.getInstance().load(this, "tiled/level_" + level + ".tmx");
         player = state.getPlayer();
@@ -429,7 +446,7 @@ public class GameScene implements Screen {
         }
 
         if (c != null) {
-            c.setCost(c.getCost() + (int) Math.floor(time / 10));
+//            c.setCost(c.getCost() + (int) Math.floor(time / 10));
             companions.add(c);
             companionSpawnIdx++;
         }
@@ -466,7 +483,7 @@ public class GameScene implements Screen {
         setLose();
 
         if (paused || winGame || loseGame) {
-            state.getAudio().stopSfx();
+            audio.stopSfx();
             for (Minion m : minions) {
                 m.update(false);
             }
@@ -476,22 +493,22 @@ public class GameScene implements Screen {
             }
         }
 
-        if (winGame || loseGame) {
+        if (winGame || loseGame && !settingsOn) {
             if (replayButton.isPressed()) {
-                state.getAudio().play("click");
+                audio.play("click");
                 reset();
             } else if (homeButton.isPressed()) {
-                state.getAudio().play("click");
+                audio.play("click");
                 dispose();
                 audio.stopMusic();
                 game.exitScreen(this, homeButton.getExitCode());
             } else if (nextButton.isPressed() && winGame) {
-                state.getAudio().play("click");
+                audio.play("click");
                 dispose();
                 audio.stopMusic();
                 game.exitScreen(this, nextButton.getExitCode());
             } else if (handbookButton.isPressed()) {
-                state.getAudio().play("click");
+                audio.play("click");
                 //Do not dispose to so can return to level
                 audio.stopMusic();
                 game.exitScreen(this, handbookButton.getExitCode());
@@ -509,13 +526,16 @@ public class GameScene implements Screen {
 
             for (int i = 0; i < companions.size; i++) {
                 companions.get(i).setId(i);
+                companions.get(i).setCost(companions.get(i).getOriginalCost() * (int) Math.ceil(
+                    player.companions.size() / 3.0f));
             }
 
+            // Player Companions use Ability
             for (Companion c : player.companions) {
                 if (c.getObstacle().isActive()) {
                     if (c.canUse()) {
                         c.useAbility(state);
-                        state.getAudio().play(c.getCompanionType().name());
+                        audio.play(c.getCompanionType().name());
                     } else {
                         c.coolDown(true, delta);
                     }
@@ -544,7 +564,7 @@ public class GameScene implements Screen {
             for (int i = 0; i < bosses.size; i++) {
                 boolean play = bossControls.get(i).update(delta);
                 if (play) {
-                    state.getAudio().play(bossControls.get(i).getAttackName());
+                    audio.play(bossControls.get(i).getAttackName());
                 }
                 bosses.get(i).update(delta, bossControls.get(i).getAction());
             }
@@ -563,36 +583,38 @@ public class GameScene implements Screen {
             if (Gdx.input.isKeyPressed(Keys.ESCAPE) && !paused) {
                 paused = true;
             }
-            if (paused) {
+            if (paused && !settingsOn) {
                 if (resumeButton.isPressed()) {
-                    state.getAudio().play("click");
+                    audio.play("click");
                     paused = false;
                 } else if (resetButton.isPressed()) {
-                    state.getAudio().play("click");
+                    audio.play("click");
                     reset();
                     paused = false;
                 } else if (exitButton.isPressed()) {
-                    state.getAudio().play("click");
+                    audio.play("click");
+                    audio.stopMusic();
                     dispose();
                     Gdx.app.exit();
                 } else if (levelsButton.isPressed()) {
-                    state.getAudio().play("click");
+                    audio.play("click");
                     dispose();
                     game.exitScreen(this, levelsButton.getExitCode());
                 } else if (handbookButtonPause.isPressed()) {
-                    state.getAudio().play("click");
-                    //Do not dispose to so can return to level
+                    audio.play("click");
+                    //Do not dispose so can return to level
                     game.exitScreen(this, handbookButtonPause.getExitCode());
                 } else if (settingsButton.isPressed()) {
-                    state.getAudio().play("click");
+                    audio.play("click");
                     settingsOn = true;
-                    settingsScreen.update();
                 }
-                if (settingsOn && Gdx.input.isKeyPressed(Keys.ESCAPE)) {
-                    settingsOn = false;
-                }
+
+            }
+            if (settingsOn && Gdx.input.isKeyPressed(Keys.ESCAPE)) {
+                settingsOn = false;
             }
         }
+        settingsScreen.update(delta, settingsOn);
         time += delta;
         //System.out.println(time);
     }
@@ -601,12 +623,11 @@ public class GameScene implements Screen {
     public void draw(float delta) {
         ScreenUtils.clear(Color.WHITE);
 
-        // World rendering
+        // Draw background first
         game.batch.setProjectionMatrix(worldCamera.combined);
         game.batch.begin(worldCamera);
         game.batch.draw(backgroundTexture, 0, 0, screenWidth, screenHeight);
 
-        // draw
         drawOrder(delta);
 
         for (ObstacleSprite o : dead) {
@@ -621,7 +642,7 @@ public class GameScene implements Screen {
                     o.draw(game.batch);
                 }
                 case "mouse", "chef", "chopsticks" -> {
-                    ((Boss) o).update(delta, 0);
+                    ((Boss) o).update(delta, InputController.CONTROL_NO_ACTION);
                     ((Boss) o).draw(game.batch, delta);
                 }
             }
@@ -638,10 +659,27 @@ public class GameScene implements Screen {
         for (Boss b : bosses) {
             b.setDamage(false);
         }
+        game.batch.end();
 
-        // UI Last
+        // Draw warning sprite borders
+        game.shape.setProjectionMatrix(worldCamera.combined);
+        game.shape.begin(ShapeRenderer.ShapeType.Filled);
 
-        //Companion costs
+        for (Boss b : bosses) {
+            b.drawWarningBorders(game.shape);
+        }
+
+        game.shape.end();
+
+        // Draw game objects
+        game.batch.begin(worldCamera);
+
+        // Warning symbols
+        for (Boss b : bosses) {
+            b.drawWarningIcons(game.batch);
+        }
+
+        // Companion costs
         for (Companion c : companions) {
             TextLayout compCost = new TextLayout(c.getCost() + "", font);
             TextLayout pressE = new TextLayout("E", font);
@@ -653,8 +691,8 @@ public class GameScene implements Screen {
                         c.getObstacle().getX() * PHYSICS_UNITS - cost.getWidth() / 2f,
                         c.getObstacle().getY() * PHYSICS_UNITS + 40f);
                 } else {
-                    game.batch.draw(costGrey,
-                        c.getObstacle().getX() * PHYSICS_UNITS - costGrey.getWidth() / 2f,
+                    game.batch.draw(costGray,
+                        c.getObstacle().getX() * PHYSICS_UNITS - costGray.getWidth() / 2f,
                         c.getObstacle().getY() * PHYSICS_UNITS + 40f);
                 }
                 SpriteBatch.computeTransform(transform, compCost.getWidth() / 2.0f,
@@ -699,6 +737,7 @@ public class GameScene implements Screen {
 
         game.batch.end();
 
+        // Draw UI elements that follow the camera
         game.batch.setProjectionMatrix(uiCamera.combined);
         game.batch.begin(uiCamera);
         // Coin Counter
@@ -707,7 +746,7 @@ public class GameScene implements Screen {
         //To shrink the number
         SpriteBatch.computeTransform(transform, coinCount.getWidth() / 2.0f,
             coinCount.getFont().getXHeight() / 2.0f, 1150,
-            83, 0.0f, numScale, numScale);
+            85, 0.0f, numScale, numScale);
         game.batch.draw(coinCounter, 1050, 50);
         game.batch.drawText(coinCount, transform);
 
@@ -742,7 +781,7 @@ public class GameScene implements Screen {
         }
         if (settingsOn) {
             game.batch.draw(dim, 0, 0);
-            settingsScreen.draw(game.batch, 1);
+            settingsScreen.draw(1);
         }
         game.batch.end();
     }
@@ -755,6 +794,8 @@ public class GameScene implements Screen {
             game.batch.draw(mouseLose, loseX, loseY);
         } else if (bosses.get(0).getName().equals("chopsticks")) {
             game.batch.draw(chopsticksLose, loseX, loseY);
+        } else if (bosses.get(0).getName().equals("chef")) {
+            game.batch.draw(chopsticksLose, loseX, loseY); //TODO: change texture
         }
         float height = loseY + replayButton.height / 2f;
         float gap = 40;
@@ -817,21 +858,41 @@ public class GameScene implements Screen {
         float w = 523;
         float cx;
         float cy = 650;
+        float padding = 10;
+        float center = (ratIcon.getWidth() + padding + w) / 2;
 
         for (int i = 0; i < numBosses; i++) {
             if (numBosses == 1) {
-                cx = 367;
+                cx = screenWidth / 2 - center;
             } else {
                 if (i == 0) {
-                    cx = 71;
+                    if (bossNames.get(0).getText().equals(bossNames.get(1).getText())) {
+                        game.batch.setColor(bossTint1);
+                    }
+                    cx = screenWidth / 2 - (center * 2) - padding;
                 } else {
-                    cx = 662;
+                    if (bossNames.get(0).getText().equals(bossNames.get(1).getText())) {
+                        game.batch.setColor(bossTint2);
+                    }
+                    cx = screenWidth / 2 + padding;
                 }
             }
             float ratio = bosses.get(i).getHealth() / bossStartHealths.get(i);
-            game.batch.drawText(bossNames.get(i), cx + (w / 2 - (bossNames.get(i).getWidth() / 2)),
+            Texture icon;
+            if (bossNames.get(i).getText().equals("mouse")) {
+                icon = ratIcon;
+            } else if (bossNames.get(i).getText().equals("chef")) {
+                icon = chefIcon;
+            } else {
+                icon = chopsticksIcon;
+            }
+            game.batch.draw(icon, cx, cy + hpBack.getRegionHeight() / 2f - (icon.getHeight() / 2f));
+            game.batch.setColor(Color.WHITE);
+            game.batch.drawText(bossNames.get(i),
+                cx + icon.getWidth() + padding + (w / 2 - (bossNames.get(i).getWidth() / 2)),
                 cy + 50);
 
+            cx += icon.getWidth() + padding;
             // "3-patch" the background
             game.batch.setColor(Color.WHITE);
             game.batch.draw(hpBack, cx, cy, hpBack.getRegionWidth(),
@@ -859,6 +920,12 @@ public class GameScene implements Screen {
     private void setWin() {
         if (!winGame) { //Only play sound once
             winGame = true;
+            String s = "level" + level + "Won";
+            if (!game.save.getBoolean(s)) {
+                game.save.putBoolean(s, true);
+                int newUnlock = game.save.getInteger("unlockedLevels") + 1;
+                game.save.putInteger("unlockedLevels", newUnlock);
+            }
             for (Boss b : bosses) {
                 if (b.getObstacle().isActive()) {
                     winGame = false;
@@ -953,7 +1020,12 @@ public class GameScene implements Screen {
     private void drawOrder(float delta) {
         everything.addAll(coins);
         everything.addAll(minions);
-        everything.addAll(bosses);
+        if (bossControls.get(0).getAttackName().equals("spin") && bosses.get(0).getState()
+            .equals("spinning")) {
+            everything.add(bosses.get(0));
+        } else {
+            everything.addAll(bosses);
+        }
         everything.addAll(companions);
         for (Companion c : player.companions) {
             everything.add(c);
@@ -968,7 +1040,19 @@ public class GameScene implements Screen {
         for (ObstacleSprite o : everything) {
             switch (o.getName()) {
                 case "minion", "companion", "coin", "player" -> o.draw(game.batch);
-                case "mouse", "chef", "chopsticks" -> ((Boss) o).draw(game.batch, delta);
+                case "mouse", "chef", "chopsticks" -> {
+                    if (bosses.size == 2 && !bosses.get(0).getState()
+                        .equals("spinning") && bossNames.get(0).getText()
+                        .equals(bossNames.get(1).getText())) {
+                        if (o.equals(bosses.get(0))) {
+                            game.batch.setColor(bossTint1);
+                        } else {
+                            game.batch.setColor(bossTint2);
+                        }
+                    }
+                    ((Boss) o).draw(game.batch, delta);
+                    game.batch.setColor(Color.WHITE);
+                }
             }
         }
 
@@ -994,4 +1078,25 @@ public class GameScene implements Screen {
         }
 
     }
+
+    private void unlockHandbook() {
+        //TODO: Manually decide which level unlocks which thing
+        String name = "";
+        if (level == 1) {
+            name = "durian";
+
+        } else if (level == 2) {
+            name = "strawberry";
+        }
+
+        if (!name.isEmpty()) {
+            boolean alreadyUnlocked = game.save.getBoolean(name);
+            if (!alreadyUnlocked) {
+                int newUnlock = game.save.getInteger("unlockedHandbook") + 1;
+                game.save.putInteger("unlockedHandbook", newUnlock);
+                game.save.putBoolean(name, true);
+            }
+        }
+    }
+
 }

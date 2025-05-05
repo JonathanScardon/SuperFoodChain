@@ -24,12 +24,13 @@ public class MainMenuScene implements Screen {
     private Button playButton;
     private Button settingsButton;
     private Button exitButton;
-    private Settings settingsScreen;
+    private static Settings settingsScreen;
     private boolean settingsOn;
     private GameAudio audio;
 
     public MainMenuScene(final GDXRoot game, AssetDirectory assets) {
         Button.setAssets(assets);
+        Settings.setAssets(assets);
 
         this.game = game;
         background = assets.getEntry("menuBackground", Texture.class);
@@ -39,9 +40,8 @@ public class MainMenuScene implements Screen {
         playButton = new Button(806, 320, button, buttonHover, 0, 429, 100, "Play");
         settingsButton = new Button(806, 220, button, buttonHover, 0, 429, 100, "Settings");
         exitButton = new Button(806, 120, button, buttonHover, 0, 429, 100, "Exit");
-        settingsScreen = new Settings();
-
-        audio = new GameAudio(assets);
+        settingsScreen = game.settings;
+        audio = game.audio;
     }
 
     public void update(float delta) {
@@ -58,7 +58,6 @@ public class MainMenuScene implements Screen {
             if (settingsButton.isPressed()) {
                 audio.play("click");
                 settingsOn = true;
-                settingsScreen.update();
             }
             if (exitButton.isPressed()) {
                 audio.play("click");
@@ -69,6 +68,7 @@ public class MainMenuScene implements Screen {
         } else if (Gdx.input.isKeyPressed(Keys.ESCAPE)) {
             settingsOn = false;
         }
+        settingsScreen.update(delta, settingsOn);
     }
 
     public void draw() {
@@ -84,13 +84,14 @@ public class MainMenuScene implements Screen {
         exitButton.draw(game.batch, !settingsOn);
 
         if (settingsOn) {
-            settingsScreen.draw(game.batch, 1);
+            settingsScreen.draw(1);
         }
 
         game.batch.end();
     }
 
     public void reset() {
+        settingsOn = false;
         audio.play("menu");
     }
 

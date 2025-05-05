@@ -52,6 +52,11 @@ public abstract class Companion extends ObstacleSprite {
     private int cost;
 
     /**
+     * Original cost of companion
+     */
+    private int originalCost;
+
+    /**
      * How long companion must wait until use ability again
      */
     private int cooldown;
@@ -83,6 +88,7 @@ public abstract class Companion extends ObstacleSprite {
     public Companion(float x, float y, int id, World world) {
         super(new CapsuleObstacle(x / UNIT_SCALE, y / UNIT_SCALE, 0.6f, 0.6f), true);
 
+        originalCost = 0;
         cost = 0;
         cooldown = DEFAULT_COOLDOWN;
         abilityCool = 0;
@@ -171,6 +177,22 @@ public abstract class Companion extends ObstacleSprite {
      */
     public void setCost(int cost) {
         this.cost = cost;
+    }
+
+    /**
+     * Get original cost of Companion
+     */
+    public int getOriginalCost() {
+        return originalCost;
+    }
+
+    ;
+
+    /**
+     * Set cost of Companion
+     */
+    public void setOriginalCost(int cost) {
+        this.originalCost = cost;
     }
 
     /**
