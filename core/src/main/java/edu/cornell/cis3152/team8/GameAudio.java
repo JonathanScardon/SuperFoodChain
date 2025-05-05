@@ -103,6 +103,15 @@ public class GameAudio {
         music.setVolume(volume);
     }
 
+    public float getSfxVolume() {
+        return sfxVolume;
+    }
+
+    public float getMusicVolume() {
+        return musicVolume;
+    }
+
+
     public void play(String name) {
         switch (name) {
             case ("click") -> {
@@ -145,7 +154,7 @@ public class GameAudio {
                 gameSfx[7].play(sfxVolume);
                 currSfx = 7;
             }
-            case ("ratHit") -> {
+            case ("mouseHit") -> {
                 gameSfx[8].play(sfxVolume);
                 currSfx = 8;
             }

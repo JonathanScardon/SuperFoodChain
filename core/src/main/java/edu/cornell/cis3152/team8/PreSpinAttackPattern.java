@@ -35,16 +35,17 @@ public class PreSpinAttackPattern extends BossAttackPattern {
         switch (dir) {
             case "left" -> {
                 this.controlCode = CONTROL_MOVE_LEFT;
-                this.warnPattern = new BossWarnPattern(1280f / PHYSICS_UNITS / 2f, startY);
+                this.warnPattern = new RectWarnPattern(1280f / PHYSICS_UNITS / 2f, startY, 0, 0);
             }
             case "right" -> {
                 this.controlCode = CONTROL_MOVE_RIGHT;
-                this.warnPattern = new BossWarnPattern(1280f / PHYSICS_UNITS / 2f, startY);
+                this.warnPattern = new RectWarnPattern(1280f / PHYSICS_UNITS / 2f, startY, 0, 0);
                 boss.flipHorizontal = true;
             }
             default -> throw new IllegalArgumentException("Unknown direction: " + dir);
         }
         this.warnPattern.setSpriteSheet(warnSprite);
+        this.boss.warnPatterns.add(warnPattern);
     }
 
     @Override
@@ -53,7 +54,6 @@ public class PreSpinAttackPattern extends BossAttackPattern {
         boss.setAnimation("dashHorizontal");
         warnTime = warnDuration;
         warnPattern.active = true;
-        boss.curWarn = warnPattern;
     }
 
     public void attack() {
@@ -68,6 +68,7 @@ public class PreSpinAttackPattern extends BossAttackPattern {
             boss.getObstacle()
                 .setPosition(new Vector2(startX / PHYSICS_UNITS, startY / PHYSICS_UNITS));
             controller.setAction(CONTROL_NO_ACTION);
+            boss.getObstacle().setAngle(90);
             boss.setAnimation("spin");
             boss.flipHorizontal = false;
         } else if (controlCode == CONTROL_MOVE_LEFT
@@ -76,6 +77,7 @@ public class PreSpinAttackPattern extends BossAttackPattern {
             boss.getObstacle()
                 .setPosition(new Vector2(startX / PHYSICS_UNITS, startY / PHYSICS_UNITS));
             controller.setAction(CONTROL_NO_ACTION);
+            boss.getObstacle().setAngle(90);
             boss.setAnimation("spin");
         }
     }

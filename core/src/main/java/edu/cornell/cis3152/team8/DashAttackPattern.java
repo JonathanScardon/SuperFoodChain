@@ -24,7 +24,7 @@ public class DashAttackPattern extends BossAttackPattern {
     private static final float PHYSICS_UNITS = 64f;
 
     public DashAttackPattern(BossController controller, float x, float y, String dir,
-        float warnDuration, float moveSpeed, SpriteSheet warnSprite) {
+                             float warnDuration, float moveSpeed, SpriteSheet warnSprite) {
         super(controller);
 
         attackName = "dash";
@@ -36,28 +36,30 @@ public class DashAttackPattern extends BossAttackPattern {
         switch (dir) {
             case "up":
                 this.controlCode = CONTROL_MOVE_UP;
-                this.warnPattern = new BossWarnPattern(startX, 720f / PHYSICS_UNITS / 2f);
+                this.warnPattern = new RectWarnPattern(startX, 720f / PHYSICS_UNITS / 2f, 100, 720);
                 break;
             case "down":
                 this.controlCode = CONTROL_MOVE_DOWN;
-                this.warnPattern = new BossWarnPattern(startX, 720f / PHYSICS_UNITS / 2f);
+                this.warnPattern = new RectWarnPattern(startX, 720f / PHYSICS_UNITS / 2f, 100, 720);
                 break;
             case "left":
                 this.controlCode = CONTROL_MOVE_LEFT;
-                this.warnPattern = new BossWarnPattern(1280f / PHYSICS_UNITS / 2f, startY);
+                this.warnPattern = new RectWarnPattern(1280f / PHYSICS_UNITS / 2f, startY, 1280, 100);
                 break;
             case "right":
                 this.controlCode = CONTROL_MOVE_RIGHT;
-                this.warnPattern = new BossWarnPattern(1280f / PHYSICS_UNITS / 2f, startY);
+                this.warnPattern = new RectWarnPattern(1280f / PHYSICS_UNITS / 2f, startY, 1280, 100);
                 break;
             default:
                 throw new IllegalArgumentException("Unknown direction: " + dir);
         }
         this.warnPattern.setSpriteSheet(warnSprite);
+        boss.warnPatterns.add(this.warnPattern);
     }
 
     @Override
     public void start() {
+        boss.setState("dash");
         state = AttackState.WARN;
         controller.setAction(CONTROL_NO_ACTION);
 
@@ -85,16 +87,14 @@ public class DashAttackPattern extends BossAttackPattern {
                 break;
         }
 
-        // TODO: this should be moved to attack() if we have a separate warn animation
         if (controlCode == CONTROL_MOVE_UP || controlCode == CONTROL_MOVE_DOWN) {
-            boss.setAnimation("dashVertical");
+            boss.setAnimation("dashVertical", 0f);
         } else if (controlCode == CONTROL_MOVE_LEFT || controlCode == CONTROL_MOVE_RIGHT) {
-            boss.setAnimation("dashHorizontal");
+            boss.setAnimation("dashHorizontal", 0f);
         }
 
         warnTime = warnDuration;
         warnPattern.active = true;
-        boss.curWarn = warnPattern;
     }
 
     public void attack() {
@@ -103,10 +103,15 @@ public class DashAttackPattern extends BossAttackPattern {
         origMoveSpeed = boss.moveSpeed;
         boss.moveSpeed = moveSpeed;
 
+        if (controlCode == CONTROL_MOVE_UP || controlCode == CONTROL_MOVE_DOWN) {
+            boss.setAnimation("dashVertical", 0.1f);
+        } else if (controlCode == CONTROL_MOVE_LEFT || controlCode == CONTROL_MOVE_RIGHT) {
+            boss.setAnimation("dashHorizontal", 0.1f);
+        }
+
         this.spawnMinions();
 
         warnPattern.active = false;
-        boss.curWarn = null;
     }
 
     @Override

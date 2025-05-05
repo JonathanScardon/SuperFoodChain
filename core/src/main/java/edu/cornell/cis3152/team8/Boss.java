@@ -1,10 +1,12 @@
 package edu.cornell.cis3152.team8;
 
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Filter;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.JsonValue;
 import edu.cornell.gdiac.graphics.SpriteBatch;
 import edu.cornell.gdiac.graphics.SpriteSheet;
@@ -31,28 +33,27 @@ public class Boss extends ObstacleSprite {
     /**
      * How fast we change frames
      */
-    private static float animationSpeed;
+    private float animationSpeed;
     private static float deathAnimationSpeed;
-    private float curranimationSpeed;
 
     // local properties
     /**
      * Map of animation name to the sprite sheet associated with it
      */
-    private Map<String, SpriteSheet> animationMap;
+    private final Map<String, SpriteSheet> animationMap;
     /**
-     * Current angle of the sprite
+     * Scale of the sprite
      */
-    protected float angle;
+    protected Vector2 spriteScale;
     /**
      * Whether the sprite is flipped in each direction
      */
     protected boolean flipVertical;
     protected boolean flipHorizontal;
     /**
-     * The warn pattern that the boss is currently drawing
+     * List of warn patterns used by this boss
      */
-    protected BossWarnPattern curWarn;
+    protected Array<BossWarnPattern> warnPatterns;
     /**
      * How far forward this boss can move in a single turn
      */
@@ -78,26 +79,29 @@ public class Boss extends ObstacleSprite {
     public static void setConstants(JsonValue constants) {
         SPEED_DAMP = constants.getFloat("speedDamp", 0.75f);
         EPSILON = constants.getFloat("epsilon", 0.01f);
-        animationSpeed = constants.getFloat("animationSpeed", 0.1f);
         deathAnimationSpeed = constants.getFloat("deathAnimationSpeed", 0.1f);
     }
 
     private static final float PHYSICS_UNITS = 64f;
 
-    public Boss(float x, float y, int health, String name, World world) {
-        super(new CapsuleObstacle(x, y, 1.5f, 1.5f), true);
+    public Boss(float x, float y, float width, float height, int health, String name, World world) {
+        super(new CapsuleObstacle(x, y, width, height), true);
+
         this.health = health;
         startHealth = health;
         this.name = name;
-        angle = 0f;
+        obstacle.setAngle(0f);
         flipHorizontal = false;
         flipVertical = false;
         damage = false;
         moveSpeed = 0;
         animationMap = new HashMap<>();
+        warnPatterns = new Array<>();
         dead = false;
         remove = false;
-        curranimationSpeed = animationSpeed;
+        animationSpeed = 0.1f;
+
+        spriteScale = new Vector2(0.4f, 0.4f);
 
         obstacle = getObstacle();
         obstacle.setName("boss");
@@ -171,15 +175,18 @@ public class Boss extends ObstacleSprite {
                 }
             }
             obstacle.setLinearVelocity(velocity);
-            if (curWarn != null) {
-                curWarn.update(delta);
+
+            for (BossWarnPattern warn : warnPatterns) {
+                if (warn.active) {
+                    warn.update(delta);
+                }
             }
         } else {
             obstacle.setLinearVelocity(new Vector2());
         }
 
-        if (sprite != null && (controlCode != InputController.CONTROL_NO_ACTION || dead)) {
-            animeframe += curranimationSpeed;
+        if (sprite != null) {
+            animeframe += animationSpeed;
             if (animeframe >= sprite.getSize() && getObstacle().isActive()) {
                 animeframe -= sprite.getSize();
             }
@@ -206,17 +213,18 @@ public class Boss extends ObstacleSprite {
      * @param batch The sprite batch
      */
     public void draw(SpriteBatch batch, float delta) {
+        float scaleX = spriteScale.x * (flipHorizontal ? -1 : 1);
+        float scaleY = spriteScale.y * (flipVertical ? -1 : 1);
         SpriteBatch.computeTransform(transform, sprite.getRegionWidth() / 2.0f,
             sprite.getRegionHeight() / 2.0f, obstacle.getPosition().x * PHYSICS_UNITS,
-            obstacle.getPosition().y * PHYSICS_UNITS, angle, 0.4f * (flipHorizontal ? -1 : 1),
-            0.4f * (flipVertical ? -1 : 1));
+            obstacle.getPosition().y * PHYSICS_UNITS, obstacle.getAngle(), scaleX,
+            scaleY);
 
         if (!obstacle.isActive()) { // if destroyed...
             if (!dead) {
                 animeframe = 0;
-                curranimationSpeed = deathAnimationSpeed;
                 dead = true;
-                setAnimation("death");
+                setAnimation("death", deathAnimationSpeed);
             }
             if (animeframe < sprite.getSize()) { // and animation is not over
                 sprite.setFrame((int) animeframe);
@@ -236,12 +244,20 @@ public class Boss extends ObstacleSprite {
             batch.draw(sprite, transform);
             batch.setColor(Color.WHITE);
 
-            if (curWarn != null) {
-                curWarn.draw(batch, delta);
-            }
             damage = false;
         }
+    }
 
+    public void drawWarningIcons(SpriteBatch batch) {
+        for (BossWarnPattern warn : warnPatterns) {
+            warn.drawIcon(batch);
+        }
+    }
+
+    public void drawWarningBorders(ShapeRenderer shape) {
+        for (BossWarnPattern warn : warnPatterns) {
+            warn.drawBorder(shape);
+        }
     }
 
     public void setDamage(boolean hit) {
@@ -270,9 +286,10 @@ public class Boss extends ObstacleSprite {
      * Set the current sprite sheet to the animation which corresponds to the name If it cannot be
      * found, it just sets it to the default sprite sheet
      *
-     * @param name the name of the animation we want to use
+     * @param name           the name of the animation we want to use
+     * @param animationSpeed the speed of the animation
      */
-    public void setAnimation(String name) {
+    public void setAnimation(String name, float animationSpeed) {
         animeframe = 0;
         if (!animationMap.containsKey(name)) {
             // sprite sheet not found, using default
@@ -281,7 +298,12 @@ public class Boss extends ObstacleSprite {
         if (!animationMap.containsKey("default")) {
             throw new RuntimeException("Boss does not have a default animation");
         }
+        this.animationSpeed = animationSpeed;
         this.setSpriteSheet(animationMap.get(name));
+    }
+
+    public void setAnimation(String name) {
+        setAnimation(name, animationSpeed);
     }
 
     public void setAnimationSpeed(float speed) {

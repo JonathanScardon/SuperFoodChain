@@ -1,0 +1,45 @@
+
+VolumeBarSkin.png
+size: 512, 512
+format: RGBA8888
+filter: Linear, Linear
+repeat: none
+VolumeBack
+  rotate: false
+  xy: 1, 298
+  size: 313, 33
+  orig: 313, 33
+  offset: 0, 0
+  index: -1
+VolumeInside
+  rotate: false
+  xy: 1, 263
+  size: 313, 33
+  orig: 313, 33
+  offset: 0, 0
+  index: -1
+Test
+  rotate: false
+  xy: 1, 263
+  size: 313, 33
+  split: 17, 0, 0, 0
+  pad: 0, 0, 0, 0
+  orig: 313, 33
+  offset: 0, 0
+  index: -1
+VolumeBarInside
+  rotate: false
+  xy: 1, 263
+  size: 313, 33
+  split: 18, 18, 0, 0
+  pad: 22, 0, 11, 8
+  orig: 313, 33
+  offset: 0, 0
+  index: -1
+VolumeKnob
+  rotate: false
+  xy: 316, 286
+  size: 17, 45
+  orig: 17, 45
+  offset: 0, 0
+  index: -1

@@ -27,8 +27,9 @@ public class SnatchAttackPattern extends BossAttackPattern {
         this.warnDuration = warnDuration;
         this.attackDuration = attackDuration;
 
-        this.warnPattern = new BossWarnPattern(0, 0);
+        this.warnPattern = new RectWarnPattern(0, 0, 100, 100);
         this.warnPattern.setSpriteSheet(warnSprite);
+        boss.warnPatterns.add(this.warnPattern);
 
         this.state = AttackState.INACTIVE;
     }
@@ -38,6 +39,7 @@ public class SnatchAttackPattern extends BossAttackPattern {
         state = AttackState.WARN;
         controller.setAction(InputController.CONTROL_NO_ACTION);
 
+        boss.setAnimationSpeed(.2f);
         boss.setAnimation("snatch");
 
         attackX = player.getPlayerHead().getObstacle().getPosition().x;
@@ -47,7 +49,6 @@ public class SnatchAttackPattern extends BossAttackPattern {
         attackTime = attackDuration;
 
         warnPattern.active = true;
-        boss.curWarn = warnPattern;
     }
 
     public void attack() {
@@ -61,7 +62,6 @@ public class SnatchAttackPattern extends BossAttackPattern {
         this.spawnMinions();
 
         warnPattern.active = false;
-        boss.curWarn = null;
     }
 
     @Override
@@ -78,6 +78,7 @@ public class SnatchAttackPattern extends BossAttackPattern {
                 if (attackTime > 0) {
                     attackTime -= delta;
                 } else {
+                    boss.setAnimationSpeed(.1f);
                     state = AttackState.ENDED;
                 }
                 break;

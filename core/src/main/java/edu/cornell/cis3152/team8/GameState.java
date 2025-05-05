@@ -101,16 +101,14 @@ public class GameState {
     protected int numAvocados;
     protected int numBlueRaspberries;
     protected int numDurians;
-
     private GameAudio audio;
+
 
     /**
      * Creates a new game session. This method will call reset() to set up the board.
      */
     public GameState(JsonValue constants, AssetDirectory assets) {
         this.constants = constants;
-
-        audio = new GameAudio(assets);
 
         companions = new Array<>();
 
@@ -390,4 +388,9 @@ public class GameState {
     public GameAudio getAudio() {
         return audio;
     }
+
+    public void setAudio(GameAudio audio) {
+        this.audio = audio;
+    }
+
 }

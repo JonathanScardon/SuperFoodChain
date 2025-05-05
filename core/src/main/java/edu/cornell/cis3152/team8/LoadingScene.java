@@ -164,6 +164,11 @@ public class LoadingScene implements Screen {
         return assets;
     }
 
+    private final SpriteSheet companions;
+    private float animationFrame;
+    private final float animationSpeed;
+    private float posX;
+
     /**
      * Creates a LoadingMode with the default budget, size and position.
      *
@@ -198,6 +203,11 @@ public class LoadingScene implements Screen {
         constants = internal.getEntry("constants", JsonValue.class);
         resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
+        companions = internal.getEntry("companion hop.animation", SpriteSheet.class);
+        animationFrame = 0;
+        animationSpeed = constants.getFloat("animation speed");
+        posX = -companions.getRegionWidth();
+
         // No progress so far
         progress = 0;
 
@@ -227,7 +237,19 @@ public class LoadingScene implements Screen {
      * @param delta Number of seconds since last animation frame
      */
     private void update(float delta) {
+        animationFrame += animationSpeed;
+        if ((companions != null)) {
+            animationFrame += animationSpeed;
+            if (animationFrame >= companions.getSize()) {
+                animationFrame -= companions.getSize();
+            }
+        }
+        posX += 10;
+        if (posX > 1280 && companions != null) {
+            posX = -companions.getRegionWidth();
+        }
         if (progress < 1.0f) {
+
             assets.update(budget);
             this.progress = assets.getProgress();
             if (progress >= 1.0f) {
@@ -254,7 +276,7 @@ public class LoadingScene implements Screen {
         Texture texture = internal.getEntry("splash", Texture.class);
 
         batch.draw(texture, 0, 0, width, height);
-
+        drawHop();
         if (progress < 1.0f) {
             drawProgress();
         }
@@ -303,6 +325,13 @@ public class LoadingScene implements Screen {
                 region2.getRegionWidth(), region2.getRegionHeight());
         }
 
+    }
+
+    private void drawHop() {
+        float cy = (int) (constants.getFloat("bar.height") * height * 1.5);
+        companions.setFrame((int) animationFrame);
+        batch.draw(internal.getEntry("companion hop.animation", SpriteSheet.class),
+            posX, cy);
     }
 
     // ADDITIONAL SCREEN METHODS
