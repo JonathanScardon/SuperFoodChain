@@ -54,6 +54,7 @@ public class DashAttackPattern extends BossAttackPattern {
                 throw new IllegalArgumentException("Unknown direction: " + dir);
         }
         this.warnPattern.setSpriteSheet(warnSprite);
+        boss.warnPatterns.add(this.warnPattern);
     }
 
     @Override
@@ -94,7 +95,6 @@ public class DashAttackPattern extends BossAttackPattern {
 
         warnTime = warnDuration;
         warnPattern.active = true;
-        boss.curWarn = warnPattern;
     }
 
     public void attack() {
@@ -112,7 +112,6 @@ public class DashAttackPattern extends BossAttackPattern {
         this.spawnMinions();
 
         warnPattern.active = false;
-        boss.curWarn = null;
     }
 
     @Override
