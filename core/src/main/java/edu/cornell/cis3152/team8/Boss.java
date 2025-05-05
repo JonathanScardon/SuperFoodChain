@@ -1,10 +1,12 @@
 package edu.cornell.cis3152.team8;
 
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Filter;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.JsonValue;
 import edu.cornell.gdiac.graphics.SpriteBatch;
 import edu.cornell.gdiac.graphics.SpriteSheet;
@@ -40,10 +42,6 @@ public class Boss extends ObstacleSprite {
      */
     private final Map<String, SpriteSheet> animationMap;
     /**
-     * Current angle of the sprite
-     */
-    protected float angle;
-    /**
      * Scale of the sprite
      */
     protected Vector2 spriteScale;
@@ -53,9 +51,9 @@ public class Boss extends ObstacleSprite {
     protected boolean flipVertical;
     protected boolean flipHorizontal;
     /**
-     * The warn pattern that the boss is currently drawing
+     * List of warn patterns used by this boss
      */
-    protected BossWarnPattern curWarn;
+    protected Array<BossWarnPattern> warnPatterns;
     /**
      * How far forward this boss can move in a single turn
      */
@@ -92,12 +90,13 @@ public class Boss extends ObstacleSprite {
         this.health = health;
         startHealth = health;
         this.name = name;
-        angle = 0f;
+        obstacle.setAngle(0f);
         flipHorizontal = false;
         flipVertical = false;
         damage = false;
         moveSpeed = 0;
         animationMap = new HashMap<>();
+        warnPatterns = new Array<>();
         dead = false;
         remove = false;
         animationSpeed = 0.1f;
@@ -176,8 +175,11 @@ public class Boss extends ObstacleSprite {
                 }
             }
             obstacle.setLinearVelocity(velocity);
-            if (curWarn != null) {
-                curWarn.update(delta);
+
+            for (BossWarnPattern warn : warnPatterns) {
+                if (warn.active) {
+                    warn.update(delta);
+                }
             }
         } else {
             obstacle.setLinearVelocity(new Vector2());
@@ -215,7 +217,7 @@ public class Boss extends ObstacleSprite {
         float scaleY = spriteScale.y * (flipVertical ? -1 : 1);
         SpriteBatch.computeTransform(transform, sprite.getRegionWidth() / 2.0f,
             sprite.getRegionHeight() / 2.0f, obstacle.getPosition().x * PHYSICS_UNITS,
-            obstacle.getPosition().y * PHYSICS_UNITS, angle, scaleX,
+            obstacle.getPosition().y * PHYSICS_UNITS, obstacle.getAngle(), scaleX,
             scaleY);
 
         if (!obstacle.isActive()) { // if destroyed...
@@ -242,12 +244,20 @@ public class Boss extends ObstacleSprite {
             batch.draw(sprite, transform);
             batch.setColor(Color.WHITE);
 
-            if (curWarn != null) {
-                curWarn.draw(batch, delta);
-            }
             damage = false;
         }
+    }
 
+    public void drawWarningIcons(SpriteBatch batch) {
+        for (BossWarnPattern warn : warnPatterns) {
+            warn.drawIcon(batch);
+        }
+    }
+
+    public void drawWarningBorders(ShapeRenderer shape) {
+        for (BossWarnPattern warn : warnPatterns) {
+            warn.drawBorder(shape);
+        }
     }
 
     public void setDamage(boolean hit) {
@@ -276,7 +286,7 @@ public class Boss extends ObstacleSprite {
      * Set the current sprite sheet to the animation which corresponds to the name If it cannot be
      * found, it just sets it to the default sprite sheet
      *
-     * @param name the name of the animation we want to use
+     * @param name           the name of the animation we want to use
      * @param animationSpeed the speed of the animation
      */
     public void setAnimation(String name, float animationSpeed) {

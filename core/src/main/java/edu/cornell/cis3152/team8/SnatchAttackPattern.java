@@ -27,8 +27,9 @@ public class SnatchAttackPattern extends BossAttackPattern {
         this.warnDuration = warnDuration;
         this.attackDuration = attackDuration;
 
-        this.warnPattern = new BossWarnPattern(0, 0);
+        this.warnPattern = new BossWarnPattern(0, 0, 100, 100);
         this.warnPattern.setSpriteSheet(warnSprite);
+        boss.warnPatterns.add(this.warnPattern);
 
         this.state = AttackState.INACTIVE;
     }
@@ -48,7 +49,6 @@ public class SnatchAttackPattern extends BossAttackPattern {
         attackTime = attackDuration;
 
         warnPattern.active = true;
-        boss.curWarn = warnPattern;
     }
 
     public void attack() {
@@ -62,7 +62,6 @@ public class SnatchAttackPattern extends BossAttackPattern {
         this.spawnMinions();
 
         warnPattern.active = false;
-        boss.curWarn = null;
     }
 
     @Override

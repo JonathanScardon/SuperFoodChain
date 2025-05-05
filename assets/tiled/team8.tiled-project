@@ -45,7 +45,8 @@
                 "dash",
                 "snatch",
                 "spin",
-                "camera"
+                "camera",
+                "multi"
             ],
             "valuesAsFlags": false
         },

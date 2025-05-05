@@ -29,8 +29,9 @@ public class IdleAttackPattern extends BossAttackPattern {
         this.attackDuration = attackDuration;
         this.flipHorizontal = flipHorizontal;
 
-        this.warnPattern = new BossWarnPattern(this.idleX, this.idleY);
+        this.warnPattern = new BossWarnPattern(this.idleX, this.idleY, 100, 100);
         this.warnPattern.setSpriteSheet(warnSprite);
+        this.boss.warnPatterns.add(this.warnPattern);
     }
 
     @Override
@@ -40,13 +41,12 @@ public class IdleAttackPattern extends BossAttackPattern {
         controller.setAction(CONTROL_NO_ACTION);
 
         boss.setAnimation("idle");
-        boss.angle = 0f;
+        boss.getObstacle().setAngle(0);
 
         warnTime = warnDuration;
         attackTime = attackDuration;
 
         warnPattern.active = true;
-        boss.curWarn = warnPattern;
     }
 
     public void attack() {
@@ -61,7 +61,6 @@ public class IdleAttackPattern extends BossAttackPattern {
         this.spawnMinions();
 
         warnPattern.active = false;
-        boss.curWarn = null;
     }
 
     @Override
