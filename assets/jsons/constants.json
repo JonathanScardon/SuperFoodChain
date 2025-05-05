@@ -41,6 +41,11 @@
     "numAttacks": 8,
     "projectileSpeed": 8
   },
+  "garlic": {
+    "cost": 1,
+    "cooldown": 2,
+    "animationSpeed": 0.25
+  },
   "coin": {
     "life": 300,
     "size": 0.3,
@@ -75,5 +80,9 @@
   "durianProjectile": {
     "maxLife": 15,
     "attack": 2
+  },
+  "garlicProjectile": {
+    "maxLife": 500,
+    "attack": 1
   }
 }
