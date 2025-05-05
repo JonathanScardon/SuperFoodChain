@@ -352,7 +352,6 @@ public class GameScene implements Screen {
         coins = state.getCoins();
 
         projectiles = state.getActiveProjectiles();
-        ProjectilePools.initialize(world);
 
         LevelLoader.getInstance().load(this, "tiled/level_" + level + ".tmx");
         player = state.getPlayer();

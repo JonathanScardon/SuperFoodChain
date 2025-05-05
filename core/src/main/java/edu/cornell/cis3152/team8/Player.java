@@ -4,8 +4,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.math.*;
-import com.badlogic.gdx.physics.box2d.Filter;
-import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.JsonValue;
 import edu.cornell.cis3152.team8.companions.BlueRaspberry;
 import edu.cornell.cis3152.team8.companions.Durian;
@@ -400,8 +399,26 @@ public class Player {
         filter.categoryBits = CollisionController.PLAYER_CATEGORY;
         filter.maskBits =
             CollisionController.MINION_CATEGORY | CollisionController.COMPANION_CATEGORY
-                | CollisionController.COIN_CATEGORY | CollisionController.BOSS_CATEGORY | CollisionController.PLAYER_CATEGORY;
+                | CollisionController.COIN_CATEGORY | CollisionController.BOSS_CATEGORY;
         companion.getObstacle().setFilterData(filter);
+
+        CircleShape shape = new CircleShape();
+        shape.setPosition(companion.getObstacle().getPosition());
+        shape.setRadius(0.3f);
+
+        FixtureDef selfFixtureDef = new FixtureDef();
+        selfFixtureDef.shape = shape;
+        selfFixtureDef.isSensor = true;
+
+        Filter selfFilter = new Filter();
+        selfFilter.categoryBits = CollisionController.PLAYER_CATEGORY;
+        selfFilter.maskBits = CollisionController.PLAYER_CATEGORY;
+
+        Fixture selfFixture = companion.getObstacle().getBody().createFixture(selfFixtureDef);
+        selfFixture.setFilterData(selfFilter);
+        selfFixture.setUserData(this);
+
+        shape.dispose();
 
         CircularBuffer.PositionAndDirection tail = controlBuffer.getSnapshot(companions.size());
         //do not add if there is not enough data
