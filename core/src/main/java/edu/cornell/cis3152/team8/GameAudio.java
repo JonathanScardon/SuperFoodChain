@@ -154,7 +154,7 @@ public class GameAudio {
                 gameSfx[7].play(sfxVolume);
                 currSfx = 7;
             }
-            case ("ratHit") -> {
+            case ("mouseHit") -> {
                 gameSfx[8].play(sfxVolume);
                 currSfx = 8;
             }

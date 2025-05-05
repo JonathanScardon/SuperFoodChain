@@ -36,6 +36,7 @@ public class BossController implements InputController {
         this.action = CONTROL_NO_ACTION;
         this.attackPatterns = new Array<>();
         this.curAttackIdx = 0;
+        attackName = "idle";
     }
 
     /**
@@ -48,8 +49,8 @@ public class BossController implements InputController {
     }
 
     /**
-     * Starts the current attack of the boss. If there are no attacks left, resets the current attack
-     * index to 0. If the boss has no attack patterns, does nothing.
+     * Starts the current attack of the boss. If there are no attacks left, resets the current
+     * attack index to 0. If the boss has no attack patterns, does nothing.
      */
     public void startAttack() {
         if (this.attackPatterns.size == 0) {

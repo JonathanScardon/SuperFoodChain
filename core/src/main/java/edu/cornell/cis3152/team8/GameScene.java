@@ -511,7 +511,8 @@ public class GameScene implements Screen {
 
             for (int i = 0; i < companions.size; i++) {
                 companions.get(i).setId(i);
-                companions.get(i).setCost(companions.get(i).getOriginalCost() * (int)Math.ceil(player.companions.size() / 3.0f));
+                companions.get(i).setCost(companions.get(i).getOriginalCost() * (int) Math.ceil(
+                    player.companions.size() / 3.0f));
             }
 
             // Player Companions use Ability
@@ -959,7 +960,12 @@ public class GameScene implements Screen {
     private void drawOrder(float delta) {
         everything.addAll(coins);
         everything.addAll(minions);
-        everything.addAll(bosses);
+        if (bossControls.get(0).getAttackName().equals("spin") && bosses.get(0).getState()
+            .equals("spinning")) {
+            everything.add(bosses.get(0));
+        } else {
+            everything.addAll(bosses);
+        }
         everything.addAll(companions);
         for (Companion c : player.companions) {
             everything.add(c);

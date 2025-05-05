@@ -105,7 +105,6 @@ public class SpinAttackPattern extends BossAttackPattern {
             boss.moveSpeed = moveSpeed;
             warnPattern.active = false;
             boss.curWarn = null;
-
             this.spawnMinions();
         }
     }
@@ -122,6 +121,7 @@ public class SpinAttackPattern extends BossAttackPattern {
                             .equals(gamestate.getBosses().get(1).getObstacle().getPosition())) {
                             preSpin.update(delta);
                         } else {
+                            boss.setState("spinning");
                             boss.setAnimation("spin");
                             boss.setAnimationFrame(0);
                         }
@@ -137,6 +137,7 @@ public class SpinAttackPattern extends BossAttackPattern {
                     }
                 }
                 case ATTACK -> {
+                    boss.angle += 45;
                     if (atWall()) {
                         state = AttackState.ENDED;
                         boss.moveSpeed = origMoveSpeed;
@@ -151,7 +152,6 @@ public class SpinAttackPattern extends BossAttackPattern {
         if (twoBosses()) {
             Vector2 pos = boss.getObstacle().getPosition();
             boolean wall = atWall();
-            System.out.println(boss + " " + wall);
             float scootX;
             float scootY;
             if (wall) {
@@ -221,7 +221,6 @@ public class SpinAttackPattern extends BossAttackPattern {
 
     private boolean atWall() {
         Vector2 pos = boss.getObstacle().getPosition();
-        System.out.println(pos.x * PHYSICS_UNITS + ", " + pos.y * PHYSICS_UNITS);
         return pos.x >= 1280 / PHYSICS_UNITS || pos.x <= 0 || pos.y >= 720 / PHYSICS_UNITS
             || pos.y <= 0;
     }
