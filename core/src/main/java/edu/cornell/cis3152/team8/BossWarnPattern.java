@@ -85,7 +85,7 @@ public abstract class BossWarnPattern {
             return;
         }
 
-        SpriteBatch.computeTransform(transform, 70.5f, sprite.getRegionHeight() / 2.0f, this.x * PHYSICS_UNITS, this.y * PHYSICS_UNITS, angle, 0.6f, 0.6f);
+        SpriteBatch.computeTransform(transform, 70.5f, sprite.getRegionHeight() / 2.0f, this.x * PHYSICS_UNITS, this.y * PHYSICS_UNITS, 0, 0.6f, 0.6f);
         sprite.setFrame((int) animeframe);
         batch.setColor(Color.WHITE);
         batch.draw(sprite, transform);
