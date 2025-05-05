@@ -38,7 +38,7 @@ public class SpinAttackPattern extends BossAttackPattern {
         this.moveSpeed = moveSpeed;
         startX = 640 / PHYSICS_UNITS;
         startY = 360 / PHYSICS_UNITS;
-        warnPattern = new BossWarnPattern(0, 0, 0, 0);
+        warnPattern = new SpinWarnPattern(0, 0, 100);
         warnPattern.setSpriteSheet(warnSprite);
         this.boss.warnPatterns.add(warnPattern);
 
