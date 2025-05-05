@@ -19,7 +19,7 @@ public class IdleAttackPattern extends BossAttackPattern {
     private float attackTime;
 
     public IdleAttackPattern(BossController controller, float x, float y, float warnDuration,
-                             float attackDuration, boolean flipHorizontal, SpriteSheet warnSprite) {
+            float attackDuration, boolean flipHorizontal, SpriteSheet warnSprite) {
         super(controller);
 
         attackName = "idle";
@@ -35,6 +35,7 @@ public class IdleAttackPattern extends BossAttackPattern {
 
     @Override
     public void start() {
+        boss.setState("idle");
         state = AttackState.WARN;
         controller.setAction(CONTROL_NO_ACTION);
 

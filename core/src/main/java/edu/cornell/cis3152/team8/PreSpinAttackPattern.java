@@ -68,6 +68,7 @@ public class PreSpinAttackPattern extends BossAttackPattern {
             boss.getObstacle()
                 .setPosition(new Vector2(startX / PHYSICS_UNITS, startY / PHYSICS_UNITS));
             controller.setAction(CONTROL_NO_ACTION);
+            boss.angle = 90;
             boss.setAnimation("spin");
             boss.flipHorizontal = false;
         } else if (controlCode == CONTROL_MOVE_LEFT
@@ -76,6 +77,7 @@ public class PreSpinAttackPattern extends BossAttackPattern {
             boss.getObstacle()
                 .setPosition(new Vector2(startX / PHYSICS_UNITS, startY / PHYSICS_UNITS));
             controller.setAction(CONTROL_NO_ACTION);
+            boss.angle = 90;
             boss.setAnimation("spin");
         }
     }
