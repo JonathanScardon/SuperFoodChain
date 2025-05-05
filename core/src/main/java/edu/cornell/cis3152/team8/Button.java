@@ -189,4 +189,9 @@ public class Button {
             return false;
         }
     }
+
+    public void setTexture(Texture button, Texture buttonHover) {
+        texture = button;
+        hover = buttonHover;
+    }
 }

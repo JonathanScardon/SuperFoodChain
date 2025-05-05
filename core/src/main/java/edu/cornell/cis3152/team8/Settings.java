@@ -32,7 +32,16 @@ public class Settings {
     public static Slider sfxSlider;
     private static Button musicButton;
     private static Button sfxButton;
+    private static Button xButton;
     private static Button saveResetButton;
+    private static Texture music;
+    private static Texture musicHover;
+    private static Texture sfx;
+    private static Texture sfxHover;
+    private static Texture musicMute;
+    private static Texture musicHoverMute;
+    private static Texture sfxMute;
+    private static Texture sfxHoverMute;
 
     private float soundWait; //For sfx test sounds to delay
 
@@ -92,14 +101,25 @@ public class Settings {
         float buttonSize = 78;
         float x = 1280 / 2f - sliderWidth / 2f - buttonSize;
         float y = (720f / 2f - padding + sliderHeight / 2f) - buttonSize / 2f;
+        music = assets.getEntry("music", Texture.class);
+        musicHover = assets.getEntry("musicHover", Texture.class);
+        sfx = assets.getEntry("sfx", Texture.class);
+        sfxHover = assets.getEntry("sfxHover", Texture.class);
+        musicMute = assets.getEntry("musicMute", Texture.class);
+        musicHoverMute = assets.getEntry("musicHoverMute", Texture.class);
+        sfxMute = assets.getEntry("sfxMute", Texture.class);
+        sfxHoverMute = assets.getEntry("sfxHoverMute", Texture.class);
 
-        Texture button = assets.getEntry("music", Texture.class);
-        Texture buttonHover = assets.getEntry("sfx", Texture.class);
-        musicButton = new Button(x, y + sliderHeight + padding, button, buttonHover, 0, buttonSize,
+        musicButton = new Button(x, y + sliderHeight + padding, music, musicHover, 0, buttonSize,
             buttonSize);
-        button = assets.getEntry("sfx", Texture.class);
-        buttonHover = assets.getEntry("music", Texture.class);
-        sfxButton = new Button(x, y, button, buttonHover, 0, buttonSize, buttonSize);
+        sfxButton = new Button(x, y, sfx, sfxHover, 0, buttonSize, buttonSize);
+
+        Texture button = assets.getEntry("x", Texture.class);
+        Texture buttonHover = assets.getEntry("xHover", Texture.class);
+        xButton = new Button(1280 / 2f - background.getWidth() / 2f + 10,
+            720 / 2f + background.getHeight() / 2f - buttonSize - 10, button, buttonHover, -1,
+            buttonSize, buttonSize);
+
         button = assets.getEntry("button", Texture.class);
         buttonHover = assets.getEntry("buttonHover", Texture.class);
         float buttonWidth = 250;
@@ -132,6 +152,7 @@ public class Settings {
         sfxSlider.setPosition(x + move, y);
         musicButton.draw(batch, true);
         sfxButton.draw(batch, true);
+        xButton.draw(batch, true);
         saveResetButton.draw(batch, true);
         batch.end();
         stage.draw();
@@ -143,7 +164,7 @@ public class Settings {
         }
     }
 
-    public void update(float delta, boolean settingsOn) {
+    public boolean update(float delta, boolean settingsOn) {
         if (currWait > 0.0f && settingsOn) { //Wait
             currWait -= delta;
         } else if (settingsOn) {
@@ -161,17 +182,22 @@ public class Settings {
             sfxSlider.setDisabled(false);
             musicButton.update(delta);
             sfxButton.update(delta);
+            xButton.update(delta);
             saveResetButton.update(delta);
             soundWait -= delta;
             if (audio.getMusicVolume() == 0) {
+                musicButton.setTexture(musicMute, musicHoverMute);
                 musicButton.setExitCode(100);
             } else {
+                musicButton.setTexture(music, musicHover);
                 musicButton.setExitCode(0);
             }
 
             if (audio.getSfxVolume() == 0) {
+                sfxButton.setTexture(sfxMute, sfxHoverMute);
                 sfxButton.setExitCode(100);
             } else {
+                sfxButton.setTexture(sfx, sfxHover);
                 sfxButton.setExitCode(0);
             }
 
@@ -182,6 +208,10 @@ public class Settings {
             if (sfxButton.isPressed()) {
                 audio.play("click");
                 sfxSlider.setValue(sfxButton.getExitCode());
+            }
+            if (xButton.isPressed()) {
+                audio.play("click");
+                return false;
             }
 
             if (saveResetButton.isPressed() && !resetSaveDelay) {
@@ -203,5 +233,6 @@ public class Settings {
             sfxSlider.setDisabled(true);
             currWait = waitTime;
         }
+        return settingsOn;
     }
 }
