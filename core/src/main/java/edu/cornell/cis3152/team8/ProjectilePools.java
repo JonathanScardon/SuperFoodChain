@@ -14,6 +14,10 @@ public class ProjectilePools {
     // Initialize the pools with the world reference
     public static void initialize(World world) {
         ProjectilePools.world = world;
+        strawberryPool.clear();
+        garlicPool.clear();
+        durianPool.clear();
+
     }
 
     public static final Pool<StrawberryProjectile> strawberryPool = new Pool<StrawberryProjectile>() {
@@ -26,7 +30,7 @@ public class ProjectilePools {
     public static final Pool<GarlicProjectile> garlicPool = new Pool<GarlicProjectile>() {
         @Override
         protected GarlicProjectile newObject() {
-            return new GarlicProjectile(0, 0, 0, 0, world);
+            return new GarlicProjectile(0, 0, world);
         }
     };
 

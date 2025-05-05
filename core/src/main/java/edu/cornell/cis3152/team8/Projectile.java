@@ -8,7 +8,9 @@ import com.badlogic.gdx.physics.box2d.Filter;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.JsonValue;
 import edu.cornell.gdiac.graphics.*;
+import edu.cornell.gdiac.physics2.BoxObstacle;
 import edu.cornell.gdiac.physics2.CapsuleObstacle;
+import edu.cornell.gdiac.physics2.Obstacle;
 import edu.cornell.gdiac.physics2.ObstacleSprite;
 
 public abstract class Projectile extends ObstacleSprite {
@@ -30,6 +32,8 @@ public abstract class Projectile extends ObstacleSprite {
     private float animeFrame;
     // How much "life" left for projectile to persist on screen
     protected int life;
+    // If the projectile dies on collision
+    protected boolean collisionDie;
     /**
      * Radius of the object (used for collisions)
      */
@@ -61,9 +65,59 @@ public abstract class Projectile extends ObstacleSprite {
         maxLife = 150;
         imageScale = 1;
         animationSpeed = 4;
+        collisionDie = true;
 
         // Update the velocities to be the associated x-velocity and y-velocity
         obstacle.setLinearVelocity(new Vector2(vx, vy));
+
+        // Set initial animation frame to 0
+        animeFrame = 0.0f;
+        // Set current life to max allowable at initialization
+        life = maxLife;
+
+        obstacle = getObstacle();
+        obstacle.setName("projectile");
+        obstacle.setFixedRotation(true);
+        obstacle.setBodyType(BodyDef.BodyType.KinematicBody);
+
+        obstacle.setPhysicsUnits(units);
+        obstacle.setBullet(true);
+
+        obstacle.activatePhysics(world);
+        obstacle.setUserData(this);
+        obstacle.setSensor(true);
+
+        Filter filter = obstacle.getFilterData();
+        filter.categoryBits = CollisionController.PROJECTILE_CATEGORY;
+        filter.maskBits = CollisionController.MINION_CATEGORY | CollisionController.BOSS_CATEGORY;
+        obstacle.setFilterData(filter);
+
+        float size = radius * units;
+        mesh.set(-size / 2.0f, -size / 2.0f, size, size);
+    }
+
+    /**
+     * Creates a box projectile with the given starting position.
+     *
+     * @param x The x-coordinate of the object
+     * @param y The y-coordinate of the object
+     */
+    public Projectile(float x, float y, World world) {
+        // Parent constructor
+        super(new BoxObstacle(x / units, y / units, 1, 1), true);
+
+        // Attributes below are placeholder values since setConstants isn't implemented
+        // yet
+        radius = 1;
+        speed = 750;
+        attack = 2;
+        maxLife = 150;
+        imageScale = 1;
+        animationSpeed = 4;
+        collisionDie = false;
+
+        // Update the velocities to be the associated x-velocity and y-velocity
+        obstacle.setLinearVelocity(new Vector2(0, 0));
 
         // Set initial animation frame to 0
         animeFrame = 0.0f;
@@ -109,6 +163,15 @@ public abstract class Projectile extends ObstacleSprite {
      */
     public int getLife() {
         return life;
+    }
+
+    /**
+     * Returns true if the projectile dies upon collision
+     *
+     * @return if the projectile dies upon collision
+     */
+    public boolean getCollisionDie() {
+        return collisionDie;
     }
 
     /**
