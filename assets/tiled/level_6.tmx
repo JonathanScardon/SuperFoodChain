@@ -31,7 +31,7 @@
     <property name="attackType" propertytype="attackType" value="idle"/>
     <property name="minion0" type="object" value="15"/>
     <property name="minion1" type="object" value="14"/>
-    <property name="warnDuration" type="float" value="2"/>
+    <property name="warnDuration" type="float" value="1"/>
    </properties>
   </object>
   <object id="14" name="Ant" type="minionSpawn" x="1243.01" y="344.935">
