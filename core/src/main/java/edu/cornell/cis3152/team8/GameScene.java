@@ -763,6 +763,8 @@ public class GameScene implements Screen {
             game.batch.draw(mouseLose, loseX, loseY);
         } else if (bosses.get(0).getName().equals("chopsticks")) {
             game.batch.draw(chopsticksLose, loseX, loseY);
+        } else if (bosses.get(0).getName().equals("chef")) {
+            game.batch.draw(chopsticksLose, loseX, loseY); //TODO: change texture
         }
         float height = loseY + replayButton.height / 2f;
         float gap = 40;
