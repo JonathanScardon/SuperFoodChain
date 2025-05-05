@@ -74,7 +74,7 @@ public class Settings {
         stage.addActor(musicSlider);
         stage.addActor(sfxSlider);
 
-        waitTime = 0.25f;
+        waitTime = 1f;
         currWait = waitTime;
         soundWait = 1f;
 
@@ -94,17 +94,17 @@ public class Settings {
         float y = (720f / 2f - padding + sliderHeight / 2f) - buttonSize / 2f;
 
         Texture button = assets.getEntry("music", Texture.class);
-        Texture buttonHover = assets.getEntry("sfxHover", Texture.class);
+        Texture buttonHover = assets.getEntry("sfx", Texture.class);
         musicButton = new Button(x, y + sliderHeight + padding, button, buttonHover, 0, buttonSize,
             buttonSize);
         button = assets.getEntry("sfx", Texture.class);
-        buttonHover = assets.getEntry("musicHover", Texture.class);
+        buttonHover = assets.getEntry("music", Texture.class);
         sfxButton = new Button(x, y, button, buttonHover, 0, buttonSize, buttonSize);
         button = assets.getEntry("button", Texture.class);
         buttonHover = assets.getEntry("buttonHover", Texture.class);
         float buttonWidth = 250;
         float buttonHeight = 70;
-        saveResetButton = new Button(1280 / 2f - buttonWidth / 2f, y - padding * 1.5f, button,
+        saveResetButton = new Button(1280 / 2f - buttonWidth / 2f, y - padding * 2f, button,
             buttonHover,
             -100, buttonWidth,
             buttonHeight, "Reset Save");
@@ -144,7 +144,7 @@ public class Settings {
     }
 
     public void update(float delta, boolean settingsOn) {
-        if (currWait > 0.0f) { //Wait
+        if (currWait > 0.0f && settingsOn) { //Wait
             currWait -= delta;
         } else if (settingsOn) {
             if (resetSaveDelay) {

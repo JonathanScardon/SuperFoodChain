@@ -134,7 +134,8 @@ public class SpinAttackPattern extends BossAttackPattern {
                     }
                 }
                 case ATTACK -> {
-                    boss.getObstacle().setAngle(boss.getObstacle().getAngle() + 45);
+                    boss.getObstacle().setAngle(boss.getObstacle().getAngle() + 6);
+                    boss.setAnimationSpeed(0.15f);
                     if (atWall()) {
                         state = AttackState.ENDED;
                         boss.moveSpeed = origMoveSpeed;
