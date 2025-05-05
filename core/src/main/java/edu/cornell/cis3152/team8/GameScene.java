@@ -365,7 +365,6 @@ public class GameScene implements Screen {
         companionSpawns.shuffle();
 
         // spawn in the first set of minions and companions so that we can see them before we start moving
-        addMinions();
         addCompanions();
 
         // make the bosses start attacking
@@ -374,39 +373,6 @@ public class GameScene implements Screen {
         }
 
         audio.play("preLevel");
-    }
-
-
-    /**
-     * Spawn minions until we reach the maximum enemy numbers
-     */
-    private void addMinions() {
-        while (minions.size < state.maxMinions) {
-            spawnMinion();
-        }
-    }
-
-    /**
-     * Spawn a single minion in the world
-     */
-    private void spawnMinion() {
-        int checked = 0;
-        while (checked < minionSpawns.size) { // avoid infinite loop
-            if (minionSpawnIdx >= minionSpawns.size) {
-                minionSpawnIdx = 0;
-            }
-            MinionSpawnPoint sp = minionSpawns.get(minionSpawnIdx);
-            minionSpawnIdx++;
-
-            if (!sp.isBossOnly()) {
-                sp.spawnMinion();
-                return;
-            }
-
-            // skip this point if it is only triggered by a boss
-            checked++;
-        }
-        // if we reach here, none of our spawn points auto-spawn
     }
 
     /**
@@ -521,8 +487,12 @@ public class GameScene implements Screen {
 
         if (start && !paused && !winGame && player.isAlive()) {
             state.update();
-            addMinions();
             addCompanions();
+
+            // spawn minions
+            for (MinionSpawnPoint spawn : minionSpawns) {
+                spawn.update(delta);
+            }
 
             for (int i = 0; i < companions.size; i++) {
                 companions.get(i).setId(i);

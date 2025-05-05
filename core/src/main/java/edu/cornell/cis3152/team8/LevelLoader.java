@@ -355,11 +355,12 @@ public class LevelLoader {
         float y = props.get("y", Float.class);
 
         boolean bossOnly = props.get("bossOnly", false, Boolean.class);
+        float cooldown = props.get("cooldown", 10f, Float.class);
         float antSpawnProportion = props.get("antSpawnProportion", 0f, Float.class);
         float cricketSpawnProportion = props.get("cricketSpawnProportion", 0f, Float.class);
         float spiderSpawnProportion = props.get("spiderSpawnProportion", 0f, Float.class);
 
-        MinionSpawnPoint spawn = new MinionSpawnPoint(state, x, y, bossOnly, antSpawnProportion,
+        MinionSpawnPoint spawn = new MinionSpawnPoint(state, x, y, cooldown, bossOnly, antSpawnProportion,
             cricketSpawnProportion, spiderSpawnProportion);
 
         state.getMinionSpawns().add(spawn);

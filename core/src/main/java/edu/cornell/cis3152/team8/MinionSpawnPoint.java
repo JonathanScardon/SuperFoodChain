@@ -13,6 +13,7 @@ public class MinionSpawnPoint {
     private final float x;
     private final float y;
 
+    private final float cooldown;
     private final boolean bossOnly;
     private final float antSpawnRate;
     private final float cricketSpawnRate;
@@ -22,7 +23,9 @@ public class MinionSpawnPoint {
     private final World world;
     private final Player player;
 
-    public MinionSpawnPoint(GameState state, float x, float y, boolean bossOnly,
+    private float spawnTime;
+
+    public MinionSpawnPoint(GameState state, float x, float y, float cooldown, boolean bossOnly,
         float antSpawnProportion, float cricketSpawnProportion, float spiderSpawnProportion) {
         this.gameState = state;
         this.world = state.getWorld();
@@ -30,6 +33,7 @@ public class MinionSpawnPoint {
         this.x = x;
         this.y = y;
         this.bossOnly = bossOnly;
+        this.cooldown = cooldown;
 
         float totalSpawnProportion =
             antSpawnProportion + cricketSpawnProportion + spiderSpawnProportion;
@@ -50,9 +54,11 @@ public class MinionSpawnPoint {
     }
 
     /**
-     * Creates a minion at this point
+     * Creates a minion at this point and also resets the spawn cooldown
      */
     public void spawnMinion() {
+        spawnTime = cooldown;
+
         Minion m = null;
         float probability = rand.nextFloat();
         float cumulative = 0f;
@@ -71,12 +77,15 @@ public class MinionSpawnPoint {
         gameState.getMinions().add(m);
     }
 
-    /**
-     * Returns whether this spawn point is only triggered by the boss and not automatically
-     *
-     * @return true if this spawn point is only for the boss, false otherwise
-     */
-    public boolean isBossOnly() {
-        return bossOnly;
+    public void update(float delta) {
+        if (bossOnly) {
+            // boss only minion spawn points do use cooldown
+            return;
+        }
+
+        spawnTime -= delta;
+        if (spawnTime <= 0) {
+            spawnMinion();
+        }
     }
 }
