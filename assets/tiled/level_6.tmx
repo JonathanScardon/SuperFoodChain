@@ -37,8 +37,8 @@
   <object id="14" name="Ant" type="minionSpawn" x="1243.01" y="344.935">
    <properties>
     <property name="antSpawnProportion" type="float" value="1"/>
-    <property name="bossOnly" type="bool" value="false"/>
-    <property name="cooldown" type="float" value="10"/>
+    <property name="bossOnly" type="bool" value="true"/>
+    <property name="cooldown" type="float" value="50"/>
     <property name="cricketSpawnProportion" type="float" value="0"/>
     <property name="spiderSpawnProportion" type="float" value="0"/>
    </properties>
@@ -46,7 +46,8 @@
   <object id="15" name="Ant" type="minionSpawn" x="71.473" y="344.935">
    <properties>
     <property name="antSpawnProportion" type="float" value="1"/>
-    <property name="cooldown" type="float" value="20"/>
+    <property name="bossOnly" type="bool" value="true"/>
+    <property name="cooldown" type="float" value="50"/>
     <property name="cricketSpawnProportion" type="float" value="0"/>
     <property name="spiderSpawnProportion" type="float" value="0"/>
    </properties>
