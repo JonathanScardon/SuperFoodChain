@@ -247,7 +247,7 @@ public class LevelLoader {
                 break;
             case "spin":
                 moveSpeed = props.get("moveSpeed", 0f, Float.class);
-                attack = new SpinAttackPattern(controller, warnDuration, moveSpeed, spinWarnSprite,
+                attack = new SpinAttackPattern(controller, warnDuration, moveSpeed, warnIconSprite,
                     player, state);
                 break;
             case "snatch":

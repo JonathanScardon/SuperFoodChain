@@ -27,7 +27,7 @@ public class SnatchAttackPattern extends BossAttackPattern {
         this.warnDuration = warnDuration;
         this.attackDuration = attackDuration;
 
-        this.warnPattern = new BossWarnPattern(0, 0, 100, 100);
+        this.warnPattern = new RectWarnPattern(0, 0, 100, 100);
         this.warnPattern.setSpriteSheet(warnSprite);
         boss.warnPatterns.add(this.warnPattern);
 
