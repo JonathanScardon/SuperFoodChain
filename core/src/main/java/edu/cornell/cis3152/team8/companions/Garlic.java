@@ -1,13 +1,19 @@
 package edu.cornell.cis3152.team8.companions;
 
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.utils.JsonValue;
 import edu.cornell.cis3152.team8.*;
+import edu.cornell.cis3152.team8.projectiles.DurianProjectile;
 import edu.cornell.cis3152.team8.projectiles.GarlicProjectile;
 import edu.cornell.gdiac.assets.AssetDirectory;
 import edu.cornell.gdiac.graphics.SpriteSheet;
 
 public class Garlic extends Companion {
 
+    private static int COST;
+    private static int COOLDOWN;
+    private static float ANIMATION_SPEED;
     private static SpriteSheet texture;
 
     /**
@@ -18,51 +24,46 @@ public class Garlic extends Companion {
      */
     public Garlic(float x, float y, int id, World world) {
         super(x, y, id, world);
-
         setCompanionType(CompanionType.GARLIC);
-        setCost(5);
-        setCooldown(5);
 
+        setOriginalCost(COST);
+        setCost(COST);
+        setCooldown(COOLDOWN);
+
+        animationSpeed = ANIMATION_SPEED;
         setSpriteSheet(texture);
+    }
+
+    /**
+     * Loads Garlic-specific constants from JSON
+     */
+    public static void setConstants(JsonValue constants) {
+        COST = constants.getInt("cost", 1);
+        COOLDOWN = constants.getInt("cooldown", 2);
+        ANIMATION_SPEED = constants.getFloat("animationSpeed", 0.25f);
     }
 
     /**
      * Sets Garlic assets
      */
     public static void setAssets(AssetDirectory assets) {
-        texture = assets.getEntry("GARLIC.animation", SpriteSheet.class);
+        texture = assets.getEntry("STRAWBERRY.animation", SpriteSheet.class);
     }
 
 
     @Override
     /**
-     * A Garlic shoots a poison cloud in front of it
+     * A Garlic shoots a poison cloud behind it
      */
     public void useAbility(GameState state) {
-        GarlicProjectile projectile = ProjectilePools.garlicPool.obtain();
-        int forwardDirection = state.getPlayer().getForwardDirection();
 
-        projectile.getObstacle().setActive(true);
-        projectile.reset();
-        // shoots in front
+        GarlicProjectile projectile = ProjectilePools.garlicPool.obtain();
+        projectile.getObstacle().getBody().setActive(true);
+
         projectile.getObstacle().setX(obstacle.getX());
         projectile.getObstacle().setY(obstacle.getY());
-        float fireAngle = 0.0f;
+        projectile.getObstacle().setLinearVelocity(new Vector2(0,0));
 
-        if (forwardDirection == InputController.CONTROL_MOVE_DOWN) {
-            fireAngle = 90.0f;
-        } else if (forwardDirection == InputController.CONTROL_MOVE_LEFT) {
-            fireAngle = 180.0f;
-        } else if (forwardDirection == InputController.CONTROL_MOVE_UP) {
-            fireAngle = 270.0f;
-        }
-
-        projectile.getObstacle().setVX((float) Math.cos(Math.toRadians(fireAngle)));
-        projectile.getObstacle().setVY((float) Math.sin(Math.toRadians(fireAngle)));
-
-        // half as slow
-        // twice as large?
-//        projectiles.add(x, y, vx  / 2, vy / 2, size);
         state.getActiveProjectiles().add(projectile);
 
         coolDown(false, 0);
