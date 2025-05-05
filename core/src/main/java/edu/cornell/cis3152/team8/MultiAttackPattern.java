@@ -23,7 +23,7 @@ public class MultiAttackPattern extends BossAttackPattern {
         this.attackPatterns = attackPatterns;
         this.warnDuration = warnDuration;
 
-        this.warnPattern = new BossWarnPattern(boss.getObstacle().getPosition().x, boss.getObstacle().getPosition().y);
+        this.warnPattern = new BossWarnPattern(boss.getObstacle().getPosition().x, boss.getObstacle().getPosition().y, 0, 0);
         this.warnPattern.setSpriteSheet(warnSprite);
         this.boss.warnPatterns.add(warnPattern);
     }
@@ -32,9 +32,7 @@ public class MultiAttackPattern extends BossAttackPattern {
     public void start() {
         state = AttackState.WARN;
         controller.setAction(CONTROL_NO_ACTION);
-
         boss.setAnimation("multi");
-        boss.angle = 0f;
 
         warnTime = warnDuration;
 
