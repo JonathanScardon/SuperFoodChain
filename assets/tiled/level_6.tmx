@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="1" height="1" tilewidth="1280" tileheight="720" infinite="0" nextlayerid="9" nextobjectid="29">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="1" height="1" tilewidth="1280" tileheight="720" infinite="0" nextlayerid="9" nextobjectid="31">
  <objectgroup id="3" name="companion">
   <properties>
    <property name="maxAvocado" type="int" value="0"/>
    <property name="maxBlueRaspberry" type="int" value="0"/>
-   <property name="maxCompanions" type="int" value="1"/>
-   <property name="maxDurian" type="int" value="1"/>
+   <property name="maxCompanions" type="int" value="2"/>
+   <property name="maxDurian" type="int" value="2"/>
    <property name="maxPineapple" type="int" value="0"/>
    <property name="maxStrawberry" type="int" value="0"/>
   </properties>
@@ -14,7 +14,8 @@
     <property name="companionType" propertytype="companionType" value="strawberry"/>
    </properties>
   </object>
-  <object id="6" name="Durian" type="companionSpawn" x="1098.78" y="122.075"/>
+  <object id="6" name="Durian" type="companionSpawn" x="195.826" y="591.259"/>
+  <object id="30" name="Durian" type="companionSpawn" x="1098.42" y="121.265"/>
  </objectgroup>
  <objectgroup id="4" name="boss" class="bossLayer">
   <object id="9" name="mouse" type="boss" x="1151.82" y="1005.25">
