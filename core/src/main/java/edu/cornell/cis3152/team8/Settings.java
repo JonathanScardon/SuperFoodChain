@@ -1,49 +1,58 @@
 package edu.cornell.cis3152.team8;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Affine2;
-import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Slider;
-import com.badlogic.gdx.scenes.scene2d.ui.Slider.SliderStyle;
-import com.badlogic.gdx.utils.Align;
-import com.badlogic.gdx.utils.Scaling;
-import com.badlogic.gdx.utils.viewport.ScalingViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import edu.cornell.gdiac.assets.AssetDirectory;
 import edu.cornell.gdiac.graphics.SpriteBatch;
 
 public class Settings {
 
+    //Gdx root things
+    private static GDXRoot game;
+    private static GameAudio audio;
+    private static Stage stage; //For sliders
+
+
+    //Visual
     private static Texture background;
     private static Texture dim;
-    private Affine2 transform;
+    private final Affine2 transform;
+    private final SpriteBatch batch;
+    private boolean resetSaveDelay; //Has the resetSave button been pressed
+    private float alpha; //For save reset fade-out
 
-    private static GameAudio audio;
+    //Buttons/Sliders
     public static Slider musicSlider;
     public static Slider sfxSlider;
     private static Button musicButton;
     private static Button sfxButton;
     private static Button saveResetButton;
 
-    private Viewport viewport;
-    private SpriteBatch batch;
-    private static Stage stage;
-    private float soundWait;
+    private float soundWait; //For sfx test sounds to delay
+
+    /**
+     * Pause before allowing use
+     */
+    private final float waitTime;
+    private float currWait;
 
 
     public Settings(GDXRoot game) {
-        transform = new Affine2();
-        batch = game.batch;
-        viewport = game.viewport;
+        Settings.game = game;
         audio = game.audio;
-        stage = new Stage(viewport, batch);
+        batch = game.batch;
+        stage = new Stage(game.viewport, batch);
         Gdx.input.setInputProcessor(stage);
 
+        transform = new Affine2();
+
+        //Constants for centering
         float sliderWidth = 313;
         float sliderHeight = 33;
         float padding = 50;
@@ -65,7 +74,12 @@ public class Settings {
         stage.addActor(musicSlider);
         stage.addActor(sfxSlider);
 
+        waitTime = 0.25f;
+        currWait = waitTime;
         soundWait = 1f;
+
+        alpha = 0f;
+        resetSaveDelay = false;
     }
 
     public static void setAssets(AssetDirectory assets) {
@@ -92,11 +106,11 @@ public class Settings {
         float buttonHeight = 70;
         saveResetButton = new Button(1280 / 2f - buttonWidth / 2f, y - padding * 1.5f, button,
             buttonHover,
-            -10, buttonWidth,
+            -100, buttonWidth,
             buttonHeight, "Reset Save");
     }
 
-    public void draw(SpriteBatch batch, float page) {
+    public void draw(float page) {
         float move = 1280 * (page - 1);
         SpriteBatch.computeTransform(transform, background.getWidth() / 2f,
             background.getHeight() / 2f, 1280 / 2f + move, 720 / 2f, 0, 1f, 1f);
@@ -122,10 +136,27 @@ public class Settings {
         batch.end();
         stage.draw();
         batch.begin();
+        if (resetSaveDelay) {
+            batch.setColor(0, 0, 0, alpha);
+            batch.fill(move - 500, -500, 1280 * 2, 720 * 2);
+            batch.setColor(Color.WHITE);
+        }
     }
 
     public void update(float delta, boolean settingsOn) {
-        if (settingsOn) {
+        if (currWait > 0.0f) { //Wait
+            currWait -= delta;
+        } else if (settingsOn) {
+            if (resetSaveDelay) {
+                alpha += 0.01f;//fade out
+                if (alpha >= 2) {
+                    resetSaveDelay = false;
+                    alpha = 0.0f;
+                    game.save.putInteger("unlockedLevels", 1);
+                    game.getScreen().dispose();
+                    game.exitScreen(game.getScreen(), saveResetButton.getExitCode());
+                }
+            }
             musicSlider.setDisabled(false);
             sfxSlider.setDisabled(false);
             musicButton.update(delta);
@@ -152,6 +183,13 @@ public class Settings {
                 audio.play("click");
                 sfxSlider.setValue(sfxButton.getExitCode());
             }
+
+            if (saveResetButton.isPressed() && !resetSaveDelay) {
+                audio.play("click");
+                resetSaveDelay = true;
+                audio.stopMusic();
+            }
+
             if (sfxSlider.isDragging()) {
                 if (soundWait <= 0) {
                     audio.play("DURIAN");
@@ -163,7 +201,7 @@ public class Settings {
         } else {
             musicSlider.setDisabled(true);
             sfxSlider.setDisabled(true);
+            currWait = waitTime;
         }
-
     }
 }

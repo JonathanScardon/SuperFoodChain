@@ -108,13 +108,15 @@ public abstract class MultiPageScene implements Screen {
 
             if (!settingsOn) { //Level page off when settings is on
                 //Process arrows when on screen
-                if (currPage == 1 && unlockedPages > 1) {
-                    rightArrow();
-                } else if (currPage == unlockedPages && unlockedPages > 1) {
-                    leftArrow();
-                } else {
-                    leftArrow();
-                    rightArrow();
+                if (unlockedPages > 1) {
+                    if (currPage == 1) {
+                        rightArrow();
+                    } else if (currPage == unlockedPages) {
+                        leftArrow();
+                    } else {
+                        leftArrow();
+                        rightArrow();
+                    }
                 }
                 //Process user inputs
                 processButtons();
@@ -148,17 +150,19 @@ public abstract class MultiPageScene implements Screen {
         //Always draw navigation buttons
         drawButtons();
 
-        if (currPage == 1) {
-            arrowRight.draw(game.batch, !settingsOn);
-        } else if (currPage == unlockedPages) {
-            arrowLeft.draw(game.batch, !settingsOn);
-        } else {
-            arrowLeft.draw(game.batch, !settingsOn);
-            arrowRight.draw(game.batch, !settingsOn);
+        if (unlockedPages > 1) {
+            if (currPage == 1) {
+                arrowRight.draw(game.batch, !settingsOn);
+            } else if (currPage == unlockedPages) {
+                arrowLeft.draw(game.batch, !settingsOn);
+            } else {
+                arrowLeft.draw(game.batch, !settingsOn);
+                arrowRight.draw(game.batch, !settingsOn);
+            }
         }
 
         if (settingsOn) {
-            settingsScreen.draw(game.batch, currPage);
+            settingsScreen.draw(currPage);
         }
 
         game.batch.end();

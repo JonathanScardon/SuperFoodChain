@@ -84,13 +84,14 @@ public class MainMenuScene implements Screen {
         exitButton.draw(game.batch, !settingsOn);
 
         if (settingsOn) {
-            settingsScreen.draw(game.batch, 1);
+            settingsScreen.draw(1);
         }
 
         game.batch.end();
     }
 
     public void reset() {
+        settingsOn = false;
         audio.play("menu");
     }
 
