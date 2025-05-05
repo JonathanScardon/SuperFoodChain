@@ -68,7 +68,7 @@ public class MainMenuScene implements Screen {
         } else if (Gdx.input.isKeyPressed(Keys.ESCAPE)) {
             settingsOn = false;
         }
-        settingsScreen.update(delta, settingsOn);
+        settingsOn = settingsScreen.update(delta, settingsOn);
     }
 
     public void draw() {

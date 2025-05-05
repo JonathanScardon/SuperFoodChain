@@ -98,15 +98,15 @@ public class CollisionController implements ContactListener {
             // Player Collisions
 
             // Player and Player
-//            if (c1 == PLAYER_CATEGORY && c2 == PLAYER_CATEGORY) {
-////                System.out.println("P-P CONTACT IS HAPPENING");
-//                if (state.getPlayer().getPlayerHead().getObstacle().getBody() == b1) {
-//                    removed.add(s1);
-//                }
-//                else {
-//                    removed.add(s2);
-//                }
-//            }
+            if (c1 == PLAYER_CATEGORY && c2 == PLAYER_CATEGORY) {
+                System.out.println("P-P CONTACT IS HAPPENING");
+                if (state.getPlayer().getPlayerHead().getObstacle().getBody() == b1) {
+                    removed.add(s1);
+                }
+                else {
+                    removed.add(s2);
+                }
+            }
 
             // Player and Minion
             if ((c1 == PLAYER_CATEGORY && c2 == MINION_CATEGORY) || (c2 == PLAYER_CATEGORY
@@ -199,11 +199,25 @@ public class CollisionController implements ContactListener {
 //                System.out.println("PR-M CONTACT IS HAPPENING");
                 if (c1 == PROJECTILE_CATEGORY) {
 //                    System.out.println("KILL MINION");
-                    removedProjectiles.add(b1);
+                    for (Projectile p : state.getActiveProjectiles()) {
+                        if (p.getObstacle().getBody() == b1 && p.collisionDie) {
+                            removedProjectiles.add(b1);
+                        }
+                        else if (p.getObstacle().getBody() == b1 && !p.collisionDie) {
+                            System.out.println("Garlic Projectile Hit");
+                        }
+                    }
                     minionHit(b2, b1);
                 } else {
 //                    System.out.println("KILL MINION");
-                    removedProjectiles.add(b2);
+                    for (Projectile p : state.getActiveProjectiles()) {
+                        if (p.getObstacle().getBody() == b2 && p.collisionDie) {
+                            removedProjectiles.add(b2);
+                        }
+                        else if (p.getObstacle().getBody() == b2 && !p.collisionDie){
+                            System.out.println("Garlic Projectile Hit");
+                        }
+                    }
                     minionHit(b1, b2);
                 }
 

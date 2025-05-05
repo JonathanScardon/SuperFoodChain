@@ -181,6 +181,11 @@
                     "value": false
                 },
                 {
+                    "name": "cooldown",
+                    "type": "float",
+                    "value": 0
+                },
+                {
                     "name": "cricketSpawnProportion",
                     "type": "float",
                     "value": 0

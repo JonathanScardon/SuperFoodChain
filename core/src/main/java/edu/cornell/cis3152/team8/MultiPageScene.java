@@ -125,7 +125,7 @@ public abstract class MultiPageScene implements Screen {
                     settingsOn = true;
                 }
             }
-            settingsScreen.update(delta, settingsOn);
+            settingsOn = settingsScreen.update(delta, settingsOn);
             //Exit settings with escape
             if (settingsOn && Gdx.input.isKeyPressed(Keys.ESCAPE)) {
                 settingsOn = false;

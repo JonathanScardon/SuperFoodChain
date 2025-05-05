@@ -154,11 +154,13 @@ public class GameState {
         BlueRaspberry.setConstants(constants.get("blueRaspberry"));
         Durian.setConstants(constants.get("durian"));
         Strawberry.setConstants(constants.get("strawberry"));
+        Garlic.setConstants(constants.get("garlic"));
         Ant.setConstants(constants.get("ant"));
         Cricket.setConstants(constants.get("cricket"));
         Spider.setConstants(constants.get("spider"));
         StrawberryProjectile.setConstants(constants.get("strawberryProjectile"));
         DurianProjectile.setConstants(constants.get("durianProjectile"));
+        GarlicProjectile.setConstants(constants.get("garlicProjectile"));
     }
 
     /**
@@ -258,7 +260,7 @@ public class GameState {
         numStrawberries = 0;
 
         // Projectiles
-        projectiles = new Array<>();
+        projectiles.clear();
         ProjectilePools.initialize(world);
 
         // Companions - requires information of number of companions
