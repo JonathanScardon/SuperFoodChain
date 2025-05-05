@@ -183,6 +183,7 @@
   <object id="83" type="minionSpawn" x="-54.7578" y="-38.801">
    <properties>
     <property name="antSpawnProportion" type="float" value="1"/>
+    <property name="cooldown" type="float" value="10"/>
     <property name="cricketSpawnProportion" type="float" value="0"/>
     <property name="spiderSpawnProportion" type="float" value="0"/>
    </properties>
@@ -190,6 +191,7 @@
   <object id="84" type="minionSpawn" x="1327.61" y="-38.801">
    <properties>
     <property name="antSpawnProportion" type="float" value="1"/>
+    <property name="cooldown" type="float" value="10"/>
     <property name="cricketSpawnProportion" type="float" value="0"/>
     <property name="spiderSpawnProportion" type="float" value="0"/>
    </properties>
@@ -197,6 +199,7 @@
   <object id="85" type="minionSpawn" x="1330.01" y="747.016">
    <properties>
     <property name="antSpawnProportion" type="float" value="1"/>
+    <property name="cooldown" type="float" value="10"/>
     <property name="cricketSpawnProportion" type="float" value="0"/>
     <property name="spiderSpawnProportion" type="float" value="0"/>
    </properties>
@@ -204,6 +207,7 @@
   <object id="86" type="minionSpawn" x="-73.924" y="768.578">
    <properties>
     <property name="antSpawnProportion" type="float" value="1"/>
+    <property name="cooldown" type="float" value="10"/>
     <property name="cricketSpawnProportion" type="float" value="0"/>
     <property name="spiderSpawnProportion" type="float" value="0"/>
    </properties>
