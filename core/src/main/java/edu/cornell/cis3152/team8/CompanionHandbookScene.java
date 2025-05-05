@@ -1,7 +1,7 @@
 package edu.cornell.cis3152.team8;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.utils.JsonValue;
 import edu.cornell.gdiac.assets.AssetDirectory;
 import edu.cornell.gdiac.graphics.SpriteSheet;
 
@@ -50,21 +50,22 @@ public class CompanionHandbookScene extends MultiPageScene {
             back, backHover, -1, buttonSize, buttonSize, true);
         settingsButton.setPosition(1280 - gap, 720 - gap);
 
-        unlockedPages = assets.getEntry("save", JsonValue.class)
-            .getInt("companions_unlocked");
     }
 
     @Override
     public void update(float delta) {
-        //Update animation frame if settings is off
-        if (!settingsOn) {
-            animationFrame += animationSpeed;
-        }
-        if (animationFrame >= pages[0].getSize()) {
-            animationFrame -= pages[0].getSize();
-        }
-        for (SpriteSheet s : pages) {
-            s.setFrame((int) animationFrame);
+        unlockedPages = game.save.getInteger("unlockedHandbook");
+        if (unlockedPages > 0) {
+            //Update animation frame if settings is off
+            if (!settingsOn) {
+                animationFrame += animationSpeed;
+            }
+            if (animationFrame >= pages[0].getSize()) {
+                animationFrame -= pages[0].getSize();
+            }
+            for (SpriteSheet s : pages) {
+                s.setFrame((int) animationFrame);
+            }
         }
         super.update(delta);
     }
@@ -98,18 +99,27 @@ public class CompanionHandbookScene extends MultiPageScene {
 
     @Override
     protected void drawPages() {
-        if (moving) { //Draw all unlocked pages if screen is moving
-            for (int i = 0; i <= unlockedPages; i++) {
-                game.batch.draw(pages[i], (1280 * i), 0, 1280, 720);
+        if (unlockedPages > 0) {
+            if (moving) { //Draw all unlocked pages if screen is moving
+                for (int i = 0; i < unlockedPages; i++) {
+                    game.batch.draw(pages[i], (1280 * i), 0, 1280, 720);
+                }
+            } else { //Otherwise only draw current page
+                game.batch.draw(pages[currPage - 1], (1280 * (currPage - 1)), 0, 1280, 720);
             }
-        } else { //Otherwise only draw current page
-            game.batch.draw(pages[currPage - 1], (1280 * (currPage - 1)), 0, 1280, 720);
+        } else {
+            //TODO: replace with locked image
+            game.batch.draw(new Texture("images/Menu.png"), 0, 0);
+            game.batch.setColor(0.5f, 0.5f, 0.5f, 1);
+            game.batch.fill(0, 0, 1280, 720);
+            game.batch.setColor(Color.WHITE);
         }
     }
 
     public void reset() {
         super.reset();
         float gap = 100;
+        settingsOn = false;
         backButton.setPosition(gap, 720 - gap);
         settingsButton.setPosition(1280 - gap, 720 - gap);
         audio.play("handbook");

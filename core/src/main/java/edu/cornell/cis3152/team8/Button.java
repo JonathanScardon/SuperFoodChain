@@ -129,6 +129,7 @@ public class Button {
      */
     public void draw(SpriteBatch batch, boolean allowHover) {
         batch.setBlendMode(BlendMode.ALPHA_BLEND);
+        font.setColor(fontColor);
         if (isHovering() && allowHover) { //draw hovered button
             batch.draw(hover, posX, posY, width, height);
         } else { //draw normal button
@@ -138,6 +139,7 @@ public class Button {
             0, posX + (width / 2f),
             posY + (height / 2f), 0.0f, 1f, 1f);
         batch.drawText(text, transform);
+        font.setColor(Color.WHITE);
     }
 
     public int getExitCode() {

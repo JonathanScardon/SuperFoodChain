@@ -90,14 +90,15 @@ public class LevelSelectScene extends MultiPageScene {
             }
             y = y - levelButtonHeight - gap;
         }
-
-        unlocked = assets.getEntry("save", JsonValue.class)
-            .getInt("max_level_unlocked");
+//         unlocked = assets.getEntry("save", JsonValue.class)
+//            .getInt("max_level_unlocked");
+//
     }
 
     @Override
     public void update(float delta) {
         //Set level lock states
+        unlocked = game.save.getInteger("unlockedLevels");
         for (int i = 0; i < page1.length; i++) {
             page1[i].setLocked(i >= unlocked);
             page2[i].setLocked(i + 6 >= unlocked);
@@ -220,6 +221,7 @@ public class LevelSelectScene extends MultiPageScene {
         float buttonSize = 78;
         float gap = 20; // The distance between the buttons
         float span = (buttonSize * 3) + (gap * 2);
+        settingsOn = false;
         homeButton.setPosition(x + (tray.getWidth() / 2f - span / 2), y);
         handbookButton.setPosition(homeButton.posX + homeButton.width + gap, y);
         settingsButton.setPosition(handbookButton.posX + handbookButton.width + gap, y);

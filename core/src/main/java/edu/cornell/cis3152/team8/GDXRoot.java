@@ -2,12 +2,15 @@ package edu.cornell.cis3152.team8;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.utils.JsonValue;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import edu.cornell.gdiac.assets.AssetDirectory;
 import edu.cornell.gdiac.graphics.SpriteBatch;
 import edu.cornell.gdiac.util.ScreenListener;
+import java.util.prefs.PreferencesFactory;
 
 
 public class GDXRoot extends Game implements ScreenListener {
@@ -31,11 +34,14 @@ public class GDXRoot extends Game implements ScreenListener {
     public GameAudio audio;
     public Settings settings;
 
+    public Preferences save;
+
     @Override
     public void create() {
         batch = new SpriteBatch();
         font = new BitmapFont();
         viewport = new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        save = Gdx.app.getPreferences("Save");
 
         font.setUseIntegerPositions(false);
         font.getData().setScale(viewport.getWorldHeight() / Gdx.graphics.getHeight());
@@ -100,6 +106,23 @@ public class GDXRoot extends Game implements ScreenListener {
             loadingScene.dispose();
             loadingScene = null;
 
+            int totalLevels = directory.getEntry("save", JsonValue.class)
+                .getInt("total_Levels");
+            //TODO: change to 1
+            int unlockedLevels = directory.getEntry("save", JsonValue.class)
+                .getInt("max_level_unlocked");
+            save.putInteger("unlockedLevels", unlockedLevels);
+            for (int i = 1; i <= totalLevels; i++) {
+                save.putBoolean("level" + i + "Won", false);
+            }
+
+            int unlockedHandbook = directory.getEntry("save", JsonValue.class)
+                .getInt("companions_unlocked");
+            //TODO: add others
+            save.putInteger("unlockedHandbook", unlockedHandbook);
+            save.putBoolean("durian", false);
+            save.putBoolean("strawberry", false);
+
             audio = new GameAudio(directory);
             settings = new Settings(this);
             menuScene = new MainMenuScene(this, directory);
@@ -112,6 +135,9 @@ public class GDXRoot extends Game implements ScreenListener {
             if (exitCode == 0) { //Level select
                 levelSelectScene.reset();
                 this.setScreen(levelSelectScene);
+            } else if (exitCode == -100) {
+                menuScene.reset();
+                setScreen(menuScene);
             } else { //Exit program
                 dispose();
                 Gdx.app.exit();
@@ -125,6 +151,9 @@ public class GDXRoot extends Game implements ScreenListener {
                 prev = "levels";
                 handbookScene.reset();
                 setScreen(handbookScene);
+            } else if (exitCode == -100) {
+                menuScene.reset();
+                setScreen(menuScene);
             } else {
                 gameScene = new GameScene(this, directory, exitCode);
                 gameScene.resetMusic();
@@ -143,6 +172,9 @@ public class GDXRoot extends Game implements ScreenListener {
                 prev = "game";
                 handbookScene.reset();
                 setScreen(handbookScene);
+            } else if (exitCode == -100) {
+                menuScene.reset();
+                setScreen(menuScene);
             }
         } else if (screen == handbookScene) {
             handbookScene.dispose();
@@ -154,6 +186,9 @@ public class GDXRoot extends Game implements ScreenListener {
                     gameScene.resetMusic();
                     setScreen(gameScene);
                 }
+            } else if (exitCode == -100) {
+                menuScene.reset();
+                setScreen(menuScene);
             }
         } else {
             dispose();

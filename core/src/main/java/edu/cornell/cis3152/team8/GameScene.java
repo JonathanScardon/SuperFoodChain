@@ -248,6 +248,7 @@ public class GameScene implements Screen {
         settingsScreen = game.settings;
 
         createButtons(assets);
+        unlockHandbook();
     }
 
     private void createButtons(AssetDirectory assets) {
@@ -312,7 +313,7 @@ public class GameScene implements Screen {
         homeButton = new Button(0, 0, button, buttonHover, 1, buttonWidth, buttonHeight);
 
         button = assets.getEntry("arrow", Texture.class);
-        buttonHover = assets.getEntry("arrowNext", Texture.class);
+        buttonHover = assets.getEntry("arrowHover", Texture.class);
         nextButton = new Button(0, 0, button, buttonHover, 2, buttonWidth, buttonHeight);
 
         button = assets.getEntry("handbook", Texture.class);
@@ -749,7 +750,7 @@ public class GameScene implements Screen {
         }
         if (settingsOn) {
             game.batch.draw(dim, 0, 0);
-            settingsScreen.draw(game.batch, 1);
+            settingsScreen.draw(1);
         }
         game.batch.end();
     }
@@ -866,6 +867,12 @@ public class GameScene implements Screen {
     private void setWin() {
         if (!winGame) { //Only play sound once
             winGame = true;
+            String s = "level" + level + "Won";
+            if (!game.save.getBoolean(s)) {
+                game.save.putBoolean(s, true);
+                int newUnlock = game.save.getInteger("unlockedLevels") + 1;
+                game.save.putInteger("unlockedLevels", newUnlock);
+            }
             for (Boss b : bosses) {
                 if (b.getObstacle().isActive()) {
                     winGame = false;
@@ -1006,4 +1013,25 @@ public class GameScene implements Screen {
         }
 
     }
+
+    private void unlockHandbook() {
+        //TODO: Manually decide which level unlocks which thing
+        String name = "";
+        if (level == 1) {
+            name = "durian";
+
+        } else if (level == 2) {
+            name = "strawberry";
+        }
+
+        if (!name.isEmpty()) {
+            boolean alreadyUnlocked = game.save.getBoolean(name);
+            if (!alreadyUnlocked) {
+                int newUnlock = game.save.getInteger("unlockedHandbook") + 1;
+                game.save.putInteger("unlockedHandbook", newUnlock);
+                game.save.putBoolean(name, true);
+            }
+        }
+    }
+
 }
