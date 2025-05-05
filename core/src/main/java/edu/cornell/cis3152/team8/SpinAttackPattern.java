@@ -120,11 +120,12 @@ public class SpinAttackPattern extends BossAttackPattern {
                             preSpin.update(delta);
                         } else {
                             boss.setState("spinning");
-                            boss.setAnimation("spin");
-                            boss.setAnimationFrame(0);
+                            boss.setAnimation("spin", .5f);
+                            boss.getObstacle().setAngle(boss.getObstacle().getAngle() + 4.5f);
+                            //boss.setAnimationFrame(0);
                         }
                         if (warnTime > warnDuration
-                            / 2f) { // Stop picking new location after half of the warning time
+                            * .1f) { // Stop picking new location after half of the warning time
                             setControlCode();
                         }
                         warnPattern.setPosition(controller.boss.getObstacle().getX(), controller.boss.getObstacle().getY());
@@ -134,7 +135,7 @@ public class SpinAttackPattern extends BossAttackPattern {
                     }
                 }
                 case ATTACK -> {
-                    boss.getObstacle().setAngle(boss.getObstacle().getAngle() + 6);
+                    boss.getObstacle().setAngle(boss.getObstacle().getAngle() + 9);
                     boss.setAnimationSpeed(0.15f);
                     if (atWall()) {
                         state = AttackState.ENDED;
