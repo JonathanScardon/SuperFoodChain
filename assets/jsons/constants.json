@@ -61,7 +61,7 @@
   "cricket": {
     "waitDuration": 2,
     "hopDuration": 0.3,
-    "hopSpeed": 5,
+    "hopSpeed": 6.5,
     "health": 2,
     "animationSpeed": 0.15,
     "size": 0.3

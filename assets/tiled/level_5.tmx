@@ -12,7 +12,7 @@
     <property name="attack3" type="object" value="18"/>
     <property name="attack4" type="object" value="19"/>
     <property name="bossType" value="mouse"/>
-    <property name="health" type="int" value="10"/>
+    <property name="health" type="int" value="5"/>
    </properties>
   </object>
   <object id="6" name="idle" type="attack" x="-500" y="0">
@@ -55,7 +55,7 @@
     <property name="spiderSpawnProportion" type="float" value="0"/>
    </properties>
   </object>
-  <object id="16" type="minionSpawn" x="1356" y="-88" visible="0">
+  <object id="16" type="minionSpawn" x="1356" y="-88">
    <properties>
     <property name="antSpawnProportion" type="float" value="1"/>
     <property name="bossOnly" type="bool" value="false"/>
