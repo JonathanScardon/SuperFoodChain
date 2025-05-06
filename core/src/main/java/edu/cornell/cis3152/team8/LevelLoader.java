@@ -180,7 +180,7 @@ public class LevelLoader {
                 boss.spriteScale.set(0.4f, 0.4f);
                 break;
             case "chopsticks":
-                boss = new Boss(x, y, 1.5f, 1.5f, health, bossType, state.getWorld());
+                boss = new Boss(x, y, 2f, 2f, health, bossType, state.getWorld());
                 boss.addAnimation("default", chopsticksIdleSprite);
                 boss.addAnimation("idle", chopsticksIdleSprite);
                 boss.addAnimation("snatch", chopsticksSnatchSprite);
@@ -189,7 +189,7 @@ public class LevelLoader {
                 boss.spriteScale.set(0.4f, 0.4f);
                 break;
             case "chef":
-                boss = new Boss(x, y, 1.5f, 1.5f, health, bossType, state.getWorld());
+                boss = new Boss(x, y, 5f, 10f, health, bossType, state.getWorld());
                 boss.addAnimation("attack", chefAttackSprite);
                 boss.addAnimation("background", chefBackground);
                 boss.addAnimation("default", chefIdleSprite);
