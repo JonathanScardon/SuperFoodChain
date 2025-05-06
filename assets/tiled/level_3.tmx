@@ -6,12 +6,13 @@
   </properties>
   <object id="7" name="mouse" type="boss" x="-2.2048" y="1000.89">
    <properties>
-    <property name="attack0" type="object" value="34"/>
+    <property name="attack0" type="object" value="29"/>
     <property name="attack1" type="object" value="8"/>
-    <property name="attack2" type="object" value="29"/>
+    <property name="attack2" type="object" value="32"/>
     <property name="attack3" type="object" value="11"/>
-    <property name="attack4" type="object" value="32"/>
+    <property name="attack4" type="object" value="34"/>
     <property name="attack5" type="object" value="10"/>
+    <property name="attack6" type="object" value="33"/>
     <property name="bossType" value="mouse"/>
     <property name="health" type="int" value="5"/>
    </properties>
@@ -87,9 +88,9 @@
     <property name="spiderSpawnProportion" type="float" value="0"/>
    </properties>
   </object>
-  <object id="29" name="idle" type="attack" x="-168" y="536">
+  <object id="29" name="idle" type="attack" x="-161.333" y="576">
    <properties>
-    <property name="attack duration" type="float" value="12"/>
+    <property name="attack duration" type="float" value="15"/>
     <property name="attackType" propertytype="attackType" value="idle"/>
     <property name="flipHorizontal" type="bool" value="false"/>
     <property name="warnDuration" type="float" value="1"/>
@@ -97,7 +98,7 @@
   </object>
   <object id="32" name="idle" type="attack" x="-174.667" y="352">
    <properties>
-    <property name="attack duration" type="float" value="6"/>
+    <property name="attack duration" type="float" value="12"/>
     <property name="attackType" propertytype="attackType" value="idle"/>
     <property name="flipHorizontal" type="bool" value="false"/>
     <property name="warnDuration" type="float" value="1"/>
@@ -111,12 +112,12 @@
     <property name="warnDuration" type="float" value="1"/>
    </properties>
   </object>
-  <object id="33" name="idle" type="attack" x="640" y="661.333">
+  <object id="33" name="idle" type="attack" x="640" y="650">
    <properties>
-    <property name="attack duration" type="float" value="15"/>
+    <property name="attack duration" type="float" value="30"/>
     <property name="attackType" propertytype="attackType" value="idle"/>
     <property name="flipHorizontal" type="bool" value="false"/>
-    <property name="warnDuration" type="float" value="1"/>
+    <property name="warnDuration" type="float" value="1.5"/>
    </properties>
   </object>
  </objectgroup>
