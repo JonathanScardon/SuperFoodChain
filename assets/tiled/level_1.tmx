@@ -1,117 +1,104 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="1" height="1" tilewidth="1280" tileheight="720" infinite="0" nextlayerid="5" nextobjectid="29">
- <objectgroup id="2" name="boss" class="bossLayer">
-  <properties>
-   <property name="maxMinions" type="int" value="4"/>
-  </properties>
-  <object id="7" name="mouse" type="boss" x="-2.2048" y="1000.89">
-   <properties>
-    <property name="attack0" type="object" value="8"/>
-    <property name="attack1" type="object" value="9"/>
-    <property name="attack2" type="object" value="10"/>
-    <property name="attack3" type="object" value="11"/>
-    <property name="attack4" type="object" value="12"/>
-    <property name="bossType" value="mouse"/>
-    <property name="health" type="int" value="10"/>
-   </properties>
-  </object>
-  <object id="8" name="idle" type="attack" x="631.374" y="342.399">
-   <properties>
-    <property name="attackDuration" type="float" value="2"/>
-    <property name="attackType" value="idle"/>
-    <property name="flipHorizontal" type="bool" value="false"/>
-    <property name="warnDuration" type="float" value="2"/>
-   </properties>
-  </object>
-  <object id="9" name="dash" type="attack" x="-82.5644" y="349.684">
-   <properties>
-    <property name="attackType" value="dash"/>
-    <property name="dir" value="right"/>
-    <property name="moveSpeed" type="float" value="250"/>
-    <property name="warnDuration" type="float" value="2"/>
-   </properties>
-  </object>
-  <object id="10" name="dash" type="attack" x="636.231" y="-89.8494">
-   <properties>
-    <property name="attackType" value="dash"/>
-    <property name="dir" value="down"/>
-    <property name="moveSpeed" type="float" value="250"/>
-    <property name="warnDuration" type="float" value="2"/>
-   </properties>
-  </object>
-  <object id="11" name="dash" type="attack" x="1379.31" y="344.828">
-   <properties>
-    <property name="attackType" value="dash"/>
-    <property name="dir" value="left"/>
-    <property name="moveSpeed" type="float" value="250"/>
-    <property name="warnDuration" type="float" value="2"/>
-   </properties>
-  </object>
-  <object id="12" name="dash" type="attack" x="628.946" y="811.073">
-   <properties>
-    <property name="attackType" value="dash"/>
-    <property name="dir" value="up"/>
-    <property name="moveSpeed" type="float" value="250"/>
-    <property name="warnDuration" type="float" value="2"/>
-   </properties>
-  </object>
-  <object id="23" type="minionSpawn" x="-106.193" y="-49.8424">
-   <properties>
-    <property name="antSpawnProportion" type="float" value="1"/>
-    <property name="bossOnly" type="bool" value="false"/>
-    <property name="cooldown" type="float" value="10"/>
-    <property name="cricketSpawnProportion" type="float" value="0"/>
-    <property name="spiderSpawnProportion" type="float" value="0"/>
-   </properties>
-  </object>
-  <object id="24" type="minionSpawn" x="1348.03" y="-61.3839">
-   <properties>
-    <property name="antSpawnProportion" type="float" value="1"/>
-    <property name="bossOnly" type="bool" value="false"/>
-    <property name="cooldown" type="float" value="10"/>
-    <property name="cricketSpawnProportion" type="float" value="0"/>
-    <property name="spiderSpawnProportion" type="float" value="0"/>
-   </properties>
-  </object>
-  <object id="25" type="minionSpawn" x="-119.797" y="777.252">
-   <properties>
-    <property name="antSpawnProportion" type="float" value="1"/>
-    <property name="bossOnly" type="bool" value="false"/>
-    <property name="cooldown" type="float" value="10"/>
-    <property name="cricketSpawnProportion" type="float" value="0"/>
-    <property name="spiderSpawnProportion" type="float" value="0"/>
-   </properties>
-  </object>
-  <object id="26" type="minionSpawn" x="1334.43" y="765.71">
-   <properties>
-    <property name="antSpawnProportion" type="float" value="1"/>
-    <property name="bossOnly" type="bool" value="false"/>
-    <property name="cooldown" type="float" value="10"/>
-    <property name="cricketSpawnProportion" type="float" value="0"/>
-    <property name="spiderSpawnProportion" type="float" value="0"/>
-   </properties>
-  </object>
- </objectgroup>
- <objectgroup id="4" name="companion" class="companionLayer">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="1" height="1" tilewidth="1280" tileheight="720" infinite="0" nextlayerid="9" nextobjectid="31">
+ <objectgroup id="3" name="companion">
   <properties>
    <property name="maxAvocado" type="int" value="0"/>
    <property name="maxBlueRaspberry" type="int" value="0"/>
-   <property name="maxCompanions" type="int" value="1"/>
-   <property name="maxDurian" type="int" value="1"/>
+   <property name="maxCompanions" type="int" value="2"/>
+   <property name="maxDurian" type="int" value="2"/>
    <property name="maxPineapple" type="int" value="0"/>
    <property name="maxStrawberry" type="int" value="0"/>
   </properties>
-  <object id="1" name="player" type="playerSpawn" x="294.583" y="198.774">
+  <object id="1" name="player" type="playerSpawn" x="654.575" y="328.935" width="24.247" height="24.8575">
    <properties>
-    <property name="companionType" value="durian"/>
+    <property name="companionType" propertytype="companionType" value="strawberry"/>
    </properties>
   </object>
-  <object id="2" type="companionSpawn" x="873.426" y="392.319"/>
-  <object id="13" type="companionSpawn" x="881.284" y="154.452"/>
-  <object id="14" type="companionSpawn" x="711.69" y="490.612"/>
-  <object id="15" type="companionSpawn" x="420.957" y="372.502"/>
-  <object id="16" type="companionSpawn" x="254.391" y="333.131"/>
-  <object id="17" type="companionSpawn" x="944.882" y="611.75"/>
-  <object id="18" type="companionSpawn" x="417.929" y="599.637"/>
+  <object id="6" name="Durian" type="companionSpawn" x="195.826" y="591.259"/>
+  <object id="30" name="Durian" type="companionSpawn" x="1098.42" y="121.265"/>
+ </objectgroup>
+ <objectgroup id="4" name="boss" class="bossLayer">
+  <object id="9" name="mouse" type="boss" x="1151.82" y="1005.25">
+   <properties>
+    <property name="attack0" type="object" value="11"/>
+    <property name="attack1" type="object" value="19"/>
+    <property name="bossType" propertytype="bossType" value="mouse"/>
+    <property name="health" type="int" value="10"/>
+   </properties>
+  </object>
+  <object id="11" name="idle" type="attack" x="760.811" y="1262.56">
+   <properties>
+    <property name="attackDuration" type="float" value="10"/>
+    <property name="attackType" propertytype="attackType" value="idle"/>
+    <property name="minion0" type="object" value="15"/>
+    <property name="minion1" type="object" value="14"/>
+    <property name="warnDuration" type="float" value="1"/>
+   </properties>
+  </object>
+  <object id="14" name="Ant" type="minionSpawn" x="1243.01" y="344.935">
+   <properties>
+    <property name="antSpawnProportion" type="float" value="1"/>
+    <property name="bossOnly" type="bool" value="true"/>
+    <property name="cooldown" type="float" value="50"/>
+    <property name="cricketSpawnProportion" type="float" value="0"/>
+    <property name="spiderSpawnProportion" type="float" value="0"/>
+   </properties>
+  </object>
+  <object id="15" name="Ant" type="minionSpawn" x="71.473" y="344.935">
+   <properties>
+    <property name="antSpawnProportion" type="float" value="1"/>
+    <property name="bossOnly" type="bool" value="true"/>
+    <property name="cooldown" type="float" value="50"/>
+    <property name="cricketSpawnProportion" type="float" value="0"/>
+    <property name="spiderSpawnProportion" type="float" value="0"/>
+   </properties>
+  </object>
+  <object id="19" name="idle" type="attack" x="666.949" y="341.402">
+   <properties>
+    <property name="attackDuration" type="float" value="500"/>
+    <property name="attackType" propertytype="attackType" value="idle"/>
+    <property name="minion0" type="object" value="22"/>
+    <property name="minion1" type="object" value="21"/>
+    <property name="minion2" type="object" value="24"/>
+    <property name="minion3" type="object" value="23"/>
+    <property name="warnDuration" type="float" value="2"/>
+   </properties>
+  </object>
+  <object id="21" type="minionSpawn" x="1230.65" y="44.5046">
+   <properties>
+    <property name="antSpawnProportion" type="float" value="1"/>
+    <property name="bossOnly" type="bool" value="true"/>
+    <property name="cooldown" type="float" value="10"/>
+    <property name="cricketSpawnProportion" type="float" value="0"/>
+    <property name="spiderSpawnProportion" type="float" value="0"/>
+   </properties>
+  </object>
+  <object id="22" type="minionSpawn" x="40.6347" y="40.6347">
+   <properties>
+    <property name="antSpawnProportion" type="float" value="1"/>
+    <property name="bossOnly" type="bool" value="true"/>
+    <property name="cooldown" type="float" value="10"/>
+    <property name="cricketSpawnProportion" type="float" value="0"/>
+    <property name="spiderSpawnProportion" type="float" value="0"/>
+   </properties>
+  </object>
+  <object id="23" type="minionSpawn" x="30.9598" y="677.245">
+   <properties>
+    <property name="antSpawnProportion" type="float" value="1"/>
+    <property name="bossOnly" type="bool" value="true"/>
+    <property name="cooldown" type="float" value="10"/>
+    <property name="cricketSpawnProportion" type="float" value="0"/>
+    <property name="spiderSpawnProportion" type="float" value="0"/>
+   </properties>
+  </object>
+  <object id="24" type="minionSpawn" x="1244.2" y="684.985">
+   <properties>
+    <property name="antSpawnProportion" type="float" value="1"/>
+    <property name="bossOnly" type="bool" value="true"/>
+    <property name="cooldown" type="float" value="10"/>
+    <property name="cricketSpawnProportion" type="float" value="0"/>
+    <property name="spiderSpawnProportion" type="float" value="0"/>
+   </properties>
+  </object>
  </objectgroup>
 </map>
