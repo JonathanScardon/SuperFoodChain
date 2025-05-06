@@ -81,13 +81,10 @@
    </properties>
    <point/>
   </object>
-  <object id="32" name="snatch" type="attack" x="686" y="894">
+  <object id="32" template="snatch.tx" type="attack" x="686" y="894">
    <properties>
-    <property name="attackType" propertytype="attackType" value="snatch"/>
-    <property name="minion0" type="object" value="0"/>
-    <property name="warnDuration" type="float" value="1"/>
+    <property name="attackDuration" type="float" value="0"/>
    </properties>
-   <point/>
   </object>
   <object id="36" name="chopstick" type="boss" x="682" y="1174">
    <properties>
@@ -128,12 +125,12 @@
  </objectgroup>
  <objectgroup id="3" name="companion" class="companionLayer">
   <properties>
-   <property name="maxAvocado" type="int" value="0"/>
-   <property name="maxBlueRaspberry" type="int" value="3"/>
+   <property name="maxAvocado" type="int" value="1"/>
+   <property name="maxBlueRaspberry" type="int" value="1"/>
    <property name="maxCompanions" type="int" value="5"/>
-   <property name="maxDurian" type="int" value="2"/>
+   <property name="maxDurian" type="int" value="1"/>
    <property name="maxPineapple" type="int" value="0"/>
-   <property name="maxStrawberry" type="int" value="0"/>
+   <property name="maxStrawberry" type="int" value="1"/>
   </properties>
   <object id="1" name="player" type="playerSpawn" x="640" y="360">
    <properties>
