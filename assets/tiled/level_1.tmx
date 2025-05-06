@@ -35,7 +35,7 @@
     <property name="warnDuration" type="float" value="1"/>
    </properties>
   </object>
-  <object id="14" name="Ant" type="minionSpawn" x="1243.01" y="344.935">
+  <object id="14" name="Ant" type="minionSpawn" x="1358.57" y="340.018">
    <properties>
     <property name="antSpawnProportion" type="float" value="1"/>
     <property name="bossOnly" type="bool" value="true"/>
@@ -44,7 +44,7 @@
     <property name="spiderSpawnProportion" type="float" value="0"/>
    </properties>
   </object>
-  <object id="15" name="Ant" type="minionSpawn" x="71.473" y="344.935">
+  <object id="15" name="Ant" type="minionSpawn" x="-73.5904" y="349.852">
    <properties>
     <property name="antSpawnProportion" type="float" value="1"/>
     <property name="bossOnly" type="bool" value="true"/>
@@ -64,7 +64,7 @@
     <property name="warnDuration" type="float" value="2"/>
    </properties>
   </object>
-  <object id="21" type="minionSpawn" x="1230.65" y="44.5046">
+  <object id="21" type="minionSpawn" x="1378.17" y="-73.5131">
    <properties>
     <property name="antSpawnProportion" type="float" value="1"/>
     <property name="bossOnly" type="bool" value="true"/>
@@ -73,7 +73,7 @@
     <property name="spiderSpawnProportion" type="float" value="0"/>
    </properties>
   </object>
-  <object id="22" type="minionSpawn" x="40.6347" y="40.6347">
+  <object id="22" type="minionSpawn" x="-70.0069" y="-55.2547">
    <properties>
     <property name="antSpawnProportion" type="float" value="1"/>
     <property name="bossOnly" type="bool" value="true"/>
@@ -82,7 +82,7 @@
     <property name="spiderSpawnProportion" type="float" value="0"/>
    </properties>
   </object>
-  <object id="23" type="minionSpawn" x="30.9598" y="677.245">
+  <object id="23" type="minionSpawn" x="-77.2231" y="758.382">
    <properties>
     <property name="antSpawnProportion" type="float" value="1"/>
     <property name="bossOnly" type="bool" value="true"/>
@@ -91,7 +91,7 @@
     <property name="spiderSpawnProportion" type="float" value="0"/>
    </properties>
   </object>
-  <object id="24" type="minionSpawn" x="1244.2" y="684.985">
+  <object id="24" type="minionSpawn" x="1330.25" y="795.627">
    <properties>
     <property name="antSpawnProportion" type="float" value="1"/>
     <property name="bossOnly" type="bool" value="true"/>
