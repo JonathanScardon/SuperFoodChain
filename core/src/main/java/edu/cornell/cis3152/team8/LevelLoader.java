@@ -23,7 +23,6 @@ public class LevelLoader {
     private static final LevelLoader instance = new LevelLoader();
     private final TmxMapLoader mapLoader = new TmxMapLoader(new InternalFileHandleResolver());
     private AssetDirectory assets = null;
-    private GameState state;
 
     // boss sprites
     private SpriteSheet mouseIdleSprite;
@@ -40,7 +39,6 @@ public class LevelLoader {
 
     // warning sprites
     private SpriteSheet warnIconSprite;
-    private SpriteSheet spinWarnSprite;
 
     // map of ids to minion spawn points
     private Map<Integer, MinionSpawnPoint> minionSpawns;
@@ -71,7 +69,7 @@ public class LevelLoader {
         if (assets == null) {
             throw new RuntimeException("Asset directory not set");
         }
-        state = scene.getState();
+        GameState state = scene.getState();
 
         // load assets
         mouseIdleSprite = assets.getEntry("idleMouse.animation", SpriteSheet.class);
@@ -88,7 +86,6 @@ public class LevelLoader {
         chefIdleSprite = assets.getEntry("idleChef.animation", SpriteSheet.class);
 
         warnIconSprite = assets.getEntry("warnIcon.animation", SpriteSheet.class);
-        spinWarnSprite = assets.getEntry("spinWarn.animation", SpriteSheet.class);
 
         TiledMap map = this.mapLoader.load(path);
         MapProperties mapProps = map.getProperties();
@@ -208,7 +205,7 @@ public class LevelLoader {
         BossAttackPattern attack;
         while (props.containsKey("attack" + attackIdx)) {
             attackObj = props.get("attack" + attackIdx, MapObject.class);
-            attack = createAttack(attackObj, bossController, state.getPlayer(), scene);
+            attack = createAttack(attackObj, bossController, state.getPlayer(), scene, state);
             bossController.addAttackPattern(attack);
 
             attackIdx++;
@@ -225,7 +222,7 @@ public class LevelLoader {
      * @param controller the boss that will execute the attack
      */
     private BossAttackPattern createAttack(MapObject obj, BossController controller,
-                                           Player player, GameScene scene) {
+                                           Player player, GameScene scene, GameState state) {
         String attackType = obj.getProperties().get("attackType", String.class);
         MapProperties props = obj.getProperties();
 
@@ -246,12 +243,12 @@ public class LevelLoader {
             case "dash":
                 String dir = props.get("dir", String.class);
                 moveSpeed = props.get("moveSpeed", 0f, Float.class);
-                attack = new DashAttackPattern(controller, x, y, dir, warnDuration, moveSpeed,
+                attack = new DashAttackPattern(controller, x, y, dir, warnDuration, moveSpeed, state.levelWidth, state.levelHeight,
                     warnIconSprite);
                 break;
             case "spin":
                 moveSpeed = props.get("moveSpeed", 0f, Float.class);
-                attack = new SpinAttackPattern(controller, warnDuration, moveSpeed, warnIconSprite,
+                attack = new SpinAttackPattern(controller, warnDuration, moveSpeed, state.levelWidth, state.levelHeight, warnIconSprite,
                     player, state);
                 break;
             case "snatch":
@@ -271,7 +268,7 @@ public class LevelLoader {
                 BossAttackPattern subAttack;
                 while (props.containsKey("attack" + attackIdx)) {
                     attackObj = props.get("attack" + attackIdx, MapObject.class);
-                    attack = createAttack(attackObj, controller, state.getPlayer(), scene);
+                    attack = createAttack(attackObj, controller, state.getPlayer(), scene, state);
                     attackPatterns.add(attack);
 
                     attackIdx++;
