@@ -23,7 +23,7 @@ public class Spider extends Minion {
 
     public Spider(float x, float y, World world, Player player) {
         super(x, y, world, player);
-        setSpriteSheet(new SpriteSheet(new Texture("images/Spider.png"), 1, 3));
+        //setSpriteSheet(new SpriteSheet(new Texture("images/Spider.png"), 1, 3));
         this.aliveTimer = ALIVE_DURATION;
         moveSpeed = MOVE_SPEED;
         health = HEALTH;
@@ -32,7 +32,7 @@ public class Spider extends Minion {
         Vector2 spawnPos = new Vector2(x, y);
         Vector2 playerPos = new Vector2(player.getPlayerHead().getObstacle().getPosition()).scl(
             units);
-
+        this.direction = new Vector2(playerPos.x - spawnPos.x,playerPos.y - spawnPos.y ).nor();
         setSpriteSheet(texture);
     }
 
@@ -57,6 +57,7 @@ public class Spider extends Minion {
 
     @Override
     public void update(boolean moving) {
+        super.update(moving);
         if (moving) {
             float delta = Gdx.graphics.getDeltaTime();
             aliveTimer -= delta;
