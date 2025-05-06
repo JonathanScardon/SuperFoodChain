@@ -6,6 +6,8 @@ import edu.cornell.cis3152.team8.projectiles.DurianProjectile;
 import edu.cornell.cis3152.team8.projectiles.GarlicProjectile;
 import edu.cornell.cis3152.team8.projectiles.PineappleProjectile;
 import edu.cornell.cis3152.team8.projectiles.StrawberryProjectile;
+import edu.cornell.gdiac.physics2.BoxObstacle;
+import edu.cornell.gdiac.physics2.Obstacle;
 
 public class ProjectilePools {
 
@@ -30,7 +32,8 @@ public class ProjectilePools {
     public static final Pool<GarlicProjectile> garlicPool = new Pool<GarlicProjectile>() {
         @Override
         protected GarlicProjectile newObject() {
-            return new GarlicProjectile(0, 0, world);
+            Obstacle o = new BoxObstacle(0, 0, 1, 1);
+            return new GarlicProjectile(o, world);
         }
     };
 

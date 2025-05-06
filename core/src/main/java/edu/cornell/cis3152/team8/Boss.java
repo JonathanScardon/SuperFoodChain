@@ -35,6 +35,10 @@ public class Boss extends ObstacleSprite {
      */
     private float animationSpeed;
     private static float deathAnimationSpeed;
+    /**
+     * Determines whether the current animation should be looped
+     */
+    private boolean loopAnimation;
 
     // local properties
     /**
@@ -192,12 +196,15 @@ public class Boss extends ObstacleSprite {
 
         if (sprite != null) {
             animeframe += animationSpeed;
-            if (animeframe >= sprite.getSize() && getObstacle().isActive()) {
-                animeframe -= sprite.getSize();
+            if (loopAnimation) {
+                if (animeframe >= sprite.getSize() && getObstacle().isActive()) {
+                    animeframe -= sprite.getSize();
+                }
+            }
+            else {
+                animeframe = Math.min(animeframe, sprite.getSize() - 1);
             }
         }
-
-
     }
 
     public float getHealth() {
@@ -294,10 +301,9 @@ public class Boss extends ObstacleSprite {
      * @param name           the name of the animation we want to use
      * @param animationSpeed the speed of the animation
      */
-    public void setAnimation(String name, float animationSpeed) {
-        animeframe = 0;
+    public void setAnimation(String name, float animationSpeed, boolean playOnce) {
         if (!animationMap.containsKey(name)) {
-            // sprite sheet not found, using default
+            // if the sprite sheet isn't found, use
             name = "default";
         }
         if (!animationMap.containsKey("default")) {
@@ -305,10 +311,16 @@ public class Boss extends ObstacleSprite {
         }
         this.animationSpeed = animationSpeed;
         this.setSpriteSheet(animationMap.get(name));
+        this.loopAnimation = !playOnce;
+        animeframe = 0;
+    }
+
+    public void setAnimation(String name, float animationSpeed) {
+        setAnimation(name, animationSpeed, false);
     }
 
     public void setAnimation(String name) {
-        setAnimation(name, animationSpeed);
+        setAnimation(name, this.animationSpeed, false);
     }
 
     public void setAnimationSpeed(float speed) {

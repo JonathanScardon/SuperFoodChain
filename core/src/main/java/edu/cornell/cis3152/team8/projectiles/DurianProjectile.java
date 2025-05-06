@@ -19,8 +19,8 @@ public class DurianProjectile extends Projectile {
     //TODO: Change asset in json to durian spike
     public DurianProjectile(float x, float y, float vx, float vy, World world) {
         super(x, y, vx, vy, world);
-        maxLife = MAX_LIFE;
-        life = maxLife;
+        setMaxLife(MAX_LIFE);
+        life = getMaxLife();
         setAttack(ATTACK);
     }
 
