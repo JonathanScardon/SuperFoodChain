@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="1" height="1" tilewidth="1280" tileheight="720" infinite="0" nextlayerid="16" nextobjectid="102">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="1" height="1" tilewidth="1280" tileheight="720" infinite="0" nextlayerid="16" nextobjectid="104">
  <objectgroup id="12" name="boss" class="bossLayer">
   <properties>
    <property name="maxMinions" type="int" value="4"/>
@@ -55,15 +55,23 @@
     <property name="warnDuration" type="float" value="2"/>
    </properties>
   </object>
-  <object id="99" type="minionSpawn" x="-146.02" y="364.505">
+  <object id="100" type="minionSpawn" x="-101.182" y="576.579">
    <properties>
-    <property name="antSpawnProportion" type="float" value="0"/>
+    <property name="antSpawnProportion" type="float" value="1"/>
     <property name="cooldown" type="float" value="10"/>
-    <property name="cricketSpawnProportion" type="float" value="1"/>
+    <property name="cricketSpawnProportion" type="float" value="0"/>
     <property name="spiderSpawnProportion" type="float" value="0"/>
    </properties>
   </object>
-  <object id="100" type="minionSpawn" x="1420.03" y="240.215">
+  <object id="103" type="minionSpawn" x="1404.88" y="225.063">
+   <properties>
+    <property name="antSpawnProportion" type="float" value="1"/>
+    <property name="cooldown" type="float" value="10"/>
+    <property name="cricketSpawnProportion" type="float" value="0"/>
+    <property name="spiderSpawnProportion" type="float" value="0"/>
+   </properties>
+  </object>
+  <object id="102" type="minionSpawn" x="-95.1215" y="200.821">
    <properties>
     <property name="antSpawnProportion" type="float" value="1"/>
     <property name="cooldown" type="float" value="10"/>
