@@ -16,6 +16,7 @@
   <object id="29" name="minion" type="minionSpawn" x="234" y="332">
    <properties>
     <property name="antSpawnProportion" type="float" value="0.3"/>
+    <property name="cooldown" type="float" value="5"/>
     <property name="cricketSpawnProportion" type="float" value="0.3"/>
     <property name="spiderSpawnProportion" type="float" value="0.2"/>
    </properties>
