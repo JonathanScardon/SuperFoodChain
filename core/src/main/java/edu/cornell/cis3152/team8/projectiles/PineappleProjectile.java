@@ -38,9 +38,4 @@ public class PineappleProjectile extends Projectile {
             batch.draw(texture, obstacle.getPosition().x, obstacle.getPosition().y, 32, 32);
         }
     }
-
-    @Override
-    public void update(float delta) {
-        super.update(delta);
-    }
 }
