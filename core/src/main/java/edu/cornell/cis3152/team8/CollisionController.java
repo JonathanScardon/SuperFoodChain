@@ -4,7 +4,9 @@ package edu.cornell.cis3152.team8;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.physics.box2d.*;
+import edu.cornell.cis3152.team8.companions.Garlic;
 import edu.cornell.cis3152.team8.projectiles.DurianProjectile;
+import edu.cornell.cis3152.team8.projectiles.GarlicProjectile;
 import edu.cornell.cis3152.team8.projectiles.StrawberryProjectile;
 import edu.cornell.gdiac.physics2.Obstacle;
 import edu.cornell.gdiac.physics2.ObstacleSprite;
@@ -98,15 +100,15 @@ public class CollisionController implements ContactListener {
             // Player Collisions
 
             // Player and Player
-            if (c1 == PLAYER_CATEGORY && c2 == PLAYER_CATEGORY) {
-                System.out.println("P-P CONTACT IS HAPPENING");
-                if (state.getPlayer().getPlayerHead().getObstacle().getBody() == b1) {
-                    removed.add(s1);
-                }
-                else {
-                    removed.add(s2);
-                }
-            }
+//            if (c1 == PLAYER_CATEGORY && c2 == PLAYER_CATEGORY) {
+//                System.out.println("P-P CONTACT IS HAPPENING");
+//                if (state.getPlayer().getPlayerHead().getObstacle().getBody() == b1) {
+//                    removed.add(s1);
+//                }
+//                else {
+//                    removed.add(s2);
+//                }
+//            }
 
             // Player and Minion
             if ((c1 == PLAYER_CATEGORY && c2 == MINION_CATEGORY) || (c2 == PLAYER_CATEGORY
@@ -374,6 +376,9 @@ public class CollisionController implements ContactListener {
                 }
                 if (p instanceof DurianProjectile) {
                     ProjectilePools.durianPool.free((DurianProjectile) p);
+                }
+                if (p instanceof GarlicProjectile) {
+                    ProjectilePools.garlicPool.free((GarlicProjectile) p);
                 }
 //                if (p.getObstacle().getBody() != null
 //                    && p.getObstacle().getBody().getWorld() != null) {

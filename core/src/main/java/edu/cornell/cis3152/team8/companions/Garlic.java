@@ -47,7 +47,7 @@ public class Garlic extends Companion {
      * Sets Garlic assets
      */
     public static void setAssets(AssetDirectory assets) {
-        texture = assets.getEntry("STRAWBERRY.animation", SpriteSheet.class);
+        texture = assets.getEntry("GARLIC.animation", SpriteSheet.class);
     }
 
 

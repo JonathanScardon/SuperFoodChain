@@ -23,8 +23,8 @@ public class StrawberryProjectile extends Projectile {
     public StrawberryProjectile(float x, float y, float vx, float vy, World world) {
         // Call the parent constructor (in Projectile)
         super(x, y, vx, vy, world);
-        maxLife = MAX_LIFE;
-        life = maxLife;
+        setMaxLife(MAX_LIFE);
+        life = getMaxLife();
         setAttack(ATTACK);
     }
 
