@@ -22,8 +22,8 @@ public class GarlicProjectile extends Projectile {
     public GarlicProjectile(float x, float y, World world) {
         // Call the parent constructor (in Projectile)
         super(x, y, world);
-        maxLife = MAX_LIFE;
-        life = maxLife;
+        setMaxLife(MAX_LIFE);
+        life = getMaxLife();
         collisionDie = false;
         setAttack(ATTACK);
     }

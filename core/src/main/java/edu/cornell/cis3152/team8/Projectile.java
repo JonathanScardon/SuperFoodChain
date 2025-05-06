@@ -21,7 +21,7 @@ public abstract class Projectile extends ObstacleSprite {
     // How fast the animation should be
     private static float animationSpeed;
     // How long the projectile should persist for
-    protected static int maxLife;
+    private int maxLife;
     // Speed of the projectile
     protected float speed;
     // Damage of the projectile
@@ -187,6 +187,22 @@ public abstract class Projectile extends ObstacleSprite {
      */
     public int getAttack() {
         return attack;
+    }
+
+    /**
+     * Sets the max life of the projectile
+     */
+    public void setMaxLife(int max) {
+        maxLife = max;
+    }
+
+    /**
+     * Returns the max life of the projectile
+     *
+     * @return attack damage
+     */
+    public int getMaxLife() {
+        return maxLife;
     }
 
     /**
