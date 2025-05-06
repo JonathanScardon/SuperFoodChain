@@ -17,7 +17,7 @@ import edu.cornell.gdiac.physics2.Obstacle;
  */
 public class GarlicProjectile extends Projectile {
 
-    private static int MAX_LIFE;
+    private static float MAX_LIFE;
     private static int ATTACK;
     private static Texture texture; // Make texture static so it's shared
 
@@ -36,7 +36,7 @@ public class GarlicProjectile extends Projectile {
      * @param constants json associated with garlic projectiles
      */
     public static void setConstants(JsonValue constants) {
-        MAX_LIFE = constants.getInt("maxLife", 60);
+        MAX_LIFE = constants.getFloat("maxLife", 1f);
         ATTACK = constants.getInt("attack", 1);
     }
 
@@ -56,10 +56,5 @@ public class GarlicProjectile extends Projectile {
                 0.2f);
             batch.draw(texture, transform);
         }
-    }
-
-    @Override
-    public void update(float delta) {
-        super.update(delta);
     }
 }

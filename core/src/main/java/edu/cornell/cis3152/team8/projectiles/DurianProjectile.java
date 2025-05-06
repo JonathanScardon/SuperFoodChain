@@ -11,7 +11,7 @@ import edu.cornell.gdiac.graphics.SpriteBatch;
 import edu.cornell.gdiac.graphics.SpriteSheet;
 
 public class DurianProjectile extends Projectile {
-    private static int MAX_LIFE;
+    private static float MAX_LIFE;
     private static int ATTACK;
     private static Texture texture;
     private float angle;
@@ -30,7 +30,7 @@ public class DurianProjectile extends Projectile {
      * @param constants json associated with durian projectile constants
      */
     public static void setConstants(JsonValue constants) {
-        MAX_LIFE = constants.getInt("maxLife");
+        MAX_LIFE = constants.getFloat("maxLife");
         ATTACK = constants.getInt("attack");
     }
 
@@ -50,11 +50,6 @@ public class DurianProjectile extends Projectile {
                 0.15f);
             batch.draw(texture, transform);
         }
-    }
-
-    @Override
-    public void update(float delta) {
-        super.update(delta);
     }
 
     public void setAngle(float a) {

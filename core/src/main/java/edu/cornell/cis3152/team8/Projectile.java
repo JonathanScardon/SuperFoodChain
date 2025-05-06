@@ -21,7 +21,7 @@ public abstract class Projectile extends ObstacleSprite {
     // How fast the animation should be
     private static float animationSpeed;
     // How long the projectile should persist for
-    private int maxLife;
+    private float maxLife;
     // Speed of the projectile
     protected float speed;
     // Damage of the projectile
@@ -29,9 +29,9 @@ public abstract class Projectile extends ObstacleSprite {
 
     /// Attributes (per object)
     // Current animation frame of the projectile
-    private float animeFrame;
+    protected float animeFrame;
     // How much "life" left for projectile to persist on screen
-    protected int life;
+    protected float life;
     // If the projectile dies on collision
     protected boolean collisionDie;
     /**
@@ -61,7 +61,7 @@ public abstract class Projectile extends ObstacleSprite {
         radius = 1;
         speed = 750;
         attack = 2;
-        maxLife = 150;
+        maxLife = 2.5f;
         imageScale = 1;
         animationSpeed = 4;
         collisionDie = true;
@@ -97,7 +97,6 @@ public abstract class Projectile extends ObstacleSprite {
 
     /**
      * Creates a box projectile with the given starting position.
-     *
      */
     public Projectile(Obstacle o, World world) {
         // Parent constructor
@@ -108,7 +107,7 @@ public abstract class Projectile extends ObstacleSprite {
         radius = 1;
         speed = 750;
         attack = 2;
-        maxLife = 150;
+        maxLife = 2.5f;
         imageScale = 1;
         animationSpeed = 4;
         collisionDie = false;
@@ -158,8 +157,17 @@ public abstract class Projectile extends ObstacleSprite {
      *
      * @return life value
      */
-    public int getLife() {
+    public float getLife() {
         return life;
+    }
+
+    /**
+     * Sets the life of the projectile
+     *
+     * @param life the life to set it to
+     */
+    public void setLife(float life) {
+        this.life = life;
     }
 
     /**
@@ -190,7 +198,7 @@ public abstract class Projectile extends ObstacleSprite {
     /**
      * Sets the max life of the projectile
      */
-    public void setMaxLife(int max) {
+    public void setMaxLife(float max) {
         maxLife = max;
     }
 
@@ -199,7 +207,7 @@ public abstract class Projectile extends ObstacleSprite {
      *
      * @return attack damage
      */
-    public int getMaxLife() {
+    public float getMaxLife() {
         return maxLife;
     }
 
@@ -226,7 +234,7 @@ public abstract class Projectile extends ObstacleSprite {
         // Increase animation frame
         if (sprite != null) {
             // Increment animation frame
-            animeFrame += animationSpeed;
+            animeFrame += animationSpeed * delta;
             // If reaching end of animation frame, wrap around to beginning
             if (animeFrame >= sprite.getSize()) {
                 animeFrame -= sprite.getSize();
@@ -234,7 +242,7 @@ public abstract class Projectile extends ObstacleSprite {
         }
         // Decrement projectile life to make progress towards it being on screen/not
         // destroyed
-        life--;
+        life -= delta;
     }
 
     /**

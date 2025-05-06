@@ -37,7 +37,6 @@ public class LevelLoader {
 
     private SpriteSheet chefIdleSprite;
     private SpriteSheet chefAttackSprite;
-    private SpriteSheet chefBackground;
 
     // warning sprites
     private SpriteSheet warnIconSprite;
@@ -62,7 +61,7 @@ public class LevelLoader {
     }
 
     /**
-     * Apply the level specified in fileName to scene
+     * Apply the level specified in fileName to the scene
      *
      * @param scene the scene we are modifying
      * @param path  the path to the tmx file config for the level we want to load
@@ -87,7 +86,6 @@ public class LevelLoader {
 
         chefIdleSprite = assets.getEntry("idleChef.animation", SpriteSheet.class);
         chefAttackSprite = assets.getEntry("attackChef.animation", SpriteSheet.class);
-        chefBackground = assets.getEntry("backgroundChef.animation", SpriteSheet.class);
 
         warnIconSprite = assets.getEntry("warnIcon.animation", SpriteSheet.class);
 
@@ -190,8 +188,8 @@ public class LevelLoader {
                 break;
             case "chef":
                 boss = new Boss(x, y, 5f, 10f, health, bossType, state.getWorld());
-                boss.addAnimation("attack", chefAttackSprite);
-                boss.addAnimation("background", chefBackground);
+                boss.addAnimation("area", chefAttackSprite);
+                boss.addAnimation("areaAttack", chopsticksDashSprite);
                 boss.addAnimation("default", chefIdleSprite);
                 boss.addAnimation("idle", chefIdleSprite);
                 boss.addAnimation("death", mouseDeathSprite);
@@ -235,6 +233,8 @@ public class LevelLoader {
         BossAttackPattern attack = null;
         float x = props.get("x", Float.class) / GameScene.PHYSICS_UNITS;
         float y = props.get("y", Float.class) / GameScene.PHYSICS_UNITS;
+        float w = props.get("width", Float.class) / GameScene.PHYSICS_UNITS;
+        float h = props.get("height", Float.class) / GameScene.PHYSICS_UNITS;
         float warnDuration = props.get("warnDuration", 0f, Float.class);
         float attackDuration;
         float moveSpeed;
@@ -265,6 +265,11 @@ public class LevelLoader {
                 attack = new SnatchAttackPattern(controller, warnDuration, attackDuration,
                     warnIconSprite, player);
                 break;
+            case "area":
+                attackDuration = props.get("attackDuration", 0f, Float.class);
+                float radius = Math.max(w, h) / 2f;
+                attack = new AreaAttackPattern(controller, x, y, radius, warnDuration, attackDuration, warnIconSprite, state);
+                break;
             case "camera":
                 attack = new CameraAttackPattern(controller, x * GameScene.PHYSICS_UNITS,
                     y * GameScene.PHYSICS_UNITS, warnDuration, scene.getWorldCamera());
@@ -278,8 +283,8 @@ public class LevelLoader {
                 BossAttackPattern subAttack;
                 while (props.containsKey("attack" + attackIdx)) {
                     attackObj = props.get("attack" + attackIdx, MapObject.class);
-                    attack = createAttack(attackObj, controller, state.getPlayer(), scene, state);
-                    attackPatterns.add(attack);
+                    subAttack = createAttack(attackObj, controller, state.getPlayer(), scene, state);
+                    attackPatterns.add(subAttack);
 
                     attackIdx++;
                 }
