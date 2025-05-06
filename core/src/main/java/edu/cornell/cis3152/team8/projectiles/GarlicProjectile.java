@@ -7,6 +7,8 @@ import edu.cornell.cis3152.team8.GameScene;
 import edu.cornell.cis3152.team8.Projectile;
 import edu.cornell.gdiac.assets.AssetDirectory;
 import edu.cornell.gdiac.graphics.SpriteBatch;
+import edu.cornell.gdiac.physics2.BoxObstacle;
+import edu.cornell.gdiac.physics2.Obstacle;
 
 /**
  * Projectile specific to the Garlic companion
@@ -19,9 +21,9 @@ public class GarlicProjectile extends Projectile {
     private static int ATTACK;
     private static Texture texture; // Make texture static so it's shared
 
-    public GarlicProjectile(float x, float y, World world) {
+    public GarlicProjectile(Obstacle o, World world) {
         // Call the parent constructor (in Projectile)
-        super(x, y, world);
+        super(o, world);
         setMaxLife(MAX_LIFE);
         life = getMaxLife();
         collisionDie = false;
