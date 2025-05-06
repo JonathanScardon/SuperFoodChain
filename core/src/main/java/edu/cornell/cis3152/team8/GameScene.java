@@ -144,8 +144,6 @@ public class GameScene implements Screen {
      * Projectiles in the level
      */
     private Array<Projectile> projectiles;
-
-
     /**
      * A list of possible minion spawn locations, shuffled after it is looped through
      */
@@ -154,10 +152,6 @@ public class GameScene implements Screen {
      * A list of possible companion spawn locations, shuffled after it is looped through
      */
     private Array<Vector2> companionSpawns;
-    /**
-     * Index of next minion spawn location
-     */
-    int minionSpawnIdx;
     /**
      * Index of next companion spawn location
      */
@@ -196,7 +190,7 @@ public class GameScene implements Screen {
      */
     private final int level;
 
-    private final static float PHYSICS_UNITS = 64f;
+    public final static float PHYSICS_UNITS = 64f;
 
     /**
      * Creates a GameScene
@@ -210,10 +204,7 @@ public class GameScene implements Screen {
         audio = game.audio;
         state.setAudio(audio);
 
-        screenWidth = 1280;
-        screenHeight = 720;
-        resize((int) screenWidth, (int) screenHeight);
-
+        resize(1280, 720);
         reset();
 
         //Backgrounds
@@ -595,7 +586,7 @@ public class GameScene implements Screen {
         // Draw background first
         game.batch.setProjectionMatrix(worldCamera.combined);
         game.batch.begin(worldCamera);
-        game.batch.draw(backgroundTexture, 0, 0, screenWidth, screenHeight);
+        game.batch.draw(backgroundTexture, 0, 0, state.levelWidth, state.levelHeight);
 
         drawOrder(delta);
 

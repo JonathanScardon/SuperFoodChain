@@ -31,17 +31,6 @@ import edu.cornell.gdiac.physics2.ObstacleSprite;
  */
 
 public class GameState {
-
-    // Graphics assets
-    // TODO: these should probably be private, but they are public for the level loader right now
-    public SpriteSheet mouseIdleSprite;
-    public SpriteSheet mouseDashSprite;
-    public SpriteSheet mouseSpinSprite;
-    public SpriteSheet dashWarnVerticalSprite;
-    public SpriteSheet dashWarnHorizontalSprite;
-    public SpriteSheet spinWarnSprite;
-    public SpriteSheet idleWarnSprite;
-
     private Array<ObstacleSprite> dead;
     /**
      * The party of companions controlled by the player
@@ -51,7 +40,6 @@ public class GameState {
      * The minions
      */
     private Array<Minion> minions;
-    //private Array<MinionController> minionControls;
     /**
      * The bosses
      */
@@ -76,6 +64,12 @@ public class GameState {
     private CollisionController collision;
 
     /**
+     * The level size
+     */
+    public float levelWidth;
+    public float levelHeight;
+
+    /**
      * The Box2D world
      */
     protected World world;
@@ -86,7 +80,6 @@ public class GameState {
     private JsonValue constants;
 
     protected int maxMinions;
-    private int numCompanions;
     private Array<MinionSpawnPoint> minionSpawns;
     private Array<Vector2> companionSpawns;
 
@@ -121,16 +114,6 @@ public class GameState {
         companionSpawns = new Array<>();
 
         setConstants(this.constants);
-
-        mouseIdleSprite = assets.getEntry("IdleMouse.animation", SpriteSheet.class);
-        mouseDashSprite = assets.getEntry("DashMouse.animation", SpriteSheet.class);
-        mouseSpinSprite = assets.getEntry("SpinMouse.animation", SpriteSheet.class);
-
-        idleWarnSprite = assets.getEntry("idleWarn.animation", SpriteSheet.class);
-        dashWarnVerticalSprite = assets.getEntry("dashWarnVertical.animation", SpriteSheet.class);
-        dashWarnHorizontalSprite = assets.getEntry("dashWarnHorizontal.animation",
-            SpriteSheet.class);
-        spinWarnSprite = assets.getEntry("spinWarn.animation", SpriteSheet.class);
 
         projectiles = new Array<Projectile>();
 
@@ -280,8 +263,8 @@ public class GameState {
      */
     public boolean inBounds(ObstacleSprite o) {
         //TODO: might have to consider radius but idk how to get it from obstacle
-        return o.getObstacle().getX() > 0.25 && o.getObstacle().getX() < 1280 / 64 - 0.25
-            && o.getObstacle().getY() > 0.25 && o.getObstacle().getY() < 720 / 64 - 0.25;
+        return o.getObstacle().getX() > 0.25 && o.getObstacle().getX() < levelWidth / GameScene.PHYSICS_UNITS - 0.25
+            && o.getObstacle().getY() > 0.25 && o.getObstacle().getY() < levelHeight / GameScene.PHYSICS_UNITS - 0.25;
     }
 
     /**
