@@ -11,7 +11,7 @@
   </properties>
   <object id="1" name="player" type="playerSpawn" x="640" y="340" width="1" height="1">
    <properties>
-    <property name="companionType" propertytype="companionType" value="strawberry"/>
+    <property name="companionType" propertytype="companionType" value="durian"/>
    </properties>
   </object>
   <object id="6" name="Durian" type="companionSpawn" x="195.826" y="591.259"/>
