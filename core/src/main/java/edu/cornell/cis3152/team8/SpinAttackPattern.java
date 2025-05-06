@@ -16,6 +16,7 @@ public class SpinAttackPattern extends BossAttackPattern {
     private float attackX, attackY;
     private int controlCode;
     private final float warnDuration;
+    private final float levelWidth, levelHeight;
 
     private float warnTime;
     private SpriteSheet warnSprite;
@@ -28,15 +29,18 @@ public class SpinAttackPattern extends BossAttackPattern {
 
     private BossAttackPattern preSpin;
 
-    public SpinAttackPattern(BossController controller, float warnDuration, float moveSpeed,
-        SpriteSheet warnSprite,
-        Player player, GameState gamestate) {
+    public SpinAttackPattern(BossController controller, float warnDuration, float moveSpeed, float levelWidth, float levelHeight,
+                             SpriteSheet warnSprite,
+                             Player player, GameState gamestate) {
         super(controller);
         attackName = "spin";
         this.player = player;
         this.moveSpeed = moveSpeed;
-        startX = 640 / GameScene.PHYSICS_UNITS;
-        startY = 360 / GameScene.PHYSICS_UNITS;
+        startX = levelWidth / GameScene.PHYSICS_UNITS / 2f;
+        startY = levelHeight / GameScene.PHYSICS_UNITS / 2f;
+        this.levelWidth = levelWidth;
+        this.levelHeight = levelHeight;
+
         warnPattern = new SpinWarnPattern(0, 0, 100);
         warnPattern.setSpriteSheet(warnSprite);
         this.boss.warnPatterns.add(warnPattern);
@@ -54,10 +58,10 @@ public class SpinAttackPattern extends BossAttackPattern {
             state = AttackState.WARN;
             boss.setState("warn");
             if (boss.equals(gamestate.getBosses().get(0))) {
-                preSpin = new PreSpinAttackPattern(controller, "right", 5f, 100,
+                preSpin = new PreSpinAttackPattern(controller, "right", 5f, 100, levelWidth, levelHeight,
                     warnSprite);
             } else {
-                preSpin = new PreSpinAttackPattern(controller, "left", 5f, 100,
+                preSpin = new PreSpinAttackPattern(controller, "left", 5f, 100, levelWidth, levelHeight,
                     warnSprite);
             }
 
@@ -153,13 +157,13 @@ public class SpinAttackPattern extends BossAttackPattern {
             float scootX;
             float scootY;
             if (wall) {
-                if (pos.x >= 1280 / GameScene.PHYSICS_UNITS) {
+                if (pos.x >= levelWidth / GameScene.PHYSICS_UNITS) {
                     scootX = -15f;
                     scootY = 0;
                 } else if (pos.x <= 0) {
                     scootX = 15f;
                     scootY = 0;
-                } else if (pos.y >= 720 / GameScene.PHYSICS_UNITS) {
+                } else if (pos.y >= levelHeight / GameScene.PHYSICS_UNITS) {
                     scootX = 0;
                     scootY = -15f;
                 } else {
@@ -219,7 +223,7 @@ public class SpinAttackPattern extends BossAttackPattern {
 
     private boolean atWall() {
         Vector2 pos = boss.getObstacle().getPosition();
-        return pos.x >= 1280 / GameScene.PHYSICS_UNITS || pos.x <= 0 || pos.y >= 720 / GameScene.PHYSICS_UNITS
+        return pos.x >= levelWidth / GameScene.PHYSICS_UNITS || pos.x <= 0 || pos.y >= levelHeight / GameScene.PHYSICS_UNITS
             || pos.y <= 0;
     }
 

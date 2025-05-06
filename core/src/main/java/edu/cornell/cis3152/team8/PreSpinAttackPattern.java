@@ -17,29 +17,30 @@ public class PreSpinAttackPattern extends BossAttackPattern {
     private final int controlCode;
     private final float warnDuration;
     private final float moveSpeed;
+    private final float levelWidth, levelHeight;
 
     private float warnTime;
     private float origMoveSpeed;
 
-    private static final float PHYSICS_UNITS = 64f;
-
-    public PreSpinAttackPattern(BossController controller, String dir, float warnDuration,
+    public PreSpinAttackPattern(BossController controller, String dir, float warnDuration, float levelWidth, float levelHeight,
         float moveSpeed, SpriteSheet warnSprite) {
         super(controller);
 
-        this.startX = 640;
-        this.startY = 360;
+        this.levelWidth = levelWidth;
+        this.levelHeight = levelHeight;
+        this.startX = levelWidth / 2f;
+        this.startY = levelHeight / 2f;
         this.warnDuration = warnDuration;
         this.moveSpeed = moveSpeed;
 
         switch (dir) {
             case "left" -> {
                 this.controlCode = CONTROL_MOVE_LEFT;
-                this.warnPattern = new RectWarnPattern(1280f / PHYSICS_UNITS / 2f, startY, 0, 0);
+                this.warnPattern = new RectWarnPattern(levelWidth / GameScene.PHYSICS_UNITS / 2f, startY, 0, 0);
             }
             case "right" -> {
                 this.controlCode = CONTROL_MOVE_RIGHT;
-                this.warnPattern = new RectWarnPattern(1280f / PHYSICS_UNITS / 2f, startY, 0, 0);
+                this.warnPattern = new RectWarnPattern(levelWidth / GameScene.PHYSICS_UNITS / 2f, startY, 0, 0);
                 boss.flipHorizontal = true;
             }
             default -> throw new IllegalArgumentException("Unknown direction: " + dir);
@@ -62,20 +63,20 @@ public class PreSpinAttackPattern extends BossAttackPattern {
         origMoveSpeed = boss.moveSpeed;
         boss.moveSpeed = moveSpeed;
         if (controlCode == InputController.CONTROL_MOVE_RIGHT
-            && boss.getObstacle().getPosition().x * PHYSICS_UNITS >= startX
+            && boss.getObstacle().getPosition().x * GameScene.PHYSICS_UNITS >= startX
         ) {
 
             boss.getObstacle()
-                .setPosition(new Vector2(startX / PHYSICS_UNITS, startY / PHYSICS_UNITS));
+                .setPosition(new Vector2(startX / GameScene.PHYSICS_UNITS, startY / GameScene.PHYSICS_UNITS));
             controller.setAction(CONTROL_NO_ACTION);
             boss.getObstacle().setAngle(90);
             boss.setAnimation("spin");
             boss.flipHorizontal = false;
         } else if (controlCode == CONTROL_MOVE_LEFT
-            && boss.getObstacle().getPosition().x * PHYSICS_UNITS <= startX) {
+            && boss.getObstacle().getPosition().x * GameScene.PHYSICS_UNITS <= startX) {
 
             boss.getObstacle()
-                .setPosition(new Vector2(startX / PHYSICS_UNITS, startY / PHYSICS_UNITS));
+                .setPosition(new Vector2(startX / GameScene.PHYSICS_UNITS, startY / GameScene.PHYSICS_UNITS));
             controller.setAction(CONTROL_NO_ACTION);
             boss.getObstacle().setAngle(90);
             boss.setAnimation("spin");
