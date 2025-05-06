@@ -524,11 +524,13 @@ public class GameScene implements Screen {
 
             // boss moves and acts
             for (int i = 0; i < bosses.size; i++) {
-                boolean play = bossControls.get(i).update(delta);
-                if (play) {
-                    audio.play(bossControls.get(i).getAttackName());
+                if (bosses.get(i).getObstacle().isActive()) {
+                    boolean play = bossControls.get(i).update(delta);
+                    if (play) {
+                        audio.play(bossControls.get(i).getAttackName());
+                    }
+                    bosses.get(i).update(delta, bossControls.get(i).getAction());
                 }
-                bosses.get(i).update(delta, bossControls.get(i).getAction());
             }
 
             // player chain moves
@@ -593,7 +595,8 @@ public class GameScene implements Screen {
         float backgroundHeight = backgroundTexture.getHeight() * (state.levelHeight / screenHeight);
         float backgroundX = (state.levelWidth - backgroundWidth) / 2f;
         float backgroundY = (state.levelHeight - backgroundHeight) / 2f;
-        game.batch.draw(backgroundTexture, backgroundX, backgroundY, backgroundWidth, backgroundHeight);
+        game.batch.draw(backgroundTexture, backgroundX, backgroundY, backgroundWidth,
+            backgroundHeight);
 
         if (state.levelWidth != screenWidth) {
             // we need to add horizontal padding
@@ -861,9 +864,9 @@ public class GameScene implements Screen {
             }
             game.batch.draw(icon, cx, cy + hpBack.getRegionHeight() / 2f - (icon.getHeight() / 2f));
             game.batch.setColor(Color.WHITE);
-            game.batch.drawText(bossNames.get(i),
-                cx + icon.getWidth() + padding + (w / 2 - (bossNames.get(i).getWidth() / 2)),
-                cy + 50);
+//            game.batch.drawText(bossNames.get(i),
+//                cx + icon.getWidth() + padding + (w / 2 - (bossNames.get(i).getWidth() / 2)),
+//                cy + 50);
 
             cx += icon.getWidth() + padding;
             // "3-patch" the background
@@ -995,7 +998,13 @@ public class GameScene implements Screen {
         everything.addAll(minions);
         if (bossControls.get(0).getAttackName().equals("spin") && bosses.get(0).getState()
             .equals("spinning")) {
-            everything.add(bosses.get(0));
+            if (bosses.get(0).getObstacle().isActive() && bosses.get(1).getObstacle().isActive()) {
+                everything.add(bosses.get(0));
+            } else if (!bosses.get(0).getObstacle().isActive()) {
+                everything.add(bosses.get(1));
+            } else {
+                everything.add(bosses.get(0));
+            }
         } else {
             everything.addAll(bosses);
         }
