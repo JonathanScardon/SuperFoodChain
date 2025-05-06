@@ -193,7 +193,7 @@
       }
     },
     "idleChef": {
-      "file": "images/Boss_Chef_Idle_Fix.png",
+      "file": "images/Boss_Chef_Idle.png",
       "sprites": {
         "animation": {
           "rows": 1,
@@ -202,6 +202,27 @@
         }
       }
     },
+    "attackChef": {
+      "file": "images/Boss_Chef_Attack.png",
+      "sprites": {
+        "animation": {
+          "rows": 1,
+          "cols": 5,
+          "size": 5
+        }
+      }
+    },
+    "backgroundChef": {
+      "file": "images/chefBackground.png",
+      "sprites": {
+        "animation": {
+          "rows": 1,
+          "cols": 1,
+          "size": 1
+        }
+      }
+    },
+
     "dashWarnVertical": {
       "file": "images/DashWarnVertical.png",
       "sprites": {
