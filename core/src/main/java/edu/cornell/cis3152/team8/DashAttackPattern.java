@@ -37,19 +37,19 @@ public class DashAttackPattern extends BossAttackPattern {
         switch (dir) {
             case "up":
                 this.controlCode = CONTROL_MOVE_UP;
-                this.warnPattern = new RectWarnPattern(startX, levelHeight / GameScene.PHYSICS_UNITS / 2f, 100, levelHeight);
+                this.warnPattern = new RectWarnPattern(startX, levelHeight / GameScene.PHYSICS_UNITS / 2f, boss.getWidth() * GameScene.PHYSICS_UNITS, levelHeight);
                 break;
             case "down":
                 this.controlCode = CONTROL_MOVE_DOWN;
-                this.warnPattern = new RectWarnPattern(startX, levelHeight / GameScene.PHYSICS_UNITS / 2f, 100, levelHeight);
+                this.warnPattern = new RectWarnPattern(startX, levelHeight / GameScene.PHYSICS_UNITS / 2f, boss.getWidth() * GameScene.PHYSICS_UNITS, levelHeight);
                 break;
             case "left":
                 this.controlCode = CONTROL_MOVE_LEFT;
-                this.warnPattern = new RectWarnPattern(levelWidth / GameScene.PHYSICS_UNITS / 2f, startY, levelWidth, 100);
+                this.warnPattern = new RectWarnPattern(levelWidth / GameScene.PHYSICS_UNITS / 2f, startY, levelWidth, boss.getHeight() * GameScene.PHYSICS_UNITS);
                 break;
             case "right":
                 this.controlCode = CONTROL_MOVE_RIGHT;
-                this.warnPattern = new RectWarnPattern(levelWidth / GameScene.PHYSICS_UNITS / 2f, startY, levelWidth, 100);
+                this.warnPattern = new RectWarnPattern(levelWidth / GameScene.PHYSICS_UNITS / 2f, startY, levelWidth, boss.getHeight() * GameScene.PHYSICS_UNITS);
                 break;
             default:
                 throw new IllegalArgumentException("Unknown direction: " + dir);
@@ -137,10 +137,10 @@ public class DashAttackPattern extends BossAttackPattern {
 
     private boolean isOutOfBounds() {
         return switch (controlCode) {
-            case CONTROL_MOVE_UP -> (boss.getObstacle().getY() - 4) * GameScene.PHYSICS_UNITS > levelHeight;
-            case CONTROL_MOVE_DOWN -> (boss.getObstacle().getY() + 4) * GameScene.PHYSICS_UNITS < 0;
-            case CONTROL_MOVE_LEFT -> (boss.getObstacle().getX() + 4) * GameScene.PHYSICS_UNITS < 0;
-            case CONTROL_MOVE_RIGHT -> (boss.getObstacle().getX() - 4) * GameScene.PHYSICS_UNITS > levelWidth;
+            case CONTROL_MOVE_UP -> (boss.getObstacle().getY() - boss.getHeight()) * GameScene.PHYSICS_UNITS > levelHeight;
+            case CONTROL_MOVE_DOWN -> (boss.getObstacle().getY() + boss.getHeight()) * GameScene.PHYSICS_UNITS < 0;
+            case CONTROL_MOVE_LEFT -> (boss.getObstacle().getX() + boss.getWidth()) * GameScene.PHYSICS_UNITS < 0;
+            case CONTROL_MOVE_RIGHT -> (boss.getObstacle().getX() - boss.getWidth()) * GameScene.PHYSICS_UNITS > levelWidth;
             default -> true;
         };
     }

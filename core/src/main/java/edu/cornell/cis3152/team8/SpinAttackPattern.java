@@ -41,7 +41,7 @@ public class SpinAttackPattern extends BossAttackPattern {
         this.levelWidth = levelWidth;
         this.levelHeight = levelHeight;
 
-        warnPattern = new SpinWarnPattern(0, 0, 100);
+        warnPattern = new SpinWarnPattern(0, 0, Math.max(boss.getWidth() * GameScene.PHYSICS_UNITS, boss.getHeight() * GameScene.PHYSICS_UNITS));
         warnPattern.setSpriteSheet(warnSprite);
         this.boss.warnPatterns.add(warnPattern);
 
@@ -58,10 +58,10 @@ public class SpinAttackPattern extends BossAttackPattern {
             state = AttackState.WARN;
             boss.setState("warn");
             if (boss.equals(gamestate.getBosses().get(0))) {
-                preSpin = new PreSpinAttackPattern(controller, "right", 5f, 100, levelWidth, levelHeight,
+                preSpin = new PreSpinAttackPattern(controller, "right", 5f, levelWidth, levelHeight, 100,
                     warnSprite);
             } else {
-                preSpin = new PreSpinAttackPattern(controller, "left", 5f, 100, levelWidth, levelHeight,
+                preSpin = new PreSpinAttackPattern(controller, "left", 5f, levelWidth, levelHeight, 100,
                     warnSprite);
             }
 

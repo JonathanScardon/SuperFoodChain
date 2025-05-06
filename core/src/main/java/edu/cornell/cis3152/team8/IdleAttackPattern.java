@@ -29,7 +29,7 @@ public class IdleAttackPattern extends BossAttackPattern {
         this.attackDuration = attackDuration;
         this.flipHorizontal = flipHorizontal;
 
-        this.warnPattern = new RectWarnPattern(this.idleX, this.idleY, 100, 100);
+        this.warnPattern = new RectWarnPattern(this.idleX, this.idleY, boss.getWidth()  * GameScene.PHYSICS_UNITS, boss.getHeight() * GameScene.PHYSICS_UNITS);
         this.warnPattern.setSpriteSheet(warnSprite);
         this.boss.warnPatterns.add(this.warnPattern);
     }
