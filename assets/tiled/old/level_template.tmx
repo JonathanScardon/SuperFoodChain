@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="1" height="1" tilewidth="1280" tileheight="720" infinite="0" nextlayerid="4" nextobjectid="42">
+ <objectgroup id="2" name="boss" class="bossLayer">
+  <properties>
+   <property name="maxMinions" type="int" value="4"/>
+  </properties>
+  <object id="5" name="mouse" type="boss" x="332" y="1164">
+   <properties>
+    <property name="attack0" type="object" value="0"/>
+    <property name="attack1" type="object" value="0"/>
+    <property name="attack2" type="object" value="0"/>
+    <property name="bossType" value="mouse"/>
+    <property name="health" type="int" value="10"/>
+   </properties>
+  </object>
+  <object id="29" name="minion" type="minionSpawn" x="234" y="332">
+   <properties>
+    <property name="antSpawnProportion" type="float" value="0.3"/>
+    <property name="cooldown" type="float" value="5"/>
+    <property name="cricketSpawnProportion" type="float" value="0.3"/>
+    <property name="spiderSpawnProportion" type="float" value="0.2"/>
+   </properties>
+  </object>
+  <object id="30" name="idle" type="attack" x="-22" y="974">
+   <properties>
+    <property name="attackDuration" type="float" value="2"/>
+    <property name="attackType" propertytype="attackType" value="idle"/>
+    <property name="flipHorizontal" type="bool" value="false"/>
+    <property name="minion0" type="object" value="0"/>
+    <property name="warnDuration" type="float" value="1"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="37" name="spin" type="attack" x="338" y="820">
+   <properties>
+    <property name="attackDuration" type="float" value="2"/>
+    <property name="attackType" propertytype="attackType" value="spin"/>
+    <property name="minion0" type="object" value="0"/>
+    <property name="moveSpeed" type="float" value="600"/>
+    <property name="warnDuration" type="float" value="1"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="31" name="dashRight" type="attack" x="268" y="988">
+   <properties>
+    <property name="attackType" propertytype="attackType" value="dash"/>
+    <property name="dir" value="right"/>
+    <property name="minion0" type="object" value="0"/>
+    <property name="moveSpeed" type="float" value="600"/>
+    <property name="warnDuration" type="float" value="1"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="33" name="dashLeft" type="attack" x="420" y="980">
+   <properties>
+    <property name="attackType" propertytype="attackType" value="dash"/>
+    <property name="dir" value="left"/>
+    <property name="minion0" type="object" value="0"/>
+    <property name="moveSpeed" type="float" value="600"/>
+    <property name="warnDuration" type="float" value="1"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="34" name="dashUp" type="attack" x="342" y="1084">
+   <properties>
+    <property name="attackType" propertytype="attackType" value="dash"/>
+    <property name="dir" value="up"/>
+    <property name="minion0" type="object" value="0"/>
+    <property name="moveSpeed" type="float" value="600"/>
+    <property name="warnDuration" type="float" value="1"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="35" name="dashDown" type="attack" x="340" y="932">
+   <properties>
+    <property name="attackType" propertytype="attackType" value="dash"/>
+    <property name="dir" value="down"/>
+    <property name="minion0" type="object" value="0"/>
+    <property name="moveSpeed" type="float" value="600"/>
+    <property name="warnDuration" type="float" value="1"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="32" template="snatch.tx" type="attack" x="686" y="894">
+   <properties>
+    <property name="attackDuration" type="float" value="0"/>
+   </properties>
+  </object>
+  <object id="36" name="chopstick" type="boss" x="682" y="1174">
+   <properties>
+    <property name="attack0" type="object" value="0"/>
+    <property name="attack1" type="object" value="0"/>
+    <property name="attack2" type="object" value="0"/>
+    <property name="bossType" propertytype="bossType" value="chopsticks"/>
+    <property name="health" type="int" value="10"/>
+   </properties>
+  </object>
+  <object id="39" name="chef" type="boss" x="1036" y="1184">
+   <properties>
+    <property name="attack0" type="object" value="0"/>
+    <property name="attack1" type="object" value="0"/>
+    <property name="attack2" type="object" value="0"/>
+    <property name="bossType" propertytype="bossType" value="chef"/>
+    <property name="health" type="int" value="10"/>
+   </properties>
+  </object>
+  <object id="40" name="multi" type="attack" x="1090" y="854">
+   <properties>
+    <property name="attack0" type="object" value="0"/>
+    <property name="attack1" type="object" value="0"/>
+    <property name="attackType" propertytype="attackType" value="idle"/>
+    <property name="warnDuration" type="float" value="1"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="41" name="camera" type="attack" x="936" y="846">
+   <properties>
+    <property name="attackType" propertytype="attackType" value="camera"/>
+    <property name="minion0" type="object" value="0"/>
+    <property name="note" value="keep at y =360"/>
+    <property name="warnDuration" type="float" value="1"/>
+   </properties>
+   <point/>
+  </object>
+ </objectgroup>
+ <objectgroup id="3" name="companion" class="companionLayer">
+  <properties>
+   <property name="maxAvocado" type="int" value="1"/>
+   <property name="maxBlueRaspberry" type="int" value="1"/>
+   <property name="maxCompanions" type="int" value="5"/>
+   <property name="maxDurian" type="int" value="1"/>
+   <property name="maxPineapple" type="int" value="0"/>
+   <property name="maxStrawberry" type="int" value="1"/>
+  </properties>
+  <object id="1" name="player" type="playerSpawn" x="640" y="360">
+   <properties>
+    <property name="companionType" propertytype="companionType" value="durian"/>
+   </properties>
+  </object>
+  <object id="25" name="companion" type="companionSpawn" x="638" y="248">
+   <ellipse/>
+  </object>
+ </objectgroup>
+</map>
