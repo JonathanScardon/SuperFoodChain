@@ -168,12 +168,10 @@ public class Player {
      * @param controlCode direction of player input
      */
     public void update(float delta, int controlCode) {
-        // automatically removes "dead" companions --> don't have to individually find in collision
-        // can do deadCompanions instead?
+        //removing dead companions from chain
         for (int i = 0; i < companions.size(); i++) {
             Companion c = companions.get(i);
             if (!c.getObstacle().isActive()) {
-                System.out.println("calling deleteCompanion() in player");
                 deleteCompanion(c);
             }
         }
@@ -182,10 +180,12 @@ public class Player {
             return;
         }
 
+        //updating buffer data
         Companion head = this.getPlayerHead();
         controlBuffer.add(head.getObstacle().getX(), head.getObstacle().getY(),
             head.getDirection());
 
+        //updating companions in the chain
         for (int i = 0; i < companions.size(); i++) {
             Companion c = companions.get(i);
             if (c == getPlayerHead()) {
@@ -195,13 +195,10 @@ public class Player {
                 c.update(delta, InputController.CONTROL_NO_ACTION);
                 c.getObstacle().setX(prev.x);
                 c.getObstacle().setY(prev.y);
-
-                // TODO: not sure if this is necessary
-                c.getObstacle().setVX(0);
-                c.getObstacle().setVY(0);
             }
         }
 
+        //updating animation frames
         for (Companion c : companions) {
             c.animationFrame = getPlayerHead().animationFrame;
             if (c.getAnimator() != null && c.isMoving()) {
@@ -391,6 +388,7 @@ public class Player {
             return;
         }
 
+        //initializing box2d
         companion.getObstacle().setName("player");
 
         Filter filter = companion.getObstacle().getFilterData();
@@ -419,13 +417,11 @@ public class Player {
         shape.dispose();
 
         CircularBuffer.PositionAndDirection tail = controlBuffer.getSnapshot(companions.size());
-        //do not add if there is not enough data
+
+        //only add a companion if there is enough data to do so
         if (tail != null & !companions.isEmpty()) {
             companion.getObstacle().setX(tail.x);
             companion.getObstacle().setY(tail.y);
-//            companion.getObstacle().setX(getPlayerHead().getObstacle().getX());
-//            companion.getObstacle().setY(getPlayerHead().getObstacle().getY());
-
             companions.add(companion);
             companion.setCollected(true);
         }
