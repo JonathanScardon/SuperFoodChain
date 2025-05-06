@@ -92,6 +92,11 @@ public class LevelLoader {
         spinWarnSprite = assets.getEntry("spinWarn.animation", SpriteSheet.class);
 
         TiledMap map = this.mapLoader.load(path);
+        MapProperties mapProps = map.getProperties();
+        int levelWidth = mapProps.get("tilewidth", Integer.class);
+        int levelHeight = mapProps.get("tileheight", Integer.class);
+        state.levelWidth = levelWidth;
+        state.levelHeight = levelHeight;
 
         MapLayer companionLayer = map.getLayers().get("companion");
         MapLayer bossLayer = map.getLayers().get("boss");
