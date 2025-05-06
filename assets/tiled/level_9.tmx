@@ -4,7 +4,7 @@
   <properties>
    <property name="maxMinions" type="int" value="4"/>
   </properties>
-  <object id="5" name="mouse" type="boss" x="332" y="1164">
+  <object id="5" name="mouse" type="boss" x="22" y="1642">
    <properties>
     <property name="attack0" type="object" value="0"/>
     <property name="attack1" type="object" value="0"/>
@@ -31,7 +31,7 @@
    </properties>
    <point/>
   </object>
-  <object id="37" name="spin" type="attack" x="338" y="820">
+  <object id="37" name="spin" type="attack" x="28" y="1298">
    <properties>
     <property name="attackDuration" type="float" value="2"/>
     <property name="attackType" propertytype="attackType" value="spin"/>
@@ -41,7 +41,7 @@
    </properties>
    <point/>
   </object>
-  <object id="31" name="dashRight" type="attack" x="268" y="988">
+  <object id="31" name="dashRight" type="attack" x="-42" y="1466">
    <properties>
     <property name="attackType" propertytype="attackType" value="dash"/>
     <property name="dir" value="right"/>
@@ -51,7 +51,7 @@
    </properties>
    <point/>
   </object>
-  <object id="33" name="dashLeft" type="attack" x="420" y="980">
+  <object id="33" name="dashLeft" type="attack" x="110" y="1458">
    <properties>
     <property name="attackType" propertytype="attackType" value="dash"/>
     <property name="dir" value="left"/>
@@ -61,7 +61,7 @@
    </properties>
    <point/>
   </object>
-  <object id="34" name="dashUp" type="attack" x="342" y="1084">
+  <object id="34" name="dashUp" type="attack" x="32" y="1562">
    <properties>
     <property name="attackType" propertytype="attackType" value="dash"/>
     <property name="dir" value="up"/>
@@ -71,7 +71,7 @@
    </properties>
    <point/>
   </object>
-  <object id="35" name="dashDown" type="attack" x="340" y="932">
+  <object id="35" name="dashDown" type="attack" x="30" y="1410">
    <properties>
     <property name="attackType" propertytype="attackType" value="dash"/>
     <property name="dir" value="down"/>
@@ -81,7 +81,7 @@
    </properties>
    <point/>
   </object>
-  <object id="32" name="snatch" type="attack" x="686" y="894">
+  <object id="32" name="snatch" type="attack" x="380" y="1092">
    <properties>
     <property name="attackType" propertytype="attackType" value="snatch"/>
     <property name="minion0" type="object" value="0"/>
@@ -89,7 +89,7 @@
    </properties>
    <point/>
   </object>
-  <object id="36" name="chopstick" type="boss" x="682" y="1174">
+  <object id="36" name="chopstick" type="boss" x="612" y="972">
    <properties>
     <property name="attack0" type="object" value="0"/>
     <property name="attack1" type="object" value="0"/>
@@ -98,7 +98,7 @@
     <property name="health" type="int" value="10"/>
    </properties>
   </object>
-  <object id="39" name="chef" type="boss" x="1036" y="1184">
+  <object id="39" name="chef" type="boss" x="1046" y="1304">
    <properties>
     <property name="attack0" type="object" value="0"/>
     <property name="attack1" type="object" value="0"/>
@@ -107,7 +107,7 @@
     <property name="health" type="int" value="10"/>
    </properties>
   </object>
-  <object id="40" name="multi" type="attack" x="1090" y="854">
+  <object id="40" name="multi" type="attack" x="1100" y="974">
    <properties>
     <property name="attack0" type="object" value="0"/>
     <property name="attack1" type="object" value="0"/>
@@ -116,7 +116,7 @@
    </properties>
    <point/>
   </object>
-  <object id="41" name="camera" type="attack" x="936" y="846">
+  <object id="41" name="camera" type="attack" x="946" y="966">
    <properties>
     <property name="attackType" propertytype="attackType" value="camera"/>
     <property name="minion0" type="object" value="0"/>
@@ -129,17 +129,14 @@
  <objectgroup id="3" name="companion" class="companionLayer">
   <properties>
    <property name="maxAvocado" type="int" value="0"/>
-   <property name="maxBlueRaspberry" type="int" value="3"/>
-   <property name="maxCompanions" type="int" value="5"/>
-   <property name="maxDurian" type="int" value="2"/>
+   <property name="maxBlueRaspberry" type="int" value="0"/>
+   <property name="maxCompanions" type="int" value="7"/>
+   <property name="maxDurian" type="int" value="0"/>
+   <property name="maxGarlic" type="int" value="7"/>
    <property name="maxPineapple" type="int" value="0"/>
    <property name="maxStrawberry" type="int" value="0"/>
   </properties>
-  <object id="1" name="player" type="playerSpawn" x="640" y="360">
-   <properties>
-    <property name="companionType" propertytype="companionType" value="durian"/>
-   </properties>
-  </object>
+  <object id="1" name="player" type="playerSpawn" x="640" y="360"/>
   <object id="25" name="companion" type="companionSpawn" x="638" y="248">
    <ellipse/>
   </object>
