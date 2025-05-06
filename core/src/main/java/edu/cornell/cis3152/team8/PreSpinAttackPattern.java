@@ -98,15 +98,15 @@ public class PreSpinAttackPattern extends BossAttackPattern {
             case WARN:
                 if (warnTime > 0) {
                     if (dir.equals("left")) {
-                        warnPattern.setPosition(controller.boss.getObstacle().getX()
-                                - controller.boss.getSpriteSheet().getRegionWidth()
-                                / GameScene.PHYSICS_UNITS / 3f,
-                            controller.boss.getObstacle().getY());
+//                        warnPattern.setPosition(controller.boss.getObstacle().getX()
+//                                - controller.boss.getSpriteSheet().getRegionWidth()
+//                                / GameScene.PHYSICS_UNITS / 3f,
+//                            controller.boss.getObstacle().getY());
                     } else {
-                        warnPattern.setPosition(controller.boss.getObstacle().getX()
-                                + controller.boss.getSpriteSheet().getRegionWidth()
-                                / GameScene.PHYSICS_UNITS / 3f,
-                            controller.boss.getObstacle().getY());
+//                        warnPattern.setPosition(controller.boss.getObstacle().getX()
+//                                + controller.boss.getSpriteSheet().getRegionWidth()
+//                                / GameScene.PHYSICS_UNITS / 3f,
+//                            controller.boss.getObstacle().getY());
                     }
 
                     warnTime -= delta;

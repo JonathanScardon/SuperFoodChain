@@ -228,7 +228,7 @@ public class LevelLoader {
      * @param controller the boss that will execute the attack
      */
     private BossAttackPattern createAttack(MapObject obj, BossController controller,
-                                           Player player, GameScene scene, GameState state) {
+        Player player, GameScene scene, GameState state) {
         String attackType = obj.getProperties().get("attackType", String.class);
         MapProperties props = obj.getProperties();
 
@@ -243,19 +243,22 @@ public class LevelLoader {
             case "idle":
                 attackDuration = props.get("attackDuration", 0f, Float.class);
                 Boolean flipHorizontal = props.get("flipHorizontal", false, Boolean.class);
-                attack = new IdleAttackPattern(controller, x, y, warnDuration, attackDuration, flipHorizontal,
+                attack = new IdleAttackPattern(controller, x, y, warnDuration, attackDuration,
+                    flipHorizontal,
                     warnIconSprite);
                 break;
             case "dash":
                 String dir = props.get("dir", String.class);
                 moveSpeed = props.get("moveSpeed", 0f, Float.class);
-                attack = new DashAttackPattern(controller, x, y, dir, warnDuration, moveSpeed, state.levelWidth, state.levelHeight,
+                attack = new DashAttackPattern(controller, x, y, dir, warnDuration, moveSpeed,
+                    state.levelWidth, state.levelHeight,
                     warnIconSprite);
                 break;
             case "spin":
                 moveSpeed = props.get("moveSpeed", 0f, Float.class);
-                attack = new SpinAttackPattern(controller, warnDuration, moveSpeed, state.levelWidth, state.levelHeight, warnIconSprite,
-                    player, state);
+                attack = new SpinAttackPattern(controller, warnDuration, moveSpeed,
+                    state.levelWidth, state.levelHeight, warnIconSprite,
+                    player, state, scene.getWorldCamera());
                 break;
             case "snatch":
                 attackDuration = props.get("attackDuration", 0f, Float.class);
@@ -263,7 +266,8 @@ public class LevelLoader {
                     warnIconSprite, player);
                 break;
             case "camera":
-                attack = new CameraAttackPattern(controller, x * GameScene.PHYSICS_UNITS, y * GameScene.PHYSICS_UNITS, warnDuration, scene.getWorldCamera());
+                attack = new CameraAttackPattern(controller, x * GameScene.PHYSICS_UNITS,
+                    y * GameScene.PHYSICS_UNITS, warnDuration, scene.getWorldCamera());
                 break;
             case "multi":
                 Array<BossAttackPattern> attackPatterns = new Array<>();
@@ -280,7 +284,8 @@ public class LevelLoader {
                     attackIdx++;
                 }
 
-                attack = new MultiAttackPattern(controller, warnDuration, attackPatterns, warnIconSprite);
+                attack = new MultiAttackPattern(controller, warnDuration, attackPatterns,
+                    warnIconSprite);
                 break;
         }
 
@@ -367,7 +372,8 @@ public class LevelLoader {
         float cricketSpawnProportion = props.get("cricketSpawnProportion", 0f, Float.class);
         float spiderSpawnProportion = props.get("spiderSpawnProportion", 0f, Float.class);
 
-        MinionSpawnPoint spawn = new MinionSpawnPoint(state, x, y, cooldown, bossOnly, antSpawnProportion,
+        MinionSpawnPoint spawn = new MinionSpawnPoint(state, x, y, cooldown, bossOnly,
+            antSpawnProportion,
             cricketSpawnProportion, spiderSpawnProportion);
 
         state.getMinionSpawns().add(spawn);

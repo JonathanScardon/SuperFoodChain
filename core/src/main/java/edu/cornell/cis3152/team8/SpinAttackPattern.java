@@ -1,7 +1,11 @@
 package edu.cornell.cis3152.team8;
 
+import com.badlogic.gdx.graphics.Camera;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 import edu.cornell.gdiac.graphics.SpriteSheet;
+import java.util.Random;
 
 import static edu.cornell.cis3152.team8.InputController.*;
 
@@ -28,11 +32,15 @@ public class SpinAttackPattern extends BossAttackPattern {
     private final float moveSpeed;
 
     private BossAttackPattern preSpin;
+    private final Camera camera;
+    private final Vector3 origPos;
+    private final Random move;
+    private final int intensity;
 
     public SpinAttackPattern(BossController controller, float warnDuration, float moveSpeed,
         float levelWidth, float levelHeight,
         SpriteSheet warnSprite,
-        Player player, GameState gamestate) {
+        Player player, GameState gamestate, Camera camera) {
         super(controller);
         attackName = "spin";
         this.player = player;
@@ -41,6 +49,10 @@ public class SpinAttackPattern extends BossAttackPattern {
         startY = levelHeight / GameScene.PHYSICS_UNITS / 2f;
         this.levelWidth = levelWidth;
         this.levelHeight = levelHeight;
+        this.camera = camera;
+        origPos = new Vector3(camera.position);
+        move = new Random();
+        intensity = 1;
 
         warnPattern = new SpinWarnPattern(0, 0, Math.max(boss.getWidth() * GameScene.PHYSICS_UNITS,
             boss.getHeight() * GameScene.PHYSICS_UNITS));
@@ -56,6 +68,8 @@ public class SpinAttackPattern extends BossAttackPattern {
 
     @Override
     public void start() {
+        camera.position.set(origPos);
+        camera.update();
         if (twoBosses()) {
             state = AttackState.WARN;
             boss.setState("warn");
@@ -125,6 +139,7 @@ public class SpinAttackPattern extends BossAttackPattern {
                     }
                 }
                 case ATTACK -> {
+                    shake();
                     boss.getObstacle().setAngle(boss.getObstacle().getAngle() + 9);
                     boss.setAnimationSpeed(0.15f);
                     if (atWall()) {
@@ -157,6 +172,8 @@ public class SpinAttackPattern extends BossAttackPattern {
                     scootX = 0;
                     scootY = 15f;
                 }
+                camera.position.set(origPos);
+                camera.update();
                 controller.boss.getObstacle().setLinearVelocity(new Vector2(scootX, scootY));
             }
             return wall;
@@ -218,5 +235,15 @@ public class SpinAttackPattern extends BossAttackPattern {
     private boolean twoBosses() {
         return gamestate.getBosses().get(0).getObstacle().isActive() && gamestate.getBosses().get(1)
             .getObstacle().isActive();
+    }
+
+    private void shake() {
+        int dir = move.nextInt(2) == 0 ? -1 : 1;
+        int displace = move.nextInt(6);
+        camera.position.x += dir * displace;
+        dir = move.nextInt(2) == 0 ? -1 : 1;
+        displace = move.nextInt(intensity + 1);
+        camera.position.y += dir * displace;
+        camera.update();
     }
 }
