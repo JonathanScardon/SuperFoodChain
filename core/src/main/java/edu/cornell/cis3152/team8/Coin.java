@@ -38,11 +38,6 @@ public class Coin extends ObstacleSprite {
     boolean remove;
 
     /**
-     * Physics units
-     */
-    private static final float units = 64f;
-
-    /**
      * Constructs a Coin at the given position
      *
      * @param x The x-coordinate of the object
@@ -62,7 +57,7 @@ public class Coin extends ObstacleSprite {
         obstacle.setFixedRotation(true);
         obstacle.setBodyType(BodyDef.BodyType.KinematicBody);
 
-        obstacle.setPhysicsUnits(units);
+        obstacle.setPhysicsUnits(GameScene.PHYSICS_UNITS);
 
         obstacle.activatePhysics(world);
         obstacle.setUserData(this);
@@ -85,7 +80,7 @@ public class Coin extends ObstacleSprite {
      */
     public static void setConstants(JsonValue constants) {
         life = constants.getInt("life");
-        size = constants.getFloat("size") * units;
+        size = constants.getFloat("size") * GameScene.PHYSICS_UNITS;
         animationSpeed = constants.getFloat("animationSpeed");
         deathAnimationSpeed = constants.getFloat("deathAnimationSpeed");
     }
@@ -148,8 +143,8 @@ public class Coin extends ObstacleSprite {
      */
     public void draw(SpriteBatch batch) {
         SpriteBatch.computeTransform(transform, sprite.getRegionWidth() / 2.0f,
-            sprite.getRegionHeight() / 2.0f, obstacle.getPosition().x * units,
-            obstacle.getPosition().y * units, 0.0f, size / units, size / units);
+            sprite.getRegionHeight() / 2.0f, obstacle.getPosition().x * GameScene.PHYSICS_UNITS,
+            obstacle.getPosition().y * GameScene.PHYSICS_UNITS, 0.0f, size / GameScene.PHYSICS_UNITS, size / GameScene.PHYSICS_UNITS);
         if (!obstacle.isActive()) { // if destroyed...
             if (currLife <= 0) {
                 batch.setColor(1, 1, 1, alpha);

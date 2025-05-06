@@ -25,16 +25,16 @@ public class SpinWarnPattern extends BossWarnPattern {
 
         shape.setColor(lineColor);
         float angleStep = 360f / segments;
-        float prevX = this.x * PHYSICS_UNITS + radius;
-        float prevY = this.y * PHYSICS_UNITS;
+        float prevX = this.x * GameScene.PHYSICS_UNITS + radius;
+        float prevY = this.y * GameScene.PHYSICS_UNITS;
 
         float angleRad;
         float currX, currY;
 
         for (int i = 1; i <= segments; i++) {
             angleRad = (float) Math.toRadians(i * angleStep);
-            currX = this.x * PHYSICS_UNITS + radius * (float) Math.cos(angleRad);
-            currY = this.y * PHYSICS_UNITS + radius * (float) Math.sin(angleRad);
+            currX = this.x * GameScene.PHYSICS_UNITS + radius * (float) Math.cos(angleRad);
+            currY = this.y * GameScene.PHYSICS_UNITS + radius * (float) Math.sin(angleRad);
 
             shape.rectLine(prevX, prevY, currX, currY, strokeWidth);
             prevX = currX;
@@ -49,8 +49,8 @@ public class SpinWarnPattern extends BossWarnPattern {
         float spreadAngle = 30f; // degrees between the lines
         float length = 50f; // how long the triangle legs are
 
-        float centerX = this.x * PHYSICS_UNITS;
-        float centerY = this.y * PHYSICS_UNITS;
+        float centerX = this.x * GameScene.PHYSICS_UNITS;
+        float centerY = this.y * GameScene.PHYSICS_UNITS;
 
         float angleRad = (float) Math.toRadians(angle);
         float leftAngleRad = angleRad - (float) Math.toRadians(spreadAngle / 2f);

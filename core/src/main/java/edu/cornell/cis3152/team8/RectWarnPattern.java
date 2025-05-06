@@ -43,10 +43,10 @@ public class RectWarnPattern extends BossWarnPattern {
         Vector2 extend = new Vector2(); // Reused for overlap
 
         // Corner positions
-        Vector2 tr = new Vector2(this.x * PHYSICS_UNITS, this.y * PHYSICS_UNITS).add(dx).add(dy);
-        Vector2 tl = new Vector2(this.x * PHYSICS_UNITS, this.y * PHYSICS_UNITS).sub(dx).add(dy);
-        Vector2 bl = new Vector2(this.x * PHYSICS_UNITS, this.y * PHYSICS_UNITS).sub(dx).sub(dy);
-        Vector2 br = new Vector2(this.x * PHYSICS_UNITS, this.y * PHYSICS_UNITS).add(dx).sub(dy);
+        Vector2 tr = new Vector2(this.x * GameScene.PHYSICS_UNITS, this.y * GameScene.PHYSICS_UNITS).add(dx).add(dy);
+        Vector2 tl = new Vector2(this.x * GameScene.PHYSICS_UNITS, this.y * GameScene.PHYSICS_UNITS).sub(dx).add(dy);
+        Vector2 bl = new Vector2(this.x * GameScene.PHYSICS_UNITS, this.y * GameScene.PHYSICS_UNITS).sub(dx).sub(dy);
+        Vector2 br = new Vector2(this.x * GameScene.PHYSICS_UNITS, this.y * GameScene.PHYSICS_UNITS).add(dx).sub(dy);
 
         // Calculate outward directions for extension
         // Top edge: tl -> tr

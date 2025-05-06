@@ -41,8 +41,6 @@ public abstract class BossWarnPattern {
      */
     private static float animationSpeed = 0.02f;
 
-    protected static final float PHYSICS_UNITS = 64f;
-
     public BossWarnPattern(float x, float y) {
         this.active = false;
         this.x = x;
@@ -85,7 +83,7 @@ public abstract class BossWarnPattern {
             return;
         }
 
-        SpriteBatch.computeTransform(transform, 70.5f, sprite.getRegionHeight() / 2.0f, this.x * PHYSICS_UNITS, this.y * PHYSICS_UNITS, 0, 0.6f, 0.6f);
+        SpriteBatch.computeTransform(transform, 70.5f, sprite.getRegionHeight() / 2.0f, this.x * GameScene.PHYSICS_UNITS, this.y * GameScene.PHYSICS_UNITS, 0, 0.6f, 0.6f);
         sprite.setFrame((int) animeframe);
         batch.setColor(Color.WHITE);
         batch.draw(sprite, transform);

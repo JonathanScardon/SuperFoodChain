@@ -21,7 +21,6 @@ import java.util.Map;
 public class LevelLoader {
 
     private static final LevelLoader instance = new LevelLoader();
-    private static final int PHYSICS_UNITS = 64;
     private final TmxMapLoader mapLoader = new TmxMapLoader(new InternalFileHandleResolver());
     private AssetDirectory assets = null;
     private GameState state;
@@ -164,8 +163,8 @@ public class LevelLoader {
 
         Boss boss = null;
         BossController bossController;
-        float x = props.get("x", Float.class) / PHYSICS_UNITS;
-        float y = props.get("y", Float.class) / PHYSICS_UNITS;
+        float x = props.get("x", Float.class) / GameScene.PHYSICS_UNITS;
+        float y = props.get("y", Float.class) / GameScene.PHYSICS_UNITS;
         int health = props.get("health", 0, Integer.class);
 
         switch (bossType) {
@@ -231,8 +230,8 @@ public class LevelLoader {
         MapProperties props = obj.getProperties();
 
         BossAttackPattern attack = null;
-        float x = props.get("x", Float.class) / PHYSICS_UNITS;
-        float y = props.get("y", Float.class) / PHYSICS_UNITS;
+        float x = props.get("x", Float.class) / GameScene.PHYSICS_UNITS;
+        float y = props.get("y", Float.class) / GameScene.PHYSICS_UNITS;
         float warnDuration = props.get("warnDuration", 0f, Float.class);
         float attackDuration;
         float moveSpeed;
@@ -261,7 +260,7 @@ public class LevelLoader {
                     warnIconSprite, player);
                 break;
             case "camera":
-                attack = new CameraAttackPattern(controller, x * PHYSICS_UNITS, y * PHYSICS_UNITS, warnDuration, scene.getWorldCamera());
+                attack = new CameraAttackPattern(controller, x * GameScene.PHYSICS_UNITS, y * GameScene.PHYSICS_UNITS, warnDuration, scene.getWorldCamera());
                 break;
             case "multi":
                 Array<BossAttackPattern> attackPatterns = new Array<>();

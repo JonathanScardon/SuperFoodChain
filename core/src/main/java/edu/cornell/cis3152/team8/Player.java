@@ -116,8 +116,6 @@ public class Player {
      */
     protected int forwardDirection;
 
-    private static final float units = 64f;
-
     private long ticks;
 
     private Texture current;
@@ -249,8 +247,8 @@ public class Player {
             }
             Companion head = getPlayerHead();
             SpriteBatch.computeTransform(transform, originX, originY
-                , head.getObstacle().getX() * units,
-                head.getObstacle().getY() * units, 0, 0.4f, 0.4f);
+                , head.getObstacle().getX() * GameScene.PHYSICS_UNITS,
+                head.getObstacle().getY() * GameScene.PHYSICS_UNITS, 0, 0.4f, 0.4f);
 
             batch.draw(current, transform);
         }
@@ -294,8 +292,8 @@ public class Player {
             }
 
             SpriteBatch.computeTransform(transform, originX, originY
-                , prev.x * units,
-                prev.y * units, 0, 0.4f, 0.4f);
+                , prev.x * GameScene.PHYSICS_UNITS,
+                prev.y * GameScene.PHYSICS_UNITS, 0, 0.4f, 0.4f);
             batch.draw(current, transform);
         }
     }

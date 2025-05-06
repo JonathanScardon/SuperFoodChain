@@ -18,9 +18,6 @@ import edu.cornell.gdiac.physics2.CapsuleObstacle;
 import edu.cornell.gdiac.physics2.ObstacleSprite;
 
 public class Minion extends ObstacleSprite {
-
-    protected static final float units = 64f;
-
     //drawing fields
     protected float size;
     private boolean damage;
@@ -49,7 +46,7 @@ public class Minion extends ObstacleSprite {
      * @param player The player the minion will attack
      */
     public Minion(float x, float y, World world, Player player) {
-        super(new BoxObstacle(x / units, y / units, 0.8f, 0.5f), true);
+        super(new BoxObstacle(x / GameScene.PHYSICS_UNITS, y / GameScene.PHYSICS_UNITS, 0.8f, 0.5f), true);
 
         this.player = player;
         dead = false;
@@ -65,7 +62,7 @@ public class Minion extends ObstacleSprite {
         obstacle.setFixedRotation(true);
         obstacle.setBodyType(BodyDef.BodyType.DynamicBody);
 
-        obstacle.setPhysicsUnits(units);
+        obstacle.setPhysicsUnits(GameScene.PHYSICS_UNITS);
 
         obstacle.activatePhysics(world);
         obstacle.setUserData(this);
@@ -126,12 +123,12 @@ public class Minion extends ObstacleSprite {
     public void draw(SpriteBatch batch) {
         if (flipHorizontal) {
             SpriteBatch.computeTransform(transform, sprite.getRegionWidth() / 2.0f,
-                sprite.getRegionHeight() / 2.0f, obstacle.getPosition().x * units,
-                obstacle.getPosition().y * units, 0.0f, -size / units, size / units);
+                sprite.getRegionHeight() / 2.0f, obstacle.getPosition().x * GameScene.PHYSICS_UNITS,
+                obstacle.getPosition().y * GameScene.PHYSICS_UNITS, 0.0f, -size / GameScene.PHYSICS_UNITS, size / GameScene.PHYSICS_UNITS);
         } else {
             SpriteBatch.computeTransform(transform, sprite.getRegionWidth() / 2.0f,
-                sprite.getRegionHeight() / 2.0f, obstacle.getPosition().x * units,
-                obstacle.getPosition().y * units, 0.0f, size / units, size / units);
+                sprite.getRegionHeight() / 2.0f, obstacle.getPosition().x * GameScene.PHYSICS_UNITS,
+                obstacle.getPosition().y * GameScene.PHYSICS_UNITS, 0.0f, size / GameScene.PHYSICS_UNITS, size / GameScene.PHYSICS_UNITS);
         }
         if (!obstacle.isActive()) { // if destroyed...
             if (!dead) {
