@@ -27,8 +27,8 @@
    <properties>
     <property name="attackType" value="dash"/>
     <property name="dir" value="right"/>
-    <property name="moveSpeed" type="float" value="500"/>
-    <property name="warnDuration" type="float" value="2.5"/>
+    <property name="moveSpeed" type="float" value="600"/>
+    <property name="warnDuration" type="float" value="1.5"/>
    </properties>
   </object>
   <object id="8" type="minionSpawn" x="-30" y="792">
@@ -67,24 +67,24 @@
    <properties>
     <property name="attackType" value="dash"/>
     <property name="dir" value="left"/>
-    <property name="moveSpeed" type="float" value="525"/>
-    <property name="warnDuration" type="float" value="2.5"/>
+    <property name="moveSpeed" type="float" value="600"/>
+    <property name="warnDuration" type="float" value="1.5"/>
    </properties>
   </object>
   <object id="18" name="dash" type="attack" x="1116" y="838">
    <properties>
     <property name="attackType" value="dash"/>
     <property name="dir" value="up"/>
-    <property name="moveSpeed" type="float" value="550"/>
-    <property name="warnDuration" type="float" value="2.5"/>
+    <property name="moveSpeed" type="float" value="600"/>
+    <property name="warnDuration" type="float" value="1.5"/>
    </properties>
   </object>
   <object id="19" name="dash" type="attack" x="245.455" y="-87.8788">
    <properties>
     <property name="attackType" value="dash"/>
     <property name="dir" value="down"/>
-    <property name="moveSpeed" type="float" value="575"/>
-    <property name="warnDuration" type="float" value="2.5"/>
+    <property name="moveSpeed" type="float" value="600"/>
+    <property name="warnDuration" type="float" value="1.5"/>
    </properties>
   </object>
  </objectgroup>
