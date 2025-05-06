@@ -72,6 +72,11 @@ public class Boss extends ObstacleSprite {
     private boolean remove;
 
     /**
+     * This hitbox size of this boss
+     */
+    private float width, height;
+
+    /**
      * Defines the constants for this class.
      *
      * @param constants The JSON value with constants
@@ -87,6 +92,8 @@ public class Boss extends ObstacleSprite {
 
         this.health = health;
         startHealth = health;
+        this.width = width;
+        this.height = height;
         this.name = name;
         obstacle.setAngle(0f);
         flipHorizontal = false;
@@ -322,5 +329,13 @@ public class Boss extends ObstacleSprite {
 
     public void setAnimationFrame(float frame) {
         animeframe = frame;
+    }
+
+    public float getWidth() {
+        return this.width;
+    }
+
+    public float getHeight() {
+        return this.height;
     }
 }
