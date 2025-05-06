@@ -60,6 +60,7 @@ public class DashAttackPattern extends BossAttackPattern {
 
     @Override
     public void start() {
+        boss.getObstacle().setAngle(0);
         boss.setState("dash");
         state = AttackState.WARN;
         controller.setAction(CONTROL_NO_ACTION);
