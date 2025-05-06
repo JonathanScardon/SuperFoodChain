@@ -7,7 +7,7 @@
     "deathAnimationSpeed": 0.01
   },
   "companion": {
-    "moveSpeed": 150,
+    "moveSpeed": 200,
     "speedBoost": 0,
     "cooldown": 5,
     "deathExpirationTimer": 3.0,
