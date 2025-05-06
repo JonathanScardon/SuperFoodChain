@@ -1,11 +1,5 @@
 {
-
-  "max_level_unlocked": 11,
-  "companions_unlocked": 3,
-<<<<<<< Updated upstream
-  "total_levels": 11
-
-=======
-  "total_levels": 8
->>>>>>> Stashed changes
+    "max_level_unlocked": 11,
+    "companions_unlocked": 3,
+    "total_levels": 11
 }
