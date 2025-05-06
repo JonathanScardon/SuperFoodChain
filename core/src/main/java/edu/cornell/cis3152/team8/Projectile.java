@@ -21,7 +21,7 @@ public abstract class Projectile extends ObstacleSprite {
     // How fast the animation should be
     private static float animationSpeed;
     // How long the projectile should persist for
-    protected static int maxLife;
+    private int maxLife;
     // Speed of the projectile
     protected float speed;
     // Damage of the projectile
@@ -98,12 +98,10 @@ public abstract class Projectile extends ObstacleSprite {
     /**
      * Creates a box projectile with the given starting position.
      *
-     * @param x The x-coordinate of the object
-     * @param y The y-coordinate of the object
      */
-    public Projectile(float x, float y, World world) {
+    public Projectile(Obstacle o, World world) {
         // Parent constructor
-        super(new BoxObstacle(x / GameScene.PHYSICS_UNITS, y / GameScene.PHYSICS_UNITS, 1, 1), true);
+        super(o, true);
 
         // Attributes below are placeholder values since setConstants isn't implemented
         // yet
@@ -187,6 +185,22 @@ public abstract class Projectile extends ObstacleSprite {
      */
     public int getAttack() {
         return attack;
+    }
+
+    /**
+     * Sets the max life of the projectile
+     */
+    public void setMaxLife(int max) {
+        maxLife = max;
+    }
+
+    /**
+     * Returns the max life of the projectile
+     *
+     * @return attack damage
+     */
+    public int getMaxLife() {
+        return maxLife;
     }
 
     /**
