@@ -64,6 +64,7 @@ public class GameScene implements Screen {
     private final Texture pauseBackground;
     private final Texture win;
     private final Texture backgroundTexture;
+    private final Texture paddingBackgroundTexture;
     private final Texture mouseLose;
     private final Texture chopsticksLose;
 
@@ -210,6 +211,7 @@ public class GameScene implements Screen {
         //Backgrounds
         dim = assets.getEntry("dim", Texture.class);
         backgroundTexture = assets.getEntry("gameBackground", Texture.class);
+        paddingBackgroundTexture = assets.getEntry("chefBackground", Texture.class);
         pauseBackground = assets.getEntry("pauseBackground", Texture.class);
         win = assets.getEntry("win", Texture.class);
         mouseLose = assets.getEntry("ratLose", Texture.class);
@@ -586,7 +588,18 @@ public class GameScene implements Screen {
         // Draw background first
         game.batch.setProjectionMatrix(worldCamera.combined);
         game.batch.begin(worldCamera);
-        game.batch.draw(backgroundTexture, 0, 0, state.levelWidth, state.levelHeight);
+
+        float backgroundWidth = backgroundTexture.getWidth() * (state.levelWidth / screenWidth);
+        float backgroundHeight = backgroundTexture.getHeight() * (state.levelHeight / screenHeight);
+        float backgroundX = (state.levelWidth - backgroundWidth) / 2f;
+        float backgroundY = (state.levelHeight - backgroundHeight) / 2f;
+        game.batch.draw(backgroundTexture, backgroundX, backgroundY, backgroundWidth, backgroundHeight);
+
+        if (state.levelWidth != screenWidth) {
+            // we need to add horizontal padding
+            game.batch.draw(paddingBackgroundTexture, -paddingBackgroundTexture.getWidth(), 0);
+            game.batch.draw(paddingBackgroundTexture, state.levelWidth, 0);
+        }
 
         drawOrder(delta);
 
