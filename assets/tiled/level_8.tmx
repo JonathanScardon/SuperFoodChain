@@ -9,7 +9,7 @@
     <property name="attack0" type="object" value="7"/>
     <property name="attack1" type="object" value="78"/>
     <property name="attack2" type="object" value="75"/>
-    <property name="attack3" type="object" value="75"/>
+    <property name="attack3" type="object" value="32"/>
     <property name="attack4" type="object" value="75"/>
     <property name="attack5" type="object" value="75"/>
     <property name="bossType" value="mouse"/>
@@ -21,7 +21,7 @@
     <property name="attack0" type="object" value="74"/>
     <property name="attack1" type="object" value="78"/>
     <property name="attack2" type="object" value="75"/>
-    <property name="attack3" type="object" value="75"/>
+    <property name="attack3" type="object" value="30"/>
     <property name="attack4" type="object" value="75"/>
     <property name="attack5" type="object" value="75"/>
     <property name="bossType" value="mouse"/>
@@ -84,7 +84,7 @@
     <property name="warnDuration" type="float" value="2"/>
    </properties>
   </object>
-  <object id="32" name="dash" type="attack" x="1360" y="480">
+  <object id="32" name="dash" type="attack" x="1260.64" y="496.026">
    <properties>
     <property name="attackType" value="dash"/>
     <property name="dir" value="left"/>
