@@ -82,8 +82,6 @@ public class Boss extends ObstacleSprite {
         deathAnimationSpeed = constants.getFloat("deathAnimationSpeed", 0.1f);
     }
 
-    private static final float PHYSICS_UNITS = 64f;
-
     public Boss(float x, float y, float width, float height, int health, String name, World world) {
         super(new CapsuleObstacle(x, y, width, height), true);
 
@@ -107,7 +105,7 @@ public class Boss extends ObstacleSprite {
         obstacle.setName("boss");
         obstacle.setFixedRotation(true);
         obstacle.setBodyType(BodyDef.BodyType.DynamicBody);
-        obstacle.setPhysicsUnits(PHYSICS_UNITS);
+        obstacle.setPhysicsUnits(GameScene.PHYSICS_UNITS);
 
         obstacle.setBullet(true);
         obstacle.activatePhysics(world);
@@ -120,7 +118,7 @@ public class Boss extends ObstacleSprite {
             CollisionController.PLAYER_CATEGORY | CollisionController.PROJECTILE_CATEGORY;
         obstacle.setFilterData(filter);
 
-        float size = 4 * PHYSICS_UNITS;
+        float size = 4 * GameScene.PHYSICS_UNITS;
         mesh.set(-size / 2.0f, -size / 2.0f, size, size);
     }
 
@@ -216,8 +214,8 @@ public class Boss extends ObstacleSprite {
         float scaleX = spriteScale.x * (flipHorizontal ? -1 : 1);
         float scaleY = spriteScale.y * (flipVertical ? -1 : 1);
         SpriteBatch.computeTransform(transform, sprite.getRegionWidth() / 2.0f,
-            sprite.getRegionHeight() / 2.0f, obstacle.getPosition().x * PHYSICS_UNITS,
-            obstacle.getPosition().y * PHYSICS_UNITS, obstacle.getAngle(), scaleX,
+            sprite.getRegionHeight() / 2.0f, obstacle.getPosition().x * GameScene.PHYSICS_UNITS,
+            obstacle.getPosition().y * GameScene.PHYSICS_UNITS, obstacle.getAngle(), scaleX,
             scaleY);
 
         if (!obstacle.isActive()) { // if destroyed...

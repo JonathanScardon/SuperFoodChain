@@ -3,6 +3,7 @@ package edu.cornell.cis3152.team8.projectiles;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.JsonValue;
+import edu.cornell.cis3152.team8.GameScene;
 import edu.cornell.cis3152.team8.Projectile;
 import edu.cornell.gdiac.assets.AssetDirectory;
 import edu.cornell.gdiac.graphics.SpriteBatch;
@@ -49,7 +50,7 @@ public class StrawberryProjectile extends Projectile {
         if (obstacle.isActive()) {
             SpriteBatch.computeTransform(transform, sprite.getRegionWidth() / 2.0f,
                 sprite.getRegionHeight() / 2.0f,
-                obstacle.getX() * units - 16, obstacle.getY() * units - 16, angle + 90, 0.2f,
+                obstacle.getX() * GameScene.PHYSICS_UNITS - 16, obstacle.getY() * GameScene.PHYSICS_UNITS - 16, angle + 90, 0.2f,
                 0.2f);
             batch.draw(texture, transform);
         }

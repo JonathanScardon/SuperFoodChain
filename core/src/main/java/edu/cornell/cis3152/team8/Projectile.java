@@ -38,7 +38,6 @@ public abstract class Projectile extends ObstacleSprite {
      * Radius of the object (used for collisions)
      */
     protected float radius;
-    protected static final float units = 64f;
 
     // public static void setConstants (JsonValue constants) {
     // imageScale = constants.getFloat("imageScale");
@@ -55,7 +54,7 @@ public abstract class Projectile extends ObstacleSprite {
      */
     public Projectile(float x, float y, float vx, float vy, World world) {
         // Parent constructor
-        super(new CapsuleObstacle(x / units, y / units, 0.5f, 0.5f), true);
+        super(new CapsuleObstacle(x / GameScene.PHYSICS_UNITS, y / GameScene.PHYSICS_UNITS, 0.5f, 0.5f), true);
 
         // Attributes below are placeholder values since setConstants isn't implemented
         // yet
@@ -80,7 +79,7 @@ public abstract class Projectile extends ObstacleSprite {
         obstacle.setFixedRotation(true);
         obstacle.setBodyType(BodyDef.BodyType.KinematicBody);
 
-        obstacle.setPhysicsUnits(units);
+        obstacle.setPhysicsUnits(GameScene.PHYSICS_UNITS);
         obstacle.setBullet(true);
 
         obstacle.activatePhysics(world);
@@ -92,7 +91,7 @@ public abstract class Projectile extends ObstacleSprite {
         filter.maskBits = CollisionController.MINION_CATEGORY | CollisionController.BOSS_CATEGORY;
         obstacle.setFilterData(filter);
 
-        float size = radius * units;
+        float size = radius * GameScene.PHYSICS_UNITS;
         mesh.set(-size / 2.0f, -size / 2.0f, size, size);
     }
 
@@ -104,7 +103,7 @@ public abstract class Projectile extends ObstacleSprite {
      */
     public Projectile(float x, float y, World world) {
         // Parent constructor
-        super(new BoxObstacle(x / units, y / units, 1, 1), true);
+        super(new BoxObstacle(x / GameScene.PHYSICS_UNITS, y / GameScene.PHYSICS_UNITS, 1, 1), true);
 
         // Attributes below are placeholder values since setConstants isn't implemented
         // yet
@@ -129,7 +128,7 @@ public abstract class Projectile extends ObstacleSprite {
         obstacle.setFixedRotation(true);
         obstacle.setBodyType(BodyDef.BodyType.KinematicBody);
 
-        obstacle.setPhysicsUnits(units);
+        obstacle.setPhysicsUnits(GameScene.PHYSICS_UNITS);
         obstacle.setBullet(true);
 
         obstacle.activatePhysics(world);
@@ -141,7 +140,7 @@ public abstract class Projectile extends ObstacleSprite {
         filter.maskBits = CollisionController.MINION_CATEGORY | CollisionController.BOSS_CATEGORY;
         obstacle.setFilterData(filter);
 
-        float size = radius * units;
+        float size = radius * GameScene.PHYSICS_UNITS;
         mesh.set(-size / 2.0f, -size / 2.0f, size, size);
     }
 
@@ -234,7 +233,7 @@ public abstract class Projectile extends ObstacleSprite {
         // need to override because we pass in imageScale instead of 1.0f - need to put in size/radius instead?
         SpriteBatch.computeTransform(transform, sprite.getRegionWidth() / 2.0f,
             sprite.getRegionHeight() / 2.0f,
-            obstacle.getX() * units, obstacle.getY() * units, 0.0f, radius, radius);
+            obstacle.getX() * GameScene.PHYSICS_UNITS, obstacle.getY() * GameScene.PHYSICS_UNITS, 0.0f, radius, radius);
         batch.setColor(Color.WHITE);
         batch.draw(sprite, transform);
     }

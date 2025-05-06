@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.JsonValue;
+import edu.cornell.cis3152.team8.GameScene;
 import edu.cornell.cis3152.team8.Minion;
 import edu.cornell.cis3152.team8.Player;
 import edu.cornell.gdiac.assets.AssetDirectory;
@@ -28,10 +29,10 @@ public class Spider extends Minion {
         moveSpeed = MOVE_SPEED;
         health = HEALTH;
         animationSpeed = ANIMATION_SPEED;
-        size = SIZE * units;
+        size = SIZE * GameScene.PHYSICS_UNITS;
         Vector2 spawnPos = new Vector2(x, y);
         Vector2 playerPos = new Vector2(player.getPlayerHead().getObstacle().getPosition()).scl(
-            units);
+            GameScene.PHYSICS_UNITS);
         this.direction = new Vector2(playerPos.x - spawnPos.x,playerPos.y - spawnPos.y ).nor();
         setSpriteSheet(texture);
     }

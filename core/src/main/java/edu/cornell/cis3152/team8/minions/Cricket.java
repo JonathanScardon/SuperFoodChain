@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.JsonValue;
+import edu.cornell.cis3152.team8.GameScene;
 import edu.cornell.cis3152.team8.Minion;
 import edu.cornell.cis3152.team8.Player;
 import edu.cornell.gdiac.assets.AssetDirectory;
@@ -32,7 +33,7 @@ public class Cricket extends Minion {
         this.waitTimer = WAIT_DURATION;
         health = HEALTH;
         animationSpeed = ANIMATION_SPEED;
-        size = SIZE * units;
+        size = SIZE * GameScene.PHYSICS_UNITS;
 
         setSpriteSheet(texture);
     }
@@ -62,7 +63,7 @@ public class Cricket extends Minion {
         super.update(moving);
         if (moving) {
             float delta = Gdx.graphics.getDeltaTime();
-            Vector2 pos = obstacle.getPosition().scl(units);
+            Vector2 pos = obstacle.getPosition().scl(GameScene.PHYSICS_UNITS);
 
             switch (state) {
                 case WAIT -> {
@@ -76,7 +77,7 @@ public class Cricket extends Minion {
                 }
                 case HOP -> {
                     animationFrame = 1;
-                    Vector2 dir = player.getPlayerHead().getObstacle().getPosition().scl(units)
+                    Vector2 dir = player.getPlayerHead().getObstacle().getPosition().scl(GameScene.PHYSICS_UNITS)
                         .sub(pos)
                         .nor();
                     obstacle.setLinearVelocity(dir.scl(HOP_SPEED));

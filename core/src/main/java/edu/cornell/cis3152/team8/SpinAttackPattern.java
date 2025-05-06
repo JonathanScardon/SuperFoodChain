@@ -23,7 +23,6 @@ public class SpinAttackPattern extends BossAttackPattern {
     private SpriteSheet attackSprite;
     private boolean actionSet;
     private GameState gamestate;
-    private static final float PHYSICS_UNITS = 64f;
     private float origMoveSpeed;
     private final float moveSpeed;
 
@@ -36,8 +35,8 @@ public class SpinAttackPattern extends BossAttackPattern {
         attackName = "spin";
         this.player = player;
         this.moveSpeed = moveSpeed;
-        startX = 640 / PHYSICS_UNITS;
-        startY = 360 / PHYSICS_UNITS;
+        startX = 640 / GameScene.PHYSICS_UNITS;
+        startY = 360 / GameScene.PHYSICS_UNITS;
         warnPattern = new SpinWarnPattern(0, 0, 100);
         warnPattern.setSpriteSheet(warnSprite);
         this.boss.warnPatterns.add(warnPattern);
@@ -154,13 +153,13 @@ public class SpinAttackPattern extends BossAttackPattern {
             float scootX;
             float scootY;
             if (wall) {
-                if (pos.x >= 1280 / PHYSICS_UNITS) {
+                if (pos.x >= 1280 / GameScene.PHYSICS_UNITS) {
                     scootX = -15f;
                     scootY = 0;
                 } else if (pos.x <= 0) {
                     scootX = 15f;
                     scootY = 0;
-                } else if (pos.y >= 720 / PHYSICS_UNITS) {
+                } else if (pos.y >= 720 / GameScene.PHYSICS_UNITS) {
                     scootX = 0;
                     scootY = -15f;
                 } else {
@@ -177,7 +176,7 @@ public class SpinAttackPattern extends BossAttackPattern {
     private void setControlCode() {
         Vector2 bPos = boss.getObstacle().getPosition();
         Vector2 pPos = player.getPlayerHead().getObstacle().getPosition();
-        float gap = 120 / PHYSICS_UNITS;
+        float gap = 120 / GameScene.PHYSICS_UNITS;
         if (pPos.x >= bPos.x - gap
             && pPos.x <= bPos.x + gap) {
             if (bPos.y < pPos.y) {
@@ -220,7 +219,7 @@ public class SpinAttackPattern extends BossAttackPattern {
 
     private boolean atWall() {
         Vector2 pos = boss.getObstacle().getPosition();
-        return pos.x >= 1280 / PHYSICS_UNITS || pos.x <= 0 || pos.y >= 720 / PHYSICS_UNITS
+        return pos.x >= 1280 / GameScene.PHYSICS_UNITS || pos.x <= 0 || pos.y >= 720 / GameScene.PHYSICS_UNITS
             || pos.y <= 0;
     }
 

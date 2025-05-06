@@ -21,8 +21,6 @@ public class DashAttackPattern extends BossAttackPattern {
     private float warnTime;
     private float origMoveSpeed;
 
-    private static final float PHYSICS_UNITS = 64f;
-
     public DashAttackPattern(BossController controller, float x, float y, String dir,
                              float warnDuration, float moveSpeed, SpriteSheet warnSprite) {
         super(controller);
@@ -36,19 +34,19 @@ public class DashAttackPattern extends BossAttackPattern {
         switch (dir) {
             case "up":
                 this.controlCode = CONTROL_MOVE_UP;
-                this.warnPattern = new RectWarnPattern(startX, 720f / PHYSICS_UNITS / 2f, 100, 720);
+                this.warnPattern = new RectWarnPattern(startX, 720f / GameScene.PHYSICS_UNITS / 2f, 100, 720);
                 break;
             case "down":
                 this.controlCode = CONTROL_MOVE_DOWN;
-                this.warnPattern = new RectWarnPattern(startX, 720f / PHYSICS_UNITS / 2f, 100, 720);
+                this.warnPattern = new RectWarnPattern(startX, 720f / GameScene.PHYSICS_UNITS / 2f, 100, 720);
                 break;
             case "left":
                 this.controlCode = CONTROL_MOVE_LEFT;
-                this.warnPattern = new RectWarnPattern(1280f / PHYSICS_UNITS / 2f, startY, 1280, 100);
+                this.warnPattern = new RectWarnPattern(1280f / GameScene.PHYSICS_UNITS / 2f, startY, 1280, 100);
                 break;
             case "right":
                 this.controlCode = CONTROL_MOVE_RIGHT;
-                this.warnPattern = new RectWarnPattern(1280f / PHYSICS_UNITS / 2f, startY, 1280, 100);
+                this.warnPattern = new RectWarnPattern(1280f / GameScene.PHYSICS_UNITS / 2f, startY, 1280, 100);
                 break;
             default:
                 throw new IllegalArgumentException("Unknown direction: " + dir);
@@ -136,10 +134,10 @@ public class DashAttackPattern extends BossAttackPattern {
 
     private boolean isOutOfBounds() {
         return switch (controlCode) {
-            case CONTROL_MOVE_UP -> (boss.getObstacle().getY() - 4) * PHYSICS_UNITS > 720;
-            case CONTROL_MOVE_DOWN -> (boss.getObstacle().getY() + 4) * PHYSICS_UNITS < 0;
-            case CONTROL_MOVE_LEFT -> (boss.getObstacle().getX() + 4) * PHYSICS_UNITS < 0;
-            case CONTROL_MOVE_RIGHT -> (boss.getObstacle().getX() - 4) * PHYSICS_UNITS > 1280;
+            case CONTROL_MOVE_UP -> (boss.getObstacle().getY() - 4) * GameScene.PHYSICS_UNITS > 720;
+            case CONTROL_MOVE_DOWN -> (boss.getObstacle().getY() + 4) * GameScene.PHYSICS_UNITS < 0;
+            case CONTROL_MOVE_LEFT -> (boss.getObstacle().getX() + 4) * GameScene.PHYSICS_UNITS < 0;
+            case CONTROL_MOVE_RIGHT -> (boss.getObstacle().getX() - 4) * GameScene.PHYSICS_UNITS > 1280;
             default -> true;
         };
     }

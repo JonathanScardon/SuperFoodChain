@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.JsonValue;
+import edu.cornell.cis3152.team8.GameScene;
 import edu.cornell.cis3152.team8.Minion;
 import edu.cornell.cis3152.team8.Player;
 import edu.cornell.gdiac.assets.AssetDirectory;
@@ -42,7 +43,7 @@ public class Ant extends Minion {
         MOVE_SPEED = constants.getFloat("moveSpeed", 1f);
         HEALTH = constants.getInt("health", 2);
         ANIMATION_SPEED = constants.getFloat("animationSpeed", 0.15f);
-        SIZE = constants.getFloat("size", 0.3f) * units; // ensure size on-screen is multiplied by physics units
+        SIZE = constants.getFloat("size", 0.3f) * GameScene.PHYSICS_UNITS; // ensure size on-screen is multiplied by physics units
     }
 
     /**
@@ -56,8 +57,8 @@ public class Ant extends Minion {
     public void update(boolean moving) {
         super.update(moving);
         if (moving) {
-            Vector2 pos = obstacle.getPosition().scl(units);
-            Vector2 dir = player.getPlayerHead().getObstacle().getPosition().scl(units).sub(pos)
+            Vector2 pos = obstacle.getPosition().scl(GameScene.PHYSICS_UNITS);
+            Vector2 dir = player.getPlayerHead().getObstacle().getPosition().scl(GameScene.PHYSICS_UNITS).sub(pos)
                 .nor();
             obstacle.setLinearVelocity(dir.scl(moveSpeed));
         } else {
