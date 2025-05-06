@@ -51,6 +51,7 @@ public class MinionSpawnPoint {
             || this.cricketSpawnRate + this.spiderSpawnRate + this.antSpawnRate <= 0) {
             throw new RuntimeException("Invalid minion spawn proportions");
         }
+        this.spawnTime = cooldown;
     }
 
     /**

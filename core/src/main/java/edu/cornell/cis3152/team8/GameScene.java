@@ -343,6 +343,9 @@ public class GameScene implements Screen {
         bossControls = state.getBossControls();
         world = state.getWorld();
         coins = state.getCoins();
+        worldCamera.position.x = screenWidth / 2f;
+        worldCamera.position.y = screenHeight / 2f;
+        worldCamera.update();
 
         projectiles = state.getActiveProjectiles();
 

@@ -1,10 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="1" height="1" tilewidth="1280" tileheight="720" infinite="0" nextlayerid="4" nextobjectid="66">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="1" height="1" tilewidth="1280" tileheight="720" infinite="0" nextlayerid="4" nextobjectid="63">
  <objectgroup id="2" name="boss" class="bossLayer">
   <properties>
    <property name="maxMinions" type="int" value="4"/>
   </properties>
-  <object id="47" type="minionSpawn" x="584.259" y="206.592">
+  <object id="29" name="minion" type="minionSpawn" x="-16" y="762">
+   <properties>
+    <property name="antSpawnProportion" type="float" value="0.2"/>
+    <property name="cooldown" type="float" value="5"/>
+    <property name="cricketSpawnProportion" type="float" value="0.8"/>
+    <property name="spiderSpawnProportion" type="float" value="0"/>
+   </properties>
+  </object>
+  <object id="59" name="minion" type="minionSpawn" x="1310" y="754">
+   <properties>
+    <property name="antSpawnProportion" type="float" value="0.2"/>
+    <property name="cooldown" type="float" value="5"/>
+    <property name="cricketSpawnProportion" type="float" value="0.8"/>
+    <property name="spiderSpawnProportion" type="float" value="0"/>
+   </properties>
+  </object>
+  <object id="47" type="minionSpawn" x="556.259" y="173.259">
    <properties>
     <property name="antSpawnProportion" type="float" value="1"/>
     <property name="bossOnly" type="bool" value="true"/>
@@ -13,7 +29,7 @@
     <property name="spiderSpawnProportion" type="float" value="0"/>
    </properties>
   </object>
-  <object id="53" type="minionSpawn" x="546.333" y="267.466">
+  <object id="53" type="minionSpawn" x="553" y="251.466">
    <properties>
     <property name="antSpawnProportion" type="float" value="0"/>
     <property name="bossOnly" type="bool" value="true"/>
@@ -22,7 +38,7 @@
     <property name="spiderSpawnProportion" type="float" value="0"/>
    </properties>
   </object>
-  <object id="50" type="minionSpawn" x="582.776" y="325.667">
+  <object id="50" type="minionSpawn" x="562.776" y="359">
    <properties>
     <property name="antSpawnProportion" type="float" value="1"/>
     <property name="bossOnly" type="bool" value="true"/>
@@ -31,7 +47,7 @@
     <property name="spiderSpawnProportion" type="float" value="0"/>
    </properties>
   </object>
-  <object id="48" type="minionSpawn" x="640.241" y="167.333">
+  <object id="48" type="minionSpawn" x="644.241" y="170">
    <properties>
     <property name="antSpawnProportion" type="float" value="0"/>
     <property name="bossOnly" type="bool" value="true"/>
@@ -40,7 +56,7 @@
     <property name="spiderSpawnProportion" type="float" value="0"/>
    </properties>
   </object>
-  <object id="52" type="minionSpawn" x="645.426" y="358.408">
+  <object id="52" type="minionSpawn" x="650.759" y="355.741">
    <properties>
     <property name="antSpawnProportion" type="float" value="0"/>
     <property name="bossOnly" type="bool" value="true"/>
@@ -49,7 +65,7 @@
     <property name="spiderSpawnProportion" type="float" value="0"/>
    </properties>
   </object>
-  <object id="49" type="minionSpawn" x="703.483" y="202">
+  <object id="49" type="minionSpawn" x="735.483" y="170">
    <properties>
     <property name="antSpawnProportion" type="float" value="1"/>
     <property name="bossOnly" type="bool" value="true"/>
@@ -58,7 +74,7 @@
     <property name="spiderSpawnProportion" type="float" value="0"/>
    </properties>
   </object>
-  <object id="54" type="minionSpawn" x="746.741" y="265.391">
+  <object id="54" type="minionSpawn" x="738.741" y="254.724">
    <properties>
     <property name="antSpawnProportion" type="float" value="0"/>
     <property name="bossOnly" type="bool" value="true"/>
@@ -67,7 +83,7 @@
     <property name="spiderSpawnProportion" type="float" value="0"/>
    </properties>
   </object>
-  <object id="51" type="minionSpawn" x="722" y="326.408">
+  <object id="51" type="minionSpawn" x="742" y="355.741">
    <properties>
     <property name="antSpawnProportion" type="float" value="1"/>
     <property name="bossOnly" type="bool" value="true"/>
@@ -76,22 +92,9 @@
     <property name="spiderSpawnProportion" type="float" value="0"/>
    </properties>
   </object>
-  <object id="55" name="idle1" type="attack" x="644" y="268">
+  <object id="55" name="idle" type="attack" x="644" y="268">
    <properties>
-    <property name="attackDuration" type="float" value="5"/>
-    <property name="attackType" propertytype="attackType" value="idle"/>
-    <property name="flipHorizontal" type="bool" value="false"/>
-    <property name="minion0" type="object" value="47"/>
-    <property name="minion1" type="object" value="49"/>
-    <property name="minion2" type="object" value="50"/>
-    <property name="minion3" type="object" value="51"/>
-    <property name="warnDuration" type="float" value="1"/>
-   </properties>
-   <point/>
-  </object>
-  <object id="63" name="idle2" type="attack" x="642.667" y="301.333">
-   <properties>
-    <property name="attackDuration" type="float" value="12"/>
+    <property name="attackDuration" type="float" value="7"/>
     <property name="attackType" propertytype="attackType" value="idle"/>
     <property name="flipHorizontal" type="bool" value="false"/>
     <property name="minion0" type="object" value="47"/>
@@ -102,20 +105,17 @@
     <property name="minion5" type="object" value="50"/>
     <property name="minion6" type="object" value="52"/>
     <property name="minion7" type="object" value="51"/>
-    <property name="warnDuration" type="float" value="3"/>
+    <property name="warnDuration" type="float" value="1.5"/>
    </properties>
    <point/>
   </object>
   <object id="36" name="chopstick" type="boss" x="656" y="910">
    <properties>
-    <property name="attack0" type="object" value="55"/>
-    <property name="attack1" type="object" value="58"/>
-    <property name="attack2" type="object" value="57"/>
-    <property name="attack3" type="object" value="63"/>
-    <property name="attack4" type="object" value="58"/>
-    <property name="attack5" type="object" value="57"/>
+    <property name="attack0" type="object" value="58"/>
+    <property name="attack1" type="object" value="57"/>
+    <property name="attack2" type="object" value="55"/>
     <property name="bossType" propertytype="bossType" value="chopsticks"/>
-    <property name="health" type="int" value="10"/>
+    <property name="health" type="int" value="15"/>
    </properties>
   </object>
   <object id="57" template="snatch.tx" type="attack" x="424" y="826">
@@ -142,7 +142,7 @@
    <property name="maxPineapple" type="int" value="0"/>
    <property name="maxStrawberry" type="int" value="0"/>
   </properties>
-  <object id="1" name="player" type="playerSpawn" x="650" y="640">
+  <object id="1" name="player" type="playerSpawn" x="650" y="628">
    <properties>
     <property name="companionType" propertytype="companionType" value="durian"/>
    </properties>
@@ -153,13 +153,7 @@
   <object id="61" name="companion" type="companionSpawn" x="1174" y="244">
    <ellipse/>
   </object>
-  <object id="65" name="companion" type="companionSpawn" x="1151.33" y="573.333">
-   <ellipse/>
-  </object>
   <object id="43" name="companion" type="companionSpawn" x="238" y="118">
-   <ellipse/>
-  </object>
-  <object id="64" name="companion" type="companionSpawn" x="118" y="559.333">
    <ellipse/>
   </object>
   <object id="42" name="companion" type="companionSpawn" x="1050" y="136">
