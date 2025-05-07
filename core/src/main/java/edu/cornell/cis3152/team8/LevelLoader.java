@@ -191,10 +191,10 @@ public class LevelLoader {
                 break;
             case "chef":
                 boss = new Boss(x, y, 5f, 10f, health, bossType, state.getWorld());
-                boss.addAnimation("area", chefAttackSprite);
-                boss.addAnimation("areaAttack", chopsticksSnatchSprite);
                 boss.addAnimation("default", chefIdleSprite);
                 boss.addAnimation("idle", chefIdleSprite);
+                boss.addAnimation("multi", chefAttackSprite);
+                boss.addAnimation("areaAttack", chopsticksSnatchSprite);
                 boss.addAnimation("death", mouseDeathSprite);
                 boss.spriteScale.set(1f, 1f);
                 break;
@@ -229,7 +229,7 @@ public class LevelLoader {
      * @param controller the boss that will execute the attack
      */
     private BossAttackPattern createAttack(MapObject obj, BossController controller,
-        Player player, GameScene scene, GameState state) {
+                                           Player player, GameScene scene, GameState state) {
         String attackType = obj.getProperties().get("attackType", String.class);
         MapProperties props = obj.getProperties();
 
@@ -271,7 +271,7 @@ public class LevelLoader {
             case "area":
                 attackDuration = props.get("attackDuration", 0f, Float.class);
                 float radius = Math.max(w, h) / 2f;
-                attack = new AreaAttackPattern(controller, x, y, radius, warnDuration, attackDuration, warnIconSprite, state);
+                attack = new AreaAttackPattern(controller, x + w / 2f, y + h / 2f, radius, warnDuration, attackDuration, warnIconSprite, state);
                 break;
             case "camera":
                 attack = new CameraAttackPattern(controller, x * GameScene.PHYSICS_UNITS,
@@ -292,7 +292,15 @@ public class LevelLoader {
                     attackIdx++;
                 }
 
-                attack = new MultiAttackPattern(controller, warnDuration, attackPatterns,
+                // get all delays
+                Array<Float> delays = new Array<>();
+                int delayIdx = 0;
+                while (props.containsKey("delay" + delayIdx)) {
+                    delays.add(props.get("delay" + delayIdx, Float.class));
+                    delayIdx++;
+                }
+
+                attack = new MultiAttackPattern(controller, warnDuration, attackPatterns, delays,
                     warnIconSprite);
                 break;
         }

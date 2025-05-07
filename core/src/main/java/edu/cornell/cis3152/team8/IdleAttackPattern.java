@@ -42,7 +42,7 @@ public class IdleAttackPattern extends BossAttackPattern {
 
         if (attackDuration > 30f) {
             // if the attack is too long, just sleep
-            boss.setAnimation("sleep", 0.1f);
+            boss.setAnimation("sleep", 0.05f);
         } else {
             boss.setAnimation("idle", 0.1f);
         }

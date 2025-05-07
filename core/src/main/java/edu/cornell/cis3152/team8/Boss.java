@@ -315,11 +315,8 @@ public class Boss extends ObstacleSprite {
      */
     public void setAnimation(String name, float animationSpeed, boolean playOnce) {
         if (!animationMap.containsKey(name)) {
-            // if the sprite sheet isn't found, use default
-            name = "default";
-        }
-        if (!animationMap.containsKey("default")) {
-            throw new RuntimeException("Boss does not have a default animation");
+            // if the sprite sheet isn't found, don't change the animation
+            return;
         }
         this.animationSpeed = animationSpeed;
         this.setSpriteSheet(animationMap.get(name));

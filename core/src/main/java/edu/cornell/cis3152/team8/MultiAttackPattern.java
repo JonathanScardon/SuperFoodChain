@@ -10,17 +10,24 @@ import static edu.cornell.cis3152.team8.InputController.*;
  */
 public class MultiAttackPattern extends BossAttackPattern {
     private final Array<BossAttackPattern> attackPatterns;
+    private final Array<Float> attackDelayDurations;
+    private final Array<Float> attackDelayTimes;
     private final float warnDuration;
     private final BossWarnPattern warnPattern;
 
     private float warnTime;
 
-    public MultiAttackPattern(BossController controller, float warnDuration, Array<BossAttackPattern> attackPatterns, SpriteSheet warnSprite) {
+    public MultiAttackPattern(BossController controller, float warnDuration, Array<BossAttackPattern> attackPatterns, Array<Float> attackDelayDurations, SpriteSheet warnSprite) {
         super(controller);
 
         attackName = "multi";
 
         this.attackPatterns = attackPatterns;
+        this.attackDelayDurations = attackDelayDurations;
+        this.attackDelayTimes = new Array<>(attackDelayDurations.size);
+        for (int i = 0; i < attackDelayDurations.size; i++) {
+            this.attackDelayTimes.add(0f);
+        }
         this.warnDuration = warnDuration;
 
         this.warnPattern = new RectWarnPattern(boss.getObstacle().getPosition().x, boss.getObstacle().getPosition().y, 0, 0);
@@ -32,13 +39,9 @@ public class MultiAttackPattern extends BossAttackPattern {
     public void start() {
         state = AttackState.WARN;
         controller.setAction(CONTROL_NO_ACTION);
-        boss.setAnimation("multi");
+        boss.setAnimation("multi", 0.05f, true);
 
         warnTime = warnDuration;
-
-        for (BossAttackPattern attackPattern : attackPatterns) {
-            attackPattern.start();
-        }
 
         warnPattern.active = true;
     }
@@ -47,6 +50,10 @@ public class MultiAttackPattern extends BossAttackPattern {
         state = AttackState.ATTACK;
 
         this.spawnMinions();
+
+        for (int i = 0; i < attackDelayDurations.size; i++) {
+            attackDelayTimes.set(i, attackDelayDurations.get(i));
+        }
 
         warnPattern.active = false;
     }
@@ -66,6 +73,15 @@ public class MultiAttackPattern extends BossAttackPattern {
                 }
                 break;
             case ATTACK:
+                for (int i = 0; i < attackDelayDurations.size; i++) {
+                    if (attackDelayTimes.get(i) > 0) {
+                        attackDelayTimes.set(i, attackDelayTimes.get(i) - delta);
+                    } else if (attackDelayTimes.get(i) != -1f){
+                        attackDelayTimes.set(i, -1f); // mark as started
+                        attackPatterns.get(i).start();
+                    }
+                }
+
                 boolean allEnded = true;
                 for (BossAttackPattern attackPattern : attackPatterns) {
                     if (!attackPattern.isEnded()) {
