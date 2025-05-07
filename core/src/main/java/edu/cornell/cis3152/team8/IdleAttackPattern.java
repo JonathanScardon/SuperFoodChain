@@ -40,7 +40,12 @@ public class IdleAttackPattern extends BossAttackPattern {
         state = AttackState.WARN;
         controller.setAction(CONTROL_NO_ACTION);
 
-        boss.setAnimation("idle", 0.1f);
+        if (attackDuration > 30f) {
+            // if the attack is too long, just sleep
+            boss.setAnimation("sleep", 0.1f);
+        } else {
+            boss.setAnimation("idle", 0.1f);
+        }
         boss.getObstacle().setAngle(0);
 
         warnTime = warnDuration;
