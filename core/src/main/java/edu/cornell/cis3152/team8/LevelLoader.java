@@ -39,6 +39,7 @@ public class LevelLoader {
 
     private SpriteSheet chefIdleSprite;
     private SpriteSheet chefAttackSprite;
+    private SpriteSheet chefDeathSprite;
 
     // warning sprites
     private SpriteSheet warnIconSprite;
@@ -90,6 +91,7 @@ public class LevelLoader {
 
         chefIdleSprite = assets.getEntry("idleChef.animation", SpriteSheet.class);
         chefAttackSprite = assets.getEntry("attackChef.animation", SpriteSheet.class);
+        chefDeathSprite = assets.getEntry("deathChef.animation", SpriteSheet.class);
 
         warnIconSprite = assets.getEntry("warnIcon.animation", SpriteSheet.class);
 
@@ -197,7 +199,7 @@ public class LevelLoader {
                 boss.addAnimation("idle", chefIdleSprite);
                 boss.addAnimation("multi", chefAttackSprite);
                 boss.addAnimation("areaAttack", chopsticksSnatchSprite);
-                boss.addAnimation("death", mouseDeathSprite);
+                boss.addAnimation("death", chefDeathSprite);
                 boss.spriteScale.set(1f, 1f);
                 break;
         }
@@ -231,7 +233,7 @@ public class LevelLoader {
      * @param controller the boss that will execute the attack
      */
     private BossAttackPattern createAttack(MapObject obj, BossController controller,
-                                           Player player, GameScene scene, GameState state) {
+        Player player, GameScene scene, GameState state) {
         String attackType = obj.getProperties().get("attackType", String.class);
         MapProperties props = obj.getProperties();
 
@@ -273,7 +275,8 @@ public class LevelLoader {
             case "area":
                 attackDuration = props.get("attackDuration", 0f, Float.class);
                 float radius = Math.max(w, h) / 2f;
-                attack = new AreaAttackPattern(controller, x + w / 2f, y + h / 2f, radius, warnDuration, attackDuration, warnIconSprite, state);
+                attack = new AreaAttackPattern(controller, x + w / 2f, y + h / 2f, radius,
+                    warnDuration, attackDuration, warnIconSprite, state);
                 break;
             case "camera":
                 attack = new CameraAttackPattern(controller, x * GameScene.PHYSICS_UNITS,
@@ -288,7 +291,8 @@ public class LevelLoader {
                 BossAttackPattern subAttack;
                 while (props.containsKey("attack" + attackIdx)) {
                     attackObj = props.get("attack" + attackIdx, MapObject.class);
-                    subAttack = createAttack(attackObj, controller, state.getPlayer(), scene, state);
+                    subAttack = createAttack(attackObj, controller, state.getPlayer(), scene,
+                        state);
                     attackPatterns.add(subAttack);
 
                     attackIdx++;

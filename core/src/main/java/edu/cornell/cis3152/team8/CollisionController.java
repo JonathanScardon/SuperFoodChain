@@ -205,8 +205,7 @@ public class CollisionController implements ContactListener {
                     for (Projectile p : state.getActiveProjectiles()) {
                         if (p.getObstacle().getBody() == b1 && p.collisionDie) {
                             removedProjectiles.add(b1);
-                        }
-                        else if (p.getObstacle().getBody() == b1 && !p.collisionDie) {
+                        } else if (p.getObstacle().getBody() == b1 && !p.collisionDie) {
                             System.out.println("Garlic Projectile Hit");
                         }
                     }
@@ -216,8 +215,7 @@ public class CollisionController implements ContactListener {
                     for (Projectile p : state.getActiveProjectiles()) {
                         if (p.getObstacle().getBody() == b2 && p.collisionDie) {
                             removedProjectiles.add(b2);
-                        }
-                        else if (p.getObstacle().getBody() == b2 && !p.collisionDie){
+                        } else if (p.getObstacle().getBody() == b2 && !p.collisionDie) {
                             System.out.println("Garlic Projectile Hit");
                         }
                     }
@@ -271,18 +269,26 @@ public class CollisionController implements ContactListener {
             removed.add(state.getPlayer().getPlayerHead());
             audio.play("companionDeath");
         }
-        // Kills minions if no health
-        for (Minion m : state.getMinions()) {
-            if (m.getHealth() <= 0) {
-                removed.add(m);
-            }
-        }
+
+        //Commented out because this is done during minion hit and doesn't need to be done twice?
+
+//        // Kills minions if no health
+//        for (Minion m : state.getMinions()) {
+//            if (m.getHealth() <= 0) {
+//                removed.add(m);
+//            }
+//        }
+
+        //Commented out because this is done during boss hit and doesn't need to be done twice?
+
         // Kills boss if no health
-        for (Boss b : state.getBosses()) {
-            if (b.getHealth() <= 0) {
-                removed.add(b);
-            }
-        }
+//        for (Boss b : state.getBosses()) {
+//            if (b.getHealth() <= 0 && b.getObstacle().isActive()) {
+//                System.out.println("remove " + b);
+//                removed.add(b);
+//            }
+//        }
+
         // Removes coins if time limit
         for (Coin c : state.getCoins()) {
             if (c.getLife() <= 0) {
@@ -352,9 +358,10 @@ public class CollisionController implements ContactListener {
                         state.getDead().removeValue(o, false);
                     }
                 }
-                case ("boss") -> {
+                case ("mouse"), ("chef"), ("chopsticks") -> {
                     if (((Boss) o).shouldRemove()) {
                         state.getDead().removeValue(o, false);
+                        System.out.println("delete +" + o);
                     }
                 }
                 case ("coin") -> {

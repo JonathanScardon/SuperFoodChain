@@ -168,8 +168,8 @@
       "sprites": {
         "animation": {
           "rows": 1,
-          "cols": 6,
-          "size": 6
+          "cols": 11,
+          "size": 11
         }
       }
     },
@@ -230,6 +230,16 @@
           "rows": 1,
           "cols": 5,
           "size": 5
+        }
+      }
+    },
+    "deathChef": {
+      "file": "images/ChefDeath.png",
+      "sprites": {
+        "animation": {
+          "rows": 1,
+          "cols": 11,
+          "size": 11
         }
       }
     },
