@@ -1,14 +1,11 @@
 package edu.cornell.cis3152.team8;
 //Heavily inspired by AILab Collision Controller
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.physics.box2d.*;
-import edu.cornell.cis3152.team8.companions.Garlic;
+import edu.cornell.cis3152.team8.projectiles.BossAreaProjectile;
 import edu.cornell.cis3152.team8.projectiles.DurianProjectile;
 import edu.cornell.cis3152.team8.projectiles.GarlicProjectile;
 import edu.cornell.cis3152.team8.projectiles.StrawberryProjectile;
-import edu.cornell.gdiac.physics2.Obstacle;
 import edu.cornell.gdiac.physics2.ObstacleSprite;
 import com.badlogic.gdx.utils.Array;
 
@@ -135,10 +132,14 @@ public class CollisionController implements ContactListener {
 //                System.out.println("BOSS HIT");
                 if (c1 == BOSS_CATEGORY) {
                     removed.add(s2);
-                    bossHit(b1);
+                    if (b1.getUserData() instanceof Boss) {
+                        bossHit(b1);
+                    }
                 } else {
                     removed.add(s1);
-                    bossHit(b2);
+                    if (b2.getUserData() instanceof Boss) {
+                        bossHit(b2);
+                    }
                 }
                 audio.play("mouseDeath");
                 audio.play("companionDeath");
@@ -379,6 +380,9 @@ public class CollisionController implements ContactListener {
                 }
                 if (p instanceof GarlicProjectile) {
                     ProjectilePools.garlicPool.free((GarlicProjectile) p);
+                }
+                if (p instanceof BossAreaProjectile) {
+                    ProjectilePools.bossAreaPool.free((BossAreaProjectile) p);
                 }
 //                if (p.getObstacle().getBody() != null
 //                    && p.getObstacle().getBody().getWorld() != null) {

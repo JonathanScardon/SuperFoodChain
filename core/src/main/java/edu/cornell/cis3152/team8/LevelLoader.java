@@ -30,6 +30,7 @@ public class LevelLoader {
     private SpriteSheet mouseDashHorizontalSprite;
     private SpriteSheet mouseSpinSprite;
     private SpriteSheet mouseDeathSprite;
+    private SpriteSheet mouseSleepSprite;
 
     private SpriteSheet chopsticksIdleSprite;
     private SpriteSheet chopsticksDashSprite;
@@ -38,7 +39,6 @@ public class LevelLoader {
 
     private SpriteSheet chefIdleSprite;
     private SpriteSheet chefAttackSprite;
-    private SpriteSheet chefBackground;
 
     // warning sprites
     private SpriteSheet warnIconSprite;
@@ -63,7 +63,7 @@ public class LevelLoader {
     }
 
     /**
-     * Apply the level specified in fileName to scene
+     * Apply the level specified in fileName to the scene
      *
      * @param scene the scene we are modifying
      * @param path  the path to the tmx file config for the level we want to load
@@ -81,6 +81,7 @@ public class LevelLoader {
             SpriteSheet.class);
         mouseSpinSprite = assets.getEntry("spinMouse.animation", SpriteSheet.class);
         mouseDeathSprite = assets.getEntry("deathMouse.animation", SpriteSheet.class);
+        mouseSleepSprite = assets.getEntry("sleepMouse.animation", SpriteSheet.class);
 
         chopsticksIdleSprite = assets.getEntry("idleChopsticks.animation", SpriteSheet.class);
         chopsticksDashSprite = assets.getEntry("dashChopsticks.animation", SpriteSheet.class);
@@ -89,7 +90,6 @@ public class LevelLoader {
 
         chefIdleSprite = assets.getEntry("idleChef.animation", SpriteSheet.class);
         chefAttackSprite = assets.getEntry("attackChef.animation", SpriteSheet.class);
-        chefBackground = assets.getEntry("backgroundChef.animation", SpriteSheet.class);
 
         warnIconSprite = assets.getEntry("warnIcon.animation", SpriteSheet.class);
 
@@ -179,6 +179,7 @@ public class LevelLoader {
                 boss.addAnimation("dashHorizontal", mouseDashHorizontalSprite);
                 boss.addAnimation("spin", mouseSpinSprite);
                 boss.addAnimation("death", mouseDeathSprite);
+                boss.addAnimation("sleep", mouseSleepSprite);
                 boss.spriteScale.set(0.4f, 0.4f);
                 break;
             case "chopsticks":
@@ -192,10 +193,10 @@ public class LevelLoader {
                 break;
             case "chef":
                 boss = new Boss(x, y, 5f, 10f, health, bossType, state.getWorld());
-                boss.addAnimation("attack", chefAttackSprite);
-                boss.addAnimation("background", chefBackground);
                 boss.addAnimation("default", chefIdleSprite);
                 boss.addAnimation("idle", chefIdleSprite);
+                boss.addAnimation("multi", chefAttackSprite);
+                boss.addAnimation("areaAttack", chopsticksSnatchSprite);
                 boss.addAnimation("death", mouseDeathSprite);
                 boss.spriteScale.set(1f, 1f);
                 break;
@@ -230,13 +231,15 @@ public class LevelLoader {
      * @param controller the boss that will execute the attack
      */
     private BossAttackPattern createAttack(MapObject obj, BossController controller,
-        Player player, GameScene scene, GameState state) {
+                                           Player player, GameScene scene, GameState state) {
         String attackType = obj.getProperties().get("attackType", String.class);
         MapProperties props = obj.getProperties();
 
         BossAttackPattern attack = null;
         float x = props.get("x", Float.class) / GameScene.PHYSICS_UNITS;
         float y = props.get("y", Float.class) / GameScene.PHYSICS_UNITS;
+        float w = props.get("width", Float.class) / GameScene.PHYSICS_UNITS;
+        float h = props.get("height", Float.class) / GameScene.PHYSICS_UNITS;
         float warnDuration = props.get("warnDuration", 0f, Float.class);
         float attackDuration;
         float moveSpeed;
@@ -267,6 +270,11 @@ public class LevelLoader {
                 attack = new SnatchAttackPattern(controller, warnDuration, attackDuration,
                     warnIconSprite, player);
                 break;
+            case "area":
+                attackDuration = props.get("attackDuration", 0f, Float.class);
+                float radius = Math.max(w, h) / 2f;
+                attack = new AreaAttackPattern(controller, x + w / 2f, y + h / 2f, radius, warnDuration, attackDuration, warnIconSprite, state);
+                break;
             case "camera":
                 attack = new CameraAttackPattern(controller, x * GameScene.PHYSICS_UNITS,
                     y * GameScene.PHYSICS_UNITS, warnDuration, scene.getWorldCamera());
@@ -280,13 +288,21 @@ public class LevelLoader {
                 BossAttackPattern subAttack;
                 while (props.containsKey("attack" + attackIdx)) {
                     attackObj = props.get("attack" + attackIdx, MapObject.class);
-                    attack = createAttack(attackObj, controller, state.getPlayer(), scene, state);
-                    attackPatterns.add(attack);
+                    subAttack = createAttack(attackObj, controller, state.getPlayer(), scene, state);
+                    attackPatterns.add(subAttack);
 
                     attackIdx++;
                 }
 
-                attack = new MultiAttackPattern(controller, warnDuration, attackPatterns,
+                // get all delays
+                Array<Float> delays = new Array<>();
+                int delayIdx = 0;
+                while (props.containsKey("delay" + delayIdx)) {
+                    delays.add(props.get("delay" + delayIdx, Float.class));
+                    delayIdx++;
+                }
+
+                attack = new MultiAttackPattern(controller, warnDuration, attackPatterns, delays,
                     warnIconSprite);
                 break;
         }

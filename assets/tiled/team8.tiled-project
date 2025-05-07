@@ -46,7 +46,8 @@
                 "snatch",
                 "spin",
                 "camera",
-                "multi"
+                "multi",
+                "area"
             ],
             "valuesAsFlags": false
         },
