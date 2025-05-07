@@ -34,6 +34,7 @@ public class LevelLoader {
     private SpriteSheet chopsticksIdleSprite;
     private SpriteSheet chopsticksDashSprite;
     private SpriteSheet chopsticksSnatchSprite;
+    private SpriteSheet chopsticksDeathSprite;
 
     private SpriteSheet chefIdleSprite;
     private SpriteSheet chefAttackSprite;
@@ -84,6 +85,7 @@ public class LevelLoader {
         chopsticksIdleSprite = assets.getEntry("idleChopsticks.animation", SpriteSheet.class);
         chopsticksDashSprite = assets.getEntry("dashChopsticks.animation", SpriteSheet.class);
         chopsticksSnatchSprite = assets.getEntry("warnChopsticks.animation", SpriteSheet.class);
+        chopsticksDeathSprite = assets.getEntry("deathChopsticks.animation", SpriteSheet.class);
 
         chefIdleSprite = assets.getEntry("idleChef.animation", SpriteSheet.class);
         chefAttackSprite = assets.getEntry("attackChef.animation", SpriteSheet.class);
@@ -185,7 +187,7 @@ public class LevelLoader {
                 boss.addAnimation("idle", chopsticksIdleSprite);
                 boss.addAnimation("snatch", chopsticksSnatchSprite);
                 boss.addAnimation("dash", chopsticksDashSprite);
-                boss.addAnimation("death", mouseDeathSprite);
+                boss.addAnimation("death", chopsticksDeathSprite);
                 boss.spriteScale.set(0.4f, 0.4f);
                 break;
             case "chef":
