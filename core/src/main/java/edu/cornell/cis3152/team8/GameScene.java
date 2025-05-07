@@ -744,11 +744,19 @@ public class GameScene implements Screen {
             }
         }
 
+        System.out.println("start");
+        for (ObstacleSprite o : dead) {
+            System.out.println(o.getName());
+        }
+        System.out.println("end");
+
         if (winGame) {
             for (ObstacleSprite o : dead) {
                 String type = o.getName();
+
                 if (type.equals("mouse") || type.equals("chef") || type.equals("chopsticks")) {
                     if (((Boss) o).shouldRemove()) {
+                        //System.out.println(o + " draw win");
                         drawWin();
                     }
                 }
@@ -903,7 +911,9 @@ public class GameScene implements Screen {
             if (!game.save.getBoolean(s)) {
                 game.save.putBoolean(s, true);
                 int newUnlock = game.save.getInteger("unlockedLevels") + 1;
-                game.save.putInteger("unlockedLevels", newUnlock);
+                if (newUnlock <= 12) { //TODO: set actual total levels
+                    game.save.putInteger("unlockedLevels", newUnlock);
+                }
             }
             for (Boss b : bosses) {
                 if (b.getObstacle().isActive()) {
@@ -1008,8 +1018,17 @@ public class GameScene implements Screen {
             } else {
                 everything.add(bosses.get(0));
             }
+        } else if (bosses.size == 2) {
+            if (bosses.get(0).getObstacle().isActive()) {
+                everything.add(bosses.get(0));
+            }
+            if (bosses.get(1).getObstacle().isActive()) {
+                everything.add(bosses.get(1));
+            }
         } else {
-            everything.addAll(bosses);
+            if (bosses.get(0).getObstacle().isActive()) {
+                everything.addAll(bosses);
+            }
         }
         everything.addAll(companions);
         for (Companion c : player.companions) {

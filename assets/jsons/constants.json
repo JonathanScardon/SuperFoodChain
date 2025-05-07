@@ -4,7 +4,7 @@
     "idleDuration": 5,
     "epsilon": 0.01,
     "animationSpeed": 0.1,
-    "deathAnimationSpeed": 0.01
+    "deathAnimationSpeed": 0.05
   },
   "companion": {
     "moveSpeed": 200,
@@ -66,7 +66,7 @@
     "animationSpeed": 0.15,
     "size": 0.3
   },
-  "spider":{
+  "spider": {
     "aliveDuration": 5,
     "moveSpeed": 7,
     "health": 1,
