@@ -1,6 +1,7 @@
 package edu.cornell.cis3152.team8;
 
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -284,6 +285,17 @@ public class Boss extends ObstacleSprite {
         state = s;
     }
 
+    public SpriteSheet getAnimation(String name) {
+        if (!animationMap.containsKey(name)) {
+            // if the sprite sheet isn't found, use default
+            name = "default";
+        }
+        if (!animationMap.containsKey("default")) {
+            throw new RuntimeException("Boss does not have a default animation");
+        }
+        return animationMap.get(name);
+    }
+
     /**
      * Add a sprite sheet to the animation map
      *
@@ -303,11 +315,8 @@ public class Boss extends ObstacleSprite {
      */
     public void setAnimation(String name, float animationSpeed, boolean playOnce) {
         if (!animationMap.containsKey(name)) {
-            // if the sprite sheet isn't found, use
-            name = "default";
-        }
-        if (!animationMap.containsKey("default")) {
-            throw new RuntimeException("Boss does not have a default animation");
+            // if the sprite sheet isn't found, don't change the animation
+            return;
         }
         this.animationSpeed = animationSpeed;
         this.setSpriteSheet(animationMap.get(name));

@@ -153,6 +153,16 @@
                 }
             }
         },
+        "sleepMouse": {
+            "file": "images/MouseSleep.PNG",
+            "sprites": {
+                "animation": {
+                    "rows": 1,
+                    "cols": 4,
+                    "size": 4
+                }
+            }
+        },
         "deathMouse": {
             "file": "images/MouseDeath.png",
             "sprites": {
