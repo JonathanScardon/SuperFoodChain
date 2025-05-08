@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="1" height="1" tilewidth="1280" tileheight="720" infinite="0" nextlayerid="4" nextobjectid="42">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="1" height="1" tilewidth="1280" tileheight="720" infinite="0" nextlayerid="4" nextobjectid="45">
  <objectgroup id="2" name="boss" class="bossLayer">
   <properties>
    <property name="maxMinions" type="int" value="4"/>
@@ -13,7 +13,31 @@
     <property name="health" type="int" value="10"/>
    </properties>
   </object>
-  <object id="29" name="minion" type="minionSpawn" x="234" y="332">
+  <object id="29" name="spider" type="minionSpawn" x="-52.9396" y="216.6">
+   <properties>
+    <property name="antSpawnProportion" type="float" value="0"/>
+    <property name="cooldown" type="float" value="5"/>
+    <property name="cricketSpawnProportion" type="float" value="0"/>
+    <property name="spiderSpawnProportion" type="float" value="1"/>
+   </properties>
+  </object>
+  <object id="43" name="cricket" type="minionSpawn" x="-54.499" y="305.489">
+   <properties>
+    <property name="antSpawnProportion" type="float" value="0"/>
+    <property name="cooldown" type="float" value="5"/>
+    <property name="cricketSpawnProportion" type="float" value="1"/>
+    <property name="spiderSpawnProportion" type="float" value="0"/>
+   </properties>
+  </object>
+  <object id="44" name="ant" type="minionSpawn" x="-54.499" y="441.162">
+   <properties>
+    <property name="antSpawnProportion" type="float" value="1"/>
+    <property name="cooldown" type="float" value="5"/>
+    <property name="cricketSpawnProportion" type="float" value="0"/>
+    <property name="spiderSpawnProportion" type="float" value="0"/>
+   </properties>
+  </object>
+  <object id="42" name="minion" type="minionSpawn" x="-70.0936" y="107.439">
    <properties>
     <property name="antSpawnProportion" type="float" value="0.3"/>
     <property name="cooldown" type="float" value="5"/>
@@ -81,9 +105,11 @@
    </properties>
    <point/>
   </object>
-  <object id="32" template="snatch.tx" type="attack" x="686" y="894">
+  <object id="32" template="snatch.tx" name="snatch" type="attack" x="686" y="894">
    <properties>
     <property name="attackDuration" type="float" value="0"/>
+    <property name="attackType" propertytype="attackType" value="snatch"/>
+    <property name="warnDuration" type="float" value="1"/>
    </properties>
   </object>
   <object id="36" name="chopstick" type="boss" x="682" y="1174">

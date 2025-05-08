@@ -10,7 +10,7 @@
     <property name="attack1" type="object" value="35"/>
     <property name="attack2" type="object" value="55"/>
     <property name="bossType" propertytype="bossType" value="chef"/>
-    <property name="health" type="int" value="20"/>
+    <property name="health" type="int" value="30"/>
    </properties>
   </object>
   <object id="18" type="minionSpawn" x="50.6454" y="-75.2759">
@@ -63,7 +63,7 @@
   </object>
   <object id="26" name="idle" type="attack" x="1022" y="360">
    <properties>
-    <property name="attackDuration" type="float" value="10"/>
+    <property name="attackDuration" type="float" value="7"/>
     <property name="attackType" propertytype="attackType" value="idle"/>
     <property name="flipHorizontal" type="bool" value="true"/>
     <property name="warnDuration" type="float" value="0"/>
@@ -74,7 +74,7 @@
     <property name="attackDuration" type="float" value="10"/>
     <property name="attackType" propertytype="attackType" value="idle"/>
     <property name="flipHorizontal" type="bool" value="false"/>
-    <property name="warnDuration" type="float" value="0"/>
+    <property name="warnDuration" type="float" value="2"/>
    </properties>
   </object>
   <object id="34" name="multi" type="attack" x="632.63" y="829.634">
@@ -89,8 +89,8 @@
   </object>
   <object id="35" name="multi" type="attack" x="235.849" y="835.183">
    <properties>
-    <property name="attack0" type="object" value="27"/>
-    <property name="attack1" type="object" value="23"/>
+    <property name="attack0" type="object" value="23"/>
+    <property name="attack1" type="object" value="27"/>
     <property name="attackType" propertytype="attackType" value="multi"/>
     <property name="delay0" type="float" value="0"/>
     <property name="delay1" type="float" value="0"/>
@@ -132,7 +132,7 @@
     <property name="warnDuration" type="float" value="1"/>
    </properties>
   </object>
-  <object id="55" name="multi" type="attack" x="466.003" y="857.869">
+  <object id="55" name="multi" type="attack" x="474.003" y="943.202">
    <properties>
     <property name="attack0" type="object" value="37"/>
     <property name="attack1" type="object" value="39"/>

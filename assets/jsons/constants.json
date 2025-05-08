@@ -63,12 +63,12 @@
     "hopDuration": 0.3,
     "hopSpeed": 6.5,
     "health": 2,
-    "animationSpeed": 0.15,
+    "animationSpeed": 0.12,
     "size": 0.3
   },
   "spider": {
     "aliveDuration": 5,
-    "moveSpeed": 7,
+    "moveSpeed": 8.5,
     "health": 1,
     "animationSpeed": 0.15,
     "size": 0.3
