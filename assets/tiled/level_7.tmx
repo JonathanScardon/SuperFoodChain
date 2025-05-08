@@ -186,8 +186,8 @@
  </objectgroup>
  <objectgroup id="3" name="companion" class="companionLayer">
   <properties>
-   <property name="maxAvocado" type="int" value="0"/>
-   <property name="maxBlueRaspberry" type="int" value="1"/>
+   <property name="maxAvocado" type="int" value="1"/>
+   <property name="maxBlueRaspberry" type="int" value="0"/>
    <property name="maxCompanions" type="int" value="3"/>
    <property name="maxDurian" type="int" value="1"/>
    <property name="maxPineapple" type="int" value="0"/>
