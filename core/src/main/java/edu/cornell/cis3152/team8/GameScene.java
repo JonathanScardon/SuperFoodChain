@@ -407,7 +407,6 @@ public class GameScene implements Screen {
             return; // all spawn points are occupied
         }
 
-
         // Count how many are left for each type
         int r1 = state.maxStrawberries - state.numStrawberries;
         int r2 = state.maxPineapples - state.numPineapples;
@@ -420,7 +419,7 @@ public class GameScene implements Screen {
             return; // we are already at the max for each type
         }
 
-        int choice = (int)(Math.random() * total);
+        int choice = (int) (Math.random() * total);
 
         Companion c = null;
         if (choice < r1) {
@@ -516,8 +515,7 @@ public class GameScene implements Screen {
                 if (state.companionSpawnTime <= 0) {
                     spawnCompanion();
                     state.companionSpawnTime = state.companionSpawnCooldown;
-                }
-                else {
+                } else {
                     state.companionSpawnTime -= delta;
                 }
             }
@@ -780,21 +778,12 @@ public class GameScene implements Screen {
                     }
                 }
             }
-        }
-
-        System.out.println("start");
-        for (ObstacleSprite o : dead) {
-            System.out.println(o.getName());
-        }
-        System.out.println("end");
-
-        if (winGame) {
+        } else if (winGame) {
             for (ObstacleSprite o : dead) {
                 String type = o.getName();
 
                 if (type.equals("mouse") || type.equals("chef") || type.equals("chopsticks")) {
                     if (((Boss) o).shouldRemove()) {
-                        //System.out.println(o + " draw win");
                         drawWin();
                     }
                 }
