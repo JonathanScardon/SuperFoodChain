@@ -81,6 +81,8 @@ public class CompanionHandbookScene extends MultiPageScene {
         if (backButton.isPressed()) {
             audio.play("click");
             audio.stopMusic();
+            game.viewport.getCamera().position.set(640f, 360f,
+                game.viewport.getCamera().position.z);
             game.exitScreen(this, backButton.getExitCode());
         }
     }
