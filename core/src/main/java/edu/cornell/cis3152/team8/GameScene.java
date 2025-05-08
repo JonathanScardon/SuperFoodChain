@@ -385,7 +385,8 @@ public class GameScene implements Screen {
             boolean occupied = false;
 
             for (Companion existing : companions) {
-                if (existing.getObstacle().getPosition().epsilonEquals(candidate, 0.01f)) {
+                Vector2 existingPos = existing.getObstacle().getPosition().cpy().scl(PHYSICS_UNITS);
+                if (existingPos.epsilonEquals(candidate, 0.01f)) {
                     occupied = true;
                     break;
                 }

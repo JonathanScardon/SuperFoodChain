@@ -122,7 +122,7 @@ public class LevelLoader {
 
     private void loadCompanionLayer(MapLayer companionLayer, GameState state) {
         MapProperties layerProps = companionLayer.getProperties();
-        state.companionSpawnCooldown = layerProps.get("cooldown", 0f, Float.class);
+        state.companionSpawnCooldown = layerProps.get("cooldown", 2f, Float.class);
         state.maxCompanions = layerProps.get("maxCompanions", 0, Integer.class);
         state.maxAvocados = layerProps.get("maxAvocado", 0, Integer.class);
         state.maxDurians = layerProps.get("maxDurian", 0, Integer.class);
