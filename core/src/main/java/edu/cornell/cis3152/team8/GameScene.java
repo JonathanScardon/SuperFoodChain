@@ -791,6 +791,7 @@ public class GameScene implements Screen {
         if (paused && !settingsOn) {
             drawPause();
         }
+        
         if (settingsOn) {
             game.batch.draw(dim, 0, 0);
             settingsScreen.draw(1);

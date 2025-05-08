@@ -125,6 +125,8 @@ public class LevelSelectScene extends MultiPageScene {
             if (b.isPressed() && b.getUnlocked() && currPage == 1) {
                 audio.play("clickLevel");
                 audio.stopMusic();
+                game.viewport.getCamera().position.set(640f, 360f,
+                    game.viewport.getCamera().position.z);
                 game.exitScreen(this, b.getExitCode());
             }
         }
@@ -132,17 +134,23 @@ public class LevelSelectScene extends MultiPageScene {
             if (b.isPressed() && b.getUnlocked() && currPage == 2) {
                 audio.play("click");
                 audio.stopMusic();
+                game.viewport.getCamera().position.set(640f, 360f,
+                    game.viewport.getCamera().position.z);
                 game.exitScreen(this, b.getExitCode());
             }
         }
         if (homeButton.isPressed()) {
             audio.play("click");
             audio.stopMusic();
+            game.viewport.getCamera().position.set(640f, 360f,
+                game.viewport.getCamera().position.z);
             game.exitScreen(this, homeButton.getExitCode());
         }
         if (handbookButton.isPressed()) {
             audio.play("click");
             audio.stopMusic();
+            game.viewport.getCamera().position.set(640f, 360f,
+                game.viewport.getCamera().position.z);
             game.exitScreen(this, handbookButton.getExitCode());
         }
     }

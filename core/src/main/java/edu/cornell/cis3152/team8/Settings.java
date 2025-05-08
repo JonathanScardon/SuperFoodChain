@@ -145,6 +145,7 @@ public class Settings {
         musicButton.setPosition(x + move, musicButton.posY);
         sfxButton.setPosition(x + move, sfxButton.posY);
         saveResetButton.setPosition(1280 / 2f + move - buttonWidth / 2f, saveResetButton.posY);
+        xButton.setPosition(1280 / 2f - background.getWidth() / 2f + 10 + move, xButton.posY);
         float padding = 50;
         x = 1280 / 2f - sliderWidth / 2f + padding;
         float y = 720f / 2f - padding;
