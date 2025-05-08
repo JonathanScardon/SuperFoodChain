@@ -113,7 +113,37 @@
             "id": 10,
             "members": [
                 {
+                    "name": "cooldown",
+                    "type": "float",
+                    "value": 2
+                },
+                {
+                    "name": "maxAvocado",
+                    "type": "int",
+                    "value": 0
+                },
+                {
+                    "name": "maxBlueRaspberry",
+                    "type": "int",
+                    "value": 0
+                },
+                {
                     "name": "maxCompanions",
+                    "type": "int",
+                    "value": 0
+                },
+                {
+                    "name": "maxDurian",
+                    "type": "int",
+                    "value": 0
+                },
+                {
+                    "name": "maxPineapple",
+                    "type": "int",
+                    "value": 0
+                },
+                {
+                    "name": "maxStrawberry",
                     "type": "int",
                     "value": 0
                 }
