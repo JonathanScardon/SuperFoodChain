@@ -22,6 +22,9 @@ import edu.cornell.gdiac.graphics.SpriteBatch.BlendMode;
 import edu.cornell.gdiac.graphics.TextLayout;
 import edu.cornell.gdiac.physics2.ObstacleSprite;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * The screen for the actual gameplay in the game Heavily inspired by the Optimization lab
  */
@@ -360,7 +363,10 @@ public class GameScene implements Screen {
         companionSpawns.shuffle();
 
         // spawn in the first set of minions and companions so that we can see them before we start moving
-        addCompanions();
+        while (companions.size < state.maxCompanions) {
+            spawnCompanion();
+        }
+        state.companionSpawnTime = state.companionSpawnCooldown;
 
         // make the bosses start attacking
         for (BossController bc : bossControls) {
@@ -371,46 +377,70 @@ public class GameScene implements Screen {
     }
 
     /**
-     * Spawn companions until we reach the maximum number for each
-     */
-    private void addCompanions() {
-        while (companions.size < state.maxCompanions) {
-            spawnCompanion();
-        }
-    }
-
-    /**
      * Spawn a single companion in the world
      */
     private void spawnCompanion() {
-        if (companionSpawnIdx >= companionSpawns.size) {
-            companionSpawnIdx = 0;
+        // find the first empty spawn point
+        Vector2 pos = null;
+        int attempts = 0;
+        while (attempts < companionSpawns.size) {
+            Vector2 candidate = companionSpawns.get(companionSpawnIdx);
+            boolean occupied = false;
+
+            for (Companion existing : companions) {
+                if (existing.getObstacle().getPosition().epsilonEquals(candidate, 0.01f)) {
+                    occupied = true;
+                    break;
+                }
+            }
+
+            companionSpawnIdx = (companionSpawnIdx + 1) % companionSpawns.size;
+            attempts++;
+
+            if (!occupied) {
+                pos = candidate;
+                break;
+            }
         }
-        Vector2 pos = companionSpawns.get(companionSpawnIdx);
+
+        if (pos == null) {
+            return; // all spawn points are occupied
+        }
+
+
+        // Count how many are left for each type
+        int r1 = state.maxStrawberries - state.numStrawberries;
+        int r2 = state.maxPineapples - state.numPineapples;
+        int r3 = state.maxBlueRaspberries - state.numBlueRaspberries;
+        int r4 = state.maxDurians - state.numDurians;
+        int r5 = state.maxAvocados - state.numAvocados;
+
+        int total = r1 + r2 + r3 + r4 + r5;
+        if (total == 0) {
+            return; // we are already at the max for each type
+        }
+
+        int choice = (int)(Math.random() * total);
 
         Companion c = null;
-        if (state.numStrawberries < state.maxStrawberries) {
+        if (choice < r1) {
             c = new Strawberry(pos.x, pos.y, companions.size, world);
             state.numStrawberries++;
-        } else if (state.numPineapples < state.maxPineapples) {
+        } else if ((choice -= r1) < r2) {
             c = new Pineapple(pos.x, pos.y, companions.size, world);
             state.numPineapples++;
-        } else if (state.numBlueRaspberries < state.maxBlueRaspberries) {
+        } else if ((choice -= r2) < r3) {
             c = new BlueRaspberry(pos.x, pos.y, companions.size, world);
             state.numBlueRaspberries++;
-        } else if (state.numDurians < state.maxDurians) {
+        } else if ((choice -= r3) < r4) {
             c = new Durian(pos.x, pos.y, companions.size, world);
             state.numDurians++;
-        } else if (state.numAvocados < state.maxAvocados) {
+        } else {
             c = new Avocado(pos.x, pos.y, companions.size, world);
             state.numAvocados++;
         }
 
-        if (c != null) {
-//            c.setCost(c.getCost() + (int) Math.floor(time / 10));
-            companions.add(c);
-            companionSpawnIdx++;
-        }
+        companions.add(c);
     }
 
     public GameState getState() {
@@ -482,7 +512,15 @@ public class GameScene implements Screen {
 
         if (start && !paused && !winGame && player.isAlive()) {
             state.update();
-            addCompanions();
+            if (companions.size < state.maxCompanions) {
+                if (state.companionSpawnTime <= 0) {
+                    spawnCompanion();
+                    state.companionSpawnTime = state.companionSpawnCooldown;
+                }
+                else {
+                    state.companionSpawnTime -= delta;
+                }
+            }
 
             // spawn minions
             for (MinionSpawnPoint spawn : minionSpawns) {
