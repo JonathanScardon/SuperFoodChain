@@ -2,6 +2,7 @@
 <map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="1" height="1" tilewidth="1280" tileheight="720" infinite="0" nextlayerid="9" nextobjectid="31">
  <objectgroup id="3" name="companion">
   <properties>
+   <property name="cooldown" type="float" value="2"/>
    <property name="maxAvocado" type="int" value="0"/>
    <property name="maxBlueRaspberry" type="int" value="0"/>
    <property name="maxCompanions" type="int" value="1"/>
@@ -14,8 +15,7 @@
     <property name="companionType" propertytype="companionType" value="durian"/>
    </properties>
   </object>
-  <object id="6" name="Durian" type="companionSpawn" x="195.826" y="591.259"/>
-  <object id="30" name="Durian" type="companionSpawn" x="1098.42" y="121.265"/>
+  <object id="30" name="Durian" type="companionSpawn" x="1021.3" y="191.375"/>
  </objectgroup>
  <objectgroup id="4" name="boss" class="bossLayer">
   <object id="9" name="mouse" type="boss" x="1151.82" y="1005.25">

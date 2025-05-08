@@ -83,6 +83,8 @@ public class GameState {
     private Array<MinionSpawnPoint> minionSpawns;
     private Array<Vector2> companionSpawns;
 
+    protected float companionSpawnCooldown;
+    protected float companionSpawnTime;
     protected int maxCompanions;
     protected int maxStrawberries;
     protected int maxPineapples;
