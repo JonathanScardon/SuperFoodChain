@@ -4,7 +4,7 @@
     "menuBackground": "images/Menu.png",
     "levelsBackground": "images/LevelSelectBackground.png",
     "levelsTray": "images/LevelSelectTray.png",
-    "gameBackground": "images/airbrush.PNG",
+    "gameBackground": "images/airbrush.png",
     "chefBackground": "images/chefBackground.png",
     "pauseBackground": "images/PauseBackground.png",
     "win": "images/Win.png",
@@ -154,7 +154,7 @@
       }
     },
     "sleepMouse": {
-      "file": "images/MouseSleep.PNG",
+      "file": "images/MouseSleep.png",
       "sprites": {
         "animation": {
           "rows": 1,
@@ -174,7 +174,7 @@
       }
     },
     "idleChopsticks": {
-      "file": "images/Boss_Chopsticks_Idle.PNG",
+      "file": "images/Boss_Chopsticks_Idle.png",
       "sprites": {
         "animation": {
           "rows": 1,
@@ -293,11 +293,11 @@
         }
       }
     },
-    "headDirStill": "images/UI_HeadIndicator_Still.PNG",
-    "headDirUp": "images/UI_HeadIndicator_Up.PNG",
-    "headDirDown": "images/UI_HeadIndicator_Down.PNG",
-    "headDirLeft": "images/UI_HeadIndicator_Left.PNG",
-    "headDirRight": "images/UI_HeadIndicator_Right.PNG",
+    "headDirStill": "images/UI_HeadIndicator_Still.png",
+    "headDirUp": "images/UI_HeadIndicator_Up.png",
+    "headDirDown": "images/UI_HeadIndicator_Down.png",
+    "headDirLeft": "images/UI_HeadIndicator_Left.png",
+    "headDirRight": "images/UI_HeadIndicator_Right.png",
     "AVOCADO": {
       "file": "images/Avocado.png",
       "sprites": {
@@ -576,7 +576,7 @@
     }
   },
   "idleChopsticks": {
-    "file": "images/Boss_Chopsticks_Idle.PNG",
+    "file": "images/Boss_Chopsticks_Idle.png",
     "sprites": {
       "animation": {
         "rows": 1,
@@ -665,11 +665,11 @@
       }
     }
   },
-  "headDirStill": "images/UI_HeadIndicator_Still.PNG",
-  "headDirUp": "images/UI_HeadIndicator_Up.PNG",
-  "headDirDown": "images/UI_HeadIndicator_Down.PNG",
-  "headDirLeft": "images/UI_HeadIndicator_Left.PNG",
-  "headDirRight": "images/UI_HeadIndicator_Right.PNG",
+  "headDirStill": "images/UI_HeadIndicator_Still.png",
+  "headDirUp": "images/UI_HeadIndicator_Up.png",
+  "headDirDown": "images/UI_HeadIndicator_Down.png",
+  "headDirLeft": "images/UI_HeadIndicator_Left.png",
+  "headDirRight": "images/UI_HeadIndicator_Right.png",
   "AVOCADO": {
     "file": "images/Avocado.png",
     "sprites": {

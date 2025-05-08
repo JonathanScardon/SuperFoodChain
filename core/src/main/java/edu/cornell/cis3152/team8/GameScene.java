@@ -782,11 +782,11 @@ public class GameScene implements Screen {
             }
         }
 
-        System.out.println("start");
-        for (ObstacleSprite o : dead) {
-            System.out.println(o.getName());
-        }
-        System.out.println("end");
+//        System.out.println("start");
+//        for (ObstacleSprite o : dead) {
+//            System.out.println(o.getName());
+//        }
+//        System.out.println("end");
 
         if (winGame) {
             for (ObstacleSprite o : dead) {
