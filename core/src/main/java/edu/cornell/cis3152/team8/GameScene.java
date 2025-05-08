@@ -490,7 +490,8 @@ public class GameScene implements Screen {
                 dispose();
                 audio.stopMusic();
                 game.exitScreen(this, homeButton.getExitCode());
-            } else if (nextButton.isPressed() && winGame) {
+            } else if (nextButton.isPressed() && winGame
+                && level != 10) { //TODO: total level variable
                 audio.play("click");
                 dispose();
                 audio.stopMusic();
@@ -779,7 +780,6 @@ public class GameScene implements Screen {
         } else if (winGame) {
             for (ObstacleSprite o : dead) {
                 String type = o.getName();
-
                 if (type.equals("mouse") || type.equals("chef") || type.equals("chopsticks")) {
                     if (((Boss) o).shouldRemove()) {
                         drawWin();
@@ -830,17 +830,23 @@ public class GameScene implements Screen {
         game.batch.draw(win, winX, winY);
         float height = winY + replayButton.height / 2f;
         float gap = 40;
-        float span = (replayButton.width * 4) + (gap * 3);
-
-        replayButton.setPosition(winX + (win.getWidth() / 2f - span / 2), height);
-        homeButton.setPosition(replayButton.posX + replayButton.width + gap, height);
-        handbookButton.setPosition(homeButton.posX + homeButton.width + gap, height);
-        nextButton.setPosition(handbookButton.posX + handbookButton.width + gap, height);
-
+        float span;
+        if (level != 10) { //TODO: replace with total levels
+            span = (replayButton.width * 4) + (gap * 3);
+            replayButton.setPosition(winX + (win.getWidth() / 2f - span / 2), height);
+            homeButton.setPosition(replayButton.posX + replayButton.width + gap, height);
+            handbookButton.setPosition(homeButton.posX + homeButton.width + gap, height);
+            nextButton.setPosition(handbookButton.posX + handbookButton.width + gap, height);
+            nextButton.draw(game.batch, true);
+        } else { //Last level no next button
+            span = (replayButton.width * 3) + (gap * 2);
+            replayButton.setPosition(winX + (win.getWidth() / 2f - span / 2), height);
+            homeButton.setPosition(replayButton.posX + replayButton.width + gap, height);
+            handbookButton.setPosition(homeButton.posX + homeButton.width + gap, height);
+        }
         replayButton.draw(game.batch, true);
         homeButton.draw(game.batch, true);
         handbookButton.draw(game.batch, true);
-        nextButton.draw(game.batch, true);
     }
 
     private void setStart() {
@@ -936,7 +942,7 @@ public class GameScene implements Screen {
             if (!game.save.getBoolean(s)) {
                 game.save.putBoolean(s, true);
                 int newUnlock = game.save.getInteger("unlockedLevels") + 1;
-                if (newUnlock <= 12) { //TODO: set actual total levels
+                if (newUnlock <= 10) { //TODO: set actual total levels
                     game.save.putInteger("unlockedLevels", newUnlock);
                 }
             }
