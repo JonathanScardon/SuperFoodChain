@@ -233,6 +233,16 @@
         }
       }
     },
+    "burnerChef": {
+      "file": "images/chef_burner_large.png",
+      "sprites": {
+        "animation": {
+          "rows": 1,
+          "cols": 1,
+          "size": 1
+        }
+      }
+    },
     "deathChef": {
       "file": "images/ChefDeath.png",
       "sprites": {

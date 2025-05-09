@@ -59,8 +59,8 @@ public class BossAreaProjectile extends Projectile {
             obstacle.getX() * GameScene.PHYSICS_UNITS,
             obstacle.getY() * GameScene.PHYSICS_UNITS,
             0.0f,
-            radius * 4f * GameScene.PHYSICS_UNITS / sprite.getRegionWidth(),
-            radius * 4f * GameScene.PHYSICS_UNITS / sprite.getRegionHeight());
+            radius * 2.4f * GameScene.PHYSICS_UNITS / sprite.getRegionWidth(),
+            radius * 2.4f * GameScene.PHYSICS_UNITS / sprite.getRegionHeight());
         batch.setColor(Color.WHITE);
         batch.draw(sprite, transform);
     }
