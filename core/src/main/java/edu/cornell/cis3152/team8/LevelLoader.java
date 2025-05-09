@@ -40,6 +40,7 @@ public class LevelLoader {
     private SpriteSheet chefIdleSprite;
     private SpriteSheet chefAttackSprite;
     private SpriteSheet chefDeathSprite;
+    private SpriteSheet chefBurner;
 
     // warning sprites
     private SpriteSheet warnIconSprite;
@@ -92,6 +93,7 @@ public class LevelLoader {
         chefIdleSprite = assets.getEntry("idleChef.animation", SpriteSheet.class);
         chefAttackSprite = assets.getEntry("attackChef.animation", SpriteSheet.class);
         chefDeathSprite = assets.getEntry("deathChef.animation", SpriteSheet.class);
+        chefBurner = assets.getEntry("burnerChef.animation", SpriteSheet.class);
 
         warnIconSprite = assets.getEntry("warnIcon.animation", SpriteSheet.class);
 
@@ -199,7 +201,7 @@ public class LevelLoader {
                 boss.addAnimation("default", chefIdleSprite);
                 boss.addAnimation("idle", chefIdleSprite);
                 boss.addAnimation("multi", chefAttackSprite);
-                boss.addAnimation("areaAttack", chopsticksSnatchSprite);
+                boss.addAnimation("areaAttack", chefBurner);
                 boss.addAnimation("death", chefDeathSprite);
                 boss.spriteScale.set(1f, 1f);
                 break;
