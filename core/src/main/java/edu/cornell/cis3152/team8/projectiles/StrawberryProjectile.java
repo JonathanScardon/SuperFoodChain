@@ -1,5 +1,6 @@
 package edu.cornell.cis3152.team8.projectiles;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.JsonValue;
@@ -47,6 +48,7 @@ public class StrawberryProjectile extends Projectile {
 
     @Override
     public void draw(SpriteBatch batch) {
+        batch.setColor(Color.RED);
         if (obstacle.isActive()) {
             SpriteBatch.computeTransform(transform, sprite.getRegionWidth() / 2.0f,
                 sprite.getRegionHeight() / 2.0f,
@@ -54,6 +56,7 @@ public class StrawberryProjectile extends Projectile {
                 0.2f);
             batch.draw(texture, transform);
         }
+        batch.setColor(Color.WHITE);
     }
 
     public void setAngle(float a) {
