@@ -32,6 +32,7 @@ public class MultiAttackPattern extends BossAttackPattern {
 
         this.warnPattern = new RectWarnPattern(boss.getObstacle().getPosition().x, boss.getObstacle().getPosition().y, 0, 0);
         this.warnPattern.setSpriteSheet(warnSprite);
+        this.warnPattern.setAnimationSpeedWithDuration(warnDuration);
         this.boss.warnPatterns.add(warnPattern);
     }
 
@@ -43,7 +44,7 @@ public class MultiAttackPattern extends BossAttackPattern {
 
         warnTime = warnDuration;
 
-        warnPattern.active = true;
+        warnPattern.setActive(true);
     }
 
     public void attack() {
@@ -55,7 +56,7 @@ public class MultiAttackPattern extends BossAttackPattern {
             attackDelayTimes.set(i, attackDelayDurations.get(i));
         }
 
-        warnPattern.active = false;
+        warnPattern.setActive(false);
     }
 
     @Override

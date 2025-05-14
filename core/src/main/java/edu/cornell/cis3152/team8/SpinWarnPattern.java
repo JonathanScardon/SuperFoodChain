@@ -8,7 +8,7 @@ public class SpinWarnPattern extends CircleWarnPattern {
     }
 
     public void drawBorder(ShapeRenderer shape) {
-        if (!active) {
+        if (!this.isActive()) {
             return;
         }
 
