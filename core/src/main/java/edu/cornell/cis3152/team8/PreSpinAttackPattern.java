@@ -51,6 +51,7 @@ public class PreSpinAttackPattern extends BossAttackPattern {
             default -> throw new IllegalArgumentException("Unknown direction: " + dir);
         }
         this.warnPattern.setSpriteSheet(warnSprite);
+        this.warnPattern.setAnimationSpeedWithDuration(warnDuration);
         this.boss.warnPatterns.add(warnPattern);
     }
 
@@ -59,7 +60,7 @@ public class PreSpinAttackPattern extends BossAttackPattern {
         state = AttackState.WARN;
         boss.setAnimation("dashHorizontal");
         warnTime = warnDuration;
-        warnPattern.active = true;
+        warnPattern.setActive(true);
     }
 
     public void attack() {
@@ -78,7 +79,7 @@ public class PreSpinAttackPattern extends BossAttackPattern {
             boss.getObstacle().setAngle(90);
             boss.setAnimation("spin");
             boss.flipHorizontal = false;
-            warnPattern.active = false;
+            warnPattern.setActive(false);
         } else if (controlCode == CONTROL_MOVE_LEFT
             && boss.getObstacle().getPosition().x * GameScene.PHYSICS_UNITS <= startX) {
 
@@ -88,7 +89,7 @@ public class PreSpinAttackPattern extends BossAttackPattern {
             controller.setAction(CONTROL_NO_ACTION);
             boss.getObstacle().setAngle(90);
             boss.setAnimation("spin");
-            warnPattern.active = false;
+            warnPattern.setActive(false);
         }
     }
 
@@ -111,7 +112,7 @@ public class PreSpinAttackPattern extends BossAttackPattern {
 
                     warnTime -= delta;
                 } else {
-                    warnPattern.active = false;
+                    warnPattern.setActive(false);
                     attack();
                 }
             case ATTACK:

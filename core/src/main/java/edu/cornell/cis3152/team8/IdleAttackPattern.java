@@ -31,6 +31,7 @@ public class IdleAttackPattern extends BossAttackPattern {
 
         this.warnPattern = new RectWarnPattern(this.idleX, this.idleY, boss.getWidth()  * GameScene.PHYSICS_UNITS, boss.getHeight() * GameScene.PHYSICS_UNITS);
         this.warnPattern.setSpriteSheet(warnSprite);
+        this.warnPattern.setAnimationSpeedWithDuration(warnDuration);
         this.boss.warnPatterns.add(this.warnPattern);
     }
 
@@ -51,7 +52,7 @@ public class IdleAttackPattern extends BossAttackPattern {
         warnTime = warnDuration;
         attackTime = attackDuration;
 
-        warnPattern.active = true;
+        warnPattern.setActive(true);
     }
 
     public void attack() {
@@ -65,7 +66,7 @@ public class IdleAttackPattern extends BossAttackPattern {
 
         this.spawnMinions();
 
-        warnPattern.active = false;
+        warnPattern.setActive(false);
     }
 
     @Override
