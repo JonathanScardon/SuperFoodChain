@@ -504,13 +504,8 @@ public class GameScene implements Screen {
             }
         }
 
-        if (Gdx.input.isKeyJustPressed(Keys.D)) {
-            if (debug) {
-                debug = false;
-            }
-            else {
-                debug = true;
-            }
+        if (Gdx.input.isKeyJustPressed(Keys.TAB)) {
+            debug = !debug;
         }
 
         if (start && !paused && !winGame && player.isAlive()) {
