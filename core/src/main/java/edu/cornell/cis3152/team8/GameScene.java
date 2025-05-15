@@ -504,8 +504,13 @@ public class GameScene implements Screen {
             }
         }
 
-        if (Gdx.input.isKeyPressed(Keys.D)) {
-            debug = true;
+        if (Gdx.input.isKeyJustPressed(Keys.D)) {
+            if (debug) {
+                debug = false;
+            }
+            else {
+                debug = true;
+            }
         }
 
         if (start && !paused && !winGame && player.isAlive()) {
@@ -791,7 +796,7 @@ public class GameScene implements Screen {
         if (paused && !settingsOn) {
             drawPause();
         }
-        
+
         if (settingsOn) {
             game.batch.draw(dim, 0, 0);
             settingsScreen.draw(1);
