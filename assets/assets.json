@@ -204,6 +204,16 @@
         }
       }
     },
+    "warnChopsticks": {
+      "file": "images/Boss_Chopstick_Warn.png",
+      "sprites": {
+        "animation": {
+          "rows": 1,
+          "cols": 4,
+          "size": 4
+        }
+      }
+    },
     "idleChef": {
       "file": "images/Boss_Chef_Idle.png",
       "sprites": {
