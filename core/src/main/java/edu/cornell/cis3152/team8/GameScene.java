@@ -852,7 +852,9 @@ public class GameScene implements Screen {
 
     private void setStart() {
         if ((Gdx.input.isKeyPressed(Keys.UP) || Gdx.input.isKeyPressed(Keys.DOWN) ||
-            Gdx.input.isKeyPressed(Keys.LEFT) || Gdx.input.isKeyPressed(Keys.RIGHT)) && !start) {
+            Gdx.input.isKeyPressed(Keys.LEFT) || Gdx.input.isKeyPressed(Keys.RIGHT) ||
+            Gdx.input.isKeyPressed(Keys.W) || Gdx.input.isKeyPressed(Keys.S) ||
+            Gdx.input.isKeyPressed(Keys.A) || Gdx.input.isKeyPressed(Keys.D)) && !start) {
             start = true;
             audio.play(levelMusic.toString());
         }
