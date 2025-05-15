@@ -61,7 +61,7 @@
     <property name="warnDuration" type="float" value="2"/>
    </properties>
   </object>
-  <object id="23" type="minionSpawn" x="644.474" y="-27.1757">
+  <object id="23" type="minionSpawn" x="655.807" y="-59.1757">
    <properties>
     <property name="antSpawnProportion" type="float" value="0"/>
     <property name="bossOnly" type="bool" value="true"/>
