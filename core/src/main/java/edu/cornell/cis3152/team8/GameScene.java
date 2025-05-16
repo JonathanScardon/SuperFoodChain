@@ -150,10 +150,6 @@ public class GameScene implements Screen {
      * Index of next companion spawn location
      */
     int companionSpawnIdx;
-    /**
-     * How much time has passed in the level
-     */
-    private static float time;
 
     /**
      * List of all the input controllers
@@ -269,7 +265,6 @@ public class GameScene implements Screen {
         paused = false;
         winGame = false;
         loseGame = false;
-        time = 0;
 
         minions = state.getMinions();
         companions = state.getCompanions();
@@ -354,7 +349,7 @@ public class GameScene implements Screen {
 
         int choice = (int) (Math.random() * total);
 
-        Companion c = null;
+        Companion c;
         if (choice < r1) {
             c = new Strawberry(pos.x, pos.y, companions.size, world);
             state.numStrawberries++;
@@ -364,7 +359,7 @@ public class GameScene implements Screen {
         } else if ((choice -= r2) < r3) {
             c = new BlueRaspberry(pos.x, pos.y, companions.size, world);
             state.numBlueRaspberries++;
-        } else if ((choice -= r3) < r4) {
+        } else if (choice - r3 < r4) {
             c = new Durian(pos.x, pos.y, companions.size, world);
             state.numDurians++;
         } else {
@@ -382,7 +377,7 @@ public class GameScene implements Screen {
     /**
      * Invokes the controller for each Object.
      * <p>
-     * Movement actions are determined, but not committed (e.g. the velocity is updated, but not the
+     * Movement actions are determined but not committed (e.g., the velocity is updated, but not the
      * position). New ability action is processed but photon collisions are not.
      */
     public void update(float delta) {
@@ -523,7 +518,6 @@ public class GameScene implements Screen {
                 Gdx.input.setInputProcessor(currStage);
             }
         }
-        time += delta;
         //System.out.println(time);
     }
 
@@ -770,9 +764,6 @@ public class GameScene implements Screen {
             }
             game.batch.draw(icon, cx, cy + hpBack.getRegionHeight() / 2f - (icon.getHeight() / 2f));
             game.batch.setColor(Color.WHITE);
-//            game.batch.drawText(bossNames.get(i),
-//                cx + icon.getWidth() + padding + (w / 2 - (bossNames.get(i).getWidth() / 2)),
-//                cy + 50);
 
             cx += icon.getWidth() + padding;
             // "3-patch" the background
@@ -890,6 +881,7 @@ public class GameScene implements Screen {
     public void dispose() {
         if (state.getWorld() != null) {
             state.getWorld().dispose();
+            state.setWorld(null);
         }
     }
 

@@ -361,6 +361,14 @@ public class GameState {
         return world;
     }
 
+    /**
+     * Set the Box2D world
+     * @param world the world to set it to
+     */
+    public void setWorld(World world) {
+        this.world = world;
+    }
+
 //    public Array<MinionController> getMinionControls() {
 //        return minionControls;
 //    }

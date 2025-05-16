@@ -85,8 +85,16 @@ public class GDXRoot extends Game implements ScreenListener {
             handbookScene = null;
         }
 
-        batch.dispose();
-        font.dispose();
+        if (batch != null) {
+            batch.dispose();
+            batch = null;
+        }
+
+        if (font != null) {
+            font.dispose();
+            font = null;
+        }
+
         audio = null;
         settings = null;
         batch = null;
