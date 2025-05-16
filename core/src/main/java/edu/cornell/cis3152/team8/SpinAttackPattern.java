@@ -32,15 +32,14 @@ public class SpinAttackPattern extends BossAttackPattern {
     private final float moveSpeed;
 
     private BossAttackPattern preSpin;
-    private final Camera camera;
+    private final OrthographicCamera camera;
     private final Vector3 origPos;
-    private final Random move;
-    private final int intensity;
+    private int intensity;
 
     public SpinAttackPattern(BossController controller, float warnDuration, float moveSpeed,
         float levelWidth, float levelHeight,
         SpriteSheet warnSprite,
-        Player player, GameState gamestate, Camera camera) {
+        Player player, GameState gamestate, OrthographicCamera camera) {
         super(controller);
         attackName = "spin";
         this.player = player;
@@ -51,8 +50,7 @@ public class SpinAttackPattern extends BossAttackPattern {
         this.levelHeight = levelHeight;
         this.camera = camera;
         origPos = new Vector3(camera.position);
-        move = new Random();
-        intensity = 1;
+        intensity = 5;
 
         warnPattern = new SpinWarnPattern(0, 0, Math.max(boss.getWidth() * GameScene.PHYSICS_UNITS,
             boss.getHeight() * GameScene.PHYSICS_UNITS));
@@ -136,10 +134,12 @@ public class SpinAttackPattern extends BossAttackPattern {
                         warnTime -= delta;
                     } else {
                         attack();
+                        camera.position.x += intensity;
+                        intensity *= -1;
                     }
                 }
                 case ATTACK -> {
-                    shake();
+                    //shake();
                     boss.getObstacle().setAngle(boss.getObstacle().getAngle() + 9);
                     boss.setAnimationSpeed(0.15f);
                     if (atWall()) {
@@ -238,12 +238,9 @@ public class SpinAttackPattern extends BossAttackPattern {
     }
 
     private void shake() {
-        int dir = move.nextInt(2) == 0 ? -1 : 1;
-        int displace = move.nextInt(6);
-        camera.position.x += dir * displace;
-        dir = move.nextInt(2) == 0 ? -1 : 1;
-        displace = move.nextInt(intensity + 1);
-        camera.position.y += dir * displace;
+        camera.position.x += intensity * 2;
+        camera.position.y += intensity * 2;
+        intensity *= -1;
         camera.update();
     }
 }

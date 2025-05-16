@@ -263,8 +263,8 @@
     <property name="companionType" value="strawberry"/>
    </properties>
   </object>
-  <object id="52" type="companionSpawn" x="160" y="130"/>
-  <object id="89" type="companionSpawn" x="73.6599" y="131.194"/>
+  <object id="52" type="companionSpawn" x="160" y="160"/>
+  <object id="89" type="companionSpawn" x="73.6599" y="160"/>
   <object id="53" type="companionSpawn" x="160" y="590"/>
   <object id="87" type="companionSpawn" x="73.6599" y="591.194"/>
   <object id="54" type="companionSpawn" x="1120" y="590"/>

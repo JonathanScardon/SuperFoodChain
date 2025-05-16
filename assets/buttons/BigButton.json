@@ -1,0 +1,25 @@
+{
+com.badlogic.gdx.graphics.g2d.BitmapFont: {
+	LPC8: {
+		file: LPC(8).fnt
+		scaledSize: -1
+		markupEnabled: false
+		flip: false
+	}
+}
+com.badlogic.gdx.graphics.Color: {
+	RGBA_89_43_34_255: {
+		r: 0.34901962
+		g: 0.16862746
+		b: 0.13333334
+		a: 1
+	}
+}
+com.badlogic.gdx.scenes.scene2d.ui.TextButton$TextButtonStyle: {
+	default: {
+		font: LPC8
+		up: Button
+		over: ButtonHover
+	}
+}
+}

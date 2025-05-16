@@ -1,11 +1,40 @@
 package edu.cornell.cis3152.team8;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Camera;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.utils.JsonValue;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Button;
+import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.ScreenUtils;
 import edu.cornell.gdiac.assets.AssetDirectory;
 
-public class LevelSelectScene extends MultiPageScene {
+public class LevelSelectScene implements Screen {
+
+    /**
+     * Reference to the GDX root
+     */
+    protected final GDXRoot game;
+    /**
+     * The audio controller
+     */
+    protected GameAudio audio;
+    protected Stage stage;
+
+    /**
+     * The scene camera
+     */
+    protected Camera camera;
+    private final OrthographicCamera uiCamera;
 
     /**
      * Background textures
@@ -14,60 +43,176 @@ public class LevelSelectScene extends MultiPageScene {
     private final Texture tray;
 
     /**
+     * Navigation Buttons
+     */
+    protected final Array<ImageButton> navs;
+
+    /**
      * Level Buttons
      */
-    private final LevelButton[] page1;
-    private final LevelButton[] page2;
+    private final TextButton[] page1;
+    private final TextButton[] page2;
 
     /**
-     * Other buttons
+     * Page switching info
      */
-    private final Button handbookButton;
-    private final Button homeButton;
+    protected int currPage;
+    protected int unlockedPages;
+    protected int totalPages;
+
+    protected final float moveSpeed;
+    private float moveGoal;
+    protected boolean moving = false;
 
     /**
-     * The number of unlocked levels
+     * Settings
      */
-    private int unlocked;
+    protected static Settings settingsScreen;
+    protected boolean settingsOn;
 
     public LevelSelectScene(final GDXRoot game, AssetDirectory assets) {
-        super(game, assets);
+        this.game = game;
+        settingsScreen = game.settings;
+        settingsOn = false;
+        audio = game.audio;
+        stage = new Stage(game.viewport, game.batch);
+        float width = 1280;
+        float height = 720;
+        camera = game.viewport.getCamera();
+        uiCamera = new OrthographicCamera(width, height);
+        uiCamera.position.set(width / 2f, height / 2f, 0);
+        uiCamera.update();
 
         //Constants
+        moveSpeed = 40f;
         totalPages = 3;
         unlockedPages = totalPages;
 
+        //Set to first page
+        currPage = 1;
+        moveGoal = camera.position.x;
         //Background textures
         background = assets.getEntry("levelsBackground", Texture.class);
-        ;
         tray = assets.getEntry("levelsTray", Texture.class);
 
-        //Buttons textures
-        Texture home = assets.getEntry("home", Texture.class);
-        Texture handbook = assets.getEntry("handbook", Texture.class);
-        Texture homeHover = assets.getEntry("homeHover", Texture.class);
-        Texture handbookHover = assets.getEntry("handbookHover", Texture.class);
-
-        //Constants for centering
-        float x = 1280 / 2f - tray.getWidth() / 2f;
-        float y = 720 / 2f - tray.getHeight() / 2f;
-        float buttonSize = 78;
-        float gap = 20; // The distance between the buttons
-        float span = (buttonSize * 3) + (gap * 2);
-
-        //Create navigation buttons
-        homeButton = new Button(x + (tray.getWidth() / 2f - span / 2), y,
-            home, homeHover, -1, buttonSize, buttonSize);
-        handbookButton = new Button(homeButton.posX + homeButton.width + gap, y,
-            handbook, handbookHover, 0, buttonSize, buttonSize);
-        settingsButton.setPosition(handbookButton.posX + handbookButton.width + gap, y);
+        navs = new Array<>();
+        addNavButtons();
 
         //Set up the pages (6 buttons per page)
-        page1 = new LevelButton[6];
-        page2 = new LevelButton[6];
+        page1 = new TextButton[6];
+        page2 = new TextButton[6];
+        addLevelButtons();
+    }
 
+    private void addNavButtons() {
         //Constants for centering
-        gap = 50; // The distance between the buttons
+        float buttonWidth = 80;
+        float buttonHeight = 88;
+        //Create navigation buttons
+        //Right
+        Skin s = new Skin(Gdx.files.internal("buttons/Right.json"));
+        ImageButton b = new ImageButton(s);
+        b.setSize(buttonWidth, buttonHeight);
+        stage.addActor(b);
+        b.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                audio.play("click");
+                currPage += 1;
+                moveGoal = camera.position.x + 1280;
+                moving = true;
+            }
+        });
+        navs.add(b);
+
+        //Left
+        s = new Skin(Gdx.files.internal("buttons/Left.json"));
+        b = new ImageButton(s);
+        b.setSize(buttonWidth, buttonHeight);
+        stage.addActor(b);
+        b.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                currPage -= 1;
+                moveGoal = camera.position.x - 1280;
+                moving = true;
+                audio.play("click");
+            }
+        });
+        navs.add(b);
+
+        //Home
+        s = new Skin(Gdx.files.internal("buttons/Home.json"));
+        b = new ImageButton(s);
+        b.setSize(buttonWidth, buttonHeight);
+        stage.addActor(b);
+        b.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                audio.play("click");
+                audio.stopMusic();
+                game.viewport.getCamera().position.set(640f, 360f,
+                    game.viewport.getCamera().position.z);
+                game.exitScreen(game.getScreen(), ExitCode.HOME);
+            }
+        });
+        navs.add(b);
+
+        //Handbook
+        s = new Skin(Gdx.files.internal("buttons/Handbook.json"));
+        b = new ImageButton(s);
+        b.setSize(buttonWidth, buttonHeight);
+        stage.addActor(b);
+        b.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                audio.play("click");
+                audio.stopMusic();
+                game.viewport.getCamera().position.set(640f, 360f,
+                    game.viewport.getCamera().position.z);
+                game.exitScreen(game.getScreen(), ExitCode.HANDBOOK);
+            }
+        });
+        navs.add(b);
+
+        //Settings
+        s = new Skin(Gdx.files.internal("buttons/Settings.json"));
+        b = new ImageButton(s);
+        b.setSize(buttonWidth, buttonHeight);
+        stage.addActor(b);
+        b.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                audio.play("click");
+                settingsScreen.setOn(true);
+                settingsOn = true;
+            }
+        });
+        navs.add(b);
+        setButtonPositions();
+    }
+
+    private void setButtonPositions() {
+        float buttonWidth = navs.get(0).getWidth();
+        float buttonHeight = navs.get(0).getWidth();
+        float gap = 20; // The distance between the buttons
+        float span = (buttonHeight * 3) + (gap * 2);
+        float x = (1280 / 2f - tray.getWidth() / 2f) + (tray.getWidth() / 2f - span / 2);
+        float y = 720 / 2f - tray.getHeight() / 2f - buttonHeight / 3f;
+
+        navs.get(0).setPosition(1280 - buttonWidth * 2f, 720 / 2f - buttonHeight / 2f);
+        navs.get(1).setPosition(buttonWidth, 720 / 2f - buttonHeight / 2f);
+        navs.get(2).setPosition(x, y);
+        x += buttonWidth + gap;
+        navs.get(3).setPosition(x, y);
+        x += buttonWidth + gap;
+        navs.get(4).setPosition(x, y);
+    }
+
+    private void addLevelButtons() {
+        Skin s = new Skin(Gdx.files.internal("buttons/Plate.json"));
+        //Constants for centering
+        float gap = 50; // The distance between the buttons
         float levelButtonWidth = 175;
         float levelButtonHeight = 174;
         float spanHorizontal = levelButtonWidth * 3 + (gap * 2);
@@ -77,114 +222,118 @@ public class LevelSelectScene extends MultiPageScene {
         int level = 1;
 
         //Create and add buttons to pages
-        y = (720 / 2f) + spanVertical / 2f - levelButtonHeight;
+        float x;
+        float y = (720 / 2f) + spanVertical / 2f - levelButtonHeight;
         for (int i = 1; i <= page1.length / 3; i++) {
             x = 1280 / 2f - spanHorizontal / 2f;
             for (int j = 1; j <= 3; j++) {
-                LevelButton b = new LevelButton(x, y, level, assets);
-                page1[level - 1] = b;
-                b = new LevelButton(x + 1280, y, level + 6, assets);
-                page2[level - 1] = b;
+                TextButton button = new TextButton("" + level, s);
+                button.setSize(levelButtonWidth, levelButtonHeight);
+                button.setPosition(x, y);
+                addLevelButton(level - 1, level, button, page1);
+
+                button = new TextButton("" + (level + 6), s);
+                button.setSize(levelButtonWidth, levelButtonHeight);
+                button.setPosition(x + 1280, y);
+                addLevelButton(level - 1, level + 6, button, page2);
                 x = x + levelButtonWidth + gap;
                 level++;
             }
             y = y - levelButtonHeight - gap;
         }
-//         unlocked = assets.getEntry("save", JsonValue.class)
-//            .getInt("max_level_unlocked");
-//
     }
 
-    @Override
-    public void update(float delta) {
-        //Set level lock states
-        unlocked = game.save.getInteger("unlockedLevels");
-        for (int i = 0; i < page1.length; i++) {
-            page1[i].setLocked(i >= unlocked);
-            page2[i].setLocked(i + 6 >= unlocked);
-        }
-        super.update(delta);
-        // System.out.println(Gdx.input.getX());
-//        System.out.println(page1[0].posX);
-//        System.out.println(page1[0].isHovering());
-    }
+    private void addLevelButton(int idx, int level, TextButton button, TextButton[] page) {
+        stage.addActor(button);
 
-    @Override
-    public void move(int direction) {
-        super.move(direction);
-        homeButton.setPosition(homeButton.posX + moveSpeed * direction, homeButton.posY);
-        handbookButton.setPosition(handbookButton.posX + moveSpeed * direction,
-            handbookButton.posY);
-    }
-
-    /**
-     * Processes user input of buttons
-     */
-    protected void processButtons() {
-        for (LevelButton b : page1) {
-            if (b.isPressed() && b.getUnlocked() && currPage == 1) {
-                audio.play("clickLevel");
-                audio.stopMusic();
-                game.viewport.getCamera().position.set(640f, 360f,
-                    game.viewport.getCamera().position.z);
-                game.exitScreen(this, b.getExitCode());
-            }
-        }
-        for (LevelButton b : page2) {
-            if (b.isPressed() && b.getUnlocked() && currPage == 2) {
+        button.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
                 audio.play("click");
                 audio.stopMusic();
                 game.viewport.getCamera().position.set(640f, 360f,
                     game.viewport.getCamera().position.z);
-                game.exitScreen(this, b.getExitCode());
+                game.exitScreen(game.getScreen(), level);
             }
-        }
-        if (homeButton.isPressed()) {
-            audio.play("click");
-            audio.stopMusic();
-            game.viewport.getCamera().position.set(640f, 360f,
-                game.viewport.getCamera().position.z);
-            game.exitScreen(this, homeButton.getExitCode());
-        }
-        if (handbookButton.isPressed()) {
-            audio.play("click");
-            audio.stopMusic();
-            game.viewport.getCamera().position.set(640f, 360f,
-                game.viewport.getCamera().position.z);
-            game.exitScreen(this, handbookButton.getExitCode());
-        }
+        });
+        page[idx] = button;
     }
 
-    /**
-     * Resets button use
-     */
-    protected void updateButtons(float delta) {
-        super.updateButtons(delta);
-        homeButton.update(delta);
-        handbookButton.update(delta);
-        for (Button b : page1) {
-            b.update(delta);
-        }
-        for (Button b : page2) {
-            b.update(delta);
+
+    public void update(float delta) {
+        //Set level lock states
+        int unlocked = game.save.getInteger("unlockedLevels");
+        for (int i = 0; i < page1.length; i++) {
+            page1[i].setDisabled(i >= unlocked);
+            page2[i].setDisabled(i + 6 >= unlocked);
         }
 
-    }
+        if (moving) { //Move
+            for (ImageButton b : navs) {
+                b.setDisabled(true);
+            }
+            navs.get(0).setVisible(true);
+            navs.get(1).setVisible(true);
 
-    /**
-     * Draws navigation buttons
-     */
-    @Override
-    protected void drawButtons() {
-        super.drawButtons();
-        homeButton.draw(game.batch, !settingsOn);
-        handbookButton.draw(game.batch, !settingsOn);
+            if (camera.position.x < moveGoal) {
+                move(1);
+            } else {
+                move(-1);
+            }
+            if (camera.position.x == moveGoal) {
+                moving = false;
+            }
+        } else { //Use page
+            for (ImageButton b : navs) {
+                b.setDisabled(false);
+            }
+            if (!settingsOn) { //Level page off when settings is on
+                //Process arrows when on screen
+                Gdx.input.setInputProcessor(stage);
+                if (unlockedPages > 1) {
+                    if (currPage == 1) {
+                        navs.get(0).setDisabled(false);
+                        navs.get(0).setVisible(true);
+
+                        navs.get(1).setVisible(false);
+                    } else if (currPage == unlockedPages) {
+                        navs.get(0).setDisabled(true);
+                        navs.get(0).setVisible(false);
+
+                        navs.get(1).setDisabled(false);
+                        navs.get(1).setVisible(true);
+
+                    } else {
+                        navs.get(0).setDisabled(false);
+                        navs.get(0).setVisible(true);
+
+                        navs.get(1).setDisabled(false);
+                        navs.get(1).setVisible(true);
+                    }
+                }
+            } else {
+                for (ImageButton b : navs) {
+                    b.setDisabled(true);
+                }
+            }
+            settingsScreen.update(delta);
+            settingsOn = settingsScreen.isOn();
+            
+        }
     }
 
     /**
      * Draws specific pages
      */
-    protected void drawPages() {
+    protected void draw() {
+        ScreenUtils.clear(Color.BLACK);
+        game.viewport.apply();
+        game.batch.setProjectionMatrix(camera.combined);
+        game.viewport.setCamera(camera);
+        game.batch.setColor(Color.WHITE);
+        game.batch.begin();
+
+        stage.act();
         if (moving) { // Draw all backgrounds and level buttons if screen is moving
             //Backgrounds
             for (int i = 0; i < totalPages; i++) {
@@ -192,12 +341,13 @@ public class LevelSelectScene extends MultiPageScene {
                 game.batch.draw(tray, (1280 * i) + 1280 / 2f - tray.getWidth() / 2f,
                     720 / 2f - tray.getHeight() / 2f);
             }
-            //Buttons
-            for (Button b : page1) {
-                b.draw(game.batch, true);
+            for (TextButton b : page1) {
+                b.setVisible(true);
+                b.draw(game.batch, 1);
             }
-            for (Button b : page2) {
-                b.draw(game.batch, true);
+            for (TextButton b : page2) {
+                b.setVisible(true);
+                b.draw(game.batch, 1);
             }
         } else { //Otherwise only draw current page
             //Background
@@ -206,34 +356,90 @@ public class LevelSelectScene extends MultiPageScene {
                 720 / 2f - tray.getHeight() / 2f);
 
             //Level buttons
-            switch (currPage) {
-                case 1 -> {
-                    for (Button b : page1) {
-                        b.draw(game.batch, true);
-                    }
+            boolean drawButton = currPage == 1;
+            for (TextButton b : page1) {
+                b.setVisible(drawButton);
+                if (drawButton) {
+                    b.draw(game.batch, 1);
                 }
-                case 2 -> {
-                    for (Button b : page2) {
-                        b.draw(game.batch, true);
-                    }
+            }
+            for (TextButton b : page2) {
+                b.setVisible(!drawButton);
+                if (!drawButton) {
+                    b.draw(game.batch, 1);
                 }
             }
         }
+        for (ImageButton b : navs) {
+            if (b.isVisible()) {
+                b.draw(game.batch, 1);
+            }
+        }
+        game.batch.end();
+
+        //Draw settings
+        if (settingsOn) {
+            game.batch.setProjectionMatrix(uiCamera.combined);
+            game.viewport.setCamera(uiCamera);
+            settingsScreen.draw();
+        }
+    }
+
+    private void move(int direction) {
+        float speed = moveSpeed * direction;
+        camera.position.x += speed;
+        camera.update();
+        for (Button b : navs) {
+            b.setPosition(b.getX() + speed, b.getY());
+        }
+    }
+
+    public Stage getStage() {
+        return stage;
+    }
+
+    public void reset() {
+        camera.position.set(1280 / 2f, 720 / 2f, 0);
+        camera.update();
+        currPage = 1;
+        settingsOn = false;
+        audio.play("levels");
+        setButtonPositions();
     }
 
     @Override
-    public void reset() {
-        super.reset();
-        float x = 1280 / 2f - tray.getWidth() / 2f;
-        float y = 720 / 2f - tray.getHeight() / 2f;
-        float buttonSize = 78;
-        float gap = 20; // The distance between the buttons
-        float span = (buttonSize * 3) + (gap * 2);
-        settingsOn = false;
-        homeButton.setPosition(x + (tray.getWidth() / 2f - span / 2), y);
-        handbookButton.setPosition(homeButton.posX + homeButton.width + gap, y);
-        settingsButton.setPosition(handbookButton.posX + handbookButton.width + gap, y);
-        audio.play("levels");
+    public void show() {
+
     }
 
+    @Override
+    public void render(float delta) {
+        this.update(delta);
+        this.draw();
+    }
+
+    @Override
+    public void resize(int width, int height) {
+
+    }
+
+    @Override
+    public void pause() {
+
+    }
+
+    @Override
+    public void resume() {
+
+    }
+
+    @Override
+    public void hide() {
+
+    }
+
+    @Override
+    public void dispose() {
+
+    }
 }

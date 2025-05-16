@@ -1,0 +1,20 @@
+
+SfxMute.png
+size: 256, 256
+format: RGBA8888
+filter: Linear, Linear
+repeat: none
+ButtonSfxHoverMute
+  rotate: false
+  xy: 1, 80
+  size: 70, 77
+  orig: 70, 77
+  offset: 0, 0
+  index: -1
+ButtonSfxMute
+  rotate: false
+  xy: 1, 1
+  size: 70, 77
+  orig: 70, 77
+  offset: 0, 0
+  index: -1

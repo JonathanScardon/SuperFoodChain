@@ -12,6 +12,7 @@ import edu.cornell.gdiac.graphics.SpriteSheet;
  * Draw a square with a blinking warning icon
  */
 public abstract class BossWarnPattern {
+
     /**
      * Whether this pattern is currently displayed
      */
@@ -82,8 +83,8 @@ public abstract class BossWarnPattern {
         if (!active) {
             return;
         }
-
-        SpriteBatch.computeTransform(transform, 70.5f, sprite.getRegionHeight() / 2.0f, this.x * GameScene.PHYSICS_UNITS, this.y * GameScene.PHYSICS_UNITS, 0, 0.6f, 0.6f);
+        SpriteBatch.computeTransform(transform, 70.5f, sprite.getRegionHeight() / 2.0f,
+            this.x * GameScene.PHYSICS_UNITS, this.y * GameScene.PHYSICS_UNITS, 0, 0.6f, 0.6f);
         sprite.setFrame((int) animeframe);
         batch.setColor(Color.WHITE);
         batch.draw(sprite, transform);

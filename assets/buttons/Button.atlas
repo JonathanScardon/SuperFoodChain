@@ -1,0 +1,27 @@
+
+Button.png
+size: 2048, 2048
+format: RGBA8888
+filter: Linear, Linear
+repeat: none
+LPC(4)
+  rotate: false
+  xy: 1266, 1633
+  size: 506, 137
+  orig: 506, 137
+  offset: 0, 0
+  index: -1
+Button
+  rotate: false
+  xy: 1, 1403
+  size: 1263, 367
+  orig: 1263, 367
+  offset: 0, 0
+  index: -1
+ButtonHover
+  rotate: false
+  xy: 1, 1034
+  size: 1263, 367
+  orig: 1263, 367
+  offset: 0, 0
+  index: -1

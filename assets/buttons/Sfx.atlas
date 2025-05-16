@@ -1,0 +1,20 @@
+
+Sfx.png
+size: 256, 256
+format: RGBA8888
+filter: Linear, Linear
+repeat: none
+ButtonSfx
+  rotate: false
+  xy: 1, 80
+  size: 70, 77
+  orig: 70, 77
+  offset: 0, 0
+  index: -1
+ButtonSfxHover
+  rotate: false
+  xy: 1, 1
+  size: 70, 77
+  orig: 70, 77
+  offset: 0, 0
+  index: -1

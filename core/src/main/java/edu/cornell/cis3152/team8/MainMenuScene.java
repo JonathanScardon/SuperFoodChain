@@ -9,6 +9,11 @@ import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.ScreenUtils;
 import edu.cornell.gdiac.assets.AssetDirectory;
 import edu.cornell.gdiac.audio.*;
@@ -20,55 +25,84 @@ public class MainMenuScene implements Screen {
      * Reference to the GDX root
      */
     private final GDXRoot game;
+    private final Stage stage;
+    private GameAudio audio;
     private Texture background;
-    private Button playButton;
-    private Button settingsButton;
-    private Button exitButton;
     private static Settings settingsScreen;
     private boolean settingsOn;
-    private GameAudio audio;
+
 
     public MainMenuScene(final GDXRoot game, AssetDirectory assets) {
-        Button.setAssets(assets);
-        Settings.setAssets(assets);
-
         this.game = game;
+        stage = new Stage(game.viewport, game.batch);
         background = assets.getEntry("menuBackground", Texture.class);
-        Texture button = assets.getEntry("button", Texture.class);
-        Texture buttonHover = assets.getEntry("buttonHover", Texture.class);
 
-        playButton = new Button(806, 320, button, buttonHover, 0, 429, 100, "Play");
-        settingsButton = new Button(806, 220, button, buttonHover, 0, 429, 100, "Settings");
-        exitButton = new Button(806, 120, button, buttonHover, 0, 429, 100, "Exit");
+        Skin s = new Skin(Gdx.files.internal("buttons/BigButton.json"));
+
+        float buttonWidth = 429;
+        float buttonHeight = 100;
+        float x = 806;
+        float y = 320;
+
+        TextButton button = new TextButton("Play", s);
+        button.setSize(buttonWidth, buttonHeight);
+        button.setPosition(x, y);
+        stage.addActor(button);
+        button.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                audio.play("click");
+                audio.stopMusic();
+                dispose();
+                game.exitScreen(game.getScreen(), ExitCode.LEVELS);
+            }
+        });
+
+        y -= 100;
+
+        button = new TextButton("Settings", s);
+        button.setSize(buttonWidth, buttonHeight);
+        button.setPosition(x, y);
+        stage.addActor(button);
+        button.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                audio.play("click");
+                settingsScreen.setOn(true);
+                settingsOn = true;
+            }
+        });
+
+        y -= 100;
+
+        button = new TextButton("Exit", s);
+        button.setSize(buttonWidth, buttonHeight);
+        button.setPosition(x, y);
+        stage.addActor(button);
+        button.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                audio.play("click");
+                audio.stopMusic();
+                dispose();
+                game.exitScreen(game.getScreen(), ExitCode.EXIT_GAME);
+            }
+        });
+
         settingsScreen = game.settings;
         audio = game.audio;
     }
 
     public void update(float delta) {
-        playButton.update(delta);
-        settingsButton.update(delta);
-        exitButton.update(delta);
+        stage.act();
         if (!settingsOn) {
-            if (playButton.isPressed()) {
-                audio.play("click");
-                audio.stopMusic();
-                game.exitScreen(this, 0);
-                dispose();
-            }
-            if (settingsButton.isPressed()) {
-                audio.play("click");
-                settingsOn = true;
-            }
-            if (exitButton.isPressed()) {
-                audio.play("click");
-                audio.stopMusic();
-                dispose();
-                game.exitScreen(this, 1);
-            }
-        } else if (Gdx.input.isKeyPressed(Keys.ESCAPE)) {
-            settingsOn = false;
+            Gdx.input.setInputProcessor(stage);
         }
-        settingsOn = settingsScreen.update(delta, settingsOn);
+        settingsScreen.update(delta);
+        settingsOn = settingsScreen.isOn();
+        for (Actor b : stage.getActors()) {
+            ((TextButton) b).setDisabled(settingsOn);
+        }
     }
 
     public void draw() {
@@ -77,21 +111,20 @@ public class MainMenuScene implements Screen {
         game.viewport.apply();
         game.batch.setProjectionMatrix(game.viewport.getCamera().combined);
         game.batch.begin();
-
         game.batch.draw(background, 0, 0);
-        playButton.draw(game.batch, !settingsOn);
-        settingsButton.draw(game.batch, !settingsOn);
-        exitButton.draw(game.batch, !settingsOn);
+        game.batch.end();
+        stage.draw();
 
         if (settingsOn) {
-            settingsScreen.draw(1);
+            settingsScreen.draw();
         }
-
-        game.batch.end();
     }
 
     public void reset() {
+        settingsScreen.setOn(false);
         settingsOn = false;
+        game.viewport.getCamera().position.set(1280 / 2f, 720 / 2f, 0);
+        game.viewport.getCamera().update();
         audio.play("menu");
     }
 
@@ -129,5 +162,9 @@ public class MainMenuScene implements Screen {
     @Override
     public void dispose() {
 
+    }
+
+    public Stage getStage() {
+        return stage;
     }
 }
