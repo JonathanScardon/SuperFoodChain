@@ -242,7 +242,7 @@ public class CompanionHandbookScene implements Screen {
             }
 
             if (currTab == 0) {
-                if (currPage == 2) {
+                if (currPage == 1) {
                     animationSpeed = 0.2f;
                 } else {
                     animationSpeed = 0.1f;

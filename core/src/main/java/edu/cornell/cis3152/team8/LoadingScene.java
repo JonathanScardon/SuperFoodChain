@@ -261,7 +261,7 @@ public class LoadingScene implements Screen {
             }
             loading.setFrame((int) animationFrameL);
         }
-        
+
         posX += 10;
         if (posX > 1280 && companions != null) {
             posX = -companions.getRegionWidth();
