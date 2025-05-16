@@ -12,7 +12,7 @@ public class LosePopUp extends PopUp {
     public LosePopUp(GDXRoot game, GameScene gameScene) {
         super(game, gameScene, game.directory.getEntry("ratLose.animation", SpriteSheet.class));
         if (gameScene.getBossNames().contains("chef")) {
-            background = game.directory.getEntry("ratLose.animation", SpriteSheet.class);
+            background = game.directory.getEntry("chefLose.animation", SpriteSheet.class);
         } else if (gameScene.getBossNames().contains("chopsticks")) {
             background = game.directory.getEntry("chopsticksLose.animation", SpriteSheet.class);
         }

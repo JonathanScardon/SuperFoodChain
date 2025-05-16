@@ -6,7 +6,7 @@
       "magfilter": "linear"
     },
     "companion hop": {
-      "file": "images/loadingCompanions.png",
+      "file": "loading/loadingCompanions.png",
       "sprites": {
         "animation": {
           "rows": 1,
