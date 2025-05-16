@@ -1,0 +1,27 @@
+
+Arrow2.png
+size: 512, 512
+format: RGBA8888
+filter: Linear, Linear
+repeat: none
+ButtonMusicHoverMute
+  rotate: false
+  xy: 168, 290
+  size: 70, 77
+  orig: 70, 77
+  offset: 0, 0
+  index: -1
+ButtonNext
+  rotate: false
+  xy: 1, 185
+  size: 165, 182
+  orig: 165, 182
+  offset: 0, 0
+  index: -1
+ButtonNextHover
+  rotate: false
+  xy: 1, 1
+  size: 165, 182
+  orig: 165, 182
+  offset: 0, 0
+  index: -1

@@ -1,0 +1,20 @@
+
+CompanionTab.png
+size: 128, 128
+format: RGBA8888
+filter: Linear, Linear
+repeat: none
+Group_27
+  rotate: false
+  xy: 1, 7
+  size: 114, 52
+  orig: 114, 52
+  offset: 0, 0
+  index: -1
+Group_27 2
+  rotate: false
+  xy: 1, 61
+  size: 114, 52
+  orig: 114, 52
+  offset: 0, 0
+  index: -1

@@ -1,0 +1,10 @@
+{
+com.badlogic.gdx.scenes.scene2d.ui.ImageButton$ImageButtonStyle: {
+	default: {
+		imageUp: Group_27 3
+		imageDown: Group_27 4
+		imageChecked: Group_27 4
+		pressedOffsetX: 1
+	}
+}
+}

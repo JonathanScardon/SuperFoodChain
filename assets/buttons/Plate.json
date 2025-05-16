@@ -1,0 +1,47 @@
+{
+com.badlogic.gdx.graphics.g2d.BitmapFont: {
+	LPC5: {
+		file: LPC(5).fnt
+		scaledSize: -1
+		markupEnabled: false
+		flip: false
+	}
+}
+com.badlogic.gdx.graphics.Color: {
+	Clear: {
+		r: 1
+		g: 0
+		b: 0
+		a: 0
+	}
+	RGBA_175_73_0_255: {
+		r: 0.6862745
+		g: 0.28627452
+		b: 0
+		a: 1
+	}
+	RGBA_255_255_255_255: {
+		r: 1
+		g: 1
+		b: 1
+		a: 1
+	}
+	RGBA_89_43_34_255: {
+		r: 0.34901962
+		g: 0.16862746
+		b: 0.13333334
+		a: 1
+	}
+}
+com.badlogic.gdx.scenes.scene2d.ui.TextButton$TextButtonStyle: {
+	default: {
+		font: LPC5
+		fontColor: RGBA_89_43_34_255
+		overFontColor: RGBA_175_73_0_255
+		disabledFontColor: Clear
+		up: ButtonPlate
+		over: ButtonPlateHover
+		disabled: Untitled design (15)
+	}
+}
+}

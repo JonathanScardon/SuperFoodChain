@@ -1,0 +1,10 @@
+{
+com.badlogic.gdx.scenes.scene2d.ui.ImageButton$ImageButtonStyle: {
+	default: {
+		imageUp: ButtonNext
+		imageOver: ButtonNextHover
+		imageDisabled: ButtonMusicHoverMute
+		pressedOffsetY: -3
+	}
+}
+}

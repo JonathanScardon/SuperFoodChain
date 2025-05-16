@@ -37,6 +37,7 @@ public class GDXRoot extends Game implements ScreenListener {
     public Settings settings;
 
     public Preferences save;
+    private int totalLevels;
 
     @Override
     public void create() {
@@ -86,6 +87,8 @@ public class GDXRoot extends Game implements ScreenListener {
 
         batch.dispose();
         font.dispose();
+        audio = null;
+        settings = null;
         batch = null;
 
         // Unload all the resources
@@ -109,7 +112,7 @@ public class GDXRoot extends Game implements ScreenListener {
             loadingScene.dispose();
             loadingScene = null;
 
-            int totalLevels = directory.getEntry("save", JsonValue.class)
+            totalLevels = directory.getEntry("save", JsonValue.class)
                 .getInt("total_Levels");
             //TODO: change to 1
             int unlockedLevels = directory.getEntry("save", JsonValue.class)
@@ -121,81 +124,121 @@ public class GDXRoot extends Game implements ScreenListener {
 
             int unlockedHandbook = directory.getEntry("save", JsonValue.class)
                 .getInt("companions_unlocked");
-            //TODO: add others
-            save.putInteger("unlockedHandbook", unlockedHandbook);
-            save.putBoolean("durian", false);
-            save.putBoolean("strawberry", false);
+
+            resetSave();
+
+            //UNCOMMENT AND ADD THE NUMBER YOU WANT UNLOCKED FOR TESTING PURPOSES
+            int num = 10;
+            save.putInteger("unlockedLevels", num);
 
             audio = new GameAudio(directory);
-            settings = new Settings(this);
+            settings = new Settings(this, directory);
             menuScene = new MainMenuScene(this, directory);
             levelSelectScene = new LevelSelectScene(this, directory);
-            handbookScene = new CompanionHandbookScene(this, directory);
+            handbookScene = new CompanionHandbookScene(this);
             menuScene.reset();
+            Gdx.input.setInputProcessor(menuScene.getStage());
             setScreen(menuScene);
         } else if (screen == menuScene) {
             menuScene.dispose();
-            if (exitCode == 0) { //Level select
+            if (exitCode == ExitCode.LEVELS) { //Level select
                 levelSelectScene.reset();
+                Gdx.input.setInputProcessor(levelSelectScene.getStage());
                 this.setScreen(levelSelectScene);
-            } else if (exitCode == -100) {
+            } else if (exitCode == ExitCode.RESET_SAVE) {
                 menuScene.reset();
+                Gdx.input.setInputProcessor(menuScene.getStage());
                 setScreen(menuScene);
-            } else { //Exit program
+            } else if (exitCode == ExitCode.EXIT_GAME) { //Exit program
                 dispose();
                 Gdx.app.exit();
             }
         } else if (screen == levelSelectScene) {
             levelSelectScene.dispose();
-            if (exitCode == -1) {
+            if (exitCode == ExitCode.HOME || exitCode == ExitCode.RESET_SAVE) {
                 menuScene.reset();
+                Gdx.input.setInputProcessor(menuScene.getStage());
                 setScreen(menuScene);
-            } else if (exitCode == 0) {
+            } else if (exitCode == ExitCode.HANDBOOK) {
                 prev = "levels";
                 handbookScene.reset();
+                Gdx.input.setInputProcessor(handbookScene.getStage());
                 setScreen(handbookScene);
-            } else if (exitCode == -100) {
-                menuScene.reset();
-                setScreen(menuScene);
             } else {
                 gameScene = new GameScene(this, directory, exitCode);
                 gameScene.resetMusic();
                 this.setScreen(gameScene);
             }
         } else if (screen == gameScene) {
-            if (exitCode == 1) {
+            if (exitCode == ExitCode.LEVELS) {
                 levelSelectScene.reset();
+                Gdx.input.setInputProcessor(levelSelectScene.getStage());
                 setScreen(levelSelectScene);
-            } else if (exitCode == 2) {
+            } else if (exitCode == ExitCode.NEXT_LEVEL) {
                 int next = gameScene.getLevel() + 1;
                 gameScene = new GameScene(this, directory, next);
                 gameScene.resetMusic();
                 setScreen(gameScene);
-            } else if (exitCode == 3) {
+            } else if (exitCode == ExitCode.HANDBOOK) {
                 prev = "game";
                 handbookScene.reset();
+                Gdx.input.setInputProcessor(handbookScene.getStage());
                 setScreen(handbookScene);
-            } else if (exitCode == -100) {
+            } else if (exitCode == ExitCode.RESET_SAVE) {
                 menuScene.reset();
+                Gdx.input.setInputProcessor(menuScene.getStage());
                 setScreen(menuScene);
+            } else if (exitCode == ExitCode.EXIT_GAME) {
+                dispose();
+                Gdx.app.exit();
             }
+
         } else if (screen == handbookScene) {
             handbookScene.dispose();
-            if (exitCode == -1) {
+            if (exitCode == ExitCode.BACK) {
                 if (prev.equals("levels")) {
                     levelSelectScene.reset();
+                    Gdx.input.setInputProcessor(levelSelectScene.getStage());
                     setScreen(levelSelectScene);
                 } else if (prev.equals("game")) {
                     gameScene.resetMusic();
+                    Gdx.input.setInputProcessor(gameScene.getStage());
                     setScreen(gameScene);
                 }
-            } else if (exitCode == -100) {
+            } else if (exitCode == ExitCode.RESET_SAVE) {
                 menuScene.reset();
+                Gdx.input.setInputProcessor(menuScene.getStage());
                 setScreen(menuScene);
             }
         } else {
             dispose();
             Gdx.app.exit();
         }
+    }
+
+    public int getTotalLevels() {
+        return totalLevels;
+    }
+
+    public void resetSave() {
+        save.putInteger("unlockedLevels", 1);
+
+        save.putInteger("unlockedCompanions", 0);
+        save.putInteger("unlockedMinions", 0);
+        save.putInteger("unlockedBosses", 0);
+
+        save.putBoolean("durian", false);
+        save.putBoolean("strawberry", false);
+        save.putBoolean("blue raspberry", false);
+        save.putBoolean("avocado", false);
+        save.putBoolean("garlic", false);
+
+        save.putBoolean("ant", false);
+        save.putBoolean("cricket", false);
+        save.putBoolean("spider", false);
+
+        save.putBoolean("rat", false);
+        save.putBoolean("chopsticks", false);
+        save.putBoolean("chef", false);
     }
 }

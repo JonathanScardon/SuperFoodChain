@@ -12,13 +12,13 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Affine2;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.JsonValue;
 import edu.cornell.cis3152.team8.companions.*;
 import edu.cornell.gdiac.assets.AssetDirectory;
 import edu.cornell.gdiac.graphics.SpriteBatch;
-import edu.cornell.gdiac.graphics.SpriteBatch.BlendMode;
 import edu.cornell.gdiac.graphics.TextLayout;
 import edu.cornell.gdiac.physics2.ObstacleSprite;
 
@@ -31,6 +31,7 @@ public class GameScene implements Screen {
      * Reference to the GDX root
      */
     private final GDXRoot game;
+    private Stage currStage;
 
     /**
      * Reference to the game audio
@@ -43,11 +44,11 @@ public class GameScene implements Screen {
     /**
      * The drawing camera for the objects in this scene
      */
-    private OrthographicCamera worldCamera;
+    public OrthographicCamera worldCamera;
     /**
      * The drawing camera for the UI in this scene
      */
-    private OrthographicCamera uiCamera;
+    public OrthographicCamera uiCamera;
 
     protected World world;
 
@@ -60,28 +61,18 @@ public class GameScene implements Screen {
     /**
      * Backgrounds/Foregrounds
      */
-    private final Texture dim;
-    private final Texture pauseBackground;
-    private final Texture win;
     private final Texture backgroundTexture;
     private final Texture paddingBackgroundTexture;
-    private final Texture mouseLose;
-    private final Texture chopsticksLose;
 
     /**
-     * Buttons
+     * Pop-ups (win, lose, pause, handbook)
      */
-    private Button resumeButton;
-    private Button resetButton;
-    private Button levelsButton;
-    private Button settingsButton;
-    private Button handbookButtonPause;
+    private WinPopUp win;
+    private LosePopUp lose;
+    private PausePopUp pause;
+    private HandbookPopUp handbook;
 
-    private Button exitButton;
-    private Button homeButton;
-    private Button nextButton;
-    private Button replayButton;
-    private Button handbookButton;
+    private HandbookOrder handbookOrder;
 
     /**
      * UI
@@ -179,6 +170,7 @@ public class GameScene implements Screen {
     /**
      * Whether the level has started
      */
+    private boolean handbookPopupsOn;
     private boolean start;
     /**
      * Whether the level has ended
@@ -205,17 +197,15 @@ public class GameScene implements Screen {
         audio = game.audio;
         state.setAudio(audio);
 
+        handbook = new HandbookPopUp(game, this);
+
+        start = false;
         resize(1280, 720);
         reset();
 
         //Backgrounds
-        dim = assets.getEntry("dim", Texture.class);
         backgroundTexture = assets.getEntry("gameBackground", Texture.class);
         paddingBackgroundTexture = assets.getEntry("chefBackground", Texture.class);
-        pauseBackground = assets.getEntry("pauseBackground", Texture.class);
-        win = assets.getEntry("win", Texture.class);
-        mouseLose = assets.getEntry("ratLose", Texture.class);
-        chopsticksLose = assets.getEntry("chopsticksLose", Texture.class);
 
         //UI
         font = assets.getEntry("lpcBig", BitmapFont.class);
@@ -252,84 +242,26 @@ public class GameScene implements Screen {
             levelMusic.append(name.getText());
         }
 
+        //Pop-ups
+        pause = new PausePopUp(game, this);
+        win = new WinPopUp(game, this);
+        lose = new LosePopUp(game, this);
+        handbook = new HandbookPopUp(game, this);
+
+        handbookOrder = new HandbookOrder();
+
         settingsScreen = game.settings;
 
-        createButtons(assets);
         unlockHandbook();
     }
 
-    private void createButtons(AssetDirectory assets) {
-        //Paused game buttons
-        int numRowButtons = 2;
-        int numColButtons = 3;
-        float buttonWidth = 250;
-        float buttonHeight = 70;
-        float paddingX = 50;
-        float paddingY = 100;
-        float gapX =
-            ((pauseBackground.getWidth() - paddingX * 2) - (numRowButtons * buttonWidth)) / (
-                numRowButtons - 1);
-        float gapY =
-            ((pauseBackground.getHeight() - paddingY * 2) - (numColButtons * buttonHeight)) / (
-                numColButtons - 1);
-        float spanX = (buttonWidth * numRowButtons) + (gapX * (numRowButtons - 1));
-        float spanY = (buttonHeight * numColButtons) + (gapY * (numColButtons - 1));
-
-        float x = (screenWidth / 2f - spanX / 2f) + paddingX;
-        float y = (screenHeight / 2f - spanY / 2f) - paddingY / 4;
-
-        Texture button = assets.getEntry("button", Texture.class);
-        Texture buttonHover = assets.getEntry("buttonHover", Texture.class);
-
-        exitButton = new Button(x, y, button, buttonHover,
-            0,
-            buttonWidth, buttonHeight, "Exit");
-        resetButton = new Button(x, exitButton.posY + (gapY + buttonHeight), button, buttonHover,
-            0, buttonWidth, buttonHeight,
-            "Restart");
-        resumeButton = new Button(x, resetButton.posY + (gapY + buttonHeight), button, buttonHover,
-            0, buttonWidth, buttonHeight,
-            "Resume");
-
-        x = (screenWidth / 2f + spanX / 2f) - paddingX - buttonWidth;
-
-        settingsButton = new Button(x, exitButton.posY, button,
-            buttonHover, 0, buttonWidth, buttonHeight,
-            "Settings");
-        handbookButtonPause = new Button(x, resetButton.posY,
-            button,
-            buttonHover, 3, buttonWidth,
-            buttonHeight,
-            "Handbook");
-        levelsButton = new Button(x,
-            resumeButton.posY, button,
-            buttonHover,
-            1, buttonWidth, buttonHeight,
-            "Levels");
-
-        // Win/Lose buttons
-        buttonWidth = 78;
-        buttonHeight = 78;
-
-        button = assets.getEntry("replay", Texture.class);
-        buttonHover = assets.getEntry("replayHover", Texture.class);
-        replayButton = new Button(0, 0, button, buttonHover, 0, buttonWidth, buttonHeight);
-
-        button = assets.getEntry("home", Texture.class);
-        buttonHover = assets.getEntry("homeHover", Texture.class);
-        homeButton = new Button(0, 0, button, buttonHover, 1, buttonWidth, buttonHeight);
-
-        button = assets.getEntry("arrow", Texture.class);
-        buttonHover = assets.getEntry("arrowHover", Texture.class);
-        nextButton = new Button(0, 0, button, buttonHover, 2, buttonWidth, buttonHeight);
-
-        button = assets.getEntry("handbook", Texture.class);
-        buttonHover = assets.getEntry("handbookHover", Texture.class);
-        handbookButton = new Button(0, 0, button, buttonHover, 3, buttonWidth, buttonHeight);
-    }
-
-    private void reset() {
+    public void reset() {
         state.reset();
+        if (!start) {
+            handbookPopupsOn = true;
+            handbook.setPopUpsOn();
+        }
+        handbook.resetCurPopUp();
         start = false;
         paused = false;
         winGame = false;
@@ -454,17 +386,32 @@ public class GameScene implements Screen {
         delta = Math.min(delta, 0.25f);
         state.getWorld().step(delta, 6, 2);
 
-        resumeButton.update(delta);
-        resetButton.update(delta);
-        levelsButton.update(delta);
-        settingsButton.update(delta);
-        handbookButtonPause.update(delta);
-        exitButton.update(delta);
-        homeButton.update(delta);
-        nextButton.update(delta);
-        replayButton.update(delta);
-        handbookButton.update(delta);
+        pause.update(paused);
+        if (loseGame) {
+            for (ObstacleSprite o : dead) {
+                String type = o.getName();
+                if (type.equals("player")) {
+                    currStage = lose.getStage();
+                    Gdx.input.setInputProcessor(currStage);
+                    lose.update(((Companion) o).shouldRemove());
+                }
+            }
+        } else if (winGame) {
+            for (ObstacleSprite o : dead) {
+                String type = o.getName();
+                if (type.equals("mouse") || type.equals("chef") || type.equals("chopsticks")) {
+                    currStage = win.getStage();
+                    Gdx.input.setInputProcessor(currStage);
+                    win.update(((Boss) o).shouldRemove());
+                }
+            }
+        }
 
+        //System.out.println(handbookPopupsOn);
+        if (handbookPopupsOn && !paused) {
+            handbook.update();
+        }
+        handbookPopupsOn = handbook.arePopUpsOn();
         setStart();
         //System.out.println("Update" + bosses);
         setWin();
@@ -479,29 +426,15 @@ public class GameScene implements Screen {
             for (Boss b : bosses) {
                 b.update(delta, InputController.CONTROL_NO_ACTION);
             }
-        }
-
-        if (winGame || loseGame && !settingsOn) {
-            if (replayButton.isPressed()) {
-                audio.play("click");
-                reset();
-            } else if (homeButton.isPressed()) {
-                audio.play("click");
-                dispose();
-                audio.stopMusic();
-                game.exitScreen(this, homeButton.getExitCode());
-            } else if (nextButton.isPressed() && winGame
-                && level != 10) { //TODO: total level variable
-                audio.play("click");
-                dispose();
-                audio.stopMusic();
-                game.exitScreen(this, nextButton.getExitCode());
-            } else if (handbookButton.isPressed()) {
-                audio.play("click");
-                //Do not dispose to so can return to level
-                audio.stopMusic();
-                game.exitScreen(this, handbookButton.getExitCode());
+            pause.update(true);
+            settingsScreen.update(delta);
+            boolean temp = settingsScreen.isOn();
+            if (settingsOn) {
+                if (!temp) {
+                    Gdx.input.setInputProcessor(currStage);
+                }
             }
+            settingsOn = temp;
         }
 
         if (Gdx.input.isKeyPressed(Keys.D)) {
@@ -584,39 +517,10 @@ public class GameScene implements Screen {
             state.getCollisionController().postUpdate();
             if (Gdx.input.isKeyPressed(Keys.ESCAPE) && !paused) {
                 paused = true;
-            }
-            if (paused && !settingsOn) {
-                if (resumeButton.isPressed()) {
-                    audio.play("click");
-                    paused = false;
-                } else if (resetButton.isPressed()) {
-                    audio.play("click");
-                    reset();
-                    paused = false;
-                } else if (exitButton.isPressed()) {
-                    audio.play("click");
-                    audio.stopMusic();
-                    dispose();
-                    Gdx.app.exit();
-                } else if (levelsButton.isPressed()) {
-                    audio.play("click");
-                    dispose();
-                    game.exitScreen(this, levelsButton.getExitCode());
-                } else if (handbookButtonPause.isPressed()) {
-                    audio.play("click");
-                    //Do not dispose so can return to level
-                    game.exitScreen(this, handbookButtonPause.getExitCode());
-                } else if (settingsButton.isPressed()) {
-                    audio.play("click");
-                    settingsOn = true;
-                }
-
-            }
-            if (settingsOn && Gdx.input.isKeyPressed(Keys.ESCAPE)) {
-                settingsOn = false;
+                currStage = pause.getStage();
+                Gdx.input.setInputProcessor(currStage);
             }
         }
-        settingsOn = settingsScreen.update(delta, settingsOn);
         time += delta;
         //System.out.println(time);
     }
@@ -626,13 +530,14 @@ public class GameScene implements Screen {
         ScreenUtils.clear(Color.WHITE);
 
         // Draw background first
-        game.batch.setProjectionMatrix(worldCamera.combined);
-        game.batch.begin(worldCamera);
 
         float backgroundWidth = backgroundTexture.getWidth() * (state.levelWidth / screenWidth);
         float backgroundHeight = backgroundTexture.getHeight() * (state.levelHeight / screenHeight);
         float backgroundX = (state.levelWidth - backgroundWidth) / 2f;
         float backgroundY = (state.levelHeight - backgroundHeight) / 2f;
+
+        game.batch.begin();
+
         game.batch.draw(backgroundTexture, backgroundX, backgroundY, backgroundWidth,
             backgroundHeight);
 
@@ -773,7 +678,7 @@ public class GameScene implements Screen {
                 String type = o.getName();
                 if (type.equals("player")) {
                     if (((Companion) o).shouldRemove()) {
-                        drawLose();
+                        lose.draw();
                     }
                 }
             }
@@ -782,95 +687,33 @@ public class GameScene implements Screen {
                 String type = o.getName();
                 if (type.equals("mouse") || type.equals("chef") || type.equals("chopsticks")) {
                     if (((Boss) o).shouldRemove()) {
-                        drawWin();
+                        win.draw();
                     }
                 }
             }
         }
 
+        if (handbookPopupsOn) {
+            handbook.draw();
+        }
+
         if (paused && !settingsOn) {
-            drawPause();
+            pause.draw();
         }
-        
-        if (settingsOn) {
-            game.batch.draw(dim, 0, 0);
-            settingsScreen.draw(1);
-        }
+
         game.batch.end();
-    }
-
-    private void drawLose() {
-        float loseX = screenWidth / 2f - mouseLose.getWidth() / 2f;
-        float loseY = screenHeight / 2f - mouseLose.getHeight() / 2f;
-        game.batch.draw(dim, 0, 0);
-        if (bosses.get(0).getName().equals("mouse")) {
-            game.batch.draw(mouseLose, loseX, loseY);
-        } else if (bosses.get(0).getName().equals("chopsticks")) {
-            game.batch.draw(chopsticksLose, loseX, loseY);
-        } else if (bosses.get(0).getName().equals("chef")) {
-            game.batch.draw(chopsticksLose, loseX, loseY); //TODO: change texture
+        if (settingsOn) {
+            settingsScreen.draw();
         }
-        float height = loseY + replayButton.height / 2f;
-        float gap = 40;
-        float span = (replayButton.width * 3) + (gap * 2);
-
-        replayButton.setPosition(loseX + (mouseLose.getWidth() / 2f - span / 2), height);
-        handbookButton.setPosition(replayButton.posX + replayButton.width + gap, height);
-        homeButton.setPosition(handbookButton.posX + handbookButton.width + gap, height);
-
-        replayButton.draw(game.batch, true);
-        handbookButton.draw(game.batch, true);
-        homeButton.draw(game.batch, true);
-
-    }
-
-    private void drawWin() {
-        float winX = screenWidth / 2f - win.getWidth() / 2f;
-        float winY = screenHeight / 2f - win.getHeight() / 2f;
-        game.batch.draw(dim, 0, 0);
-        game.batch.draw(win, winX, winY);
-        float height = winY + replayButton.height / 2f;
-        float gap = 40;
-        float span;
-        if (level != 10) { //TODO: replace with total levels
-            span = (replayButton.width * 4) + (gap * 3);
-            replayButton.setPosition(winX + (win.getWidth() / 2f - span / 2), height);
-            homeButton.setPosition(replayButton.posX + replayButton.width + gap, height);
-            handbookButton.setPosition(homeButton.posX + homeButton.width + gap, height);
-            nextButton.setPosition(handbookButton.posX + handbookButton.width + gap, height);
-            nextButton.draw(game.batch, true);
-        } else { //Last level no next button
-            span = (replayButton.width * 3) + (gap * 2);
-            replayButton.setPosition(winX + (win.getWidth() / 2f - span / 2), height);
-            homeButton.setPosition(replayButton.posX + replayButton.width + gap, height);
-            handbookButton.setPosition(homeButton.posX + homeButton.width + gap, height);
-        }
-        replayButton.draw(game.batch, true);
-        homeButton.draw(game.batch, true);
-        handbookButton.draw(game.batch, true);
     }
 
     private void setStart() {
         if ((Gdx.input.isKeyPressed(Keys.UP) || Gdx.input.isKeyPressed(Keys.DOWN) ||
-            Gdx.input.isKeyPressed(Keys.LEFT) || Gdx.input.isKeyPressed(Keys.RIGHT)) && !start) {
+            Gdx.input.isKeyPressed(Keys.LEFT) || Gdx.input.isKeyPressed(Keys.RIGHT)) && !start
+            && !handbookPopupsOn) {
             start = true;
             audio.play(levelMusic.toString());
         }
-    }
-
-    private void drawPause() {
-        font.setColor(fontColor);
-        game.batch.setBlendMode(BlendMode.ALPHA_BLEND);
-        game.batch.draw(dim, 0, 0);
-        game.batch.draw(pauseBackground, screenWidth / 2f - pauseBackground.getWidth() / 2f,
-            screenHeight / 2f - pauseBackground.getHeight() / 2f);
-        resumeButton.draw(game.batch, true);
-        resetButton.draw(game.batch, true);
-        levelsButton.draw(game.batch, true);
-        handbookButtonPause.draw(game.batch, true);
-        settingsButton.draw(game.batch, true);
-        exitButton.draw(game.batch, true);
-        font.setColor(Color.WHITE);
     }
 
     private void drawHPBars() {
@@ -943,7 +786,7 @@ public class GameScene implements Screen {
             if (!game.save.getBoolean(s)) {
                 game.save.putBoolean(s, true);
                 int newUnlock = game.save.getInteger("unlockedLevels") + 1;
-                if (newUnlock <= 10) { //TODO: set actual total levels
+                if (newUnlock <= game.getTotalLevels()) {
                     game.save.putInteger("unlockedLevels", newUnlock);
                 }
             }
@@ -993,6 +836,7 @@ public class GameScene implements Screen {
         this.screenHeight = height;
         if (worldCamera == null) {
             worldCamera = new OrthographicCamera(width, height);
+            state.worldCamera = worldCamera;
             worldCamera.position.set(width / 2f, height / 2f, 0);
             worldCamera.update();
         } else {
@@ -1117,22 +961,63 @@ public class GameScene implements Screen {
 
     private void unlockHandbook() {
         //TODO: Manually decide which level unlocks which thing
-        String name = "";
-        if (level == 1) {
-            name = "durian";
+        String companion = handbookOrder.companion(level);
+        String minion = handbookOrder.minion(level);
+        String boss = handbookOrder.boss(level);
 
-        } else if (level == 2) {
-            name = "strawberry";
-        }
-
-        if (!name.isEmpty()) {
-            boolean alreadyUnlocked = game.save.getBoolean(name);
+        if (!companion.isEmpty()) {
+            boolean alreadyUnlocked = game.save.getBoolean(companion);
             if (!alreadyUnlocked) {
-                int newUnlock = game.save.getInteger("unlockedHandbook") + 1;
-                game.save.putInteger("unlockedHandbook", newUnlock);
-                game.save.putBoolean(name, true);
+                int newUnlock = game.save.getInteger("unlockedCompanions") + 1;
+                game.save.putInteger("unlockedCompanions", newUnlock);
+                game.save.putBoolean(companion, true);
             }
         }
+        if (!minion.isEmpty()) {
+            boolean alreadyUnlocked = game.save.getBoolean(minion);
+            if (!alreadyUnlocked) {
+                int newUnlock = game.save.getInteger("unlockedMinions") + 1;
+                game.save.putInteger("unlockedMinions", newUnlock);
+                game.save.putBoolean(minion, true);
+            }
+        }
+        if (!boss.isEmpty()) {
+            boolean alreadyUnlocked = game.save.getBoolean(boss);
+            if (!alreadyUnlocked) {
+                int newUnlock = game.save.getInteger("unlockedBosses") + 1;
+                game.save.putInteger("unlockedBosses", newUnlock);
+                game.save.putBoolean(boss, true);
+            }
+        }
+    }
+
+    public boolean getPaused() {
+        return paused;
+    }
+
+    public boolean getSettingsOn() {
+        return settingsOn;
+    }
+
+    public void setPaused(boolean b) {
+        paused = b;
+    }
+
+    public void setSettingsOn(boolean b) {
+        settingsOn = b;
+        settingsScreen.setOn(settingsOn);
+    }
+
+    public Stage getStage() {
+        return currStage;
+    }
+
+    private void setStage() {
+        Gdx.input.setInputProcessor(currStage);
+    }
+
+    public String getBossNames() {
+        return levelMusic.toString();
     }
 
 }

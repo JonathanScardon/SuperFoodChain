@@ -4,6 +4,7 @@
 
 package edu.cornell.cis3152.team8;
 
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
@@ -31,6 +32,7 @@ import edu.cornell.gdiac.physics2.ObstacleSprite;
  */
 
 public class GameState {
+
     private Array<ObstacleSprite> dead;
     /**
      * The party of companions controlled by the player
@@ -97,6 +99,7 @@ public class GameState {
     protected int numBlueRaspberries;
     protected int numDurians;
     private GameAudio audio;
+    public OrthographicCamera worldCamera;
 
 
     /**
@@ -265,8 +268,10 @@ public class GameState {
      */
     public boolean inBounds(ObstacleSprite o) {
         //TODO: might have to consider radius but idk how to get it from obstacle
-        return o.getObstacle().getX() > 0.25 && o.getObstacle().getX() < levelWidth / GameScene.PHYSICS_UNITS - 0.25
-            && o.getObstacle().getY() > 0.25 && o.getObstacle().getY() < levelHeight / GameScene.PHYSICS_UNITS - 0.25;
+        return o.getObstacle().getX() > 0.25
+            && o.getObstacle().getX() < levelWidth / GameScene.PHYSICS_UNITS - 0.25
+            && o.getObstacle().getY() > 0.25
+            && o.getObstacle().getY() < levelHeight / GameScene.PHYSICS_UNITS - 0.25;
     }
 
     /**

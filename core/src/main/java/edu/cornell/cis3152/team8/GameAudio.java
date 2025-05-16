@@ -87,8 +87,8 @@ public class GameAudio {
             }
         });
 
-        sfxVolume = 1.0f;
-        musicVolume = 1.0f;
+        sfxVolume = 1f;
+        musicVolume = 1f;
         currSfx = 0;
         currMusic = 0;
 

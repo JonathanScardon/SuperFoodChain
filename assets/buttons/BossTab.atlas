@@ -1,0 +1,20 @@
+
+BossTab.png
+size: 128, 128
+format: RGBA8888
+filter: Linear, Linear
+repeat: none
+Group_27 5
+  rotate: false
+  xy: 1, 53
+  size: 80, 50
+  orig: 80, 50
+  offset: 0, 0
+  index: -1
+Group_27 6
+  rotate: false
+  xy: 1, 1
+  size: 80, 50
+  orig: 80, 50
+  offset: 0, 0
+  index: -1

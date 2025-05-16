@@ -1,0 +1,20 @@
+
+Left.png
+size: 512, 512
+format: RGBA8888
+filter: Linear, Linear
+repeat: none
+1 copy
+  rotate: false
+  xy: 1, 185
+  size: 165, 182
+  orig: 165, 182
+  offset: 0, 0
+  index: -1
+2 copy
+  rotate: false
+  xy: 1, 1
+  size: 165, 182
+  orig: 165, 182
+  offset: 0, 0
+  index: -1
