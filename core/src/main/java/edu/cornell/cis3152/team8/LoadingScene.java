@@ -169,6 +169,10 @@ public class LoadingScene implements Screen {
     private final float animationSpeed;
     private float posX;
 
+    private final SpriteSheet loading;
+    private float animationFrameL;
+    private final float animationSpeedL;
+
     /**
      * Creates a LoadingMode with the default budget, size and position.
      *
@@ -208,6 +212,10 @@ public class LoadingScene implements Screen {
         animationSpeed = constants.getFloat("animation speed");
         posX = -companions.getRegionWidth();
 
+        loading = internal.getEntry("loading....animation", SpriteSheet.class);
+        animationFrameL = 0;
+        animationSpeedL = constants.getFloat("animation speed L");
+
         // No progress so far
         progress = 0;
 
@@ -244,6 +252,16 @@ public class LoadingScene implements Screen {
                 animationFrame -= companions.getSize();
             }
         }
+
+        animationFrameL += animationSpeedL;
+        if ((loading != null)) {
+            animationFrameL += animationSpeedL;
+            if (animationFrameL >= loading.getSize()) {
+                animationFrameL -= loading.getSize();
+            }
+        }
+        loading.setFrame((int) animationFrame);
+
         posX += 10;
         if (posX > 1280 && companions != null) {
             posX = -companions.getRegionWidth();
@@ -276,6 +294,8 @@ public class LoadingScene implements Screen {
         Texture texture = internal.getEntry("splash", Texture.class);
 
         batch.draw(texture, 0, 0, width, height);
+        batch.draw(loading, width / 2f - loading.getRegionWidth() / 2f,
+            3 * height / 4f - loading.getRegionHeight() / 2f);
         drawHop();
         if (progress < 1.0f) {
             drawProgress();
