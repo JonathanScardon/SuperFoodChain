@@ -593,6 +593,7 @@ public class GameScene implements Screen {
         game.shape.end();
 
         // Draw game objects
+
         game.batch.begin(worldCamera);
 
         // Warning symbols
@@ -678,8 +679,11 @@ public class GameScene implements Screen {
 
         // draw press to start controls reminder
         if (!start) {
-            SpriteBatch.computeTransform(transform, pressToStart.getWidth() / 2.0f,pressToStart.getHeight() / 2.0f,
-                player.getPlayerHead().getObstacle().getX() * PHYSICS_UNITS, player.getPlayerHead().getObstacle().getY() * PHYSICS_UNITS - pressToStart.getHeight(),
+            SpriteBatch.computeTransform(transform, pressToStart.getWidth() / 2.0f,
+                pressToStart.getHeight() / 2.0f,
+                player.getPlayerHead().getObstacle().getX() * PHYSICS_UNITS,
+                player.getPlayerHead().getObstacle().getY() * PHYSICS_UNITS
+                    - pressToStart.getHeight(),
                 0.0f, 1f, 1f);
             game.batch.draw(pressToStart, transform);
         }
@@ -722,7 +726,8 @@ public class GameScene implements Screen {
         if ((Gdx.input.isKeyPressed(Keys.UP) || Gdx.input.isKeyPressed(Keys.DOWN) ||
             Gdx.input.isKeyPressed(Keys.LEFT) || Gdx.input.isKeyPressed(Keys.RIGHT) ||
             Gdx.input.isKeyPressed(Keys.W) || Gdx.input.isKeyPressed(Keys.S) ||
-            Gdx.input.isKeyPressed(Keys.A) || Gdx.input.isKeyPressed(Keys.D)) && !start && !handbookPopupsOn) {
+            Gdx.input.isKeyPressed(Keys.A) || Gdx.input.isKeyPressed(Keys.D)) && !start
+            && !handbookPopupsOn) {
             start = true;
             audio.play(levelMusic.toString());
         }

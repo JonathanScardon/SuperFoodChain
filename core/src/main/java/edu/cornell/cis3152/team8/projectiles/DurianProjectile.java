@@ -12,6 +12,7 @@ import edu.cornell.gdiac.graphics.SpriteBatch;
 import edu.cornell.gdiac.graphics.SpriteSheet;
 
 public class DurianProjectile extends Projectile {
+
     private static float MAX_LIFE;
     private static int ATTACK;
     private static Texture texture;
@@ -48,7 +49,8 @@ public class DurianProjectile extends Projectile {
         if (obstacle.isActive()) {
             SpriteBatch.computeTransform(transform, sprite.getRegionWidth() / 2.0f,
                 sprite.getRegionHeight() / 2.0f,
-                obstacle.getX() * GameScene.PHYSICS_UNITS, obstacle.getY() * GameScene.PHYSICS_UNITS, angle + 90, 0.15f,
+                obstacle.getX() * GameScene.PHYSICS_UNITS,
+                obstacle.getY() * GameScene.PHYSICS_UNITS, angle - 90, 0.15f,
                 0.15f);
             batch.draw(texture, transform);
         }
