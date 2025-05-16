@@ -77,6 +77,8 @@ public class GameScene implements Screen {
     /**
      * UI
      */
+    private final Texture pressToStart;
+
     //Bosses
     private final Array<TextLayout> bossNames;
     private final Array<Float> bossStartHealths;
@@ -223,6 +225,7 @@ public class GameScene implements Screen {
         ratIcon = assets.getEntry("ratIcon", Texture.class);
         chefIcon = assets.getEntry("chefIcon", Texture.class);
         chopsticksIcon = assets.getEntry("chopsticksIcon", Texture.class);
+        pressToStart = assets.getEntry("pressToStartUI", Texture.class);
         //TODO: Change colors
         bossTint1 = new Color(0.8f, 0.8f, 1, 1f);
         bossTint2 = new Color(1, 0.8f, 0.8f, 1f);
@@ -413,7 +416,6 @@ public class GameScene implements Screen {
         }
         handbookPopupsOn = handbook.arePopUpsOn();
         setStart();
-        //System.out.println("Update" + bosses);
         setWin();
         setLose();
 
@@ -437,8 +439,8 @@ public class GameScene implements Screen {
             settingsOn = temp;
         }
 
-        if (Gdx.input.isKeyPressed(Keys.D)) {
-            debug = true;
+        if (Gdx.input.isKeyJustPressed(Keys.TAB)) {
+            debug = !debug;
         }
 
         if (start && !paused && !winGame && player.isAlive()) {
@@ -659,6 +661,7 @@ public class GameScene implements Screen {
         // Draw UI elements that follow the camera
         game.batch.setProjectionMatrix(uiCamera.combined);
         game.batch.begin(uiCamera);
+
         // Coin Counter
         float numScale = 0.7f;
         TextLayout coinCount = new TextLayout("" + player.getCoins(), font);
@@ -672,6 +675,14 @@ public class GameScene implements Screen {
         drawHPBars();
 
         font.setColor(Color.WHITE);
+
+        // draw press to start controls reminder
+        if (!start) {
+            SpriteBatch.computeTransform(transform, pressToStart.getWidth() / 2.0f,pressToStart.getHeight() / 2.0f,
+                player.getPlayerHead().getObstacle().getX() * PHYSICS_UNITS, player.getPlayerHead().getObstacle().getY() * PHYSICS_UNITS - pressToStart.getHeight(),
+                0.0f, 1f, 1f);
+            game.batch.draw(pressToStart, transform);
+        }
 
         if (loseGame) {
             for (ObstacleSprite o : dead) {
@@ -709,8 +720,9 @@ public class GameScene implements Screen {
 
     private void setStart() {
         if ((Gdx.input.isKeyPressed(Keys.UP) || Gdx.input.isKeyPressed(Keys.DOWN) ||
-            Gdx.input.isKeyPressed(Keys.LEFT) || Gdx.input.isKeyPressed(Keys.RIGHT)) && !start
-            && !handbookPopupsOn) {
+            Gdx.input.isKeyPressed(Keys.LEFT) || Gdx.input.isKeyPressed(Keys.RIGHT) ||
+            Gdx.input.isKeyPressed(Keys.W) || Gdx.input.isKeyPressed(Keys.S) ||
+            Gdx.input.isKeyPressed(Keys.A) || Gdx.input.isKeyPressed(Keys.D)) && !start && !handbookPopupsOn) {
             start = true;
             audio.play(levelMusic.toString());
         }

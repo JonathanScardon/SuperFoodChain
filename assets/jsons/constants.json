@@ -16,7 +16,7 @@
   },
   "strawberry": {
     "cost": 2,
-    "cooldown": 4,
+    "cooldown": 3,
     "animationSpeed": 0.25,
     "numProjectiles": 3,
     "delayPerShot": 100,
@@ -26,7 +26,7 @@
     "cost": 1,
     "cooldown": 7,
     "animationSpeed": 0.25,
-    "cooldownReductionRate": 6.0
+    "cooldownReductionRate": 3.0
   },
   "blueRaspberry": {
     "cost": 1,

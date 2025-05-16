@@ -29,6 +29,7 @@ public class SnatchAttackPattern extends BossAttackPattern {
 
         this.warnPattern = new RectWarnPattern(0, 0, boss.getWidth() * GameScene.PHYSICS_UNITS, boss.getHeight() * GameScene.PHYSICS_UNITS);
         this.warnPattern.setSpriteSheet(warnSprite);
+        this.warnPattern.setAnimationSpeedWithDuration(warnDuration);
         boss.warnPatterns.add(this.warnPattern);
 
         this.state = AttackState.INACTIVE;
@@ -48,7 +49,7 @@ public class SnatchAttackPattern extends BossAttackPattern {
         warnTime = warnDuration;
         attackTime = attackDuration;
 
-        warnPattern.active = true;
+        warnPattern.setActive(true);
     }
 
     public void attack() {
@@ -61,7 +62,7 @@ public class SnatchAttackPattern extends BossAttackPattern {
 
         this.spawnMinions();
 
-        warnPattern.active = false;
+        warnPattern.setActive(false);
     }
 
     @Override

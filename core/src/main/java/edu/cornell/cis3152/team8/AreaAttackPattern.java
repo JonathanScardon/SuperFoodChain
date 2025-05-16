@@ -28,6 +28,7 @@ public class AreaAttackPattern extends BossAttackPattern {
 
         this.warnPattern = new CircleWarnPattern(x, y, r * GameScene.PHYSICS_UNITS);
         this.warnPattern.setSpriteSheet(warnSprite);
+        this.warnPattern.setAnimationSpeedWithDuration(warnDuration);
         this.boss.warnPatterns.add(this.warnPattern);
     }
 
@@ -36,14 +37,14 @@ public class AreaAttackPattern extends BossAttackPattern {
         state = AttackState.WARN;
         boss.setAnimation("area", 0.05f, true);
         warnTime = warnDuration;
-        warnPattern.active = true;
+        warnPattern.setActive(true);
     }
 
     public void attack() {
         state = AttackState.ATTACK;
         attackTime = attackDuration;
         this.spawnMinions();
-        warnPattern.active = false;
+        warnPattern.setActive(false);
 
         BossAreaProjectile projectile = ProjectilePools.bossAreaPool.obtain();
         projectile.setFixture(attackRadius);

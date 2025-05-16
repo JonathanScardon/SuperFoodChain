@@ -52,9 +52,10 @@ public class SpinAttackPattern extends BossAttackPattern {
         origPos = new Vector3(camera.position);
         intensity = 5;
 
-        warnPattern = new SpinWarnPattern(0, 0, Math.max(boss.getWidth() * GameScene.PHYSICS_UNITS,
+        this.warnPattern = new SpinWarnPattern(0, 0, Math.max(boss.getWidth() * GameScene.PHYSICS_UNITS,
             boss.getHeight() * GameScene.PHYSICS_UNITS));
-        warnPattern.setSpriteSheet(warnSprite);
+        this.warnPattern.setSpriteSheet(warnSprite);
+        this.warnPattern.setAnimationSpeedWithDuration(warnDuration);
         this.boss.warnPatterns.add(warnPattern);
 
         this.warnSprite = warnSprite;
@@ -82,9 +83,9 @@ public class SpinAttackPattern extends BossAttackPattern {
 
             controller.setAction(CONTROL_NO_ACTION);
             preSpin.start();
-            warnPattern.active = true;
+            warnPattern.setActive(true);
         } else {
-            warnPattern.active = false;
+            warnPattern.setActive(false);
         }
 
         setControlCode();
@@ -99,11 +100,9 @@ public class SpinAttackPattern extends BossAttackPattern {
             controller.setAction(controlCode);
             origMoveSpeed = boss.moveSpeed;
             boss.moveSpeed = moveSpeed;
-            warnPattern.active = false;
             this.spawnMinions();
-        } else {
-            warnPattern.active = false;
         }
+        warnPattern.setActive(false);
     }
 
     @Override
@@ -117,9 +116,9 @@ public class SpinAttackPattern extends BossAttackPattern {
                         if (!gamestate.getBosses().get(0).getObstacle().getPosition()
                             .equals(gamestate.getBosses().get(1).getObstacle().getPosition())) {
                             preSpin.update(delta);
-                            warnPattern.active = false;
+                            warnPattern.setActive(false);
                         } else {
-                            warnPattern.active = true;
+                            warnPattern.setActive(true);
                             boss.setState("spinning");
                             boss.setAnimation("spin", .5f);
                             boss.getObstacle().setAngle(boss.getObstacle().getAngle() + 4.5f);

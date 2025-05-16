@@ -37,6 +37,7 @@
     "coinCounter": "images/coin-counter.png",
     "costUI": "images/cost-ui.png",
     "costUIGray": "images/cost-ui-gray.png",
+    "pressToStartUI": "images/UI_Press_Key_To_Start.png",
     "ratIcon": "images/icon-rat.png",
     "chefIcon": "images/icon-chef.png",
     "chopsticksIcon": "images/icon-chopsticks.png",
@@ -360,6 +361,16 @@
         }
       }
     },
+    "burnerChef": {
+      "file": "images/chef_burner_large.png",
+      "sprites": {
+        "animation": {
+          "rows": 1,
+          "cols": 1,
+          "size": 1
+        }
+      }
+    },
     "deathChef": {
       "file": "images/ChefDeath.png",
       "sprites": {
@@ -367,46 +378,6 @@
           "rows": 1,
           "cols": 11,
           "size": 11
-        }
-      }
-    },
-    "dashWarnVertical": {
-      "file": "images/DashWarnVertical.png",
-      "sprites": {
-        "animation": {
-          "rows": 1,
-          "cols": 2,
-          "size": 2
-        }
-      }
-    },
-    "dashWarnHorizontal": {
-      "file": "images/DashWarnHorizontal.png",
-      "sprites": {
-        "animation": {
-          "rows": 2,
-          "cols": 1,
-          "size": 2
-        }
-      }
-    },
-    "spinWarn": {
-      "file": "images/SpinWarn.png",
-      "sprites": {
-        "animation": {
-          "rows": 1,
-          "cols": 2,
-          "size": 2
-        }
-      }
-    },
-    "idleWarn": {
-      "file": "images/idleWarn.png",
-      "sprites": {
-        "animation": {
-          "rows": 1,
-          "cols": 2,
-          "size": 2
         }
       }
     },
