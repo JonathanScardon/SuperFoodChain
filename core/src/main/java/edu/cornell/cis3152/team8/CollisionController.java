@@ -141,7 +141,7 @@ public class CollisionController implements ContactListener {
 //                        bossHit(b2);
 //                    }
                 }
-                audio.play("mouseDeath");
+                //audio.play("mouseHit");
                 audio.play("companionDeath");
             }
 
