@@ -35,6 +35,7 @@ public class SpinAttackPattern extends BossAttackPattern {
     private final OrthographicCamera camera;
     private final Vector3 origPos;
     private int intensity;
+    private float shakeWait;
 
     public SpinAttackPattern(BossController controller, float warnDuration, float moveSpeed,
         float levelWidth, float levelHeight,
@@ -51,9 +52,11 @@ public class SpinAttackPattern extends BossAttackPattern {
         this.camera = camera;
         origPos = new Vector3(camera.position);
         intensity = 5;
+        shakeWait = 0.02f;
 
-        this.warnPattern = new SpinWarnPattern(0, 0, Math.max(boss.getWidth() * GameScene.PHYSICS_UNITS,
-            boss.getHeight() * GameScene.PHYSICS_UNITS));
+        this.warnPattern = new SpinWarnPattern(0, 0,
+            Math.max(boss.getWidth() * GameScene.PHYSICS_UNITS,
+                boss.getHeight() * GameScene.PHYSICS_UNITS));
         this.warnPattern.setSpriteSheet(warnSprite);
         this.warnPattern.setAnimationSpeedWithDuration(warnDuration);
         this.boss.warnPatterns.add(warnPattern);
@@ -138,7 +141,12 @@ public class SpinAttackPattern extends BossAttackPattern {
                     }
                 }
                 case ATTACK -> {
-                    //shake();
+                    if (shakeWait <= 0) {
+                        shake();
+                        shakeWait = 0.02f;
+                    } else {
+                        shakeWait -= delta;
+                    }
                     boss.getObstacle().setAngle(boss.getObstacle().getAngle() + 9);
                     boss.setAnimationSpeed(0.15f);
                     if (atWall()) {
