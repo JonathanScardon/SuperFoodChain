@@ -153,7 +153,13 @@ public class HandbookPopUp {
             setLockPage();
             buttons = getButtons();
             switch (tab) {
-                case "Companions" -> animationSpeed = 0.1f;
+                case "Companions" -> {
+                    if (gameScene.getLevel() == 5 || gameScene.getLevel() == 6) {
+                        animationSpeed = 0.2f;
+                    } else {
+                        animationSpeed = 0.1f;
+                    }
+                }
                 case "Minions" -> animationSpeed = 0.15f;
                 case "Bosses" -> animationSpeed = 0.1f;
             }
