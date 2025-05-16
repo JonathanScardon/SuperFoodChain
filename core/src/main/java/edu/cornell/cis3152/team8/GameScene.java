@@ -223,8 +223,8 @@ public class GameScene implements Screen {
         chopsticksIcon = assets.getEntry("chopsticksIcon", Texture.class);
         pressToStart = assets.getEntry("pressToStartUI", Texture.class);
         //TODO: Change colors
-        bossTint1 = new Color(0.8f, 0.8f, 1, 1f);
-        bossTint2 = new Color(1, 0.8f, 0.8f, 1f);
+        bossTint1 = new Color(1f, 1f, 1, 1f);
+        bossTint2 = new Color(1f, 0.8f, 0.8f, 1f);
 
         coinCounter = assets.getEntry("coinCounter", Texture.class);
         cost = assets.getEntry("costUI", Texture.class);

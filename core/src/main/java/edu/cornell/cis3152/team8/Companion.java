@@ -348,11 +348,11 @@ public abstract class Companion extends ObstacleSprite {
             if (collected) {
                 sprite.setFrame((int) animationFrame);
             } else {
-                if (highlight) {
-                    sprite.setFrame(0);
-                } else {
-                    sprite.setFrame(1);
-                }
+                //if (highlight) {
+                sprite.setFrame(1);
+//                } else {
+//                    sprite.setFrame(1);
+//                }
             }
             batch.setColor(Color.WHITE);
         }
