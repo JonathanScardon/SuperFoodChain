@@ -538,7 +538,7 @@ public class GameScene implements Screen {
         float backgroundX = (state.levelWidth - backgroundWidth) / 2f;
         float backgroundY = (state.levelHeight - backgroundHeight) / 2f;
 
-        game.batch.begin();
+        game.batch.begin(worldCamera);
 
         game.batch.draw(backgroundTexture, backgroundX, backgroundY, backgroundWidth,
             backgroundHeight);
@@ -548,6 +548,20 @@ public class GameScene implements Screen {
             game.batch.draw(paddingBackgroundTexture, -paddingBackgroundTexture.getWidth(), 0);
             game.batch.draw(paddingBackgroundTexture, state.levelWidth, 0);
         }
+
+        game.batch.end();
+
+        // Draw warning sprite borders
+        game.shape.setProjectionMatrix(worldCamera.combined);
+        game.shape.begin(ShapeRenderer.ShapeType.Filled);
+
+        for (Boss b : bosses) {
+            b.drawWarningBorders(game.shape);
+        }
+
+        game.shape.end();
+
+        game.batch.begin(worldCamera);
 
         drawOrder(delta);
 
@@ -582,18 +596,7 @@ public class GameScene implements Screen {
         }
         game.batch.end();
 
-        // Draw warning sprite borders
-        game.shape.setProjectionMatrix(worldCamera.combined);
-        game.shape.begin(ShapeRenderer.ShapeType.Filled);
-
-        for (Boss b : bosses) {
-            b.drawWarningBorders(game.shape);
-        }
-
-        game.shape.end();
-
         // Draw game objects
-
         game.batch.begin(worldCamera);
 
         // Warning symbols
