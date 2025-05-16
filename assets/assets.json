@@ -242,12 +242,12 @@
       }
     },
     "idleMouse": {
-      "file": "images/Boss_Rat_IdleStatic.png",
+      "file": "images/Boss_Rat_Idle.png",
       "sprites": {
         "animation": {
           "rows": 1,
-          "cols": 1,
-          "size": 1
+          "cols": 4,
+          "size": 4
         }
       }
     },
@@ -362,12 +362,12 @@
       }
     },
     "burnerChef": {
-      "file": "images/chef_burner_large.png",
+      "file": "images/chefBurner.png",
       "sprites": {
         "animation": {
           "rows": 1,
-          "cols": 1,
-          "size": 1
+          "cols": 3,
+          "size": 3
         }
       }
     },
