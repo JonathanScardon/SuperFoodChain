@@ -1,6 +1,5 @@
 package edu.cornell.cis3152.team8;
 
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 
@@ -23,11 +22,11 @@ public class RectWarnPattern extends BossWarnPattern {
     }
 
     public void drawBorder(ShapeRenderer shape) {
-        if (!active) {
+        if (!this.isActive()) {
             return;
         }
 
-        shape.setColor(BossWarnPattern.lineColor);
+        shape.setColor(BossWarnPattern.LINE_COLOR);
 
         float strokeWidth = 4f;
         float hw = w / 2f;

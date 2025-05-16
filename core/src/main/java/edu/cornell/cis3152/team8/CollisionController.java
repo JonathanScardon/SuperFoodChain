@@ -132,14 +132,14 @@ public class CollisionController implements ContactListener {
 //                System.out.println("BOSS HIT");
                 if (c1 == BOSS_CATEGORY) {
                     removed.add(s2);
-                    if (b1.getUserData() instanceof Boss) {
-                        bossHit(b1);
-                    }
+//                    if (b1.getUserData() instanceof Boss) {
+//                        bossHit(b1);
+//                    }
                 } else {
                     removed.add(s1);
-                    if (b2.getUserData() instanceof Boss) {
-                        bossHit(b2);
-                    }
+//                    if (b2.getUserData() instanceof Boss) {
+//                        bossHit(b2);
+//                    }
                 }
                 audio.play("mouseDeath");
                 audio.play("companionDeath");

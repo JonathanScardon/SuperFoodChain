@@ -16,14 +16,14 @@ public class CircleWarnPattern extends BossWarnPattern {
     }
 
     public void drawBorder(ShapeRenderer shape) {
-        if (!active) {
+        if (!this.isActive()) {
             return;
         }
 
         int segments = 32;
         float strokeWidth = 4f;
 
-        shape.setColor(lineColor);
+        shape.setColor(LINE_COLOR);
         float angleStep = 360f / segments;
         float prevX = this.x * GameScene.PHYSICS_UNITS + radius;
         float prevY = this.y * GameScene.PHYSICS_UNITS;

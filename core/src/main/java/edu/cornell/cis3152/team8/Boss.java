@@ -187,9 +187,7 @@ public class Boss extends ObstacleSprite {
             obstacle.setLinearVelocity(velocity);
 
             for (BossWarnPattern warn : warnPatterns) {
-                if (warn.active) {
-                    warn.update(delta);
-                }
+                warn.update(delta);
             }
         } else {
             obstacle.setLinearVelocity(new Vector2());
