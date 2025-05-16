@@ -153,7 +153,7 @@ public class HandbookPopUp {
             setLockPage();
             buttons = getButtons();
             switch (tab) {
-                case "Companions" -> animationSpeed = 0.25f;
+                case "Companions" -> animationSpeed = 0.1f;
                 case "Minions" -> animationSpeed = 0.15f;
                 case "Bosses" -> animationSpeed = 0.1f;
             }

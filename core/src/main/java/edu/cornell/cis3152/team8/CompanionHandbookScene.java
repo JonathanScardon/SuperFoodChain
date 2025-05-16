@@ -182,7 +182,7 @@ public class CompanionHandbookScene implements Screen {
         stage.getActors().get(4).addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                animationSpeed = 0.25f;
+                animationSpeed = 0.1f;
                 currTab = 0;
                 currPage = 0;
             }
@@ -243,9 +243,9 @@ public class CompanionHandbookScene implements Screen {
 
             if (currTab == 0) {
                 if (currPage == 2) {
-                    animationSpeed = 0.5f;
+                    animationSpeed = 0.2f;
                 } else {
-                    animationSpeed = 0.25f;
+                    animationSpeed = 0.1f;
                 }
             }
 

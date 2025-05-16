@@ -66,18 +66,18 @@
       "sprites": {
         "animation": {
           "rows": 1,
-          "cols": 1,
-          "size": 1
+          "cols": 4,
+          "size": 4
         }
       }
     },
     "chefLose": {
-      "file": "images/LoseChopsticks.png",
+      "file": "images/LoseChef.png",
       "sprites": {
         "animation": {
           "rows": 1,
-          "cols": 4,
-          "size": 4
+          "cols": 5,
+          "size": 5
         }
       }
     },
@@ -86,8 +86,8 @@
       "sprites": {
         "animation": {
           "rows": 1,
-          "cols": 1,
-          "size": 1
+          "cols": 4,
+          "size": 4
         }
       }
     },

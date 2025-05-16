@@ -697,6 +697,7 @@ public class GameScene implements Screen {
                 if (type.equals("player")) {
                     if (((Companion) o).shouldRemove()) {
                         lose.draw();
+                        break;
                     }
                 }
             }
