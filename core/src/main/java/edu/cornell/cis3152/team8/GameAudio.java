@@ -29,7 +29,7 @@ public class GameAudio {
 
         gameSfx[0] = assets.getEntry("coin", SoundEffect.class);
         gameSfx[1] = assets.getEntry("durian", SoundEffect.class);
-        gameSfx[2] = assets.getEntry("pineapple", SoundEffect.class);
+        gameSfx[2] = assets.getEntry("garlic", SoundEffect.class);
         gameSfx[3] = assets.getEntry("strawberry", SoundEffect.class);
         gameSfx[4] = assets.getEntry("dashAttack", SoundEffect.class);
         gameSfx[5] = assets.getEntry("spinAttack", SoundEffect.class);
@@ -130,7 +130,7 @@ public class GameAudio {
                 gameSfx[1].play(sfxVolume);
                 currSfx = 1;
             }
-            case ("PINEAPPLE") -> {
+            case ("GARLIC") -> {
                 gameSfx[2].play(sfxVolume);
                 currSfx = 2;
             }
