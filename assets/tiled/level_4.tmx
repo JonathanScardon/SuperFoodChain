@@ -14,9 +14,9 @@
     <property name="health" type="int" value="15"/>
    </properties>
   </object>
-  <object id="3" name="snatch" type="attack" x="276.982" y="893.983">
+  <object id="3" name="snatch" type="attack" x="420.982" y="797.983">
    <properties>
-    <property name="attackDuration" type="float" value="1"/>
+    <property name="attackDuration" type="float" value="1.5"/>
     <property name="attackType" propertytype="attackType" value="snatch"/>
     <property name="minion0" type="object" value="31"/>
     <property name="minion1" type="object" value="33"/>
@@ -30,7 +30,7 @@
     <property name="warnDuration" type="float" value="0.7"/>
    </properties>
   </object>
-  <object id="36" name="snatch" type="attack" x="612.982" y="925.983">
+  <object id="36" name="snatch" type="attack" x="587.649" y="896.65">
    <properties>
     <property name="attackDuration" type="float" value="1.5"/>
     <property name="attackType" propertytype="attackType" value="snatch"/>
@@ -39,7 +39,7 @@
     <property name="warnDuration" type="float" value="0.7"/>
    </properties>
   </object>
-  <object id="5" name="idle" type="attack" x="608" y="361.333">
+  <object id="5" name="idle" type="attack" x="608" y="324">
    <properties>
     <property name="attackDuration" type="float" value="3"/>
     <property name="attackType" propertytype="attackType" value="idle"/>
@@ -66,7 +66,7 @@
     <property name="spiderSpawnProportion" type="float" value="0"/>
    </properties>
   </object>
-  <object id="37" type="minionSpawn" x="606.638" y="299.561">
+  <object id="37" type="minionSpawn" x="606.638" y="375.561">
    <properties>
     <property name="antSpawnProportion" type="float" value="0"/>
     <property name="bossOnly" type="bool" value="true"/>
@@ -80,14 +80,14 @@
   <properties>
    <property name="maxAvocado" type="int" value="0"/>
    <property name="maxBlueRaspberry" type="int" value="0"/>
-   <property name="maxCompanions" type="int" value="2"/>
+   <property name="maxCompanions" type="int" value="3"/>
    <property name="maxDurian" type="int" value="1"/>
    <property name="maxPineapple" type="int" value="0"/>
-   <property name="maxStrawberry" type="int" value="1"/>
+   <property name="maxStrawberry" type="int" value="3"/>
   </properties>
   <object id="6" name="player" type="playerSpawn" x="833.054" y="271.217">
    <properties>
-    <property name="companionType" propertytype="companionType" value="durian"/>
+    <property name="companionType" propertytype="companionType" value="strawberry"/>
    </properties>
   </object>
   <object id="12" type="companionSpawn" x="173.452" y="139.725"/>
