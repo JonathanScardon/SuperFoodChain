@@ -74,7 +74,7 @@ public class HandbookOrder {
                 SpriteSheet.class);
         } else if (level == 8) {
             sheet = assets.getEntry(
-                "Avocado/Blue Raspberry Handbook.animation",
+                "Avocado/BlueRaspberry Handbook.animation",
                 SpriteSheet.class);
         } else if (level == 10) {
             sheet = assets.getEntry(
