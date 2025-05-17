@@ -264,8 +264,8 @@ public class CollisionController implements ContactListener {
 //                    System.out.println("BOSS HIT");
                     for (Projectile p : state.getActiveProjectiles()) {
                         if (p.getObstacle().getBody() == b2 && p.collisionDie) {
-                            removedProjectiles.add(b1);
-                            bossHit(b2);
+                            removedProjectiles.add(b2);
+                            bossHit(b1);
                         } else if (p.getObstacle().getBody() == b2 && !p.collisionDie) {
 //                            System.out.println("Garlic Projectile Hit");
                             bossHit(b1);
