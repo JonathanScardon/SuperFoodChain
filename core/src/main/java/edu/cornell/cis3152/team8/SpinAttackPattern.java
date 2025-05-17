@@ -34,7 +34,7 @@ public class SpinAttackPattern extends BossAttackPattern {
     private BossAttackPattern preSpin;
     private final OrthographicCamera camera;
     private final Vector3 origPos;
-    private int intensity;
+    private float intensity;
     private float shakeWait;
 
     public SpinAttackPattern(BossController controller, float warnDuration, float moveSpeed,
@@ -51,8 +51,8 @@ public class SpinAttackPattern extends BossAttackPattern {
         this.levelHeight = levelHeight;
         this.camera = camera;
         origPos = new Vector3(camera.position);
-        intensity = 5;
-        shakeWait = 0.02f;
+        intensity = 2.5f;
+        shakeWait = 0.05f;
 
         this.warnPattern = new SpinWarnPattern(0, 0,
             Math.max(boss.getWidth() * GameScene.PHYSICS_UNITS,
