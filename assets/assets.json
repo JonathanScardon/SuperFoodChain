@@ -271,6 +271,38 @@
         }
       }
     },
+
+
+    "idleMouse_1": {
+      "file": "images/Boss_Rat_1_Idle.png",
+      "sprites": {
+        "animation": {
+          "rows": 1,
+          "cols": 4,
+          "size": 4
+        }
+      }
+    },
+    "dashMouseVertical_1": {
+      "file": "images/Boss_Rat_1_RunDown.png",
+      "sprites": {
+        "animation": {
+          "rows": 1,
+          "cols": 5,
+          "size": 5
+        }
+      }
+    },
+    "dashMouseHorizontal_1": {
+      "file": "images/Boss_Rat_1_RunHorizontal.png",
+      "sprites": {
+        "animation": {
+          "rows": 1,
+          "cols": 5,
+          "size": 5
+        }
+      }
+    },
     "spinMouse": {
       "file": "images/MouseSpin_NEW.png",
       "sprites": {
