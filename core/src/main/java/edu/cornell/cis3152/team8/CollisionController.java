@@ -323,6 +323,7 @@ public class CollisionController implements ContactListener {
                 case DURIAN -> state.numDurians--;
                 case STRAWBERRY -> state.numStrawberries--;
                 case AVOCADO -> state.numAvocados--;
+                case GARLIC -> state.numGarlics--;
                 case BLUE_RASPBERRY -> state.numBlueRaspberries--;
                 case PINEAPPLE -> state.numPineapples--;
             }

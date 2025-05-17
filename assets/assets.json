@@ -473,8 +473,8 @@
       "sprites": {
         "animation": {
           "rows": 1,
-          "cols": 7,
-          "size": 7
+          "cols": 8,
+          "size": 8
         }
       }
     },
