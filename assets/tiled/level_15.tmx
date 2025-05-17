@@ -1,84 +1,78 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="1" height="1" tilewidth="880" tileheight="720" infinite="0" nextlayerid="5" nextobjectid="165">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="1" height="1" tilewidth="880" tileheight="720" infinite="0" nextlayerid="5" nextobjectid="107">
  <objectgroup id="2" name="boss" class="bossLayer">
   <properties>
    <property name="maxMinions" type="int" value="4"/>
   </properties>
-  <object id="17" name="chef" type="boss" x="427.806" y="1252.56">
+  <object id="17" name="chef" type="boss" x="432.806" y="1223.56">
    <properties>
     <property name="attack0" type="object" value="73"/>
     <property name="attack1" type="object" value="25"/>
-    <property name="attack10" type="object" value="163"/>
-    <property name="attack11" type="object" value="164"/>
-    <property name="attack2" type="object" value="26"/>
-    <property name="attack3" type="object" value="150"/>
-    <property name="attack4" type="object" value="157"/>
-    <property name="attack5" type="object" value="158"/>
-    <property name="attack6" type="object" value="159"/>
-    <property name="attack7" type="object" value="27"/>
-    <property name="attack8" type="object" value="23"/>
-    <property name="attack9" type="object" value="103"/>
+    <property name="attack2" type="object" value="95"/>
+    <property name="attack3" type="object" value="27"/>
+    <property name="attack4" type="object" value="23"/>
+    <property name="attack5" type="object" value="55"/>
     <property name="bossType" propertytype="bossType" value="chef"/>
-    <property name="health" type="int" value="20"/>
+    <property name="health" type="int" value="30"/>
    </properties>
   </object>
-  <object id="18" type="minionSpawn" x="16.6454" y="-38.2759">
+  <object id="18" name="ant" type="minionSpawn" x="50.6454" y="-75.2759">
    <properties>
     <property name="antSpawnProportion" type="float" value="1"/>
     <property name="bossOnly" type="bool" value="false"/>
-    <property name="cooldown" type="float" value="10"/>
+    <property name="cooldown" type="float" value="20"/>
     <property name="cricketSpawnProportion" type="float" value="0"/>
     <property name="spiderSpawnProportion" type="float" value="0"/>
    </properties>
   </object>
-  <object id="19" type="minionSpawn" x="862.122" y="-36.3322">
+  <object id="19" name="ant" type="minionSpawn" x="800.122" y="-74.3322">
    <properties>
     <property name="antSpawnProportion" type="float" value="1"/>
     <property name="bossOnly" type="bool" value="false"/>
-    <property name="cooldown" type="float" value="10"/>
+    <property name="cooldown" type="float" value="20"/>
     <property name="cricketSpawnProportion" type="float" value="0"/>
     <property name="spiderSpawnProportion" type="float" value="0"/>
    </properties>
   </object>
-  <object id="20" type="minionSpawn" x="19.3085" y="755.665">
+  <object id="20" name="ant" type="minionSpawn" x="40.3085" y="784.665">
    <properties>
     <property name="antSpawnProportion" type="float" value="1"/>
     <property name="bossOnly" type="bool" value="false"/>
-    <property name="cooldown" type="float" value="10"/>
+    <property name="cooldown" type="float" value="20"/>
     <property name="cricketSpawnProportion" type="float" value="0"/>
     <property name="spiderSpawnProportion" type="float" value="0"/>
    </properties>
   </object>
-  <object id="21" type="minionSpawn" x="852.809" y="755.608">
+  <object id="21" name="ant" type="minionSpawn" x="808.809" y="785.608">
    <properties>
     <property name="antSpawnProportion" type="float" value="1"/>
     <property name="bossOnly" type="bool" value="false"/>
-    <property name="cooldown" type="float" value="10"/>
+    <property name="cooldown" type="float" value="20"/>
     <property name="cricketSpawnProportion" type="float" value="0"/>
     <property name="spiderSpawnProportion" type="float" value="0"/>
    </properties>
   </object>
-  <object id="23" name="camera" type="attack" x="240.5" y="370">
+  <object id="23" name="camera" type="attack" x="240.5" y="360">
    <properties>
     <property name="attackType" propertytype="attackType" value="camera"/>
     <property name="warnDuration" type="float" value="1"/>
    </properties>
   </object>
-  <object id="25" name="camera" type="attack" x="639.5" y="370">
+  <object id="25" name="camera" type="attack" x="639.5" y="360">
    <properties>
     <property name="attackType" propertytype="attackType" value="camera"/>
     <property name="warnDuration" type="float" value="1"/>
    </properties>
   </object>
-  <object id="26" name="idle wait" type="attack" x="1022" y="360">
+  <object id="26" name="idle" type="attack" x="1022" y="360">
    <properties>
-    <property name="attackDuration" type="float" value="5"/>
+    <property name="attackDuration" type="float" value="7"/>
     <property name="attackType" propertytype="attackType" value="idle"/>
     <property name="flipHorizontal" type="bool" value="true"/>
     <property name="warnDuration" type="float" value="0"/>
    </properties>
   </object>
-  <object id="73" name="idle teleport" type="attack" x="1022" y="360">
+  <object id="73" name="idle" type="attack" x="1022" y="360">
    <properties>
     <property name="attackDuration" type="float" value="0"/>
     <property name="attackType" propertytype="attackType" value="idle"/>
@@ -86,7 +80,7 @@
     <property name="warnDuration" type="float" value="2"/>
    </properties>
   </object>
-  <object id="27" name="idle teleport" type="attack" x="-142" y="360">
+  <object id="27" name="idle" type="attack" x="-142" y="360">
    <properties>
     <property name="attackDuration" type="float" value="0"/>
     <property name="attackType" propertytype="attackType" value="idle"/>
@@ -94,420 +88,261 @@
     <property name="warnDuration" type="float" value="2"/>
    </properties>
   </object>
-  <object id="99" name="burner" type="attack" x="96" y="10" width="100" height="100">
+  <object id="37" name="burner" type="attack" x="46" y="43" width="128" height="128">
    <properties>
-    <property name="attackDuration" type="float" value="5"/>
+    <property name="attackDuration" type="float" value="20"/>
     <property name="attackType" propertytype="attackType" value="area"/>
     <property name="warnDuration" type="float" value="2"/>
    </properties>
-   <ellipse/>
   </object>
-  <object id="103" name="idle wait" type="attack" x="-142" y="360">
+  <object id="39" name="burner" type="attack" x="212" y="43" width="128" height="128">
    <properties>
-    <property name="attackDuration" type="float" value="5"/>
-    <property name="attackType" propertytype="attackType" value="idle"/>
-    <property name="flipHorizontal" type="bool" value="false"/>
-    <property name="warnDuration" type="float" value="0"/>
-   </properties>
-  </object>
-  <object id="105" name="mouse" type="boss" x="441.333" y="-320">
-   <properties>
-    <property name="attack0" type="object" value="160"/>
-    <property name="attack1" type="object" value="144"/>
-    <property name="attack10" type="object" value="160"/>
-    <property name="attack11" type="object" value="145"/>
-    <property name="attack2" type="object" value="160"/>
-    <property name="attack3" type="object" value="146"/>
-    <property name="attack4" type="object" value="160"/>
-    <property name="attack5" type="object" value="147"/>
-    <property name="attack6" type="object" value="160"/>
-    <property name="attack7" type="object" value="161"/>
-    <property name="attack8" type="object" value="148"/>
-    <property name="bossType" propertytype="bossType" value="mouse"/>
-    <property name="health" type="int" value="15"/>
-   </properties>
-  </object>
-  <object id="106" name="burner" type="attack" x="96" y="130" width="100" height="100">
-   <properties>
-    <property name="attackDuration" type="float" value="5"/>
+    <property name="attackDuration" type="float" value="20"/>
     <property name="attackType" propertytype="attackType" value="area"/>
     <property name="warnDuration" type="float" value="2"/>
    </properties>
-   <ellipse/>
   </object>
-  <object id="107" name="burner" type="attack" x="96" y="250" width="100" height="100">
+  <object id="40" name="burner" type="attack" x="376" y="43" width="128" height="128">
    <properties>
-    <property name="attackDuration" type="float" value="5"/>
+    <property name="attackDuration" type="float" value="20"/>
     <property name="attackType" propertytype="attackType" value="area"/>
     <property name="warnDuration" type="float" value="2"/>
    </properties>
-   <ellipse/>
   </object>
-  <object id="108" name="burner" type="attack" x="96" y="370" width="100" height="100">
+  <object id="42" name="burner" type="attack" x="540" y="43" width="128" height="128">
    <properties>
-    <property name="attackDuration" type="float" value="5"/>
+    <property name="attackDuration" type="float" value="20"/>
     <property name="attackType" propertytype="attackType" value="area"/>
     <property name="warnDuration" type="float" value="2"/>
    </properties>
-   <ellipse/>
   </object>
-  <object id="109" name="burner" type="attack" x="96" y="490" width="100" height="100">
+  <object id="43" name="burner" type="attack" x="704" y="43" width="128" height="128">
    <properties>
-    <property name="attackDuration" type="float" value="5"/>
+    <property name="attackDuration" type="float" value="20"/>
     <property name="attackType" propertytype="attackType" value="area"/>
     <property name="warnDuration" type="float" value="2"/>
    </properties>
-   <ellipse/>
   </object>
-  <object id="110" name="burner" type="attack" x="96" y="610" width="100" height="100">
+  <object id="55" name="burner trap left" type="attack" x="-166.997" y="996.533">
    <properties>
-    <property name="attackDuration" type="float" value="5"/>
+    <property name="attack0" type="object" value="37"/>
+    <property name="attack1" type="object" value="39"/>
+    <property name="attack10" type="object" value="67"/>
+    <property name="attack11" type="object" value="66"/>
+    <property name="attack12" type="object" value="61"/>
+    <property name="attack13" type="object" value="56"/>
+    <property name="attack14" type="object" value="59"/>
+    <property name="attack15" type="object" value="64"/>
+    <property name="attack2" type="object" value="40"/>
+    <property name="attack3" type="object" value="42"/>
+    <property name="attack4" type="object" value="43"/>
+    <property name="attack5" type="object" value="60"/>
+    <property name="attack6" type="object" value="65"/>
+    <property name="attack7" type="object" value="70"/>
+    <property name="attack8" type="object" value="69"/>
+    <property name="attack9" type="object" value="68"/>
+    <property name="attackType" propertytype="attackType" value="multi"/>
+    <property name="delay0" type="float" value="0"/>
+    <property name="delay1" type="float" value="0"/>
+    <property name="delay10" type="float" value="0"/>
+    <property name="delay11" type="float" value="0"/>
+    <property name="delay12" type="float" value="0"/>
+    <property name="delay13" type="float" value="0"/>
+    <property name="delay14" type="float" value="10"/>
+    <property name="delay15" type="float" value="10"/>
+    <property name="delay2" type="float" value="0"/>
+    <property name="delay3" type="float" value="0"/>
+    <property name="delay4" type="float" value="0"/>
+    <property name="delay5" type="float" value="0"/>
+    <property name="delay6" type="float" value="0"/>
+    <property name="delay7" type="float" value="0"/>
+    <property name="delay8" type="float" value="0"/>
+    <property name="delay9" type="float" value="0"/>
+    <property name="warnDuration" type="float" value="2"/>
+   </properties>
+  </object>
+  <object id="56" name="burner" type="attack" x="46" y="209" width="128" height="128">
+   <properties>
+    <property name="attackDuration" type="float" value="20"/>
     <property name="attackType" propertytype="attackType" value="area"/>
     <property name="warnDuration" type="float" value="2"/>
    </properties>
-   <ellipse/>
   </object>
-  <object id="117" name="burner" type="attack" x="292" y="10" width="100" height="100">
-   <properties>
-    <property name="attackDuration" type="float" value="5"/>
-    <property name="attackType" propertytype="attackType" value="area"/>
-    <property name="warnDuration" type="float" value="2"/>
-   </properties>
-   <ellipse/>
-  </object>
-  <object id="118" name="burner" type="attack" x="292" y="130" width="100" height="100">
-   <properties>
-    <property name="attackDuration" type="float" value="5"/>
-    <property name="attackType" propertytype="attackType" value="area"/>
-    <property name="warnDuration" type="float" value="2"/>
-   </properties>
-   <ellipse/>
-  </object>
-  <object id="119" name="burner" type="attack" x="292" y="250" width="100" height="100">
-   <properties>
-    <property name="attackDuration" type="float" value="5"/>
-    <property name="attackType" propertytype="attackType" value="area"/>
-    <property name="warnDuration" type="float" value="2"/>
-   </properties>
-   <ellipse/>
-  </object>
-  <object id="120" name="burner" type="attack" x="292" y="370" width="100" height="100">
-   <properties>
-    <property name="attackDuration" type="float" value="5"/>
-    <property name="attackType" propertytype="attackType" value="area"/>
-    <property name="warnDuration" type="float" value="2"/>
-   </properties>
-   <ellipse/>
-  </object>
-  <object id="121" name="burner" type="attack" x="292" y="490" width="100" height="100">
-   <properties>
-    <property name="attackDuration" type="float" value="5"/>
-    <property name="attackType" propertytype="attackType" value="area"/>
-    <property name="warnDuration" type="float" value="2"/>
-   </properties>
-   <ellipse/>
-  </object>
-  <object id="122" name="burner" type="attack" x="292" y="610" width="100" height="100">
-   <properties>
-    <property name="attackDuration" type="float" value="5"/>
-    <property name="attackType" propertytype="attackType" value="area"/>
-    <property name="warnDuration" type="float" value="2"/>
-   </properties>
-   <ellipse/>
-  </object>
-  <object id="129" name="burner" type="attack" x="488" y="10" width="100" height="100">
-   <properties>
-    <property name="attackDuration" type="float" value="5"/>
-    <property name="attackType" propertytype="attackType" value="area"/>
-    <property name="warnDuration" type="float" value="2"/>
-   </properties>
-   <ellipse/>
-  </object>
-  <object id="130" name="burner" type="attack" x="488" y="130" width="100" height="100">
-   <properties>
-    <property name="attackDuration" type="float" value="5"/>
-    <property name="attackType" propertytype="attackType" value="area"/>
-    <property name="warnDuration" type="float" value="2"/>
-   </properties>
-   <ellipse/>
-  </object>
-  <object id="131" name="burner" type="attack" x="488" y="250" width="100" height="100">
-   <properties>
-    <property name="attackDuration" type="float" value="5"/>
-    <property name="attackType" propertytype="attackType" value="area"/>
-    <property name="warnDuration" type="float" value="2"/>
-   </properties>
-   <ellipse/>
-  </object>
-  <object id="132" name="burner" type="attack" x="488" y="370" width="100" height="100">
-   <properties>
-    <property name="attackDuration" type="float" value="5"/>
-    <property name="attackType" propertytype="attackType" value="area"/>
-    <property name="warnDuration" type="float" value="2"/>
-   </properties>
-   <ellipse/>
-  </object>
-  <object id="133" name="burner" type="attack" x="488" y="490" width="100" height="100">
-   <properties>
-    <property name="attackDuration" type="float" value="5"/>
-    <property name="attackType" propertytype="attackType" value="area"/>
-    <property name="warnDuration" type="float" value="2"/>
-   </properties>
-   <ellipse/>
-  </object>
-  <object id="134" name="burner" type="attack" x="488" y="610" width="100" height="100">
-   <properties>
-    <property name="attackDuration" type="float" value="5"/>
-    <property name="attackType" propertytype="attackType" value="area"/>
-    <property name="warnDuration" type="float" value="2"/>
-   </properties>
-   <ellipse/>
-  </object>
-  <object id="135" name="burner" type="attack" x="684" y="10" width="100" height="100">
-   <properties>
-    <property name="attackDuration" type="float" value="5"/>
-    <property name="attackType" propertytype="attackType" value="area"/>
-    <property name="warnDuration" type="float" value="2"/>
-   </properties>
-   <ellipse/>
-  </object>
-  <object id="136" name="burner" type="attack" x="684" y="130" width="100" height="100">
-   <properties>
-    <property name="attackDuration" type="float" value="5"/>
-    <property name="attackType" propertytype="attackType" value="area"/>
-    <property name="warnDuration" type="float" value="2"/>
-   </properties>
-   <ellipse/>
-  </object>
-  <object id="137" name="burner" type="attack" x="684" y="250" width="100" height="100">
-   <properties>
-    <property name="attackDuration" type="float" value="5"/>
-    <property name="attackType" propertytype="attackType" value="area"/>
-    <property name="warnDuration" type="float" value="2"/>
-   </properties>
-   <ellipse/>
-  </object>
-  <object id="138" name="burner" type="attack" x="684" y="370" width="100" height="100">
-   <properties>
-    <property name="attackDuration" type="float" value="5"/>
-    <property name="attackType" propertytype="attackType" value="area"/>
-    <property name="warnDuration" type="float" value="2"/>
-   </properties>
-   <ellipse/>
-  </object>
-  <object id="139" name="burner" type="attack" x="684" y="490" width="100" height="100">
-   <properties>
-    <property name="attackDuration" type="float" value="5"/>
-    <property name="attackType" propertytype="attackType" value="area"/>
-    <property name="warnDuration" type="float" value="2"/>
-   </properties>
-   <ellipse/>
-  </object>
-  <object id="140" name="burner" type="attack" x="684" y="610" width="100" height="100">
-   <properties>
-    <property name="attackDuration" type="float" value="5"/>
-    <property name="attackType" propertytype="attackType" value="area"/>
-    <property name="warnDuration" type="float" value="2"/>
-   </properties>
-   <ellipse/>
-  </object>
-  <object id="144" name="dashUp" type="attack" x="46" y="768">
-   <properties>
-    <property name="attackType" propertytype="attackType" value="dash"/>
-    <property name="dir" value="up"/>
-    <property name="moveSpeed" type="float" value="576"/>
-    <property name="warnDuration" type="float" value="2"/>
-   </properties>
-   <point/>
-  </object>
-  <object id="145" name="dashDown" type="attack" x="342" y="-48">
-   <properties>
-    <property name="attackType" propertytype="attackType" value="dash"/>
-    <property name="dir" value="down"/>
-    <property name="moveSpeed" type="float" value="576"/>
-    <property name="warnDuration" type="float" value="2"/>
-   </properties>
-   <point/>
-  </object>
-  <object id="146" name="dashUp" type="attack" x="438" y="768">
-   <properties>
-    <property name="attackType" propertytype="attackType" value="dash"/>
-    <property name="dir" value="up"/>
-    <property name="moveSpeed" type="float" value="576"/>
-    <property name="warnDuration" type="float" value="2"/>
-   </properties>
-   <point/>
-  </object>
-  <object id="147" name="dashDown" type="attack" x="734" y="-48">
-   <properties>
-    <property name="attackType" propertytype="attackType" value="dash"/>
-    <property name="dir" value="down"/>
-    <property name="moveSpeed" type="float" value="576"/>
-    <property name="warnDuration" type="float" value="2"/>
-   </properties>
-   <point/>
-  </object>
-  <object id="148" name="idle" type="attack" x="440" y="180">
+  <object id="57" name="burner" type="attack" x="212" y="209" width="128" height="128">
    <properties>
     <property name="attackDuration" type="float" value="10"/>
+    <property name="attackType" propertytype="attackType" value="area"/>
+    <property name="warnDuration" type="float" value="2"/>
+   </properties>
+  </object>
+  <object id="59" name="burner" type="attack" x="540" y="209" width="128" height="128">
+   <properties>
+    <property name="attackDuration" type="float" value="10"/>
+    <property name="attackType" propertytype="attackType" value="area"/>
+    <property name="warnDuration" type="float" value="2"/>
+   </properties>
+  </object>
+  <object id="60" name="burner" type="attack" x="704" y="209" width="128" height="128">
+   <properties>
+    <property name="attackDuration" type="float" value="20"/>
+    <property name="attackType" propertytype="attackType" value="area"/>
+    <property name="warnDuration" type="float" value="2"/>
+   </properties>
+  </object>
+  <object id="61" name="burner" type="attack" x="46" y="383" width="128" height="128">
+   <properties>
+    <property name="attackDuration" type="float" value="20"/>
+    <property name="attackType" propertytype="attackType" value="area"/>
+    <property name="warnDuration" type="float" value="2"/>
+   </properties>
+  </object>
+  <object id="62" name="burner" type="attack" x="212" y="379" width="128" height="128">
+   <properties>
+    <property name="attackDuration" type="float" value="10"/>
+    <property name="attackType" propertytype="attackType" value="area"/>
+    <property name="warnDuration" type="float" value="2"/>
+   </properties>
+  </object>
+  <object id="64" name="burner" type="attack" x="540" y="383" width="128" height="128">
+   <properties>
+    <property name="attackDuration" type="float" value="10"/>
+    <property name="attackType" propertytype="attackType" value="area"/>
+    <property name="warnDuration" type="float" value="2"/>
+   </properties>
+  </object>
+  <object id="65" name="burner" type="attack" x="704" y="383" width="128" height="128">
+   <properties>
+    <property name="attackDuration" type="float" value="20"/>
+    <property name="attackType" propertytype="attackType" value="area"/>
+    <property name="warnDuration" type="float" value="2"/>
+   </properties>
+  </object>
+  <object id="66" name="burner" type="attack" x="46" y="549" width="128" height="128">
+   <properties>
+    <property name="attackDuration" type="float" value="20"/>
+    <property name="attackType" propertytype="attackType" value="area"/>
+    <property name="warnDuration" type="float" value="2"/>
+   </properties>
+  </object>
+  <object id="67" name="burner" type="attack" x="212" y="549" width="128" height="128">
+   <properties>
+    <property name="attackDuration" type="float" value="20"/>
+    <property name="attackType" propertytype="attackType" value="area"/>
+    <property name="warnDuration" type="float" value="2"/>
+   </properties>
+  </object>
+  <object id="68" name="burner" type="attack" x="376" y="549" width="128" height="128">
+   <properties>
+    <property name="attackDuration" type="float" value="20"/>
+    <property name="attackType" propertytype="attackType" value="area"/>
+    <property name="warnDuration" type="float" value="2"/>
+   </properties>
+  </object>
+  <object id="69" name="burner" type="attack" x="540" y="549" width="128" height="128">
+   <properties>
+    <property name="attackDuration" type="float" value="20"/>
+    <property name="attackType" propertytype="attackType" value="area"/>
+    <property name="warnDuration" type="float" value="2"/>
+   </properties>
+  </object>
+  <object id="70" name="burner" type="attack" x="704" y="549" width="128" height="128">
+   <properties>
+    <property name="attackDuration" type="float" value="20"/>
+    <property name="attackType" propertytype="attackType" value="area"/>
+    <property name="warnDuration" type="float" value="2"/>
+   </properties>
+  </object>
+  <object id="95" name="burner trap right" type="attack" x="974.667" y="1066.67">
+   <properties>
+    <property name="attack0" type="object" value="37"/>
+    <property name="attack1" type="object" value="39"/>
+    <property name="attack10" type="object" value="67"/>
+    <property name="attack11" type="object" value="66"/>
+    <property name="attack12" type="object" value="61"/>
+    <property name="attack13" type="object" value="56"/>
+    <property name="attack14" type="object" value="57"/>
+    <property name="attack15" type="object" value="62"/>
+    <property name="attack2" type="object" value="40"/>
+    <property name="attack3" type="object" value="42"/>
+    <property name="attack4" type="object" value="43"/>
+    <property name="attack5" type="object" value="60"/>
+    <property name="attack6" type="object" value="65"/>
+    <property name="attack7" type="object" value="70"/>
+    <property name="attack8" type="object" value="69"/>
+    <property name="attack9" type="object" value="68"/>
+    <property name="attackType" propertytype="attackType" value="multi"/>
+    <property name="delay0" type="float" value="0"/>
+    <property name="delay1" type="float" value="0"/>
+    <property name="delay10" type="float" value="0"/>
+    <property name="delay11" type="float" value="0"/>
+    <property name="delay12" type="float" value="0"/>
+    <property name="delay13" type="float" value="0"/>
+    <property name="delay14" type="float" value="10"/>
+    <property name="delay15" type="float" value="10"/>
+    <property name="delay2" type="float" value="0"/>
+    <property name="delay3" type="float" value="0"/>
+    <property name="delay4" type="float" value="0"/>
+    <property name="delay5" type="float" value="0"/>
+    <property name="delay6" type="float" value="0"/>
+    <property name="delay7" type="float" value="0"/>
+    <property name="delay8" type="float" value="0"/>
+    <property name="delay9" type="float" value="0"/>
+    <property name="warnDuration" type="float" value="2"/>
+   </properties>
+  </object>
+  <object id="96" name="chopsticks" type="boss" x="-491.333" y="656">
+   <properties>
+    <property name="attack0" type="object" value="104"/>
+    <property name="attack1" type="object" value="103"/>
+    <property name="attack2" type="object" value="103"/>
+    <property name="attack3" type="object" value="103"/>
+    <property name="attack4" type="object" value="98"/>
+    <property name="attack5" type="object" value="105"/>
+    <property name="attack6" type="object" value="103"/>
+    <property name="attack7" type="object" value="103"/>
+    <property name="attack8" type="object" value="103"/>
+    <property name="attack9" type="object" value="102"/>
+    <property name="bossType" propertytype="bossType" value="chopsticks"/>
+    <property name="health" type="int" value="30"/>
+   </properties>
+  </object>
+  <object id="98" name="idle" type="attack" x="359.667" y="359.333">
+   <properties>
+    <property name="attackDuration" type="float" value="15"/>
     <property name="attackType" propertytype="attackType" value="idle"/>
-    <property name="flipHorizontal" type="bool" value="false"/>
-    <property name="warnDuration" type="float" value="3"/>
-   </properties>
-   <point/>
-  </object>
-  <object id="150" name="burners 1" type="attack" x="221.667" y="1027.33">
-   <properties>
-    <property name="attack0" type="object" value="110"/>
-    <property name="attack1" type="object" value="109"/>
-    <property name="attack2" type="object" value="108"/>
-    <property name="attack3" type="object" value="107"/>
-    <property name="attack4" type="object" value="106"/>
-    <property name="attack5" type="object" value="99"/>
-    <property name="attackType" propertytype="attackType" value="multi"/>
-    <property name="delay0" type="float" value="0"/>
-    <property name="delay1" type="float" value="0.2"/>
-    <property name="delay2" type="float" value="0.4"/>
-    <property name="delay3" type="float" value="0.6"/>
-    <property name="delay4" type="float" value="0.8"/>
-    <property name="delay5" type="float" value="1"/>
-    <property name="warnDuration" type="float" value="2.25"/>
+    <property name="warnDuration" type="float" value="2"/>
    </properties>
   </object>
-  <object id="157" name="burners 2" type="attack" x="292" y="1027.67">
+  <object id="102" name="idle" type="attack" x="521" y="361">
    <properties>
-    <property name="attack0" type="object" value="122"/>
-    <property name="attack1" type="object" value="121"/>
-    <property name="attack2" type="object" value="120"/>
-    <property name="attack3" type="object" value="119"/>
-    <property name="attack4" type="object" value="118"/>
-    <property name="attack5" type="object" value="117"/>
-    <property name="attackType" propertytype="attackType" value="multi"/>
-    <property name="delay0" type="float" value="0"/>
-    <property name="delay1" type="float" value="0.2"/>
-    <property name="delay2" type="float" value="0.4"/>
-    <property name="delay3" type="float" value="0.6"/>
-    <property name="delay4" type="float" value="0.8"/>
-    <property name="delay5" type="float" value="1"/>
-    <property name="warnDuration" type="float" value="2.25"/>
-   </properties>
-  </object>
-  <object id="158" name="burners 3" type="attack" x="601" y="1022.33">
-   <properties>
-    <property name="attack0" type="object" value="134"/>
-    <property name="attack1" type="object" value="133"/>
-    <property name="attack2" type="object" value="132"/>
-    <property name="attack3" type="object" value="131"/>
-    <property name="attack4" type="object" value="130"/>
-    <property name="attack5" type="object" value="129"/>
-    <property name="attackType" propertytype="attackType" value="multi"/>
-    <property name="delay0" type="float" value="0"/>
-    <property name="delay1" type="float" value="0.2"/>
-    <property name="delay2" type="float" value="0.4"/>
-    <property name="delay3" type="float" value="0.6"/>
-    <property name="delay4" type="float" value="0.8"/>
-    <property name="delay5" type="float" value="1"/>
-    <property name="warnDuration" type="float" value="2.25"/>
-   </properties>
-  </object>
-  <object id="159" name="burners 4" type="attack" x="655.333" y="1020.67">
-   <properties>
-    <property name="attack0" type="object" value="140"/>
-    <property name="attack1" type="object" value="139"/>
-    <property name="attack2" type="object" value="138"/>
-    <property name="attack3" type="object" value="137"/>
-    <property name="attack4" type="object" value="136"/>
-    <property name="attack5" type="object" value="135"/>
-    <property name="attackType" propertytype="attackType" value="multi"/>
-    <property name="delay0" type="float" value="0"/>
-    <property name="delay1" type="float" value="0.2"/>
-    <property name="delay2" type="float" value="0.4"/>
-    <property name="delay3" type="float" value="0.6"/>
-    <property name="delay4" type="float" value="0.8"/>
-    <property name="delay5" type="float" value="1"/>
-    <property name="warnDuration" type="float" value="2.25"/>
-   </properties>
-  </object>
-  <object id="160" name="idle" type="attack" x="212" y="-228">
-   <properties>
-    <property name="attackDuration" type="float" value="3"/>
+    <property name="attackDuration" type="float" value="15"/>
     <property name="attackType" propertytype="attackType" value="idle"/>
-    <property name="flipHorizontal" type="bool" value="false"/>
-    <property name="warnDuration" type="float" value="0"/>
-   </properties>
-   <point/>
-  </object>
-  <object id="161" name="dashUp" type="attack" x="832" y="768">
-   <properties>
-    <property name="attackType" propertytype="attackType" value="dash"/>
-    <property name="dir" value="up"/>
-    <property name="moveSpeed" type="float" value="576"/>
-    <property name="warnDuration" type="float" value="2"/>
-   </properties>
-   <point/>
-  </object>
-  <object id="163" name="burner 5" type="attack" x="898.667" y="1008">
-   <properties>
-    <property name="attack0" type="object" value="135"/>
-    <property name="attack1" type="object" value="117"/>
-    <property name="attack10" type="object" value="134"/>
-    <property name="attack11" type="object" value="110"/>
-    <property name="attack2" type="object" value="130"/>
-    <property name="attack3" type="object" value="137"/>
-    <property name="attack4" type="object" value="106"/>
-    <property name="attack5" type="object" value="119"/>
-    <property name="attack6" type="object" value="132"/>
-    <property name="attack7" type="object" value="139"/>
-    <property name="attack8" type="object" value="108"/>
-    <property name="attack9" type="object" value="121"/>
-    <property name="attackType" propertytype="attackType" value="multi"/>
-    <property name="delay0" type="float" value="0"/>
-    <property name="delay1" type="float" value="0.5"/>
-    <property name="delay10" type="float" value="5"/>
-    <property name="delay11" type="float" value="5.5"/>
-    <property name="delay2" type="float" value="1"/>
-    <property name="delay3" type="float" value="1.5"/>
-    <property name="delay4" type="float" value="2"/>
-    <property name="delay5" type="float" value="2.5"/>
-    <property name="delay6" type="float" value="3"/>
-    <property name="delay7" type="float" value="3.5"/>
-    <property name="delay8" type="float" value="4"/>
-    <property name="delay9" type="float" value="4.5"/>
     <property name="warnDuration" type="float" value="2"/>
    </properties>
   </object>
-  <object id="164" name="burner 6" type="attack" x="1077.33" y="1005.33">
+  <object id="103" name="snatch" type="attack" x="-396" y="418.667">
    <properties>
-    <property name="attack0" type="object" value="129"/>
-    <property name="attack1" type="object" value="136"/>
-    <property name="attack10" type="object" value="109"/>
-    <property name="attack11" type="object" value="122"/>
-    <property name="attack2" type="object" value="99"/>
-    <property name="attack3" type="object" value="118"/>
-    <property name="attack4" type="object" value="131"/>
-    <property name="attack5" type="object" value="138"/>
-    <property name="attack6" type="object" value="107"/>
-    <property name="attack7" type="object" value="120"/>
-    <property name="attack8" type="object" value="133"/>
-    <property name="attack9" type="object" value="140"/>
-    <property name="attackType" propertytype="attackType" value="multi"/>
-    <property name="delay0" type="float" value="0"/>
-    <property name="delay1" type="float" value="0.5"/>
-    <property name="delay10" type="float" value="5"/>
-    <property name="delay11" type="float" value="5.5"/>
-    <property name="delay2" type="float" value="1"/>
-    <property name="delay3" type="float" value="1.5"/>
-    <property name="delay4" type="float" value="2"/>
-    <property name="delay5" type="float" value="2.5"/>
-    <property name="delay6" type="float" value="3"/>
-    <property name="delay7" type="float" value="3.5"/>
-    <property name="delay8" type="float" value="4"/>
-    <property name="delay9" type="float" value="4.5"/>
-    <property name="warnDuration" type="float" value="2"/>
+    <property name="attackDuration" type="float" value="6"/>
+    <property name="attackType" propertytype="attackType" value="snatch"/>
+    <property name="warnDuration" type="float" value="1"/>
+   </properties>
+  </object>
+  <object id="104" name="idle" type="attack" x="683" y="360">
+   <properties>
+    <property name="attackDuration" type="float" value="6"/>
+    <property name="attackType" propertytype="attackType" value="idle"/>
+    <property name="warnDuration" type="float" value="1"/>
+   </properties>
+  </object>
+  <object id="105" name="idle" type="attack" x="196.091" y="360.182">
+   <properties>
+    <property name="attackDuration" type="float" value="6"/>
+    <property name="attackType" propertytype="attackType" value="idle"/>
+    <property name="warnDuration" type="float" value="1"/>
    </properties>
   </object>
  </objectgroup>
- <objectgroup id="3" name="companion" class="companionLayer" visible="0">
+ <objectgroup id="3" name="companion" class="companionLayer">
   <properties>
    <property name="maxAvocado" type="int" value="1"/>
    <property name="maxBlueRaspberry" type="int" value="1"/>
@@ -516,14 +351,14 @@
    <property name="maxPineapple" type="int" value="0"/>
    <property name="maxStrawberry" type="int" value="1"/>
   </properties>
-  <object id="1" name="player" type="playerSpawn" x="440.326" y="363.903">
+  <object id="1" name="player" type="playerSpawn" x="350.993" y="147.903">
    <properties>
     <property name="companionType" value="durian"/>
    </properties>
   </object>
-  <object id="2" type="companionSpawn" x="258.232" y="543.167"/>
-  <object id="3" type="companionSpawn" x="616.943" y="180.463"/>
-  <object id="4" type="companionSpawn" x="620.313" y="541.844"/>
-  <object id="5" type="companionSpawn" x="258.914" y="182.401"/>
+  <object id="3" type="companionSpawn" x="284.943" y="383"/>
+  <object id="4" type="companionSpawn" x="600.313" y="447.178"/>
+  <object id="5" type="companionSpawn" x="597.58" y="282.401"/>
+  <object id="6" type="companionSpawn" x="280.014" y="279.697"/>
  </objectgroup>
 </map>
