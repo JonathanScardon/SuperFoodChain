@@ -131,18 +131,18 @@
         }
       }
     },
-    "BlueRaspberry Handbook": {
-      "file": "images/BlueRaspberryHandbook.png",
+    "Avocado Handbook": {
+      "file": "images/AvocadoHandbook.png",
       "sprites": {
         "animation": {
-          "rows": 1,
-          "cols": 14,
-          "size": 14
+          "rows": 4,
+          "cols": 7,
+          "size": 28
         }
       }
     },
-    "BlueRaspberry/Avocado Handbook": {
-      "file": "images/BlueRaspberry-AvocadoHandbook.png",
+    "Avocado/BlueRaspberry Handbook": {
+      "file": "images/Avocado-BlueRaspberryHandbook.png",
       "sprites": {
         "animation": {
           "rows": 4,
@@ -271,8 +271,6 @@
         }
       }
     },
-
-
     "idleMouse_1": {
       "file": "images/Boss_Rat_1_Idle.png",
       "sprites": {
@@ -539,7 +537,6 @@
       }
     },
     "durianProjectile": "images/projectile_durian.png",
-
     "pineappleProjectile": "images/Projectile_Pineapple.png",
     "strawberryProjectile": "images/Strawberry_Seed.png",
     "garlicProjectile": {
