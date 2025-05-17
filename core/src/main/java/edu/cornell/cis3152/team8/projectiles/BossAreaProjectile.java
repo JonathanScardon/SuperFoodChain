@@ -23,6 +23,7 @@ public class BossAreaProjectile extends Projectile {
 
     public void setFixture(float radius) {
         Shape shape = new CircleShape();
+        this.radius = radius;
         shape.setRadius(radius);
 
         FixtureDef selfFixtureDef = new FixtureDef();
