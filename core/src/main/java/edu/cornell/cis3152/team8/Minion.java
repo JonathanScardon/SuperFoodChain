@@ -147,7 +147,7 @@ public class Minion extends ObstacleSprite {
         } else { // if not destroyed, draw as normal
             sprite.setFrame((int) animationFrame);
             if (damage) {
-                batch.setColor(Color.GREEN);
+                batch.setColor(Color.YELLOW);
             }
             batch.draw(sprite, transform);
         }

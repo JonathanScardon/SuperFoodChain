@@ -42,8 +42,8 @@
     "projectileSpeed": 8
   },
   "garlic": {
-    "cost": 1,
-    "cooldown": 2,
+    "cost": 2,
+    "cooldown": 3,
     "animationSpeed": 0.25
   },
   "coin": {
@@ -82,7 +82,7 @@
     "attack": 2
   },
   "garlicProjectile": {
-    "maxLife": 8,
+    "maxLife": 3.5,
     "attack": 1
   }
 }
