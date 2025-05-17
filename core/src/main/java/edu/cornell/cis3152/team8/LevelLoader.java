@@ -344,10 +344,14 @@ public class LevelLoader {
         // get all minion spawns
         int spawnIdx = 0;
         int spawnId;
+        MapObject spawnObj;
         MinionSpawnPoint spawn;
         while (props.containsKey("minion" + spawnIdx)) {
-            spawnId = props.get("minion" + spawnIdx, MapObject.class).getProperties()
-                .get("id", Integer.class);
+            spawnObj = props.get("minion" + spawnIdx, MapObject.class);
+            if (spawnObj == null) {
+                throw new RuntimeException("No minion spawn point selected for index " + spawnIdx);
+            }
+            spawnId = spawnObj.getProperties().get("id", Integer.class);
             spawn = minionSpawns.get(spawnId);
             attack.addMinionSpawnPoint(spawn);
 
