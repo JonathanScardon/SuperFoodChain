@@ -2,6 +2,7 @@ package edu.cornell.cis3152.team8;
 //Heavily inspired by AILab Collision Controller
 
 import com.badlogic.gdx.physics.box2d.*;
+import com.badlogic.gdx.utils.Timer;
 import edu.cornell.cis3152.team8.projectiles.BossAreaProjectile;
 import edu.cornell.cis3152.team8.projectiles.DurianProjectile;
 import edu.cornell.cis3152.team8.projectiles.GarlicProjectile;
@@ -205,21 +206,36 @@ public class CollisionController implements ContactListener {
                     for (Projectile p : state.getActiveProjectiles()) {
                         if (p.getObstacle().getBody() == b1 && p.collisionDie) {
                             removedProjectiles.add(b1);
+                            minionHit(b2, b1);
                         } else if (p.getObstacle().getBody() == b1 && !p.collisionDie) {
 //                            System.out.println("Garlic Projectile Hit");
+                            minionHit(b2, b1);
+                            Timer.schedule(new Timer.Task() {
+                                @Override
+                                public void run() {
+                                    minionHit(b2, b1);
+                                }
+                            }, 1f);
+
                         }
                     }
-                    minionHit(b2, b1);
                 } else {
 //                    System.out.println("KILL MINION");
                     for (Projectile p : state.getActiveProjectiles()) {
                         if (p.getObstacle().getBody() == b2 && p.collisionDie) {
                             removedProjectiles.add(b2);
+                            minionHit(b1, b2);
                         } else if (p.getObstacle().getBody() == b2 && !p.collisionDie) {
 //                            System.out.println("Garlic Projectile Hit");
+                            minionHit(b1, b2);
+                            Timer.schedule(new Timer.Task() {
+                                @Override
+                                public void run() {
+                                    minionHit(b1, b2);
+                                }
+                            }, 1f);
                         }
                     }
-                    minionHit(b1, b2);
                 }
 
             }
@@ -232,21 +248,36 @@ public class CollisionController implements ContactListener {
                     for (Projectile p : state.getActiveProjectiles()) {
                         if (p.getObstacle().getBody() == b1 && p.collisionDie) {
                             removedProjectiles.add(b1);
+                            bossHit(b2);
                         } else if (p.getObstacle().getBody() == b1 && !p.collisionDie) {
 //                            System.out.println("Garlic Projectile Hit");
+                            bossHit(b2);
+                            Timer.schedule(new Timer.Task() {
+                                @Override
+                                public void run() {
+                                    bossHit(b2);
+                                }
+                            }, 1f);
                         }
                     }
-                    bossHit(b2);
                 } else {
 //                    System.out.println("BOSS HIT");
                     for (Projectile p : state.getActiveProjectiles()) {
                         if (p.getObstacle().getBody() == b2 && p.collisionDie) {
-                            removedProjectiles.add(b2);
+                            removedProjectiles.add(b1);
+                            bossHit(b2);
                         } else if (p.getObstacle().getBody() == b2 && !p.collisionDie) {
 //                            System.out.println("Garlic Projectile Hit");
+                            bossHit(b1);
+                            Timer.schedule(new Timer.Task() {
+                                @Override
+                                public void run() {
+                                    bossHit(b1);
+                                }
+                            }, 1f);
+
                         }
                     }
-                    bossHit(b1);
                 }
             }
 
