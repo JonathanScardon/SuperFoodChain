@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="1" height="1" tilewidth="1280" tileheight="720" infinite="0" nextlayerid="9" nextobjectid="31">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="1" height="1" tilewidth="1280" tileheight="720" infinite="0" nextlayerid="9" nextobjectid="34">
  <objectgroup id="3" name="companion">
   <properties>
    <property name="cooldown" type="float" value="2"/>
    <property name="maxAvocado" type="int" value="0"/>
    <property name="maxBlueRaspberry" type="int" value="0"/>
-   <property name="maxCompanions" type="int" value="1"/>
-   <property name="maxDurian" type="int" value="2"/>
-   <property name="maxStrawberry" type="int" value="0"/>
+   <property name="maxCompanions" type="int" value="3"/>
+   <property name="maxDurian" type="int" value="3"/>
    <property name="maxGarlic" type="int" value="0"/>
+   <property name="maxStrawberry" type="int" value="0"/>
   </properties>
   <object id="1" name="player" type="playerSpawn" x="640" y="340" width="1" height="1">
    <properties>
@@ -16,6 +16,9 @@
    </properties>
   </object>
   <object id="30" name="Durian" type="companionSpawn" x="1021.3" y="191.375"/>
+  <object id="31" name="Durian" type="companionSpawn" x="257.438" y="530.869"/>
+  <object id="32" name="Durian" type="companionSpawn" x="264.51" y="173.693"/>
+  <object id="33" name="Durian" type="companionSpawn" x="1035.45" y="566.233"/>
  </objectgroup>
  <objectgroup id="4" name="boss" class="bossLayer">
   <object id="9" name="mouse" type="boss" x="1151.82" y="1005.25">
