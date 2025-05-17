@@ -81,25 +81,25 @@ public class CompanionHandbookScene implements Screen {
         pagesTab0 = new SpriteSheet[3];
         pagesTab1 = new SpriteSheet[2];
         pagesTab2 = new SpriteSheet[2];
-        pagesTab0[0] = (game.directory.getEntry("Durian/Strawberry Handbook.animation",
-            SpriteSheet.class));
-        pagesTab0[1] = (game.directory.getEntry("Avocado/BlueRaspberry Handbook.animation",
-            SpriteSheet.class));
-        pagesTab0[2] = (game.directory.getEntry("Garlic Handbook.animation", SpriteSheet.class));
-        pagesTab1[0] = (game.directory.getEntry("Ant/Cricket Handbook.animation",
-            SpriteSheet.class));
-        pagesTab1[1] = (game.directory.getEntry("Spider Handbook.animation", SpriteSheet.class));
-        pagesTab2[0] = (game.directory.getEntry("Rat/Chopsticks Handbook.animation",
-            SpriteSheet.class));
-        pagesTab2[1] = (game.directory.getEntry("Chef Handbook.animation", SpriteSheet.class));
+//        pagesTab0[0] = (game.directory.getEntry("Durian/Strawberry Handbook.animation",
+//            SpriteSheet.class));
+//        pagesTab0[1] = (game.directory.getEntry("Avocado/BlueRaspberry Handbook.animation",
+//            SpriteSheet.class));
+//        pagesTab0[2] = (game.directory.getEntry("Garlic Handbook.animation", SpriteSheet.class));
+//        pagesTab1[0] = (game.directory.getEntry("Ant/Cricket Handbook.animation",
+//            SpriteSheet.class));
+//        pagesTab1[1] = (game.directory.getEntry("Spider Handbook.animation", SpriteSheet.class));
+//        pagesTab2[0] = (game.directory.getEntry("Rat/Chopsticks Handbook.animation",
+//            SpriteSheet.class));
+//        pagesTab2[1] = (game.directory.getEntry("Chef Handbook.animation", SpriteSheet.class));
 
-//        pagesTab0[0] = (game.directory.getEntry("TwoLock Handbook.animation", SpriteSheet.class));
-//        pagesTab0[1] = (game.directory.getEntry("TwoLock Handbook.animation", SpriteSheet.class));
-//        pagesTab0[2] = (game.directory.getEntry("OneLock Handbook.animation", SpriteSheet.class));
-//        pagesTab1[0] = (game.directory.getEntry("TwoLock Handbook.animation", SpriteSheet.class));
-//        pagesTab1[1] = (game.directory.getEntry("OneLock Handbook.animation", SpriteSheet.class));
-//        pagesTab2[0] = (game.directory.getEntry("TwoLock Handbook.animation", SpriteSheet.class));
-//        pagesTab2[1] = (game.directory.getEntry("OneLock Handbook.animation", SpriteSheet.class));
+        pagesTab0[0] = (game.directory.getEntry("TwoLock Handbook.animation", SpriteSheet.class));
+        pagesTab0[1] = (game.directory.getEntry("TwoLock Handbook.animation", SpriteSheet.class));
+        pagesTab0[2] = (game.directory.getEntry("OneLock Handbook.animation", SpriteSheet.class));
+        pagesTab1[0] = (game.directory.getEntry("TwoLock Handbook.animation", SpriteSheet.class));
+        pagesTab1[1] = (game.directory.getEntry("OneLock Handbook.animation", SpriteSheet.class));
+        pagesTab2[0] = (game.directory.getEntry("TwoLock Handbook.animation", SpriteSheet.class));
+        pagesTab2[1] = (game.directory.getEntry("OneLock Handbook.animation", SpriteSheet.class));
 
         //Constants for centering
         float buttonWidth = 80;
@@ -275,40 +275,40 @@ public class CompanionHandbookScene implements Screen {
                 }
             }
 
-//            temp = game.save.getInteger("unlockedMinions");
-//            boolean minionChange = unlockedMinions != temp;
-//            unlockedMinions = temp;
-//
-//            temp = game.save.getInteger("unlockedBosses");
-//            boolean bossChange = unlockedBosses != temp;
-//            unlockedBosses = temp;
-//
-//            if (companionChange) {
-//                if (unlockedCompanions == 1 || unlockedCompanions == 2) {
-//                    pagesTab0[0] = handbookOrder.companionSheet(game.directory,
-//                        -unlockedCompanions);
-//                } else if (unlockedCompanions == 3 || unlockedCompanions == 4) {
-//                    pagesTab0[1] = handbookOrder.companionSheet(game.directory,
-//                        -unlockedCompanions);
-//                } else if (unlockedCompanions == 5) {
-//                    pagesTab0[2] = handbookOrder.companionSheet(game.directory,
-//                        -unlockedCompanions);
-//                }
-//            }
-//            if (minionChange) {
-//                if (unlockedMinions == 1 || unlockedMinions == 2) {
-//                    pagesTab1[0] = handbookOrder.minionSheet(game.directory, -unlockedMinions);
-//                } else if (unlockedMinions == 3) {
-//                    pagesTab1[1] = handbookOrder.minionSheet(game.directory, -unlockedMinions);
-//                }
-//            }
-//            if (bossChange) {
-//                if (unlockedBosses == 1 || unlockedBosses == 2) {
-//                    pagesTab2[0] = handbookOrder.bossSheet(game.directory, -unlockedBosses);
-//                } else if (unlockedBosses == 3) {
-//                    pagesTab2[1] = handbookOrder.bossSheet(game.directory, -unlockedBosses);
-//                }
-//            }
+            temp = game.save.getInteger("unlockedMinions");
+            boolean minionChange = unlockedMinions != temp;
+            unlockedMinions = temp;
+
+            temp = game.save.getInteger("unlockedBosses");
+            boolean bossChange = unlockedBosses != temp;
+            unlockedBosses = temp;
+
+            if (companionChange) {
+                if (unlockedCompanions == 1 || unlockedCompanions == 2) {
+                    pagesTab0[0] = handbookOrder.companionSheet(game.directory,
+                        -unlockedCompanions);
+                } else if (unlockedCompanions == 3 || unlockedCompanions == 4) {
+                    pagesTab0[1] = handbookOrder.companionSheet(game.directory,
+                        -unlockedCompanions);
+                } else if (unlockedCompanions == 5) {
+                    pagesTab0[2] = handbookOrder.companionSheet(game.directory,
+                        -unlockedCompanions);
+                }
+            }
+            if (minionChange) {
+                if (unlockedMinions == 1 || unlockedMinions == 2) {
+                    pagesTab1[0] = handbookOrder.minionSheet(game.directory, -unlockedMinions);
+                } else if (unlockedMinions == 3) {
+                    pagesTab1[1] = handbookOrder.minionSheet(game.directory, -unlockedMinions);
+                }
+            }
+            if (bossChange) {
+                if (unlockedBosses == 1 || unlockedBosses == 2) {
+                    pagesTab2[0] = handbookOrder.bossSheet(game.directory, -unlockedBosses);
+                } else if (unlockedBosses == 3) {
+                    pagesTab2[1] = handbookOrder.bossSheet(game.directory, -unlockedBosses);
+                }
+            }
             //Update animation frame
             animationFrame += animationSpeed;
             if (animationFrame >= sheets[currPage].getSize()) {
