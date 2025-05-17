@@ -42,6 +42,7 @@ public class SnatchAttackPattern extends BossAttackPattern {
 
         boss.setAnimationSpeed(.2f);
         boss.setAnimation("snatch");
+        boss.setState("snatch");
 
         attackX = player.getPlayerHead().getObstacle().getPosition().x;
         attackY = player.getPlayerHead().getObstacle().getPosition().y;
