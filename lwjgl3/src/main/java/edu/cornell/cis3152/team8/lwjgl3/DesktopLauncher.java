@@ -22,17 +22,17 @@ import edu.cornell.gdiac.backend.*;
 
 /**
  * A class to launch the desktop (LWJGL3) application.
- *
- * This class sets the window size and launches the game. This is where you
- * define your initial application settings
+ * <p>
+ * This class sets the window size and launches the game. This is where you define your initial
+ * application settings
  */
 public class DesktopLauncher {
 
     /**
      * Classic main method that all Java programmers know.
-     *
-     * This method simply exists to start a new GDXApp. For desktop games,
-     * LibGDX is built on top of LWJGL (this is not the case for Android).
+     * <p>
+     * This method simply exists to start a new GDXApp. For desktop games, LibGDX is built on top of
+     * LWJGL (this is not the case for Android).
      *
      * @param args Command line arguments
      */
@@ -46,7 +46,7 @@ public class DesktopLauncher {
 
     /**
      * Returns the application settings
-     *
+     * <p>
      * This method should be tailored to your application.
      *
      * @return the application settings
@@ -66,7 +66,7 @@ public class DesktopLauncher {
         config.useGL30 = false;
 
         // Window icons used by Windows (in Resources folder)
-        config.iconList = "icons.txt";
+        //config.iconList = "icons.txt";
 
         // Vsync limits the frames per second to what your hardware can display
         // This setting doesn't always work on Linux, so the next line is a safeguard.
