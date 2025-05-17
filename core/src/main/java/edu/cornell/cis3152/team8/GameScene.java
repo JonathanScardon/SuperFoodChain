@@ -929,8 +929,9 @@ public class GameScene implements Screen {
             everything.add(c);
         }
 
-        everything.sort((o1, o2) -> Float.compare(screenHeight - o1.getObstacle().getY(),
-            screenHeight - o2.getObstacle().getY()));
+        everything.sort((o1, o2) -> Float.compare(
+            screenHeight - (o1.getObstacle().getY() - o1.getSpriteSheet().getRegionHeight()),
+            screenHeight - (o2.getObstacle().getY() - o2.getSpriteSheet().getRegionHeight())));
 
         // draw movement indicator first
         player.draw(game.batch);
