@@ -76,6 +76,8 @@ public class Boss extends ObstacleSprite {
     private final String name;
     private boolean remove;
 
+    private int var;
+
     /**
      * This hitbox size of this boss
      */
@@ -94,6 +96,7 @@ public class Boss extends ObstacleSprite {
 
     public Boss(float x, float y, float width, float height, int health, String name, World world) {
         super(new CapsuleObstacle(x, y, width, height), true);
+        this.var = 0;
 
         this.health = health;
         startHealth = health;
@@ -356,5 +359,12 @@ public class Boss extends ObstacleSprite {
 
     public float getHeight() {
         return this.height;
+    }
+
+    public void setVariant(int variant){
+        var = variant;
+    }
+    public int getVariant(){
+        return this.var;
     }
 }
