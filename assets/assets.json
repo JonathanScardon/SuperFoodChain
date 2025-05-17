@@ -547,8 +547,8 @@
       "sprites": {
         "animation": {
           "rows": 1,
-          "cols": 5,
-          "size": 5
+          "cols": 4,
+          "size": 4
         }
       }
     },
