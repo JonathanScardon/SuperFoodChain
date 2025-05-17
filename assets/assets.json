@@ -252,7 +252,7 @@
       }
     },
     "sleepMouse": {
-      "file": "images/MouseSleep.PNG",
+      "file": "images/MouseSleep.png",
       "sprites": {
         "animation": {
           "rows": 1,
