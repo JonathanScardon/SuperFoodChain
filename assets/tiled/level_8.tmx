@@ -89,7 +89,7 @@
     <property name="warnDuration" type="float" value="1.5"/>
    </properties>
   </object>
-  <object id="25" type="minionSpawn" x="1298.67" y="130.667">
+  <object id="25" type="minionSpawn" x="-87.284" y="696.236">
    <properties>
     <property name="antSpawnProportion" type="float" value="0"/>
     <property name="bossOnly" type="bool" value="true"/>
@@ -97,7 +97,7 @@
     <property name="spiderSpawnProportion" type="float" value="1"/>
    </properties>
   </object>
-  <object id="27" type="minionSpawn" x="-32.6818" y="589.061">
+  <object id="27" type="minionSpawn" x="1229.6" y="-51.0119">
    <properties>
     <property name="antSpawnProportion" type="float" value="0"/>
     <property name="bossOnly" type="bool" value="true"/>
@@ -112,8 +112,8 @@
    <property name="maxBlueRaspberry" type="int" value="3"/>
    <property name="maxCompanions" type="int" value="5"/>
    <property name="maxDurian" type="int" value="2"/>
-   <property name="maxStrawberry" type="int" value="0"/>
    <property name="maxGarlic" type="int" value="0"/>
+   <property name="maxStrawberry" type="int" value="0"/>
   </properties>
   <object id="1" name="player" type="playerSpawn" x="646" y="350">
    <properties>
