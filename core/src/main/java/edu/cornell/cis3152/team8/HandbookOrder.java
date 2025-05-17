@@ -9,12 +9,14 @@ public class HandbookOrder {
         String companion = "";
         if (level == 1) {
             companion = "durian";
-        } else if (level == 2) {
+        } else if (level == 3) {
             companion = "strawberry";
         } else if (level == 5) {
             companion = "blue raspberry";
-        } else if (level == 6) {
+        } else if (level == 8) {
             companion = "avocado";
+        } else if (level == 10) {
+            companion = "garlic";
         }
         return companion;
     }
@@ -49,26 +51,34 @@ public class HandbookOrder {
      * @return
      */
     public SpriteSheet companionSheet(AssetDirectory assets, int level) {
-        if (level == -1 || level == -2) {
-            level *= -1;
+        if (level == -1) {
+            level = 1;
+        } else if (level == -2) {
+            level = 3;
         } else if (level == -3) {
             level = 5;
         } else if (level == -4) {
-            level = 6;
+            level = 8;
+        } else if (level == -5) {
+            level = 10;
         }
         SpriteSheet sheet = new SpriteSheet();
         if (level == 1) {
             sheet = assets.getEntry("Durian Handbook.animation",
                 SpriteSheet.class);
-        } else if (level == 2) {
+        } else if (level == 3) {
             sheet = assets.getEntry("Durian/Strawberry Handbook.animation",
                 SpriteSheet.class);
         } else if (level == 5) {
-            sheet = assets.getEntry("BlueRaspberry Handbook.animation",
+            sheet = assets.getEntry("Avocado Handbook.animation",
                 SpriteSheet.class);
-        } else if (level == 6) {
+        } else if (level == 8) {
             sheet = assets.getEntry(
-                "BlueRaspberry/Avocado Handbook.animation",
+                "Avocado/Blue Raspberry Handbook.animation",
+                SpriteSheet.class);
+        } else if (level == 10) {
+            sheet = assets.getEntry(
+                "Garlic Handbook.animation",
                 SpriteSheet.class);
         }
         return sheet;
@@ -80,7 +90,7 @@ public class HandbookOrder {
         } else if (level == -2) {
             level = 3;
         } else if (level == -3) {
-            level = 7;
+            level = 6;
         }
         SpriteSheet sheet = new SpriteSheet();
         if (level == 1) {
@@ -89,7 +99,7 @@ public class HandbookOrder {
         } else if (level == 3) {
             sheet = assets.getEntry("Ant/Cricket Handbook.animation",
                 SpriteSheet.class);
-        } else if (level == 7) {
+        } else if (level == 6) {
             sheet = assets.getEntry("Spider Handbook.animation",
                 SpriteSheet.class);
         }
@@ -102,7 +112,7 @@ public class HandbookOrder {
         } else if (level == -2) {
             level = 4;
         } else if (level == -3) {
-            level = 6;
+            level = 9;
         }
         SpriteSheet sheet = new SpriteSheet();
         if (level == 1) {
@@ -111,7 +121,7 @@ public class HandbookOrder {
         } else if (level == 4) {
             sheet = assets.getEntry("Rat/Chopsticks Handbook.animation",
                 SpriteSheet.class);
-        } else if (level == 6) {
+        } else if (level == 9) {
             sheet = assets.getEntry("Chef Handbook.animation",
                 SpriteSheet.class);
         }
