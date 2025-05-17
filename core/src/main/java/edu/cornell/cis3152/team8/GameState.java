@@ -91,6 +91,7 @@ public class GameState {
     protected int maxStrawberries;
     protected int maxPineapples;
     protected int maxAvocados;
+    protected int maxGarlics;
     protected int maxBlueRaspberries;
     protected int maxDurians;
     protected int numStrawberries;
@@ -98,6 +99,7 @@ public class GameState {
     protected int numAvocados;
     protected int numBlueRaspberries;
     protected int numDurians;
+    protected int numGarlics;
     private GameAudio audio;
     public OrthographicCamera worldCamera;
 
@@ -246,6 +248,7 @@ public class GameState {
         numDurians = 0;
         numPineapples = 0;
         numStrawberries = 0;
+        numGarlics = 0;
 
         // Projectiles
         projectiles.clear();

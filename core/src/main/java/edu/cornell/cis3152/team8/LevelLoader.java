@@ -9,6 +9,7 @@ import edu.cornell.cis3152.team8.companions.Avocado;
 import edu.cornell.cis3152.team8.companions.BlueRaspberry;
 import edu.cornell.cis3152.team8.companions.Durian;
 import edu.cornell.cis3152.team8.companions.Strawberry;
+import edu.cornell.cis3152.team8.companions.Garlic;
 import edu.cornell.gdiac.assets.AssetDirectory;
 import edu.cornell.gdiac.graphics.SpriteSheet;
 
@@ -139,6 +140,7 @@ public class LevelLoader {
         state.maxAvocados = layerProps.get("maxAvocado", 0, Integer.class);
         state.maxDurians = layerProps.get("maxDurian", 0, Integer.class);
         state.maxPineapples = layerProps.get("maxPineapple", 0, Integer.class);
+        state.maxGarlics = layerProps.get("maxGarlic", 0, Integer.class);
         state.maxStrawberries = layerProps.get("maxStrawberry", 0, Integer.class);
         state.maxBlueRaspberries = layerProps.get("maxBlueRaspberry", 0, Integer.class);
         for (MapObject obj : companionLayer.getObjects()) {
@@ -381,6 +383,7 @@ public class LevelLoader {
             case "durian" -> new Durian(x, y, 0, state.getWorld());
             case "avocado" -> new Avocado(x, y, 0, state.getWorld());
             case "blueRaspberry" -> new BlueRaspberry(x, y, 0, state.getWorld());
+            case "garlic" -> new Garlic(x, y, 0, state.getWorld());
             default -> null;
         };
         player.addCompanion(head);
