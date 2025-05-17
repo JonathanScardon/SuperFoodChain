@@ -33,7 +33,7 @@ public class GarlicProjectile extends Projectile {
         setAttack(ATTACK);
 
         // its a box so technically width/height
-        radius = 0.2f;
+        radius = 0.5f;
         float size = radius * GameScene.PHYSICS_UNITS;
         mesh.set(-size / 2.0f, -size / 2.0f, size, size);
     }
@@ -62,7 +62,7 @@ public class GarlicProjectile extends Projectile {
         if (obstacle.isActive()) {
             SpriteBatch.computeTransform(transform, sprite.getRegionWidth() / 2.0f,
                 sprite.getRegionHeight() / 2.0f,
-                obstacle.getX() * GameScene.PHYSICS_UNITS, obstacle.getY() * GameScene.PHYSICS_UNITS, 0, radius,
+                obstacle.getX() * GameScene.PHYSICS_UNITS - 64, obstacle.getY() * GameScene.PHYSICS_UNITS - 64, 0, radius,
                 radius);
             animationFrame += animationSpeed;
             if (animationFrame >= texture.getSize()) {
