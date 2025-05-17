@@ -464,11 +464,11 @@ public class GameScene implements Screen {
                 spawn.update(delta);
             }
 
-            for (int i = 0; i < companions.size; i++) {
-                companions.get(i).setId(i);
-                companions.get(i).setCost(companions.get(i).getOriginalCost() * (int) Math.ceil(
-                    player.companions.size() / 3.0f));
-            }
+//            for (int i = 0; i < companions.size; i++) {
+//                companions.get(i).setId(i);
+//                companions.get(i).setCost(companions.get(i).getOriginalCost() * (int) Math.ceil(
+//                    player.companions.size() / 3.0f));
+//            }
 
             // Player Companions use Ability
             for (Companion c : player.companions) {
