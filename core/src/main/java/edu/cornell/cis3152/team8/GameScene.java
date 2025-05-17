@@ -346,8 +346,9 @@ public class GameScene implements Screen {
         int r3 = state.maxBlueRaspberries - state.numBlueRaspberries;
         int r4 = state.maxDurians - state.numDurians;
         int r5 = state.maxAvocados - state.numAvocados;
+        int r6 = state.maxGarlics - state.numGarlics;
 
-        int total = r1 + r2 + r3 + r4 + r5;
+        int total = r1 + r2 + r3 + r4 + r5 + r6;
         if (total == 0) {
             return; // we are already at the max for each type
         }
@@ -364,12 +365,15 @@ public class GameScene implements Screen {
         } else if ((choice -= r2) < r3) {
             c = new BlueRaspberry(pos.x, pos.y, companions.size, world);
             state.numBlueRaspberries++;
-        } else if (choice - r3 < r4) {
+        } else if ((choice -= r3) < r4) {
             c = new Durian(pos.x, pos.y, companions.size, world);
             state.numDurians++;
-        } else {
+        } else if (choice - r4 < r5){
             c = new Avocado(pos.x, pos.y, companions.size, world);
             state.numAvocados++;
+        } else {
+            c = new Garlic(pos.x, pos.y, companions.size, world);
+            state.numGarlics++;
         }
 
         companions.add(c);
