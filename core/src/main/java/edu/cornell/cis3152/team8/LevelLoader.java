@@ -30,6 +30,7 @@ public class LevelLoader {
     private SpriteSheet mouseDashHorizontalSprite;
     private SpriteSheet mouseSpinSprite;
     private SpriteSheet mouseDeathSprite;
+    private SpriteSheet mouseDeathSprite_1;
     private SpriteSheet mouseSleepSprite;
 
     private SpriteSheet mouseIdleSprite_1;
@@ -91,6 +92,7 @@ public class LevelLoader {
 
         mouseSpinSprite = assets.getEntry("spinMouse.animation", SpriteSheet.class);
         mouseDeathSprite = assets.getEntry("deathMouse.animation", SpriteSheet.class);
+        mouseDeathSprite_1 = assets.getEntry("deathMouse_1.animation", SpriteSheet.class);
         mouseSleepSprite = assets.getEntry("sleepMouse.animation", SpriteSheet.class);
 
         chopsticksIdleSprite = assets.getEntry("idleChopsticks.animation", SpriteSheet.class);
@@ -198,7 +200,7 @@ public class LevelLoader {
                 boss.addAnimation("idle_1", mouseIdleSprite_1);
                 boss.addAnimation("dashVertical_1", mouseDashVerticalSprite_1);
                 boss.addAnimation("dashHorizontal_1", mouseDashHorizontalSprite_1);
-                boss.addAnimation("death_1", mouseDeathSprite);
+                boss.addAnimation("death_1", mouseDeathSprite_1);
                 boss.addAnimation("sleep_1", mouseSleepSprite);
                 boss.spriteScale.set(0.4f, 0.4f);
                 break;
