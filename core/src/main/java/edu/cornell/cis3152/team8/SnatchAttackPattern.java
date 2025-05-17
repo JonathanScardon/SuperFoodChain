@@ -40,8 +40,14 @@ public class SnatchAttackPattern extends BossAttackPattern {
         state = AttackState.WARN;
         controller.setAction(InputController.CONTROL_NO_ACTION);
 
-        boss.setAnimationSpeed(.2f);
-        boss.setAnimation("snatch");
+        if (boss.getVariant() == 0){
+            boss.setAnimation("snatch", 0.2f);
+        }else{
+            boss.setAnimation("snatch_1", 0.2f);
+        }
+
+//        boss.setAnimationSpeed(.2f);
+  //      boss.setAnimation("snatch");
         boss.setState("snatch");
 
         attackX = player.getPlayerHead().getObstacle().getPosition().x;

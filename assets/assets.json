@@ -314,7 +314,17 @@
       }
     },
     "sleepMouse": {
-      "file": "images/MouseSleep.png",
+      "file": "images/ratSleep.png",
+      "sprites": {
+        "animation": {
+          "rows": 1,
+          "cols": 4,
+          "size": 4
+        }
+      }
+    },
+    "sleepMouse_1": {
+      "file": "images/ratSleep_1.png",
       "sprites": {
         "animation": {
           "rows": 1,
@@ -353,6 +363,16 @@
         }
       }
     },
+    "idleChopsticks_1": {
+      "file": "images/chopSticks_Idle_1.png",
+      "sprites": {
+        "animation": {
+          "rows": 1,
+          "cols": 4,
+          "size": 4
+        }
+      }
+    },
     "dashChopsticks": {
       "file": "images/Boss_Chopstick_Dash.png",
       "sprites": {
@@ -375,6 +395,16 @@
     },
     "warnChopsticks": {
       "file": "images/Boss_Chopstick_Warn.png",
+      "sprites": {
+        "animation": {
+          "rows": 1,
+          "cols": 4,
+          "size": 4
+        }
+      }
+    },
+    "warnChopsticks_1": {
+      "file": "images/chopSticks_Warn_1.png",
       "sprites": {
         "animation": {
           "rows": 1,

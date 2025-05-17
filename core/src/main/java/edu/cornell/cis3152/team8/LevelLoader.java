@@ -33,6 +33,7 @@ public class LevelLoader {
     private SpriteSheet mouseDeathSprite;
     private SpriteSheet mouseDeathSprite_1;
     private SpriteSheet mouseSleepSprite;
+    private SpriteSheet mouseSleepSprite_1;
 
     private SpriteSheet mouseIdleSprite_1;
     private SpriteSheet mouseDashVerticalSprite_1;
@@ -42,6 +43,10 @@ public class LevelLoader {
     private SpriteSheet chopsticksDashSprite;
     private SpriteSheet chopsticksSnatchSprite;
     private SpriteSheet chopsticksDeathSprite;
+
+    private SpriteSheet chopsticksIdleSprite_1;
+    private SpriteSheet chopsticksSnatchSprite_1;
+
 
     private SpriteSheet chefIdleSprite;
     private SpriteSheet chefAttackSprite;
@@ -95,11 +100,16 @@ public class LevelLoader {
         mouseDeathSprite = assets.getEntry("deathMouse.animation", SpriteSheet.class);
         mouseDeathSprite_1 = assets.getEntry("deathMouse_1.animation", SpriteSheet.class);
         mouseSleepSprite = assets.getEntry("sleepMouse.animation", SpriteSheet.class);
+        mouseSleepSprite_1 = assets.getEntry("sleepMouse_1.animation", SpriteSheet.class);
 
         chopsticksIdleSprite = assets.getEntry("idleChopsticks.animation", SpriteSheet.class);
         chopsticksDashSprite = assets.getEntry("dashChopsticks.animation", SpriteSheet.class);
         chopsticksSnatchSprite = assets.getEntry("warnChopsticks.animation", SpriteSheet.class);
         chopsticksDeathSprite = assets.getEntry("deathChopsticks.animation", SpriteSheet.class);
+
+        chopsticksIdleSprite_1 = assets.getEntry("idleChopsticks_1.animation", SpriteSheet.class);
+        chopsticksSnatchSprite_1 = assets.getEntry("warnChopsticks_1.animation", SpriteSheet.class);
+
 
         chefIdleSprite = assets.getEntry("idleChef.animation", SpriteSheet.class);
         chefAttackSprite = assets.getEntry("attackChef.animation", SpriteSheet.class);
@@ -203,15 +213,16 @@ public class LevelLoader {
                 boss.addAnimation("dashVertical_1", mouseDashVerticalSprite_1);
                 boss.addAnimation("dashHorizontal_1", mouseDashHorizontalSprite_1);
                 boss.addAnimation("death_1", mouseDeathSprite_1);
-                boss.addAnimation("sleep_1", mouseSleepSprite);
+                boss.addAnimation("sleep_1", mouseSleepSprite_1);
                 boss.spriteScale.set(0.4f, 0.4f);
                 break;
             case "chopsticks":
                 boss = new Boss(x, y, 2f, 2f, health, bossType, state.getWorld());
                 boss.addAnimation("default", chopsticksIdleSprite);
                 boss.addAnimation("idle", chopsticksIdleSprite);
-                boss.addAnimation("idle_1", chopsticksIdleSprite);
+                boss.addAnimation("idle_1", chopsticksIdleSprite_1);
                 boss.addAnimation("snatch", chopsticksSnatchSprite);
+                boss.addAnimation("snatch_1", chopsticksSnatchSprite_1);
                 boss.addAnimation("dash", chopsticksDashSprite);
                 boss.addAnimation("death", chopsticksDeathSprite);
                 boss.spriteScale.set(0.4f, 0.4f);
