@@ -7,6 +7,7 @@ import edu.cornell.cis3152.team8.GameScene;
 import edu.cornell.cis3152.team8.Projectile;
 import edu.cornell.gdiac.assets.AssetDirectory;
 import edu.cornell.gdiac.graphics.SpriteBatch;
+import edu.cornell.gdiac.graphics.SpriteSheet;
 import edu.cornell.gdiac.physics2.BoxObstacle;
 import edu.cornell.gdiac.physics2.Obstacle;
 
@@ -19,7 +20,9 @@ public class GarlicProjectile extends Projectile {
 
     private static float MAX_LIFE;
     private static int ATTACK;
-    private static Texture texture; // Make texture static so it's shared
+    private static SpriteSheet texture; // Make texture static so it's shared
+    private float animationFrame = 0f;
+    private float animationSpeed = 0.05f;
 
     public GarlicProjectile(Obstacle o, World world) {
         // Call the parent constructor (in Projectile)
@@ -44,7 +47,9 @@ public class GarlicProjectile extends Projectile {
      * Sets Garlic projectile assets
      */
     public static void setAssets(AssetDirectory assets) {
-        texture = assets.getEntry("strawberryProjectile", Texture.class);
+
+        texture = assets.getEntry("garlicProjectile.animation", SpriteSheet.class);
+
     }
 
     @Override
@@ -54,6 +59,11 @@ public class GarlicProjectile extends Projectile {
                 sprite.getRegionHeight() / 2.0f,
                 obstacle.getX() * GameScene.PHYSICS_UNITS, obstacle.getY() * GameScene.PHYSICS_UNITS, 0, 0.2f,
                 0.2f);
+            animationFrame += animationSpeed;
+            if (animationFrame >= texture.getSize()) {
+                animationFrame = 0;
+            }
+            texture.setFrame((int) animationFrame);
             batch.draw(texture, transform);
         }
     }
