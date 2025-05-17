@@ -12,9 +12,9 @@ public class HandbookOrder {
         } else if (level == 3) {
             companion = "strawberry";
         } else if (level == 5) {
-            companion = "blue raspberry";
-        } else if (level == 8) {
             companion = "avocado";
+        } else if (level == 8) {
+            companion = "blue raspberry";
         } else if (level == 10) {
             companion = "garlic";
         }
@@ -27,7 +27,7 @@ public class HandbookOrder {
             minion = "ant";
         } else if (level == 3) {
             minion = "cricket";
-        } else if (level == 7) {
+        } else if (level == 6) {
             minion = "spider";
         }
         return minion;
@@ -39,7 +39,7 @@ public class HandbookOrder {
             boss = "rat";
         } else if (level == 4) {
             boss = "chopsticks";
-        } else if (level == 6) {
+        } else if (level == 9) {
             boss = "chef";
         }
         return boss;
