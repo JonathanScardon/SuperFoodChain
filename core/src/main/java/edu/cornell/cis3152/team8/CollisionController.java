@@ -428,12 +428,7 @@ public class CollisionController implements ContactListener {
             if (m.getObstacle().getBody() == b1) {
                 for (Projectile p : state.getActiveProjectiles()) {
                     if (p.getObstacle().getBody() == b2) {
-                        if (p.getCollisionDie()) {
-                            m.removeHealth(p.getAttack());
-                        }
-                        else {
-                            m.removeHealth(p.getAttack() * 2);
-                        }
+                        m.removeHealth(p.getAttack());
                         if (m.getHealth() <= 0) {
                             ObstacleSprite s = (ObstacleSprite) b1.getUserData();
                             coinsAdded.add(s);
