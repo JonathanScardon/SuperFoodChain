@@ -38,7 +38,7 @@
     "costUI": "images/cost-ui.png",
     "costUIGray": "images/cost-ui-gray.png",
     "pressToStartUI": "images/UI_Press_Key_To_Start.png",
-    "ratIcon": "images/icon-rat.png",
+    "ratIcon": "images/rat-icon-ui.png",
     "chefIcon": "images/icon-chef.png",
     "chopsticksIcon": "images/icon-chopsticks.png",
     "pauseBackground": {
@@ -324,12 +324,22 @@
       }
     },
     "deathMouse": {
-      "file": "images/MouseDeath.png",
+      "file": "images/ratDeath.png",
       "sprites": {
         "animation": {
           "rows": 1,
-          "cols": 11,
-          "size": 11
+          "cols": 9,
+          "size": 9
+        }
+      }
+    },
+    "deathMouse_1": {
+      "file": "images/ratDeath_1.png",
+      "sprites": {
+        "animation": {
+          "rows": 1,
+          "cols": 9,
+          "size": 9
         }
       }
     },
@@ -404,12 +414,12 @@
       }
     },
     "deathChef": {
-      "file": "images/ChefDeath.png",
+      "file": "images/chefDeath.png",
       "sprites": {
         "animation": {
           "rows": 1,
-          "cols": 11,
-          "size": 11
+          "cols": 5,
+          "size": 5
         }
       }
     },

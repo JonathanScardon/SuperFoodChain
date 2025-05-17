@@ -238,7 +238,12 @@ public class Boss extends ObstacleSprite {
             if (!dead) {
                 animeframe = 0;
                 dead = true;
-                setAnimation("death", deathAnimationSpeed);
+                if (getVariant() == 0){
+                    setAnimation("death", deathAnimationSpeed);
+                }else{
+                    setAnimation("death_1", deathAnimationSpeed);
+                }
+
             }
             if (animeframe < sprite.getSize()) { // and animation is not over
                 sprite.setFrame((int) animeframe);
