@@ -639,6 +639,7 @@
     "coin": "sounds/collectCoin.wav",
     "durian": "sounds/durianAttack.wav",
     "strawberry": "sounds/strawberryAttack.wav",
+    "garlic": "sounds/garlic.ogg",
     "dashAttack": "sounds/ratAttack.wav",
     "spinAttack": "sounds/ratAttack.wav",
     "chopAttack": "sounds/chefAttack.wav",
