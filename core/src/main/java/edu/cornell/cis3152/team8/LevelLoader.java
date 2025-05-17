@@ -237,6 +237,9 @@ public class LevelLoader {
         BossAttackPattern attack;
         while (props.containsKey("attack" + attackIdx)) {
             attackObj = props.get("attack" + attackIdx, MapObject.class);
+            if (attackObj == null) {
+                throw new RuntimeException("No attack selected for index " + attackIdx);
+            }
             attack = createAttack(attackObj, bossController, state.getPlayer(), scene, state);
             bossController.addAttackPattern(attack);
 
