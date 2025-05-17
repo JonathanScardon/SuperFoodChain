@@ -229,6 +229,8 @@
    <property name="maxGarlic" type="int" value="1"/>
    <property name="maxPineapple" type="int" value="0"/>
    <property name="maxStrawberry" type="int" value="2"/>
+   <property name="maxStrawberry" type="int" value="1"/>
+   <property name="maxGarlic" type="int" value="3"/>
   </properties>
   <object id="1" name="player" type="playerSpawn" x="640" y="360">
    <properties>

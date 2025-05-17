@@ -255,8 +255,8 @@
    <property name="maxBlueRaspberry" type="int" value="2"/>
    <property name="maxCompanions" type="int" value="5"/>
    <property name="maxDurian" type="int" value="0"/>
-   <property name="maxPineapple" type="int" value="0"/>
    <property name="maxStrawberry" type="int" value="2"/>
+   <property name="maxGarlic" type="int" value="2"/>
   </properties>
   <object id="51" name="player" type="playerSpawn" x="640" y="115">
    <properties>

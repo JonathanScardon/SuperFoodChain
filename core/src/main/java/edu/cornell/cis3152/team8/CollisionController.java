@@ -206,7 +206,7 @@ public class CollisionController implements ContactListener {
                         if (p.getObstacle().getBody() == b1 && p.collisionDie) {
                             removedProjectiles.add(b1);
                         } else if (p.getObstacle().getBody() == b1 && !p.collisionDie) {
-                            System.out.println("Garlic Projectile Hit");
+//                            System.out.println("Garlic Projectile Hit");
                         }
                     }
                     minionHit(b2, b1);
@@ -216,7 +216,7 @@ public class CollisionController implements ContactListener {
                         if (p.getObstacle().getBody() == b2 && p.collisionDie) {
                             removedProjectiles.add(b2);
                         } else if (p.getObstacle().getBody() == b2 && !p.collisionDie) {
-                            System.out.println("Garlic Projectile Hit");
+//                            System.out.println("Garlic Projectile Hit");
                         }
                     }
                     minionHit(b1, b2);
@@ -229,16 +229,28 @@ public class CollisionController implements ContactListener {
 //                System.out.println("PR-B CONTACT IS HAPPENING");
                 if (c1 == PROJECTILE_CATEGORY) {
 //                    System.out.println("BOSS HIT");
-                    removedProjectiles.add(b1);
+                    for (Projectile p : state.getActiveProjectiles()) {
+                        if (p.getObstacle().getBody() == b1 && p.collisionDie) {
+                            removedProjectiles.add(b1);
+                        } else if (p.getObstacle().getBody() == b1 && !p.collisionDie) {
+//                            System.out.println("Garlic Projectile Hit");
+                        }
+                    }
                     bossHit(b2);
                 } else {
 //                    System.out.println("BOSS HIT");
-                    removedProjectiles.add(b2);
+                    for (Projectile p : state.getActiveProjectiles()) {
+                        if (p.getObstacle().getBody() == b2 && p.collisionDie) {
+                            removedProjectiles.add(b2);
+                        } else if (p.getObstacle().getBody() == b2 && !p.collisionDie) {
+//                            System.out.println("Garlic Projectile Hit");
+                        }
+                    }
                     bossHit(b1);
                 }
             }
 
-//            System.out.println();
+            System.out.println();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -422,6 +434,9 @@ public class CollisionController implements ContactListener {
                             coinsAdded.add(s);
                             removed.add(s);
                             audio.play("minion");
+                        }
+                        else {
+                            m.setDamage(true);
                         }
                     }
                 }
