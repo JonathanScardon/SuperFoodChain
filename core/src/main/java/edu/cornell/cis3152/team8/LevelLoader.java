@@ -32,6 +32,10 @@ public class LevelLoader {
     private SpriteSheet mouseDeathSprite;
     private SpriteSheet mouseSleepSprite;
 
+    private SpriteSheet mouseIdleSprite_1;
+    private SpriteSheet mouseDashVerticalSprite_1;
+    private SpriteSheet mouseDashHorizontalSprite_1;
+
     private SpriteSheet chopsticksIdleSprite;
     private SpriteSheet chopsticksDashSprite;
     private SpriteSheet chopsticksSnatchSprite;
@@ -79,8 +83,12 @@ public class LevelLoader {
         // load assets
         mouseIdleSprite = assets.getEntry("idleMouse.animation", SpriteSheet.class);
         mouseDashVerticalSprite = assets.getEntry("dashMouseVertical.animation", SpriteSheet.class);
-        mouseDashHorizontalSprite = assets.getEntry("dashMouseHorizontal.animation",
-            SpriteSheet.class);
+        mouseDashHorizontalSprite = assets.getEntry("dashMouseHorizontal.animation", SpriteSheet.class);
+
+        mouseIdleSprite_1 = assets.getEntry("idleMouse_1.animation", SpriteSheet.class);
+        mouseDashVerticalSprite_1 = assets.getEntry("dashMouseVertical_1.animation", SpriteSheet.class);
+        mouseDashHorizontalSprite_1 = assets.getEntry("dashMouseHorizontal_1.animation", SpriteSheet.class);
+
         mouseSpinSprite = assets.getEntry("spinMouse.animation", SpriteSheet.class);
         mouseDeathSprite = assets.getEntry("deathMouse.animation", SpriteSheet.class);
         mouseSleepSprite = assets.getEntry("sleepMouse.animation", SpriteSheet.class);
@@ -185,12 +193,20 @@ public class LevelLoader {
                 boss.addAnimation("spin", mouseSpinSprite);
                 boss.addAnimation("death", mouseDeathSprite);
                 boss.addAnimation("sleep", mouseSleepSprite);
+
+
+                boss.addAnimation("idle_1", mouseIdleSprite_1);
+                boss.addAnimation("dashVertical_1", mouseDashVerticalSprite_1);
+                boss.addAnimation("dashHorizontal_1", mouseDashHorizontalSprite_1);
+                boss.addAnimation("death_1", mouseDeathSprite);
+                boss.addAnimation("sleep_1", mouseSleepSprite);
                 boss.spriteScale.set(0.4f, 0.4f);
                 break;
             case "chopsticks":
                 boss = new Boss(x, y, 2f, 2f, health, bossType, state.getWorld());
                 boss.addAnimation("default", chopsticksIdleSprite);
                 boss.addAnimation("idle", chopsticksIdleSprite);
+                boss.addAnimation("idle_1", chopsticksIdleSprite);
                 boss.addAnimation("snatch", chopsticksSnatchSprite);
                 boss.addAnimation("dash", chopsticksDashSprite);
                 boss.addAnimation("death", chopsticksDeathSprite);
@@ -200,12 +216,14 @@ public class LevelLoader {
                 boss = new Boss(x, y, 5f, 10f, health, bossType, state.getWorld());
                 boss.addAnimation("default", chefIdleSprite);
                 boss.addAnimation("idle", chefIdleSprite);
+                boss.addAnimation("idle_1", chefIdleSprite);
                 boss.addAnimation("multi", chefAttackSprite);
                 boss.addAnimation("areaAttack", chefBurner);
                 boss.addAnimation("death", chefDeathSprite);
                 boss.spriteScale.set(1f, 1f);
                 break;
         }
+
 
         if (boss == null) {
             throw new RuntimeException("Boss creation failed");
