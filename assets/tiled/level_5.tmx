@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="1" height="1" tilewidth="1280" tileheight="720" infinite="0" nextlayerid="4" nextobjectid="24">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="1" height="1" tilewidth="1280" tileheight="720" infinite="0" nextlayerid="4" nextobjectid="28">
  <objectgroup id="2" name="boss" class="bossLayer">
   <properties>
    <property name="maxMinions" type="int" value="4"/>
   </properties>
-  <object id="5" name="mouse" type="boss" x="-84" y="858">
+  <object id="5" name="mouse" type="boss" x="388" y="1066">
    <properties>
     <property name="attack0" type="object" value="6"/>
     <property name="attack1" type="object" value="7"/>
@@ -15,7 +15,7 @@
     <property name="health" type="int" value="5"/>
    </properties>
   </object>
-  <object id="6" name="idle" type="attack" x="-500" y="0">
+  <object id="6" name="idle" type="attack" x="-558.667" y="328">
    <properties>
     <property name="attackDuration" type="float" value="5"/>
     <property name="attackType" value="idle"/>
@@ -27,6 +27,7 @@
    <properties>
     <property name="attackType" value="dash"/>
     <property name="dir" value="right"/>
+    <property name="minion0" type="object" value="27"/>
     <property name="moveSpeed" type="float" value="600"/>
     <property name="warnDuration" type="float" value="1.5"/>
    </properties>
@@ -67,11 +68,12 @@
    <properties>
     <property name="attackType" value="dash"/>
     <property name="dir" value="left"/>
+    <property name="minion0" type="object" value="25"/>
     <property name="moveSpeed" type="float" value="600"/>
     <property name="warnDuration" type="float" value="1.5"/>
    </properties>
   </object>
-  <object id="18" name="dash" type="attack" x="1116" y="838">
+  <object id="18" name="dash" type="attack" x="1103.33" y="784">
    <properties>
     <property name="attackType" value="dash"/>
     <property name="dir" value="up"/>
@@ -79,12 +81,28 @@
     <property name="warnDuration" type="float" value="1.5"/>
    </properties>
   </object>
-  <object id="19" name="dash" type="attack" x="245.455" y="-87.8788">
+  <object id="19" name="dash" type="attack" x="248.122" y="-57.2121">
    <properties>
     <property name="attackType" value="dash"/>
     <property name="dir" value="down"/>
     <property name="moveSpeed" type="float" value="600"/>
     <property name="warnDuration" type="float" value="1.5"/>
+   </properties>
+  </object>
+  <object id="25" type="minionSpawn" x="1298.67" y="130.667">
+   <properties>
+    <property name="antSpawnProportion" type="float" value="0"/>
+    <property name="bossOnly" type="bool" value="true"/>
+    <property name="cricketSpawnProportion" type="float" value="0"/>
+    <property name="spiderSpawnProportion" type="float" value="1"/>
+   </properties>
+  </object>
+  <object id="27" type="minionSpawn" x="-32.6818" y="589.061">
+   <properties>
+    <property name="antSpawnProportion" type="float" value="0"/>
+    <property name="bossOnly" type="bool" value="true"/>
+    <property name="cricketSpawnProportion" type="float" value="0"/>
+    <property name="spiderSpawnProportion" type="float" value="1"/>
    </properties>
   </object>
  </objectgroup>
@@ -102,7 +120,7 @@
     <property name="companionType" value="durian"/>
    </properties>
   </object>
-  <object id="2" type="companionSpawn" x="175.697" y="98.1212" width="33.3333"/>
+  <object id="2" type="companionSpawn" x="175.697" y="98.1212"/>
   <object id="3" type="companionSpawn" x="1107.21" y="565.333"/>
   <object id="4" type="companionSpawn" x="165.515" y="538.061"/>
   <object id="15" type="companionSpawn" x="1105.15" y="113.212"/>
