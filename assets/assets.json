@@ -473,8 +473,8 @@
       "sprites": {
         "animation": {
           "rows": 1,
-          "cols": 7,
-          "size": 7
+          "cols": 8,
+          "size": 8
         }
       }
     },
@@ -509,9 +509,19 @@
       }
     },
     "durianProjectile": "images/projectile_durian.png",
-    "garlicProjectile": "images/Projectile_Pineapple.png",
+
     "pineappleProjectile": "images/Projectile_Pineapple.png",
     "strawberryProjectile": "images/Strawberry_Seed.png",
+    "garlicProjectile": {
+      "file": "images/cloud.png",
+      "sprites": {
+        "animation": {
+          "rows": 1,
+          "cols": 1,
+          "size": 1
+        }
+      }
+    },
     "ant": {
       "file": "images/Ant.png",
       "sprites": {

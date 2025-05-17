@@ -146,6 +146,11 @@
                     "name": "maxStrawberry",
                     "type": "int",
                     "value": 0
+                },
+                {
+                    "name": "maxGarlic",
+                    "type": "int",
+                    "value": 0
                 }
             ],
             "name": "companionLayer",
@@ -179,7 +184,8 @@
                 "strawberry",
                 "avocado",
                 "blueRaspberry",
-                "durian"
+                "durian",
+                "garlic"
             ],
             "valuesAsFlags": false
         },
