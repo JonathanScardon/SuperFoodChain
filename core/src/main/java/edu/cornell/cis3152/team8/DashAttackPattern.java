@@ -99,9 +99,18 @@ public class DashAttackPattern extends BossAttackPattern {
         }
 
         if (controlCode == CONTROL_MOVE_UP || controlCode == CONTROL_MOVE_DOWN) {
-            boss.setAnimation("dashVertical", 0f);
+            if (boss.getVariant() == 0){
+                boss.setAnimation("dashVertical", 0f);
+            }else{
+                boss.setAnimation("dashVertical_1", 0f);
+            }
+
         } else if (controlCode == CONTROL_MOVE_LEFT || controlCode == CONTROL_MOVE_RIGHT) {
-            boss.setAnimation("dashHorizontal", 0f);
+            if (boss.getVariant() == 0){
+                boss.setAnimation("dashHorizontal", 0f);
+            }else if (boss.getVariant() == 1){
+                boss.setAnimation("dashHorizontal_1", 0f);
+            }
         }
 
         warnTime = warnDuration;
@@ -115,9 +124,17 @@ public class DashAttackPattern extends BossAttackPattern {
         boss.moveSpeed = moveSpeed;
 
         if (controlCode == CONTROL_MOVE_UP || controlCode == CONTROL_MOVE_DOWN) {
-            boss.setAnimation("dashVertical", 0.1f);
+            if (boss.getVariant() == 0){
+                boss.setAnimation("dashVertical", 0.15f);
+            }else{
+                boss.setAnimation("dashVertical_1", 0.15f);
+            }
         } else if (controlCode == CONTROL_MOVE_LEFT || controlCode == CONTROL_MOVE_RIGHT) {
-            boss.setAnimation("dashHorizontal", 0.1f);
+            if (boss.getVariant() == 0){
+                boss.setAnimation("dashHorizontal", 0.15f);
+            }else{
+                boss.setAnimation("dashHorizontal_1", 0.15f);
+            }
         }
 
         this.spawnMinions();

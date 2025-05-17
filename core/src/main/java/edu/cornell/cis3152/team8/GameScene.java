@@ -295,6 +295,11 @@ public class GameScene implements Screen {
         }
         state.companionSpawnTime = state.companionSpawnCooldown;
 
+        // set variant (two of same bosses)
+        for (int i = 0; i < bosses.size; i++) {
+            bosses.get(i).setVariant(i);
+        }
+
         // make the bosses start attacking
         for (BossController bc : bossControls) {
             bc.startAttack();
@@ -938,9 +943,11 @@ public class GameScene implements Screen {
                         .equals("spinning") && bossNames.get(0).getText()
                         .equals(bossNames.get(1).getText())) {
                         if (o.equals(bosses.get(0))) {
-                            game.batch.setColor(bossTint1);
+                            bosses.get(0).setVariant(0);
+                            //game.batch.setColor(bossTint1);
                         } else {
-                            game.batch.setColor(bossTint2);
+                            bosses.get(1).setVariant(1);
+                            //game.batch.setColor(bossTint2);
                         }
                     }
                     ((Boss) o).draw(game.batch, delta);

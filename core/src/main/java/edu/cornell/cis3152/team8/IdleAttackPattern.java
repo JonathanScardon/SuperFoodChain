@@ -45,7 +45,11 @@ public class IdleAttackPattern extends BossAttackPattern {
             // if the attack is too long, just sleep
             boss.setAnimation("sleep", 0.05f);
         } else {
-            boss.setAnimation("idle", 0.1f);
+            if (boss.getVariant() == 0){
+                boss.setAnimation("idle", 0.1f);
+            }else{
+                boss.setAnimation("idle_1", 0.1f);
+            }
         }
         boss.getObstacle().setAngle(0);
 
