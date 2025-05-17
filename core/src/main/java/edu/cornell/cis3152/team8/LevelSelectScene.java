@@ -103,7 +103,7 @@ public class LevelSelectScene implements Screen {
         //Set up the pages (6 buttons per page)
         page1 = new TextButton[6];
         page2 = new TextButton[6];
-        page3 = new TextButton[6];
+        page3 = new TextButton[4];
 
         addLevelButtons();
     }
@@ -241,10 +241,12 @@ public class LevelSelectScene implements Screen {
                 button.setPosition(x + 1280, y);
                 addLevelButton(level - 1, level + 6, button, page2);
 
-                button = new TextButton("" + (level + 12), s);
-                button.setSize(levelButtonWidth, levelButtonHeight);
-                button.setPosition(x + 2560, y);
-                addLevelButton(level - 1, level + 12, button, page3);
+                if (level - 1 < 4) {
+                    button = new TextButton("" + (level + 12), s);
+                    button.setSize(levelButtonWidth, levelButtonHeight);
+                    button.setPosition(x + 2560, y);
+                    addLevelButton(level - 1, level + 12, button, page3);
+                }
 
                 x = x + levelButtonWidth + gap;
                 level++;
@@ -276,7 +278,9 @@ public class LevelSelectScene implements Screen {
         for (int i = 0; i < page1.length; i++) {
             page1[i].setDisabled(i >= unlocked);
             page2[i].setDisabled(i + 6 >= unlocked);
-            page3[i].setDisabled(i + 12 >= unlocked);
+            if (i < page3.length) {
+                page3[i].setDisabled(i + 12 >= unlocked);
+            }
         }
 
         if (moving) { //Move

@@ -33,25 +33,21 @@ public class HandbookPopUp {
             pages.add(new HandbookPopUpPage(game, gameScene, "Companions"));
             pages.add(new HandbookPopUpPage(game, gameScene, "Minions"));
             pages.add(new HandbookPopUpPage(game, gameScene, "Bosses"));
-        }
-        if (gameScene.getLevel() == 2) {
+        } else if (gameScene.getLevel() == 3) {
             pages.add(new HandbookPopUpPage(game, gameScene, "Companions"));
-        }
-        if (gameScene.getLevel() == 3) {
             pages.add(new HandbookPopUpPage(game, gameScene, "Minions"));
-        }
-        if (gameScene.getLevel() == 4) {
+        } else if (gameScene.getLevel() == 4) {
             pages.add(new HandbookPopUpPage(game, gameScene, "Bosses"));
-        }
-        if (gameScene.getLevel() == 5) {
+        } else if (gameScene.getLevel() == 5) {
             pages.add(new HandbookPopUpPage(game, gameScene, "Companions"));
-        }
-        if (gameScene.getLevel() == 6) {
-            pages.add(new HandbookPopUpPage(game, gameScene, "Companions"));
-            pages.add(new HandbookPopUpPage(game, gameScene, "Bosses"));
-        }
-        if (gameScene.getLevel() == 7) {
+        } else if (gameScene.getLevel() == 6) {
             pages.add(new HandbookPopUpPage(game, gameScene, "Minions"));
+        } else if (gameScene.getLevel() == 8) {
+            pages.add(new HandbookPopUpPage(game, gameScene, "Companions"));
+        } else if (gameScene.getLevel() == 9) {
+            pages.add(new HandbookPopUpPage(game, gameScene, "Bosses"));
+        } else if (gameScene.getLevel() == 10) {
+            pages.add(new HandbookPopUpPage(game, gameScene, "Companions"));
         }
     }
 
@@ -184,19 +180,22 @@ public class HandbookPopUp {
             }
             switch (tab) {
                 case "Companions" -> {
-                    if (gameScene.getLevel() == 2) {
+                    if (gameScene.getLevel() == 3) {
                         locked = handbookOrder.companionSheet(game.directory, 1);
                     } else if (gameScene.getLevel() == 5) {
                         locked = game.directory.getEntry("TwoLock Handbook.animation",
                             SpriteSheet.class);
-                    } else if (gameScene.getLevel() == 6) {
+                    } else if (gameScene.getLevel() == 8) {
                         locked = handbookOrder.companionSheet(game.directory, 5);
+                    } else if (gameScene.getLevel() == 10) {
+                        locked = game.directory.getEntry("OneLock Handbook.animation",
+                            SpriteSheet.class);
                     }
                 }
                 case "Minions" -> {
                     if (gameScene.getLevel() == 3) {
                         locked = handbookOrder.minionSheet(game.directory, 1);
-                    } else if (gameScene.getLevel() == 7) {
+                    } else if (gameScene.getLevel() == 6) {
                         locked = game.directory.getEntry("OneLock Handbook.animation",
                             SpriteSheet.class);
                     }
@@ -204,7 +203,7 @@ public class HandbookPopUp {
                 case "Bosses" -> {
                     if (gameScene.getLevel() == 4) {
                         locked = handbookOrder.bossSheet(game.directory, 1);
-                    } else if (gameScene.getLevel() == 6) {
+                    } else if (gameScene.getLevel() == 9) {
                         locked = game.directory.getEntry("OneLock Handbook.animation",
                             SpriteSheet.class);
                     }
