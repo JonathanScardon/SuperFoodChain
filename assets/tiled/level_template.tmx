@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="1" height="1" tilewidth="1280" tileheight="720" infinite="0" nextlayerid="4" nextobjectid="45">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="1" height="1" tilewidth="1280" tileheight="720" infinite="0" nextlayerid="4" nextobjectid="47">
  <objectgroup id="2" name="boss" class="bossLayer">
   <properties>
    <property name="maxMinions" type="int" value="4"/>
@@ -105,13 +105,6 @@
    </properties>
    <point/>
   </object>
-  <object id="32" template="snatch.tx" name="snatch" type="attack" x="686" y="894">
-   <properties>
-    <property name="attackDuration" type="float" value="0"/>
-    <property name="attackType" propertytype="attackType" value="snatch"/>
-    <property name="warnDuration" type="float" value="1"/>
-   </properties>
-  </object>
   <object id="36" name="chopstick" type="boss" x="682" y="1174">
    <properties>
     <property name="attack0" type="object" value="0"/>
@@ -147,6 +140,13 @@
     <property name="warnDuration" type="float" value="1"/>
    </properties>
    <point/>
+  </object>
+  <object id="45" name="snatch" type="attack" x="680" y="884">
+   <properties>
+    <property name="attackDuration" type="float" value="0"/>
+    <property name="attackType" propertytype="attackType" value="snatch"/>
+    <property name="warnDuration" type="float" value="1"/>
+   </properties>
   </object>
  </objectgroup>
  <objectgroup id="3" name="companion" class="companionLayer">
