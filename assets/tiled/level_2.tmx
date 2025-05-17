@@ -23,21 +23,13 @@
     <property name="warnDuration" type="float" value="0.5"/>
    </properties>
   </object>
-  <object id="111" name="idle" type="attack" x="614.539" y="309.985">
-   <properties>
-    <property name="attackDuration" type="float" value="4"/>
-    <property name="attackType" value="idle"/>
-    <property name="flipHorizontal" type="bool" value="false"/>
-    <property name="warnDuration" type="float" value="1"/>
-   </properties>
-  </object>
   <object id="95" name="dash" type="attack" x="-84.2479" y="547.573">
    <properties>
     <property name="attackType" value="dash"/>
     <property name="dir" value="right"/>
     <property name="minion0" type="object" value="106"/>
     <property name="minion2" type="object" value="107"/>
-    <property name="moveSpeed" type="float" value="250"/>
+    <property name="moveSpeed" type="float" value="400"/>
     <property name="warnDuration" type="float" value="3"/>
    </properties>
   </object>
@@ -45,7 +37,7 @@
    <properties>
     <property name="attackType" value="dash"/>
     <property name="dir" value="down"/>
-    <property name="moveSpeed" type="float" value="250"/>
+    <property name="moveSpeed" type="float" value="400"/>
     <property name="warnDuration" type="float" value="2"/>
    </properties>
   </object>
@@ -55,7 +47,7 @@
     <property name="dir" value="left"/>
     <property name="minion0" type="object" value="110"/>
     <property name="minion2" type="object" value="109"/>
-    <property name="moveSpeed" type="float" value="250"/>
+    <property name="moveSpeed" type="float" value="400"/>
     <property name="warnDuration" type="float" value="3"/>
    </properties>
   </object>
@@ -63,14 +55,14 @@
    <properties>
     <property name="attackType" value="dash"/>
     <property name="dir" value="up"/>
-    <property name="moveSpeed" type="float" value="250"/>
+    <property name="moveSpeed" type="float" value="400"/>
     <property name="warnDuration" type="float" value="2"/>
    </properties>
   </object>
   <object id="100" type="minionSpawn" x="-80.3335" y="361.427">
    <properties>
     <property name="antSpawnProportion" type="float" value="1"/>
-    <property name="cooldown" type="float" value="12"/>
+    <property name="cooldown" type="float" value="6"/>
     <property name="cricketSpawnProportion" type="float" value="0"/>
     <property name="spiderSpawnProportion" type="float" value="0"/>
    </properties>
@@ -78,7 +70,7 @@
   <object id="103" type="minionSpawn" x="1327.36" y="357.063">
    <properties>
     <property name="antSpawnProportion" type="float" value="1"/>
-    <property name="cooldown" type="float" value="12"/>
+    <property name="cooldown" type="float" value="6"/>
     <property name="cricketSpawnProportion" type="float" value="0"/>
     <property name="spiderSpawnProportion" type="float" value="0"/>
    </properties>
@@ -120,7 +112,7 @@
   <object id="102" type="minionSpawn" x="-90.273" y="679.306">
    <properties>
     <property name="antSpawnProportion" type="float" value="1"/>
-    <property name="cooldown" type="float" value="18"/>
+    <property name="cooldown" type="float" value="6"/>
     <property name="cricketSpawnProportion" type="float" value="0"/>
     <property name="spiderSpawnProportion" type="float" value="0"/>
    </properties>
@@ -146,7 +138,7 @@
   <object id="101" type="minionSpawn" x="1326.93" y="78.7287">
    <properties>
     <property name="antSpawnProportion" type="float" value="1"/>
-    <property name="cooldown" type="float" value="18"/>
+    <property name="cooldown" type="float" value="6"/>
     <property name="cricketSpawnProportion" type="float" value="0"/>
     <property name="spiderSpawnProportion" type="float" value="0"/>
    </properties>
@@ -156,14 +148,14 @@
   <properties>
    <property name="maxAvocado" type="int" value="0"/>
    <property name="maxBlueRaspberry" type="int" value="0"/>
-   <property name="maxCompanions" type="int" value="3"/>
-   <property name="maxDurian" type="int" value="1"/>
+   <property name="maxCompanions" type="int" value="2"/>
+   <property name="maxDurian" type="int" value="2"/>
    <property name="maxPineapple" type="int" value="0"/>
-   <property name="maxStrawberry" type="int" value="2"/>
+   <property name="maxStrawberry" type="int" value="0"/>
   </properties>
   <object id="83" name="player" type="playerSpawn" x="337.033" y="202.335">
    <properties>
-    <property name="companionType" propertytype="companionType" value="strawberry"/>
+    <property name="companionType" propertytype="companionType" value="durian"/>
    </properties>
   </object>
   <object id="84" type="companionSpawn" x="481.499" y="380.79"/>
