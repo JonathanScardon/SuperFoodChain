@@ -253,6 +253,14 @@ public class CompanionHandbookScene implements Screen {
             boolean companionChange = unlockedCompanions != temp;
             unlockedCompanions = temp;
 
+            if (currTab == 0) {
+                if (currPage == 1 && unlockedCompanions == 3) {
+                    animationSpeed = 0.2f;
+                } else {
+                    animationSpeed = 0.1f;
+                }
+            }
+
             temp = game.save.getInteger("unlockedMinions");
             boolean minionChange = unlockedMinions != temp;
             unlockedMinions = temp;
