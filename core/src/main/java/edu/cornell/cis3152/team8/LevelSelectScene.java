@@ -103,7 +103,7 @@ public class LevelSelectScene implements Screen {
         //Set up the pages (6 buttons per page)
         page1 = new TextButton[6];
         page2 = new TextButton[6];
-        page3 = new TextButton[4];
+        page3 = new TextButton[3];
 
         addLevelButtons();
     }
@@ -241,7 +241,7 @@ public class LevelSelectScene implements Screen {
                 button.setPosition(x + 1280, y);
                 addLevelButton(level - 1, level + 6, button, page2);
 
-                if (level - 1 < 4) {
+                if (level - 1 < page3.length) {
                     button = new TextButton("" + (level + 12), s);
                     button.setSize(levelButtonWidth, levelButtonHeight);
                     button.setPosition(x + 2560, y);
