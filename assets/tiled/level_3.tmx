@@ -111,10 +111,10 @@
   <properties>
    <property name="maxAvocado" type="int" value="0"/>
    <property name="maxBlueRaspberry" type="int" value="0"/>
-   <property name="maxCompanions" type="int" value="4"/>
+   <property name="maxCompanions" type="int" value="3"/>
    <property name="maxDurian" type="int" value="1"/>
    <property name="maxPineapple" type="int" value="0"/>
-   <property name="maxStrawberry" type="int" value="2"/>
+   <property name="maxStrawberry" type="int" value="4"/>
   </properties>
   <object id="1" name="player" type="playerSpawn" x="638.667" y="385.441">
    <properties>
