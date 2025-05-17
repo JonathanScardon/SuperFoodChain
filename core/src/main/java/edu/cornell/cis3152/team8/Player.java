@@ -398,23 +398,23 @@ public class Player {
                 | CollisionController.COIN_CATEGORY | CollisionController.BOSS_CATEGORY;
         companion.getObstacle().setFilterData(filter);
 
-        CircleShape shape = new CircleShape();
-        shape.setPosition(companion.getObstacle().getPosition());
-        shape.setRadius(0.3f);
-
-        FixtureDef selfFixtureDef = new FixtureDef();
-        selfFixtureDef.shape = shape;
-        selfFixtureDef.isSensor = true;
-
-        Filter selfFilter = new Filter();
-        selfFilter.categoryBits = CollisionController.PLAYER_CATEGORY;
-        selfFilter.maskBits = CollisionController.PLAYER_CATEGORY;
-
-        Fixture selfFixture = companion.getObstacle().getBody().createFixture(selfFixtureDef);
-        selfFixture.setFilterData(selfFilter);
-        selfFixture.setUserData(this);
-
-        shape.dispose();
+//        CircleShape shape = new CircleShape();
+//        shape.setPosition(companion.getObstacle().getPosition());
+//        shape.setRadius(0.3f);
+//
+//        FixtureDef selfFixtureDef = new FixtureDef();
+//        selfFixtureDef.shape = shape;
+//        selfFixtureDef.isSensor = true;
+//
+//        Filter selfFilter = new Filter();
+//        selfFilter.categoryBits = CollisionController.PLAYER_CATEGORY;
+//        selfFilter.maskBits = CollisionController.PLAYER_CATEGORY;
+//
+//        Fixture selfFixture = companion.getObstacle().getBody().createFixture(selfFixtureDef);
+//        selfFixture.setFilterData(selfFilter);
+//        selfFixture.setUserData(this);
+//
+//        shape.dispose();
 
         CircularBuffer.PositionAndDirection tail = controlBuffer.getSnapshot(companions.size());
 

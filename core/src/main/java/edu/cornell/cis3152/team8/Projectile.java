@@ -126,7 +126,7 @@ public abstract class Projectile extends ObstacleSprite {
         obstacle.setBodyType(BodyDef.BodyType.KinematicBody);
 
         obstacle.setPhysicsUnits(GameScene.PHYSICS_UNITS);
-        obstacle.setBullet(true);
+        obstacle.setBullet(false);
 
         obstacle.activatePhysics(world);
         obstacle.setUserData(this);
