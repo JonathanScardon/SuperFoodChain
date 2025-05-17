@@ -368,7 +368,7 @@ public class GameScene implements Screen {
         } else if ((choice -= r3) < r4) {
             c = new Durian(pos.x, pos.y, companions.size, world);
             state.numDurians++;
-        } else if (choice - r4 < r5){
+        } else if (choice - r4 < r5) {
             c = new Avocado(pos.x, pos.y, companions.size, world);
             state.numAvocados++;
         } else {
@@ -404,6 +404,7 @@ public class GameScene implements Screen {
                 }
             }
         } else if (winGame) {
+
             for (ObstacleSprite o : dead) {
                 String type = o.getName();
                 if (type.equals("mouse") || type.equals("chef") || type.equals("chopsticks")) {
@@ -803,20 +804,20 @@ public class GameScene implements Screen {
     private void setWin() {
         if (!winGame) { //Only play sound once
             winGame = true;
-            String s = "level" + level + "Won";
-            if (!game.save.getBoolean(s)) {
-                game.save.putBoolean(s, true);
-                int newUnlock = game.save.getInteger("unlockedLevels") + 1;
-                if (newUnlock <= game.getTotalLevels()) {
-                    game.save.putInteger("unlockedLevels", newUnlock);
-                }
-            }
             for (Boss b : bosses) {
                 if (b.getObstacle().isActive()) {
                     winGame = false;
                 }
             }
+            String s = "level" + level + "Won";
             if (winGame) {
+                if (!game.save.getBoolean(s)) {
+                    game.save.putBoolean(s, true);
+                    int newUnlock = game.save.getInteger("unlockedLevels") + 1;
+                    if (newUnlock <= game.getTotalLevels()) {
+                        game.save.putInteger("unlockedLevels", newUnlock);
+                    }
+                }
                 audio.play("win");
             }
         }
