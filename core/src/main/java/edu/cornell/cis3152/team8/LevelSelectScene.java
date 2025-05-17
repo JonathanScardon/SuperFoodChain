@@ -52,6 +52,8 @@ public class LevelSelectScene implements Screen {
      */
     private final TextButton[] page1;
     private final TextButton[] page2;
+    private final TextButton[] page3;
+
 
     /**
      * Page switching info
@@ -101,6 +103,8 @@ public class LevelSelectScene implements Screen {
         //Set up the pages (6 buttons per page)
         page1 = new TextButton[6];
         page2 = new TextButton[6];
+        page3 = new TextButton[6];
+
         addLevelButtons();
     }
 
@@ -236,6 +240,12 @@ public class LevelSelectScene implements Screen {
                 button.setSize(levelButtonWidth, levelButtonHeight);
                 button.setPosition(x + 1280, y);
                 addLevelButton(level - 1, level + 6, button, page2);
+
+                button = new TextButton("" + (level + 12), s);
+                button.setSize(levelButtonWidth, levelButtonHeight);
+                button.setPosition(x + 2560, y);
+                addLevelButton(level - 1, level + 12, button, page3);
+
                 x = x + levelButtonWidth + gap;
                 level++;
             }
@@ -266,6 +276,7 @@ public class LevelSelectScene implements Screen {
         for (int i = 0; i < page1.length; i++) {
             page1[i].setDisabled(i >= unlocked);
             page2[i].setDisabled(i + 6 >= unlocked);
+            page3[i].setDisabled(i + 12 >= unlocked);
         }
 
         if (moving) { //Move
@@ -318,7 +329,7 @@ public class LevelSelectScene implements Screen {
             }
             settingsScreen.update(delta);
             settingsOn = settingsScreen.isOn();
-            
+
         }
     }
 
@@ -349,6 +360,11 @@ public class LevelSelectScene implements Screen {
                 b.setVisible(true);
                 b.draw(game.batch, 1);
             }
+            for (TextButton b : page3) {
+                b.setVisible(true);
+                b.draw(game.batch, 1);
+            }
+
         } else { //Otherwise only draw current page
             //Background
             game.batch.draw(background, (1280 * (currPage - 1)), 0, 1280, 720);
@@ -356,19 +372,42 @@ public class LevelSelectScene implements Screen {
                 720 / 2f - tray.getHeight() / 2f);
 
             //Level buttons
-            boolean drawButton = currPage == 1;
+            boolean draw1;
+            boolean draw2;
+            boolean draw3;
+            if (currPage == 1) {
+                draw1 = true;
+                draw2 = false;
+                draw3 = false;
+            } else if (currPage == 2) {
+                draw1 = false;
+                draw2 = true;
+                draw3 = false;
+            } else {
+                draw1 = false;
+                draw2 = false;
+                draw3 = true;
+            }
+
             for (TextButton b : page1) {
-                b.setVisible(drawButton);
-                if (drawButton) {
+                b.setVisible(draw1);
+                if (draw1 && b.isVisible()) {
                     b.draw(game.batch, 1);
                 }
             }
             for (TextButton b : page2) {
-                b.setVisible(!drawButton);
-                if (!drawButton) {
+                b.setVisible(draw2);
+                if (draw2 && b.isVisible()) {
                     b.draw(game.batch, 1);
                 }
             }
+            for (TextButton b : page3) {
+                b.setVisible(draw3);
+                if (draw3 && b.isVisible()) {
+                    b.draw(game.batch, 1);
+                }
+            }
+
         }
         for (ImageButton b : navs) {
             if (b.isVisible()) {
