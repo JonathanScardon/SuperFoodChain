@@ -53,7 +53,7 @@
     <property name="antSpawnProportion" type="float" value="1"/>
     <property name="bossOnly" type="bool" value="true"/>
     <property name="cooldown" type="float" value="10"/>
-    <property name="cricketSpawnProportion" type="float" value="0"/>
+    <property name="cricketSpawnProportion" type="float" value="1"/>
     <property name="spiderSpawnProportion" type="float" value="0"/>
    </properties>
   </object>
@@ -62,7 +62,7 @@
     <property name="antSpawnProportion" type="float" value="1"/>
     <property name="bossOnly" type="bool" value="true"/>
     <property name="cooldown" type="float" value="10"/>
-    <property name="cricketSpawnProportion" type="float" value="0"/>
+    <property name="cricketSpawnProportion" type="float" value="1"/>
     <property name="spiderSpawnProportion" type="float" value="0"/>
    </properties>
   </object>
@@ -83,7 +83,7 @@
    <property name="maxCompanions" type="int" value="3"/>
    <property name="maxDurian" type="int" value="1"/>
    <property name="maxPineapple" type="int" value="0"/>
-   <property name="maxStrawberry" type="int" value="4"/>
+   <property name="maxStrawberry" type="int" value="2"/>
   </properties>
   <object id="6" name="player" type="playerSpawn" x="833.054" y="271.217">
    <properties>
