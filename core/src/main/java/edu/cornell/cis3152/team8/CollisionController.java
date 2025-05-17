@@ -441,9 +441,10 @@ public class CollisionController implements ContactListener {
                 boss.setDamage(true);
                 if (boss.getHealth() <= 0) {
                     audio.play(boss.getName() + "Death");
+                    // remove all warning patterns associated with boss
+                    boss.warnPatterns.clear();
                     removed.add((ObstacleSprite) b.getUserData());
                 }
-
             }
         }
     }
