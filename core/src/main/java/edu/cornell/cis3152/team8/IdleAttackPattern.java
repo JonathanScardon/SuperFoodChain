@@ -1,5 +1,6 @@
 package edu.cornell.cis3152.team8;
 
+import com.badlogic.gdx.math.Vector2;
 import edu.cornell.gdiac.graphics.SpriteSheet;
 
 import static edu.cornell.cis3152.team8.InputController.*;
@@ -66,6 +67,8 @@ public class IdleAttackPattern extends BossAttackPattern {
     public void attack() {
         state = AttackState.ATTACK;
         controller.setAction(CONTROL_NO_ACTION);
+
+        boss.getObstacle().setLinearVelocity(new Vector2(0.01f, 0.01f));
 
         boss.getObstacle().setX(this.idleX);
         boss.getObstacle().setY(this.idleY);
