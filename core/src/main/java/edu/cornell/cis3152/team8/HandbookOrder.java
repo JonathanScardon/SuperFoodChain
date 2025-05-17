@@ -9,7 +9,7 @@ public class HandbookOrder {
         String companion = "";
         if (level == 1) {
             companion = "durian";
-        } else if (level == 3) {
+        } else if (level == 2) {
             companion = "strawberry";
         } else if (level == 5) {
             companion = "avocado";
@@ -54,7 +54,7 @@ public class HandbookOrder {
         if (level == -1) {
             level = 1;
         } else if (level == -2) {
-            level = 3;
+            level = 2;
         } else if (level == -3) {
             level = 5;
         } else if (level == -4) {
@@ -66,7 +66,7 @@ public class HandbookOrder {
         if (level == 1) {
             sheet = assets.getEntry("Durian Handbook.animation",
                 SpriteSheet.class);
-        } else if (level == 3) {
+        } else if (level == 2) {
             sheet = assets.getEntry("Durian/Strawberry Handbook.animation",
                 SpriteSheet.class);
         } else if (level == 5) {

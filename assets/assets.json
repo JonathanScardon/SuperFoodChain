@@ -251,6 +251,16 @@
         }
       }
     },
+    "sleepMouse": {
+      "file": "images/MouseSleep.PNG",
+      "sprites": {
+        "animation": {
+          "rows": 1,
+          "cols": 4,
+          "size": 4
+        }
+      }
+    },
     "dashMouseVertical": {
       "file": "images/Boss_Rat_RunDown.png",
       "sprites": {

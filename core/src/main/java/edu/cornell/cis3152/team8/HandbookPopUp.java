@@ -33,8 +33,9 @@ public class HandbookPopUp {
             pages.add(new HandbookPopUpPage(game, gameScene, "Companions"));
             pages.add(new HandbookPopUpPage(game, gameScene, "Minions"));
             pages.add(new HandbookPopUpPage(game, gameScene, "Bosses"));
-        } else if (gameScene.getLevel() == 3) {
+        } else if (gameScene.getLevel() == 2) {
             pages.add(new HandbookPopUpPage(game, gameScene, "Companions"));
+        } else if (gameScene.getLevel() == 3) {
             pages.add(new HandbookPopUpPage(game, gameScene, "Minions"));
         } else if (gameScene.getLevel() == 4) {
             pages.add(new HandbookPopUpPage(game, gameScene, "Bosses"));
@@ -180,7 +181,7 @@ public class HandbookPopUp {
             }
             switch (tab) {
                 case "Companions" -> {
-                    if (gameScene.getLevel() == 3) {
+                    if (gameScene.getLevel() == 2) {
                         locked = handbookOrder.companionSheet(game.directory, 1);
                     } else if (gameScene.getLevel() == 5) {
                         locked = game.directory.getEntry("TwoLock Handbook.animation",
