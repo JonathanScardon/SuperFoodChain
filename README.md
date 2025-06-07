@@ -2,7 +2,7 @@
 
 ## Overview
 
-Embark on a thrilling adventure in Super Food Chain where you guide a spirited group of fruit companions through a perilous kitchen teeming with culinary foes.
+Embark on a thrilling adventure in Super Food Chain, where you guide a spirited group of fruit companions through a perilous kitchen teeming with culinary foes.
 Assemble a dynamic chain of allies - each with unique abilities to aid you in outmaneuvering relentless enemis and conquering formidable bosses. In this delectable fusion
 of action and strategy, every swift decision brings you closer to kitchen domination.
 
