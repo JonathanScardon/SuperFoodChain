@@ -1,4 +1,28 @@
-# team8
+# Super Food Chain
+
+## Overview
+
+Embark on a thrilling adventure in Super Food Chain where you guide a spirited group of fruit companions through a perilous kitchen teeming with culinary foes.
+Assemble a dynamic chain of allies - each with unique abilities to aid you in outmaneuvering relentless enemis and conquering formidable bosses. In this delectable fusion
+of action and strategy, every swift decision brings you closer to kitchen domination.
+
+## Instructions
+
+- Use the arrow keys for movement - you cannot move backwards.
+- Shoot minions (bugs) to produce coins. Move over coins to collect them.
+- Use coins to purchase companions. Move over companions to collect them.
+- Win a level by defeating its boss.
+
+## Preview
+
+<img src="assets/media/screenshot1.png" alt="Main Menu" width="500"/>
+<img src="assets/media/screenshot2.png" alt="Main Menu" width="500"/>
+<img src="assets/media/screenshot3.png" alt="Main Menu" width="500"/>
+
+
+## Installation
+
+Install the most recent version from the latest release, which can be located on the right sidebar of this repository.
 
 ## LibGDX
 A [libGDX](https://libgdx.com/) project generated with [gdx-liftoff](https://github.com/libgdx/gdx-liftoff).
